@@ -239,6 +239,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			<?php wp_nonce_field( 'update-options' ); ?>
             <?php if ( $tab != 'importexport' ) { ?>
 			<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'http://plugins.adchsm.me/slidebars/usage.php' ); ?></p>
+			<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
             <?php } ?>
             <div id="" class="">
 			<?php settings_fields( $tab ); ?>

@@ -13,9 +13,23 @@ jQuery(document).ready(function($) {
 	
 	$("input[value='#off_canvas_control'][type=text]").parent().parent().parent().parent().each( function() {
 		$(this).addClass('off-canvas-control');
-		$(this).find('.menu-item-bar .item-type').text(off_canvas_control_data.strings.menu_item_type);
+		/* Is control selected, then show it */
+		var control_type = '';
+		if (off_canvas_control_data.val[$(this).find('.menu-item-data-db-id').val()]['off-canvas-control']) {
+			var key = off_canvas_control_data.val[$(this).find('.menu-item-data-db-id').val()]['off-canvas-control'];
+			control_type = ' <i class="item-type-off-canvas-control">('+off_canvas_control_data.controls[key]+')</i>';
+		}
+		$(this).find('.menu-item-bar .item-type').html(off_canvas_control_data.strings.menu_item_type+control_type);
 	});
 	
+	/* change menu type label on selecting a controller */
+	$(document).on('change', '.field-off-canvas-control input', function(e) {
+		var key = $(this).val();
+		var control_type = ' <i class="item-type-off-canvas-control">('+off_canvas_control_data.controls[key]+')</i>';
+		$(this).parents('.menu-item').find('.menu-item-bar .item-type').html(off_canvas_control_data.strings.menu_item_type+control_type);
+	});
+	
+	/* init/change menu item options */
 	$('#update-nav-menu').bind('click load', function(e) {
 		if ( e.target && e.target.className && -1 != e.target.className.indexOf('item-edit')) {
 			$("input[value='#off_canvas_control'][type=text]").parent().parent().parent().each( function(){

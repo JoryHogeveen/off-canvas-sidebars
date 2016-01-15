@@ -29,15 +29,15 @@ class OCS_Off_Canvas_Sidebars {
 	 * User ignore nag key
 	 *
 	 * @var    String
-	 * @since  1.1
+	 * @since  0.1
 	 */
-	protected $noticeKey = 'ocs_ignore_genesis_notice';
+	protected $noticeKey = 'ocs_ignore_theme_compatibility_notice';
 	
 	/**
 	 * Current user object
 	 *
 	 * @var    Object
-	 * @since  1.1
+	 * @since  0.1
 	 */	
 	protected $curUser = false;
 
@@ -88,18 +88,30 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since   0.1
 	 */
 	function __construct() {
-		// Lets start!
-		add_action( 'init', array( $this, 'init' ) );
+		if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', $this->version );
+		if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
+		if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
+		if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+		if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		
-		// Load translations
-		$this->load_textdomain();
-		
-		include_once 'widgets/off-canvas-sidebars-widget.php';
-		add_action( 'widgets_init', function() {
-			register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
-		} );
-		include_once 'includes/off-canvas-sidebars-menu-meta-box.class.php';
-		new OCS_Off_Canvas_Sidebars_Menu_Meta_box();
+		$this->enable = true;
+		if ($this->enable == true) {
+			// Lets start!
+			add_action( 'init', array( $this, 'init' ) );
+			
+			// Load translations
+			$this->load_textdomain();
+			
+			include_once 'widgets/off-canvas-sidebars-widget.php';
+			add_action( 'widgets_init', function() {
+				register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
+			} );
+			include_once 'includes/off-canvas-sidebars-menu-meta-box.class.php';
+			new OCS_Off_Canvas_Sidebars_Menu_Meta_box();
+		} else {
+			add_action( 'admin_notices', array( $this, 'compatibility_notice' ) ); 
+			add_action( 'wp_ajax_'.$this->noticeKey, array( $this, 'ignore_compatibility_notice' ) );
+		}
 	}
 	
 	/**
@@ -108,41 +120,30 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return	void
 	 * @since   0.1
 	 */
-	function init() {
-		if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', $this->version );
-		if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
-		if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
-		if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-		if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-				
+	function init() {		
 		// Get the current user
-		$this->curUser = wp_get_current_user();
-		$this->enable = true;
+		//$this->curUser = wp_get_current_user();
 		
-		if ($this->enable == true) {
-			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
-			$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
-			$this->general_labels = $this->get_general_labels();
+		$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
+		$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
+		$this->general_labels = $this->get_general_labels();
+		
+		if ( get_template() == 'genesis' ) {
+			$this->register_sidebars_genesis();
+		} else {
+			$this->register_sidebars();
+		}
+		
+		if ( is_admin() ) {
+			include_once 'includes/off-canvas-sidebars-settings.class.php';
+			new OCS_Off_Canvas_Sidebars_Settings();
 			
-			if ( get_template() == 'genesis' ) {
-				$this->register_sidebars_genesis();
-			} else {
-				$this->register_sidebars();
-			}
-			
-			if (is_admin()) {
-				include_once 'includes/off-canvas-sidebars-settings.class.php';
-				new OCS_Off_Canvas_Sidebars_Settings();
-				
-				add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
-			} else {
+			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
+		} else {
+			if ( $this->is_sidebar_enabled() ) {
 				include_once 'includes/off-canvas-sidebars-frontend.class.php';
 				new OCS_Off_Canvas_Sidebars_Frontend();
 			}
-			
-		} else {
-			add_action( 'admin_notices', array( $this, 'genesis_notice' ) ); 
-			add_action( 'wp_ajax_'.$this->noticeKey, array( $this, 'ignore_genesis_notice' ) );
 		}
 	}
 	
@@ -153,15 +154,13 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return	void
 	 * @since   0.1
 	 */
-	function genesis_notice() {
-		if ( get_template() != 'genesis' ) {
-			if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) != $this->version ) {
-				$class = 'error notice is-dismissible';
-				$message = '<strong>Off-Canvas Sidebars:</strong> The <a href="http://my.studiopress.com/themes/genesis/" targer="_blank">Genesis framework</a> is recommended to ensure that Off-Canvas Sidebars will work properly';
-				$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'off-canvas-sidebars' ) . '</span></a>';
-				$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e){e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
-				echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
-			}
+	function compatibility_notice() {
+		if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) != $this->version ) {
+			$class = 'error notice is-dismissible';
+			$message = '<strong>Off-Canvas Sidebars:</strong> ' . $this->general_labels['compatibility_notice_theme'];
+			$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'off-canvas-sidebars' ) . '</span></a>';
+			$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e){e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
+			echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
 		}
 	}
 	
@@ -174,7 +173,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return	String
 	 * @since   0.1
 	 */
-	function ignore_genesis_notice() {
+	function ignore_compatibility_notice() {
 		update_user_meta( $this->curUser->ID, $this->noticeKey, $this->version );
 		wp_die();
 	}
@@ -277,6 +276,7 @@ class OCS_Off_Canvas_Sidebars {
 				),
 			),
 			'no_sidebars_available' => __( 'Please enable an off-canvas sidebar', 'off-canvas-sidebars' ), //themes.php?page=off-canvas-sidebars-settings
+			'compatibility_notice_theme' => sprintf( __('If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank">please let me know!</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/support/plugin/off-canvas-sidebars' ),
 		);
 	}
 	

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Off-Canvas Sidebars 0.1\n"
-"POT-Creation-Date: 2016-01-15 15:32+0100\n"
-"PO-Revision-Date: 2016-01-15 15:32+0100\n"
+"POT-Creation-Date: 2016-01-15 17:58+0100\n"
+"PO-Revision-Date: 2016-01-15 18:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: Keraweb <info@keraweb.nl>\n"
 "Language: nl_NL\n"
@@ -66,15 +66,15 @@ msgstr ""
 
 #: ../includes/off-canvas-sidebars-settings.class.php:73
 msgid "Disable over"
-msgstr "Uitschakelen boven"
+msgstr "Deactiveren boven"
 
 #: ../includes/off-canvas-sidebars-settings.class.php:77
 msgid ""
 "Disable off-canvas sidebars over specified screen width. Leave blank to "
 "disable."
 msgstr ""
-"Schakel off-canvas sidebars uit boven een scherm breedte. Laat leeg om uit "
-"te schakelen."
+"Deactiveer off-canvas sidebars boven een opgegeven scherm breedte. Laat leeg "
+"om uit te schakelen."
 
 #: ../includes/off-canvas-sidebars-settings.class.php:81
 msgid "Auto-hide control classes"
@@ -86,18 +86,18 @@ msgid ""
 "\"Disable over\"</strong>. Default: false."
 msgstr ""
 "Verberg off-canvas sidebar controllers boven een scherm breedte ingesteld "
-"bij <strong>\"Uitschakelen boven\"</strong>. Standaard: nee"
+"bij <strong>\"Deactiveren boven\"</strong>. Standaard: nee"
 
 #: ../includes/off-canvas-sidebars-settings.class.php:88
 msgid "Scroll lock"
-msgstr "Scrollen vastzetten"
+msgstr "Scrollen blokkeren"
 
 #: ../includes/off-canvas-sidebars-settings.class.php:92
 msgid ""
 "Prevent site content scrolling whilst a off-canvas sidebar is open. Default: "
 "false."
 msgstr ""
-"Stop het scrollen van de website wanneer een off-canvas sidebar open staat. "
+"Stop het scrollen in de website wanneer een off-canvas sidebar open staat. "
 "Standaard: nee."
 
 #: ../includes/off-canvas-sidebars-settings.class.php:99
@@ -145,31 +145,31 @@ msgstr ""
 "Je kunt controller buttons toevoegen via een widget, menu item of handmatig, "
 "<a href=\"%s\" target=\"_blank\">klik hier voor documentatie.</a>"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:331
+#: ../includes/off-canvas-sidebars-settings.class.php:332
 msgid "Import/Export Settings"
 msgstr "Instellingen importeren/exporteren"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:333
+#: ../includes/off-canvas-sidebars-settings.class.php:334
 msgid "Export Settings"
 msgstr "Instellingen exporteren"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:337
+#: ../includes/off-canvas-sidebars-settings.class.php:338
 msgid "Import Settings"
 msgstr "Instellingen importeren"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:345
+#: ../includes/off-canvas-sidebars-settings.class.php:346
 msgid "Import/Export"
 msgstr "Importeren/Exporteren"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:350
+#: ../includes/off-canvas-sidebars-settings.class.php:351
 msgid "Settings Imported"
 msgstr "Instellingen geïmporteerd"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:353
+#: ../includes/off-canvas-sidebars-settings.class.php:354
 msgid "Invalid Settings File"
 msgstr "Ongeldig instellingen bestand"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:356
+#: ../includes/off-canvas-sidebars-settings.class.php:357
 msgid "No Settings File Selected"
 msgstr "Geen instellingen bestand geselecteerd"
 
@@ -177,25 +177,36 @@ msgstr "Geen instellingen bestand geselecteerd"
 msgid "Dismiss this notice."
 msgstr "Verbergen"
 
-#: ../off-canvas-sidebars.php:271
+#: ../off-canvas-sidebars.php:270
 msgid "Left"
 msgstr "Links"
 
-#: ../off-canvas-sidebars.php:272
+#: ../off-canvas-sidebars.php:271
 msgid "Off Canvas Left"
 msgstr "Off Canvas Links"
 
-#: ../off-canvas-sidebars.php:275
+#: ../off-canvas-sidebars.php:274
 msgid "Right"
 msgstr "Rechts"
 
-#: ../off-canvas-sidebars.php:276
+#: ../off-canvas-sidebars.php:275
 msgid "Off Canvas Right"
 msgstr "Off Canvas Rechts"
 
-#: ../off-canvas-sidebars.php:279
+#: ../off-canvas-sidebars.php:278
 msgid "Please enable an off-canvas sidebar"
 msgstr "Schakel a.u.b. een off-canvas sidebar in"
+
+#: ../off-canvas-sidebars.php:279
+#, php-format
+msgid ""
+"If this plugin is not working as it should then your theme might not be "
+"compatible with this plugin, <a href=\"%s\" target=\"_blank\">please let me "
+"know!</a>"
+msgstr ""
+"Indien deze plugin niet werkt zoals verwacht is het mogelijk dat het "
+"gebruikte thema niet compatibel is met deze plugin, <a href=\"%s\" target="
+"\"_blank\">laat het mij weten!</a>"
 
 #: ../off-canvas-sidebars.php:324 ../off-canvas-sidebars.php:348
 msgid "This is a widget area that is used for off-canvas widgets."

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Off-Canvas Sidebars 0.1\n"
-"POT-Creation-Date: 2016-01-15 15:32+0100\n"
-"PO-Revision-Date: 2016-01-15 15:32+0100\n"
+"POT-Creation-Date: 2016-01-15 17:56+0100\n"
+"PO-Revision-Date: 2016-01-15 17:56+0100\n"
 "Last-Translator: \n"
 "Language-Team: Keraweb <info@keraweb.nl>\n"
 "Language: en_US\n"
@@ -146,31 +146,31 @@ msgstr ""
 "You can add the control buttons with a widget, menu item or with custom "
 "code, <a href=\"%s\" target=\"_blank\">click here for documentation.</a>"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:331
+#: ../includes/off-canvas-sidebars-settings.class.php:332
 msgid "Import/Export Settings"
 msgstr "Import/Export Settings"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:333
+#: ../includes/off-canvas-sidebars-settings.class.php:334
 msgid "Export Settings"
 msgstr "Export Settings"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:337
+#: ../includes/off-canvas-sidebars-settings.class.php:338
 msgid "Import Settings"
 msgstr "Import Settings"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:345
+#: ../includes/off-canvas-sidebars-settings.class.php:346
 msgid "Import/Export"
 msgstr "Import/Export"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:350
+#: ../includes/off-canvas-sidebars-settings.class.php:351
 msgid "Settings Imported"
 msgstr "Settings Imported"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:353
+#: ../includes/off-canvas-sidebars-settings.class.php:354
 msgid "Invalid Settings File"
 msgstr "Invalid Settings File"
 
-#: ../includes/off-canvas-sidebars-settings.class.php:356
+#: ../includes/off-canvas-sidebars-settings.class.php:357
 msgid "No Settings File Selected"
 msgstr "No Settings File Selected"
 
@@ -178,25 +178,36 @@ msgstr "No Settings File Selected"
 msgid "Dismiss this notice."
 msgstr "Dismiss this notice."
 
-#: ../off-canvas-sidebars.php:271
+#: ../off-canvas-sidebars.php:270
 msgid "Left"
 msgstr "Left"
 
-#: ../off-canvas-sidebars.php:272
+#: ../off-canvas-sidebars.php:271
 msgid "Off Canvas Left"
 msgstr "Off Canvas Left"
 
-#: ../off-canvas-sidebars.php:275
+#: ../off-canvas-sidebars.php:274
 msgid "Right"
 msgstr "Right"
 
-#: ../off-canvas-sidebars.php:276
+#: ../off-canvas-sidebars.php:275
 msgid "Off Canvas Right"
 msgstr "Off Canvas Right"
 
-#: ../off-canvas-sidebars.php:279
+#: ../off-canvas-sidebars.php:278
 msgid "Please enable an off-canvas sidebar"
 msgstr "Please enable an off-canvas sidebar"
+
+#: ../off-canvas-sidebars.php:279
+#, php-format
+msgid ""
+"If this plugin is not working as it should then your theme might not be "
+"compatible with this plugin, <a href=\"%s\" target=\"_blank\">please let me "
+"know!</a>"
+msgstr ""
+"If this plugin is not working as it should then your theme might not be "
+"compatible with this plugin, <a href=\"%s\" target=\"_blank\">please let me "
+"know!</a>"
 
 #: ../off-canvas-sidebars.php:324 ../off-canvas-sidebars.php:348
 msgid "This is a widget area that is used for off-canvas widgets."
