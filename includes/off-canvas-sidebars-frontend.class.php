@@ -17,10 +17,12 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	function __construct() {
 		$this->load_plugin_data();
 		
-		if ( get_template() == 'genesis' ) {
-			$this->genesis_actions();
-		} else {
-			$this->default_actions();
+		if ( $this->general_settings['enable_frontend'] == true ) { 
+			if ( get_template() == 'genesis' ) {
+				$this->genesis_actions();
+			} else {
+				$this->default_actions();
+			}
 		}
 				
 		// Dúh..
@@ -44,8 +46,12 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @return	void
 	 */
 	function default_actions() {
-		add_action( 'wp_footer', array( $this, 'after_site' ), 0.000000001 ); // enforce first addition
-		add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition
+		add_action( 'website_before', array( $this, 'before_site' ), 0.000000001 ); // enforce first addition
+		add_action( 'website_after', array( $this, 'after_site' ), 999999999 ); // enforce last addition
+		
+		/* EXPERIMENTAL */
+		//add_action( 'wp_footer', array( $this, 'after_site' ), 0.000000001 ); // enforce first addition
+		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition
 	}
 
 	/**
@@ -87,6 +93,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	}
 	
 	/**
+	 * EXPERIMENTAL
 	 * after_site action hook for scripts
 	 *
 	 * @since   0.1
@@ -97,7 +104,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site"></div>');
+		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site"></div>');		
 	}) (jQuery);
 </script>
 			<?php

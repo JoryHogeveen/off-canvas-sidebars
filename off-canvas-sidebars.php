@@ -94,7 +94,7 @@ class OCS_Off_Canvas_Sidebars {
 		if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 		if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		
-		$this->enable = true;
+		$this->enable = true; // Added for possible use in future
 		if ($this->enable == true) {
 			// Lets start!
 			add_action( 'init', array( $this, 'init' ) );
@@ -187,6 +187,7 @@ class OCS_Off_Canvas_Sidebars {
 	function get_settings() {
 		$args = $this->general_settings;
 		$defaults = array(
+			'enable_frontend' => '1',
 			'sidebars' => array(
 				'left' => array(
 					'enable' => 0,
