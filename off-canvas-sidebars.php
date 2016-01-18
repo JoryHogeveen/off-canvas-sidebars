@@ -102,13 +102,16 @@ class OCS_Off_Canvas_Sidebars {
 			// Load translations
 			$this->load_textdomain();
 			
+			// Register the widget
 			include_once 'widgets/off-canvas-sidebars-widget.php';
 			add_action( 'widgets_init', function() {
 				register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
 			} );
+			// Load menu-meta-box option
 			include_once 'includes/off-canvas-sidebars-menu-meta-box.class.php';
 			new OCS_Off_Canvas_Sidebars_Menu_Meta_box();
 		} else {
+			// Added for possible use in future
 			add_action( 'admin_notices', array( $this, 'compatibility_notice' ) ); 
 			add_action( 'wp_ajax_'.$this->noticeKey, array( $this, 'ignore_compatibility_notice' ) );
 		}
@@ -128,18 +131,18 @@ class OCS_Off_Canvas_Sidebars {
 		$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
 		$this->general_labels = $this->get_general_labels();
 		
-		if ( get_template() == 'genesis' ) {
-			$this->register_sidebars_genesis();
-		} else {
-			$this->register_sidebars();
-		}
+		// Register the enabled sidebars
+		$this->register_sidebars();
 		
 		if ( is_admin() ) {
+			// Load the admin
 			include_once 'includes/off-canvas-sidebars-settings.class.php';
 			new OCS_Off_Canvas_Sidebars_Settings();
 			
+			// Add settings link to plugins page
 			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
 		} else {
+			// If a sidebar is enabled, load the front-end
 			if ( $this->is_sidebar_enabled() ) {
 				include_once 'includes/off-canvas-sidebars-frontend.class.php';
 				new OCS_Off_Canvas_Sidebars_Frontend();
@@ -181,6 +184,8 @@ class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Merge database plugin settings with default settings
 	 *
+	 * TODO: Make adding more sidebars dynamic (Slidebars will need to support more sidebars aswell)
+	 *
 	 * @return	void
 	 * @since   0.1
 	 */
@@ -195,6 +200,8 @@ class OCS_Off_Canvas_Sidebars {
 					'width_input' => '',
 					'width_input_type' => '%',
 					'style' => 'push',
+					'background_color_type' => '',
+					'background_color' => '',
 				),
 				'right' => array(
 					'enable' => 0,
@@ -202,12 +209,16 @@ class OCS_Off_Canvas_Sidebars {
 					'width_input' => '',
 					'width_input_type' => '%',
 					'style' => 'push',
+					'background_color_type' => '',
+					'background_color' => '',
 				),
 			),
 			'site_close' => 1,
 			'disable_over' => '',
 			'hide_control_classes' => 0,
 			'scroll_lock' => 0,
+			'background_color_type' => '',
+			'background_color' => '',
 		);
 		// Add values that are missing
 		$args = array_merge( $defaults, $args );
@@ -248,7 +259,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return	String
 	 * @since   0.1
 	 */
-	function get_plugin_key() {return $this->plugin_key;}
+	function get_plugin_key() { return $this->plugin_key; }
 	
 	/**
 	 * Returns the general key (plugin settings)
@@ -256,7 +267,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return	String
 	 * @since   0.1
 	 */
-	function get_general_key() {return $this->general_key;}
+	function get_general_key() { return $this->general_key; }
 	
 	/**
 	 * Returns the general labels
@@ -310,30 +321,8 @@ class OCS_Off_Canvas_Sidebars {
 	}
 	
 	/**
-	 * Register slidebar sidebars for Genesis Framework
-	 *
-	 * @return	void
-	 * @since   0.1
-	 */
-	function register_sidebars_genesis() {
-		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
-			if ( $sidebar_data['enable'] == 1 ) {
-				genesis_register_sidebar( array(
-					'id'            => 'off-canvas-'.$sidebar,
-					'class'			=> 'off-canvas-sidebar',
-					'name'          => $this->general_labels['sidebars'][$sidebar]['sidebar_name'],
-					'description'   => __( 'This is a widget area that is used for off-canvas widgets.', 'off-canvas-sidebars' ),
-					//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
-					//'after_widget' 	=> '</div></div></section>',
-					//'before_title' 	=> '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
-					//'after_title' 	=> '</h3></div>',
-				) );
-			}
-		}
-	}
-
-	/**
 	 * Register slidebar sidebars
+	 * Also checks if theme is based on the Genesis Framework.
 	 *
 	 * @return	void
 	 * @since   0.1
@@ -341,9 +330,8 @@ class OCS_Off_Canvas_Sidebars {
 	function register_sidebars() {
 		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
 			if ( $sidebar_data['enable'] == 1 ) {
-				
-				register_sidebar( array(
-					'id'            => 'off-canvas-'.$sidebar,
+				$args = array(
+					'id'            => 'off-canvas-' . $sidebar,
 					'class'			=> 'off-canvas-sidebar',
 					'name'          => $this->general_labels['sidebars'][$sidebar]['sidebar_name'],
 					'description'   => __( 'This is a widget area that is used for off-canvas widgets.', 'off-canvas-sidebars' ),
@@ -351,7 +339,12 @@ class OCS_Off_Canvas_Sidebars {
 					//'after_widget' 	=> '</div></div></section>',
 					//'before_title' 	=> '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
 					//'after_title' 	=> '</h3></div>',
-				) );
+				);
+				if ( get_template() == 'genesis' ) {
+					genesis_register_sidebar( $args );
+				} else {
+					register_sidebar( $args );
+				}
 			}
 		}
 	}

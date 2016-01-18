@@ -23,6 +23,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_init', array( $this, 'register_importexport_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_admin_menus' ), 15 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles_scripts' ) );
 	}
 
 	/**
@@ -34,6 +35,15 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 		$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
+	}
+	
+	function enqueue_styles_scripts( $hook ) {
+		if ( $hook != 'appearance_page_off-canvas-sidebars-settings' ) {
+			return;
+		}
+        // Add the color picker css and script file
+        wp_enqueue_style( 'wp-color-picker' ); 
+		wp_enqueue_script( 'wp-color-picker' );
 	}
 
 	function register_settings() {
@@ -103,6 +113,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'section_general', 
 			array( 'name' => 'scroll_lock', 'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open. Default: false.', 'off-canvas-sidebars' ) ) 
 		);
+		add_settings_field( 
+			'background_color', 
+			esc_attr__( 'Background color', 'off-canvas-sidebars' ), 
+			array( $this, 'color_option' ), 
+			$this->general_key, 
+			'section_general', 
+			array( 'name' => 'background_color', 'description' => __( 'Choose a background color for the site container. Default: <code>#ffffff</code>.', 'off-canvas-sidebars' ) ) 
+		);
 	}
 	
 	function register_sidebar_settings( $sidebar ) {
@@ -122,6 +140,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'section_sidebar_' . $sidebar, 
 			array( 'sidebar' => $sidebar ) 
 		);
+		add_settings_field( 
+			'background_color', 
+			esc_attr__( 'Background color', 'off-canvas-sidebars' ), 
+			array( $this, 'color_option' ), 
+			$this->general_key, 
+			'section_sidebar_' . $sidebar, 
+			array( 'sidebar' => $sidebar, 'name' => 'background_color', 'description' => __( 'Choose a background color for this sidebar. Default: <code>#222222</code>.', 'off-canvas-sidebars' ) ) 
+		);
 	}
 	
 	function enabled_sidebars_option() {
@@ -137,10 +163,11 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 	
 	function sidebar_width( $args ) {
+		$prefixes = $this->get_option_prefixes( $args );
+		$prefixName = $prefixes['prefixName'];
+		$prefixValue = $prefixes['prefixValue'];
+		$prefixId = $prefixes['prefixId'];
 		if ( isset( $args['sidebar'] ) ) {
-			$prefixName = esc_attr( $this->general_key ).'[sidebars]['.$args['sidebar'].']';
-			$prefixValue = $this->general_settings['sidebars'][$args['sidebar']];
-			$prefixId = $this->general_key.'_sidebars_'.$args['sidebar'];
 		?><fieldset>
             <label><input type="radio" name="<?php echo $prefixName.'[width]'; ?>" id="<?php echo $prefixId.'_width_default'; ?>" value="default" <?php checked( $prefixValue['width'], 'default' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label><br />
             <label><input type="radio" name="<?php echo $prefixName.'[width]'; ?>" id="<?php echo $prefixId.'_width_thin'; ?>" value="thin" <?php checked( $prefixValue['width'], 'thin' ); ?> /> <?php _e( 'Thin', 'off-canvas-sidebars' ); ?></label><br />
@@ -158,10 +185,11 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 	
 	function sidebar_style( $args ) {
+		$prefixes = $this->get_option_prefixes( $args );
+		$prefixName = $prefixes['prefixName'];
+		$prefixValue = $prefixes['prefixValue'];
+		$prefixId = $prefixes['prefixId'];
 		if ( isset( $args['sidebar'] ) ) {
-			$prefixName = esc_attr( $this->general_key ).'[sidebars]['.$args['sidebar'].']';
-			$prefixValue = $this->general_settings['sidebars'][$args['sidebar']];
-			$prefixId = $this->general_key.'_sidebars_'.$args['sidebar'];
 		?><fieldset>
 			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" id="<?php echo $prefixId.'_style_push'; ?>" value="push" <?php checked( $prefixValue['style'], 'push' ); ?> /> <?php _e( 'Sidebar pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label><br />
 			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" id="<?php echo $prefixId.'_style_overlay'; ?>" value="overlay" <?php checked( $prefixValue['style'], 'overlay' ); ?> /> <?php _e( 'Sidebar overlays the site when opened.', 'off-canvas-sidebars' ); ?></label>
@@ -170,10 +198,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function checkbox_option( $args ) {
+		$prefixes = $this->get_option_prefixes( $args );
+		$prefixName = $prefixes['prefixName'];
+		$prefixValue = $prefixes['prefixValue'];
+		$prefixId = $prefixes['prefixId'];
 		if ( isset( $args['name'] ) ) {
 		?><fieldset>
 			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
-            <input type="checkbox" name="<?php echo esc_attr( $this->general_key ).'['.$args['name'].']'; ?>" id="<?php echo $this->general_key.'_'.$args['name']; ?>" value="1" <?php checked( $this->general_settings[$args['name']], 1 ); ?> /> 
+            <input type="checkbox" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" value="1" <?php checked( $prefixValue[$args['name']], 1 ); ?> /> 
 			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
@@ -183,9 +215,13 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function number_option( $args ) {
+		$prefixes = $this->get_option_prefixes( $args );
+		$prefixName = $prefixes['prefixName'];
+		$prefixValue = $prefixes['prefixValue'];
+		$prefixId = $prefixes['prefixId'];
 		if ( isset( $args['name'] ) ) {
 		?><fieldset>
-            <input type="number" name="<?php echo esc_attr( $this->general_key ).'['.$args['name'].']'; ?>" value="<?php echo $this->general_settings[$args['name']] ?>" min="1" max="" step="1" /> px&nbsp;&nbsp;
+            <input type="number" id="<?php echo $prefixId.'_'.$args['name']; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" min="1" max="" step="1" /> px&nbsp;&nbsp;
             <?php if ( isset( $args['description'] ) ) { ?>
             <p class="description"><?php echo $args['description'] ?></p>
             <?php } ?>
@@ -193,6 +229,55 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		}
 	}
 
+	function color_option( $args ) {
+		$prefixes = $this->get_option_prefixes( $args );
+		$prefixName = $prefixes['prefixName'];
+		$prefixValue = $prefixes['prefixValue'];
+		$prefixId = $prefixes['prefixId'];
+		if ( isset( $args['name'] ) ) {
+		?><fieldset>
+			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $prefixId.'_background_color_type'; ?>" id="<?php echo $prefixId.'_background_color_type_theme'; ?>" value="" <?php checked( $prefixValue[$args['name'].'_type'], '' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label> <span class="description">(<?php _e( 'Overwritable with CSS', 'off-canvas-sidebars' ); ?>)</span><br />
+			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $prefixId.'_background_color_type'; ?>" id="<?php echo $prefixId.'_background_color_type_transparent'; ?>" value="transparent" <?php checked( $prefixValue[$args['name'].'_type'], 'transparent' ); ?> /> <?php _e( 'Transparent', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $prefixId.'_background_color_type'; ?>" id="<?php echo $prefixId.'_background_color_type_color'; ?>" value="color" <?php checked( $prefixValue[$args['name'].'_type'], 'color' ); ?> /> <?php _e( 'Color', 'off-canvas-sidebars' ); ?></label><br />
+            <div class="<?php echo $prefixId.'_'.$args['name'].'_wrapper'; ?>">
+            <input type="text" class="color-picker" id="<?php echo $prefixId.'_'.$args['name']; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" />
+            </div>
+            <?php if ( isset( $args['description'] ) ) { ?>
+            <p class="description"><?php echo $args['description'] ?></p>
+            <?php } ?>
+		</fieldset><?php
+		}
+	}
+	
+	/**
+	 * Returns attribute prefixes for general settings and sidebar settings
+	 *
+	 * @since 0.1
+	 *
+	 * @param array $args Arguments from the settings field
+	 * @return array $prefixes Prefixes for name, value and id attributes
+	 */
+	function get_option_prefixes( $args ) {
+		if ( isset( $args['sidebar'] ) ) {
+			$prefixName = esc_attr( $this->general_key ).'[sidebars]['.$args['sidebar'].']';
+			$prefixValue = $this->general_settings['sidebars'][$args['sidebar']];
+			$prefixId = $this->general_key.'_sidebars_'.$args['sidebar'];
+		} else {
+			$prefixName = esc_attr( $this->general_key );
+			$prefixValue = $this->general_settings;
+			$prefixId = $this->general_key;
+		}
+		return array( 'prefixName' => $prefixName, 'prefixValue' => $prefixValue, 'prefixId' => $prefixId );
+	}
+	
+	/**
+	 * Validates post values
+	 *
+	 * @since 0.1
+	 *
+	 * @param array $input
+	 * @return array $output
+	 */
 	function validate_input( $input ) {
 		$output = array();
 		// First set default values
@@ -228,6 +313,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		return $output;
 	}
 
+	/**
+	 * Create admin menu page
+	 * @since 0.1
+	 */
 	function add_admin_menus() {
 		add_submenu_page( 'themes.php', esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), 'edit_theme_options', 'off-canvas-sidebars-settings', array( $this, 'plugin_options_page' ) );
 	}
@@ -237,6 +326,8 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 * for active tab and replaces key with the related
 	 * settings key. Uses the plugin_options_tabs method
 	 * to render the tabs.
+	 *
+	 * @since 0.1
 	 */
 	function plugin_options_page() {
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_key;
@@ -260,10 +351,12 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		</form>
 		<script type="text/javascript">
 		<!--
-			(function($) {				
+			jQuery(document).ready(function($){
 				<?php foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) { ?>
 				gocs_show_hide_options('off_canvas_sidebars_options_sidebars_enable_<?php echo $sidebar; ?>', 'section_sidebar_<?php echo $sidebar; ?>');
+				gocs_show_hide_options('off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_type_color', 'off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_wrapper');
 				<?php } ?>
+				gocs_show_hide_options('off_canvas_sidebars_options_background_color_type_color', 'off_canvas_sidebars_options_background_color_wrapper');
 				
 				function gocs_show_hide_options(trigger, target) {
 					if (!$('#'+trigger).is(':checked')) {
@@ -277,7 +370,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 						}
 					});
 				}
-			})( jQuery );
+				
+				$('input.color-picker').wpColorPicker();
+			});
 		-->
 		</script>
 	</div>
@@ -324,6 +419,8 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 * walks through the object's tabs array and prints
 	 * them one by one. Provides the heading for the
 	 * plugin_options_page method.
+	 *
+	 * @since 0.1
 	 */
 	function plugin_options_tabs() {
 		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_key;

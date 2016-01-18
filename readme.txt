@@ -10,16 +10,18 @@ Add off-canvas sidebars using the Slidebars jQuery plugin.
 
 == Description ==
 
+This plugin will add various options to implement off-canvas sidebars in your WordPress theme using the Slidebars jQuery plugin.
+
 = Overview / Features =
 
 *	Add off-canvas sidebars to the left and right of your website
-*	You can add the control buttons with a widget, a menu item or with custom code, [click here for documentation](http://plugins.adchsm.me/slidebars/usage.php "click here for documentation").
+*	You can add the control buttons with a widget, a menu item or with custom code, [click here for documentation](http://plugins.adchsm.me/slidebars/usage.php "click here for documentation")
 *	Various customisation options under the Appearances menu
 
 = Compatibility =
 
+*Themes based on the Genesis Framework are supported by default. Please read the installation instructions for other themes!*
 This plugin should work with most themes and plugins allthough I can't be sure for all use-cases. At this point it's still a 0.x version...
-Themes based on the Genesis Framework are supported by default. Please read the installation instructions for other themes!
 
 = It's not working! / I found a bug! =
 
@@ -40,7 +42,10 @@ Or search for "Off-Canvas Sidebars" via your plugins menu.
 
 = Theme setup =
 
-**Themes based on the Genesis Framework are supported by default! No theme changes needed.**
+**Themes based on the Genesis Framework are supported by default! No changes needed.**
+*Please note that it is possible that there are some heavily customised Genesis themes that can not be supported due to their structure.*
+
+First of all, I strongly advice to create a child theme if you didn't allready! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information"
 
 Add this code directly after the <body>. This is probably located in the header.php or index.php theme file.
 `<?php do_action('website_before'); ?>`

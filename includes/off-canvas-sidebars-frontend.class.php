@@ -29,6 +29,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		//add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
+		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 	}
 	
 	/**
@@ -93,7 +94,8 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	}
 	
 	/**
-	 * EXPERIMENTAL
+	 * EXPERIMENTAL: Not used in this version
+	 * 
 	 * after_site action hook for scripts
 	 *
 	 * @since   0.1
@@ -119,13 +121,13 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 */
 	function add_slidebar($sidebar) {
 		$prefix = $this->general_settings['sidebars'][$sidebar];
-		$classes = 'sb-slidebar sb-'.$sidebar;
+		$classes = 'sb-slidebar sb-' . $sidebar;
 		$attributes = '';		
-		echo '<div class="'.$classes.$this->get_sidebar_attributes( $prefix, 'class').'" '.$attributes.$this->get_sidebar_attributes( $prefix, 'other').'>';
+		echo '<div class="' . $classes.$this->get_sidebar_attributes( $prefix, 'class') . '" ' . $attributes.$this->get_sidebar_attributes( $prefix, 'other') . '>';
 		if ( get_template() == 'genesis' ) {
-			genesis_widget_area('off-canvas-'.$sidebar);//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+			genesis_widget_area( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 		} else {
-			dynamic_sidebar('off-canvas-'.$sidebar);//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+			dynamic_sidebar( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 		}
 		echo '</div>';
 	}
@@ -197,6 +199,44 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		}
 	}) (jQuery);
 </script>
+			<?php
+		}
+	}
+
+	/**
+	 * Add inline styles
+	 *
+	 * @since   0.1
+	 * @return	void
+	 */
+	function add_inline_styles() {
+		if ( ! is_admin() ) {
+			?>
+<style type="text/css">
+<?php 
+if ( $this->general_settings['background_color_type'] != '' ) {
+	$bgcolor = '';
+	if ( $this->general_settings['background_color_type'] == 'transparent' ) {
+		$bgcolor = 'transparent';
+	} else if ( $this->general_settings['background_color_type'] == 'color' && $this->general_settings['background_color'] != '' ) {
+		$bgcolor = $this->general_settings['background_color'];
+	}
+?>
+	#sb-site {background-color: <?php echo $bgcolor; ?>;}
+<?php } ?>
+<?php 
+foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
+	if ($sidebar_data['enable'] == 1 && $sidebar_data['background_color_type'] != '') {
+		$bgcolor = '';
+		if ( $sidebar_data['background_color_type'] == 'transparent' ) {
+			$bgcolor = 'transparent';
+		} else if ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
+			$bgcolor = $sidebar_data['background_color'];
+		}
+?>
+	.sb-slidebar.sb-<?php echo $sidebar; ?> {background-color: <?php echo $bgcolor; ?>;}
+<?php }} ?>
+</style>
 			<?php
 		}
 	}
