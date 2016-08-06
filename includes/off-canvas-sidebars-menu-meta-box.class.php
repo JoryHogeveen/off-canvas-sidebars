@@ -57,11 +57,11 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 				?>
                     <li>
                         <label class="menu-item-title">
-                            <input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php echo $this->general_labels['sidebars'][ $sidebar ]['label']; ?>
+                            <input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php echo $sidebar_data['label']; ?>
                         </label>
                         <input type="hidden" class="menu-item-type" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-type]" value="custom">
                         <input type="hidden" class="menu-item-url" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" value="#off_canvas_control">
-                        <input type="hidden" class="menu-item-title" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php echo $this->general_labels['sidebars'][ $sidebar ]['label']; ?>">
+                        <input type="hidden" class="menu-item-title" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php echo $sidebar_data['label']; ?>">
                         <input type="hidden" class="menu-item-classes" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-classes]" value="">
                     </li>
                 <?php } } ?>
