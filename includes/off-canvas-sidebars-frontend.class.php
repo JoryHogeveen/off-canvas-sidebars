@@ -4,8 +4,8 @@
  *
  * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
- * @version 0.1.2
+ * @package off-canvas-sidebars
+ * @version 0.2.0
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -42,7 +42,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Add default actions
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
 	function default_actions() {
 		$before_hook = str_replace( array(' '), '', $this->general_settings['website_before_hook'] );
@@ -67,17 +67,18 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * before_site action hook
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @since   0.2  Add canvas attribute (Slidebars 2.0)
+	 * @return  void
 	 */
 	function before_site() {
-		echo '<div id="sb-site">';
+		echo '<div id="sb-site" canvas="container">';
 	}
 	
 	/**
 	 * after_site action hook
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
 	function after_site() {
 		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
@@ -96,14 +97,14 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * after_site action hook for scripts
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
 	function after_site_script() {
 		if ( ! is_admin() ) {
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site"></div>');		
+		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site"></div>');       
 	}) (jQuery);
 </script>
 			<?php
@@ -114,13 +115,13 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Add the slidebar action hook
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
-	function add_slidebar($sidebar) {
-		$prefix = $this->general_settings['sidebars'][$sidebar];
-		$classes = 'sb-slidebar sb-' . $sidebar;
-		$attributes = '';		
-		echo '<div class="' . $classes.$this->get_sidebar_attributes( $prefix, 'class') . '" ' . $attributes.$this->get_sidebar_attributes( $prefix, 'other') . '>';
+	function add_slidebar( $sidebar ) {
+		$prefix = $this->general_settings['sidebars'][ $sidebar ];
+		$classes = 'sb-slidebar sb-' . esc_attr( $sidebar );
+		$attributes = '';
+		echo '<div class="' . $classes . $this->get_sidebar_attributes( $sidebar, $prefix, 'class') . '" ' . $attributes . $this->get_sidebar_attributes( $sidebar, $prefix, 'other') . '>';
 		if ( get_template() == 'genesis' ) {
 			genesis_widget_area( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 		} else {
@@ -133,29 +134,20 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Get sidebar attributes
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
-	function get_sidebar_attributes( $prefix, $attr ) {
+	function get_sidebar_attributes( $sidebar, $prefix, $attr ) {
 		$return = '';
 		switch( $attr ) {
 			case 'class':
-				switch ( $prefix['width'] ) {
-					case 'thin': $return .= ' sb-width-thin';
-					break;
-					case 'wide': $return .= ' sb-width-wide';
-					break;
-					case 'custom': $return .= ' sb-width-custom';
-					break;
-				}
-				switch ( $prefix['style'] ) {
-					case 'push': $return .= ' sb-style-push';
-					break;
-					case 'overlay': $return .= ' sb-style-overlay';
-					break;
-				}
+				$return .= ' sb-width-' . esc_attr( $prefix['width'] );
+				$return .= ' sb-style-' . esc_attr( $prefix['style'] );
 			break;
 			case 'other':
-				if ($prefix['width'] == 'custom') { $return .= ' data-sb-width="'.$prefix['width_input'].$prefix['width_input_type'].'"'; }
+				if ( $prefix['width'] == 'custom' ) { $return .= ' data-sb-width="' . $prefix['width_input'] . $prefix['width_input_type'] . '"'; }
+
+				// Slidebars 2.0
+				$return .= ' off-canvas="sb-' . esc_attr( $sidebar ) . ' ' . esc_attr( $prefix['location'] ) . ' ' . esc_attr( $prefix['width'] ) . ' ' . esc_attr( $prefix['style'] ) . '"';
 			break;
 		}
 		return $return;
@@ -165,25 +157,25 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Add nessesary scripts and styles
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
 	function add_styles_scripts() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '0.10.3' );
-		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '0.10.3' );
+		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '2.0.2' );
+		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2' );
 		
+		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), $this->version ); //'.$suffix.'
+
 		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $this->version );
 		}
-		//wp_enqueue_style( 'off_canvas_slidebars_style', plugin_dir_url( __FILE__ ) . 'style.css', array(), $this->version );
-		//wp_enqueue_script( 'off_canvas_slidebars_script', plugin_dir_url( __FILE__ ) . 'script.js', array( 'jquery' ), $this->version );
 	}
 	
 	/**
 	 * Add nessesary inline scripts
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
 	function add_inline_scripts() {
 		if ( ! is_admin() ) {
@@ -191,7 +183,8 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 <script type="text/javascript">
 	(function($) {
 		if ($('#sb-site').length > 0 && (typeof $.slidebars == 'function')) {
-			$.slidebars({
+			var slidebars_controller = new slidebars();
+			slidebars_controller.init({
 				siteClose: <?php echo ($this->general_settings['site_close'])?'true':'false'; ?>,
 				hideControlClasses: <?php echo ($this->general_settings['hide_control_classes'])?'true':'false'; ?>,
 				scrollLock: <?php echo ($this->general_settings['scroll_lock'])?'true':'false'; ?>,
@@ -208,7 +201,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Add inline styles
 	 *
 	 * @since   0.1
-	 * @return	void
+	 * @return  void
 	 */
 	function add_inline_styles() {
 		if ( ! is_admin() ) {

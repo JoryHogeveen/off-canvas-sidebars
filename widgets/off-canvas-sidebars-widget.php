@@ -5,7 +5,7 @@
  * Control Widget
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.1.2
+ * @version 0.2.0
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -109,7 +109,7 @@ class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 						$hidden = 'style="display: none;"';
 					}
 			?>
-            <span <?php echo $hidden; ?>><input type="checkbox" id="<?php echo $this->get_field_id( $this->widget_setting ).'_'.$sidebar; ?>" class="off-canvas-control-left" name="<?php echo $this->get_field_name( $this->widget_setting ).'['.$sidebar.'][enable]'; ?>" value="1" <?php checked( $instance[$this->widget_setting][$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_labels['sidebars'][$sidebar]['label']; ?>&nbsp;</span>
+            <span <?php echo $hidden; ?>><input type="checkbox" id="<?php echo $this->get_field_id( $this->widget_setting ).'_'.$sidebar; ?>" class="off-canvas-control-left" name="<?php echo $this->get_field_name( $this->widget_setting ).'['.$sidebar.'][enable]'; ?>" value="1" <?php checked( $instance[$this->widget_setting][$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][$sidebar]['label']; ?>&nbsp;</span>
             <?php } ?>
             
 		</p>

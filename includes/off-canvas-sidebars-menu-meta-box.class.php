@@ -4,8 +4,8 @@
  *
  * Menu Meta Box
  * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
- * @version 0.1.2
+ * @package off-canvas-sidebars
+ * @version 0.2.0
  *
  * Credits to the Polylang plugin
  */
@@ -52,16 +52,16 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		<div class="off-canvas-control-meta-box posttypediv" id="off-canvas-control-meta-box">
             <div id="tabs-panel-off-canvas-control" class="tabs-panel tabs-panel-active">
                 <ul id="off-canvas-control" class="categorychecklist form-no-clear">
-                <?php foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) { 
+                <?php foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) { 
 						if ($sidebar_data['enable'] == 1) {
 				?>
                     <li>
                         <label class="menu-item-title">
-                            <input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php echo $this->general_labels['sidebars'][$sidebar]['label']; ?>
+                            <input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php echo $this->general_labels['sidebars'][ $sidebar ]['label']; ?>
                         </label>
                         <input type="hidden" class="menu-item-type" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-type]" value="custom">
                         <input type="hidden" class="menu-item-url" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" value="#off_canvas_control">
-                        <input type="hidden" class="menu-item-title" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php echo $this->general_labels['sidebars'][$sidebar]['label']; ?>">
+                        <input type="hidden" class="menu-item-title" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php echo $this->general_labels['sidebars'][ $sidebar ]['label']; ?>">
                         <input type="hidden" class="menu-item-classes" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-classes]" value="">
                     </li>
                 <?php } } ?>
@@ -74,7 +74,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 				?>
                 </ul>
             </div>
-            <?php if ($off_canvas_sidebars->is_sidebar_enabled()) { ?>
+            <?php if ( $off_canvas_sidebars->is_sidebar_enabled() ) { ?>
             <p class="button-controls">
                 <span class="list-controls">
                     <a href="/wordpress/wp-admin/nav-menus.php?page-tab=all&amp;selectall=1#off-canvas-control-meta-box" class="select-all"><?php echo __('Select All'); ?></a>
@@ -96,7 +96,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	 */
 	public function admin_enqueue_scripts() {
 		$screen = get_current_screen();
-		if ('nav-menus' != $screen->base)
+		if ( 'nav-menus' != $screen->base )
 			return;
 
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
@@ -111,7 +111,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		$data['controls'] = array();
 		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
 			if ( $sidebar_data['enable'] == 1 ) {
-				$data['controls'][$sidebar] = $this->general_labels['sidebars'][$sidebar]['label'];
+				$data['controls'][$sidebar] = $sidebar_data['label'];
 			}
 		}
 
@@ -153,7 +153,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 			
 			$available_controls = array();
 			foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
-				$available_controls[$sidebar] = $this->general_labels['sidebars'][$sidebar]['label'];
+				$available_controls[$sidebar] = $sidebar_data['label'];
 			}
 			// Autoselect control when adding a new item
 			$default_control = '';

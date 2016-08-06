@@ -3,7 +3,7 @@
  * Plugin Name: Off-Canvas Sidebars
  * Description: Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:  https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:     0.1.2
+ * Version:     0.2.0
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: off-canvas-sidebars
@@ -12,6 +12,12 @@
  */
  
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+
+define( 'OCS_OFF_CANVAS_SIDEBARS_VERSION', '0.2.0' );
+define( 'OCS_OFF_CANVAS_SIDEBARS_FILE', __FILE__ );
+define( 'OCS_OFF_CANVAS_SIDEBARS_BASENAME', plugin_basename( OCS_OFF_CANVAS_SIDEBARS_FILE ) );
+define( 'OCS_OFF_CANVAS_SIDEBARS_DIR', plugin_dir_path( OCS_OFF_CANVAS_SIDEBARS_FILE ) );
+define( 'OCS_OFF_CANVAS_SIDEBARS_URL', plugin_dir_url( OCS_OFF_CANVAS_SIDEBARS_FILE ) );
 
 class OCS_Off_Canvas_Sidebars {
 
@@ -29,7 +35,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @var    String
 	 * @since  0.1
 	 */
-	protected $version = '0.1.2';
+	protected $version = OCS_OFF_CANVAS_SIDEBARS_VERSION;
 
 	/**
 	 * User ignore nag key
@@ -228,53 +234,37 @@ class OCS_Off_Canvas_Sidebars {
 			'website_before_hook' => 'website_before',
 			'website_after_hook' => 'website_after',
 			'compatibility_position_fixed' => 0,
-			'sidebars' => array(
-				'left' => array(
-					'enable' => 0,
-					'width' => 'default',
-					'width_input' => '',
-					'width_input_type' => '%',
-					'style' => 'push',
-					'background_color_type' => '',
-					'background_color' => '',
-				),
-				'right' => array(
-					'enable' => 0,
-					'width' => 'default',
-					'width_input' => '',
-					'width_input_type' => '%',
-					'style' => 'push',
-					'background_color_type' => '',
-					'background_color' => '',
-				),
-			),
+			'sidebars' => array(),
+		);
+		$sidebar_defaults = array(
+			'enable' => 0,
+			'label' => '',
+			'location' => '',
+			'width' => 'default',
+			'width_input' => '',
+			'width_input_type' => '%',
+			'style' => 'push',
+			'background_color_type' => '',
+			'background_color' => '',
 		);
 		// Add values that are missing
 		$args = array_merge( $defaults, $args ); // supports one lever array
-		foreach ( $defaults['sidebars'] as $key => $value ) {
-			if ( ! isset( $args['sidebars'][$key] ) ) {
-				$args['sidebars'][$key] = $defaults['sidebars'][$key];
-			}
-			foreach ($defaults['sidebars'][$key] as $key2 => $value2) {
-				if ( ! isset( $args['sidebars'][$key][$key2] ) ) {
-					$args['sidebars'][$key][$key2] = $defaults['sidebars'][$key][$key2];
+		foreach ( $args['sidebars'] as $sidebar_id => $sidebar_data ) {
+			foreach ( $sidebar_defaults as $key => $value ) {
+				if ( ! isset( $args['sidebars'][ $sidebar_id ][ $key ] ) ) {
+					$args['sidebars'][ $sidebar_id ][ $key ] = $sidebar_defaults[ $key ];
 				}
 			}
 		}
 		// Remove values that should not exist
 		foreach ( $args as $key => $value ) {
 			if ( ! isset( $defaults[$key] ) ) {
-				unset($args[$key]);
+				unset( $args[$key] );
 			}
-			foreach ( $args['sidebars'] as $key2 => $value2 ) {
-				if ( ! isset( $defaults['sidebars'][$key2] ) ) {
-					unset($args['sidebars'][$key2]);
-				}
-				if ( isset( $args['sidebars'][$key2] ) ) {
-					foreach ( $args['sidebars'][$key2] as $key3 => $value3 ) {
-						if ( isset( $defaults['sidebars'][$key2] ) && ! isset( $defaults['sidebars'][$key2][$key3] ) ) {
-							unset($args['sidebars'][$key2][$key3]);
-						}
+			foreach ( $sidebar_defaults as $sidebar_prop => $sidebar_prop_data ) {
+				foreach ( $args['sidebars'] as $sidebar_id => $sidebar_data ) {
+					if ( ! isset( $sidebars_defaults[ $sidebar_prop_data ] ) ) {
+						unset( $args['sidebars'][ $sidebar_id ][ $sidebar_prop_data ] );
 					}
 				}
 			}
@@ -314,16 +304,6 @@ class OCS_Off_Canvas_Sidebars {
 	 */
 	function get_general_labels() {
 		return array(
-			'sidebars' => array(
-				'left' => array(
-					'label' => __( 'Left', 'off-canvas-sidebars' ),
-					'sidebar_name' => __( 'Off Canvas Left', 'off-canvas-sidebars' ),
-				),
-				'right' => array(
-					'label' => __( 'Right', 'off-canvas-sidebars' ),
-					'sidebar_name' => __( 'Off Canvas Right', 'off-canvas-sidebars' ),
-				),
-			),
 			'no_sidebars_available' => __( 'Please enable an off-canvas sidebar', 'off-canvas-sidebars' ), //themes.php?page=off-canvas-sidebars-settings
 			'compatibility_notice_theme' => sprintf( __('If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank">please let me know!</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/support/plugin/off-canvas-sidebars' ),
 		);
@@ -370,7 +350,7 @@ class OCS_Off_Canvas_Sidebars {
 				$args = array(
 					'id'            => 'off-canvas-' . $sidebar,
 					'class'			=> 'off-canvas-sidebar',
-					'name'          => $this->general_labels['sidebars'][$sidebar]['sidebar_name'],
+					'name'          => __( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar ]['label'],
 					'description'   => __( 'This is a widget area that is used for off-canvas widgets.', 'off-canvas-sidebars' ),
 					//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
 					//'after_widget' 	=> '</div></div></section>',
