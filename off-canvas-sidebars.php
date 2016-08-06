@@ -317,7 +317,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since   0.1
 	 */
 	function get_sidebar_key_by_label($label) {
-		foreach ( $this->general_labels['sidebars'] as $key => $value ) {
+		foreach ( $this->general_settings['sidebars'] as $key => $value ) {
 			if ( $label == $value['label'] ) 
 				return $key;
 		}
