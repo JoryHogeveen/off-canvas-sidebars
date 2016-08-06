@@ -4,23 +4,26 @@
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
     exit();
 
-$option_name = array('off_canvas_sidebars_options');
 
-foreach ($option_name as $option) {
-	delete_option( $option );
-	// For site options in multisite
-	delete_site_option( $option );  
+if ( ! is_multisite() ) {
+	ocs_uninstall();
+} else {
+    $blogs = wp_get_sites(); // Sadly does not work for large networks -> return false
+	if ($blogs) {
+		foreach ( $blogs as $blog ) {
+			switch_to_blog( intval( $blog['blog_id'] ) );
+			ocs_uninstall();
+		}
+		restore_current_blog();
+	}
 }
 
-// Meta is removed when the menu item is removes so no need for this
-/*
-$post_meta = array('_off_canvas_control_menu_item');
-foreach ($post_meta as $meta) {
+function ocs_uninstall() {
+	
+	// Delete all options
+	$option_keys = array( 'off_canvas_sidebars_options' );
+	foreach ( $option_keys as $option_key ) {
+		delete_option( $option_key );
+	}
+		
 }
-*/
-
-//drop a custom db table
-//global $wpdb;
-//$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
-
-//note in multisite looping through blogs to delete options on each blog does not scale. You'll just have to leave them.

@@ -5,7 +5,7 @@
  * Control Widget
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.1
+ * @version 0.1.2
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -38,7 +38,7 @@ class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 	 * Get plugin defaults
 	 */
 	function load_plugin_data() {
-		global $off_canvas_sidebars;
+		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$this->general_settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		//$this->general_key = $off_canvas_sidebars->get_general_key();

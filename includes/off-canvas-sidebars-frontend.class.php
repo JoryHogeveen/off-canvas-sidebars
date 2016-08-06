@@ -5,7 +5,7 @@
  * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.1
+ * @version 0.1.2
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -13,16 +13,13 @@
 class OCS_Off_Canvas_Sidebars_Frontend {
 	
 	private $general_settings = array();
-
+	private $version = false;
+	
 	function __construct() {
 		$this->load_plugin_data();
 		
 		if ( $this->general_settings['enable_frontend'] == true ) { 
-			if ( get_template() == 'genesis' ) {
-				$this->genesis_actions();
-			} else {
-				$this->default_actions();
-			}
+			$this->default_actions();
 		}
 				
 		// Dúh..
@@ -36,8 +33,9 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Get plugin defaults
 	 */
 	function load_plugin_data() {
-		global $off_canvas_sidebars;
+		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$this->general_settings = $off_canvas_sidebars->get_settings();
+		$this->version = $off_canvas_sidebars->get_version();
 	}
 
 	/**
@@ -47,25 +45,24 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @return	void
 	 */
 	function default_actions() {
-		add_action( 'website_before', array( $this, 'before_site' ), 0.000000001 ); // enforce first addition
-		add_action( 'website_after', array( $this, 'after_site' ), 999999999 ); // enforce last addition
+		$before_hook = str_replace( array(' '), '', $this->general_settings['website_before_hook'] );
+		$after_hook = str_replace( array(' '), '', $this->general_settings['website_after_hook'] );
+		if ( get_template() == 'genesis' ) {
+			$before_hook = 'genesis_before';
+			$after_hook = 'genesis_after';
+		}
+		if ( empty( $before_hook ) || empty( $after_hook ) ) {
+			$before_hook = 'website_before';
+			$after_hook = 'website_after';
+		}
+		add_action( $before_hook, array( $this, 'before_site' ), 0.000000001 ); // enforce first addition
+		add_action( $after_hook, array( $this, 'after_site' ), 999999999 ); // enforce last addition
 		
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0.000000001 ); // enforce first addition
 		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition
 	}
 
-	/**
-	 * Add genesis actions
-	 *
-	 * @since   0.1
-	 * @return	void
-	 */
-	function genesis_actions() {
-		add_action( 'genesis_before', array( $this, 'before_site' ), 0.000000001 ); // enforce first addition
-		add_action( 'genesis_after', array( $this, 'after_site' ), 999999999 ); // enforce last addition
-	}
-	
 	/**
 	 * before_site action hook
 	 *
@@ -83,9 +80,9 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @return	void
 	 */
 	function after_site() {
-		if ( get_template() == 'genesis' ) {
-			echo '</div>';
-		} // close #sb-site
+		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
+			echo '</div>'; // close #sb-site
+		}
 		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
 			if ($sidebar_data['enable'] == 1) {
 				$this->add_slidebar($sidebar);
@@ -174,6 +171,10 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '0.10.3' );
 		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '0.10.3' );
+		
+		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $this->version );
+		}
 		//wp_enqueue_style( 'off_canvas_slidebars_style', plugin_dir_url( __FILE__ ) . 'style.css', array(), $this->version );
 		//wp_enqueue_script( 'off_canvas_slidebars_script', plugin_dir_url( __FILE__ ) . 'script.js', array( 'jquery' ), $this->version );
 	}

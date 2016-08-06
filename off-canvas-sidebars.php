@@ -3,7 +3,7 @@
  * Plugin Name: Off-Canvas Sidebars
  * Description: Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:  https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:     0.1
+ * Version:     0.1.2
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: off-canvas-sidebars
@@ -13,9 +13,15 @@
  
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-$off_canvas_sidebars = new OCS_Off_Canvas_Sidebars();
-
 class OCS_Off_Canvas_Sidebars {
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var Off-Canvas Sidebars
+	 * @since 0.1.2
+	 */
+	protected static $_instance = null;
 	
 	/**
 	 * Plugin version
@@ -23,7 +29,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @var    String
 	 * @since  0.1
 	 */
-	protected $version = '0.1';
+	protected $version = '0.1.2';
 
 	/**
 	 * User ignore nag key
@@ -88,6 +94,8 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since   0.1
 	 */
 	function __construct() {
+		self::$_instance = $this;
+		
 		if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', $this->version );
 		if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
 		if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
@@ -115,6 +123,23 @@ class OCS_Off_Canvas_Sidebars {
 			add_action( 'admin_notices', array( $this, 'compatibility_notice' ) ); 
 			add_action( 'wp_ajax_'.$this->noticeKey, array( $this, 'ignore_compatibility_notice' ) );
 		}
+	}
+
+	/**
+	 * Main Off-Canvas Sidebars Instance.
+	 *
+	 * Ensures only one instance of Off-Canvas Sidebars is loaded or can be loaded.
+	 *
+	 * @since 0.1.2
+	 * @static
+	 * @see Off_Canvas_Sidebars()
+	 * @return Off-Canvas Sidebars - Main instance.
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
 	}
 	
 	/**
@@ -151,7 +176,7 @@ class OCS_Off_Canvas_Sidebars {
 	}
 	
 	/**
-	 * Add notice when theme is not based on the Genesis Framework
+	 * Add notice when theme is not compatible
 	 * Checks for version in the notice ignore meta value. If the version is the same (user has clicked ignore), then hide it
 	 *
 	 * @return	void
@@ -193,6 +218,16 @@ class OCS_Off_Canvas_Sidebars {
 		$args = $this->general_settings;
 		$defaults = array(
 			'enable_frontend' => '1',
+			'frontend_type' => 'action',
+			'site_close' => 1,
+			'disable_over' => '',
+			'hide_control_classes' => 0,
+			'scroll_lock' => 0,
+			'background_color_type' => '',
+			'background_color' => '',
+			'website_before_hook' => 'website_before',
+			'website_after_hook' => 'website_after',
+			'compatibility_position_fixed' => 0,
 			'sidebars' => array(
 				'left' => array(
 					'enable' => 0,
@@ -213,16 +248,10 @@ class OCS_Off_Canvas_Sidebars {
 					'background_color' => '',
 				),
 			),
-			'site_close' => 1,
-			'disable_over' => '',
-			'hide_control_classes' => 0,
-			'scroll_lock' => 0,
-			'background_color_type' => '',
-			'background_color' => '',
 		);
 		// Add values that are missing
-		$args = array_merge( $defaults, $args );
-		/*foreach ( $defaults['sidebars'] as $key => $value ) {
+		$args = array_merge( $defaults, $args ); // supports one lever array
+		foreach ( $defaults['sidebars'] as $key => $value ) {
 			if ( ! isset( $args['sidebars'][$key] ) ) {
 				$args['sidebars'][$key] = $defaults['sidebars'][$key];
 			}
@@ -231,7 +260,7 @@ class OCS_Off_Canvas_Sidebars {
 					$args['sidebars'][$key][$key2] = $defaults['sidebars'][$key][$key2];
 				}
 			}
-		}*/
+		}
 		// Remove values that should not exist
 		foreach ( $args as $key => $value ) {
 			if ( ! isset( $defaults[$key] ) ) {
@@ -252,6 +281,14 @@ class OCS_Off_Canvas_Sidebars {
 		}
 		return $args;
 	}
+	
+	/**
+	 * Returns the plugin version
+	 *
+	 * @return	String
+	 * @since   0.1.2
+	 */
+	function get_version() { return $this->version; }
 	
 	/**
 	 * Returns the plugin key
@@ -380,3 +417,18 @@ class OCS_Off_Canvas_Sidebars {
 	}
 	
 } // end class
+
+/**
+ * Main instance of Off-Canvas Sidebars.
+ *
+ * Returns the main instance of OCS_Off_Canvas_Sidebars to prevent the need to use globals.
+ *
+ * @since  0.1.2
+ * @return OCS_Off_Canvas_Sidebars
+ */
+function Off_Canvas_Sidebars() {
+	return OCS_Off_Canvas_Sidebars::get_instance();
+}
+
+// Global for backwards compatibility.
+$GLOBALS['off_canvas_sidebars'] = Off_Canvas_Sidebars();
