@@ -24,7 +24,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		// Dúh..
 		//add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
-		add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
+		//add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 	}
 	
@@ -230,7 +230,7 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 	#sb-site {background-color: <?php echo $bgcolor; ?>;}
 <?php } ?>
 <?php 
-foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
+foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 	if ($sidebar_data['enable'] == 1 && $sidebar_data['background_color_type'] != '') {
 		$bgcolor = '';
 		if ( $sidebar_data['background_color_type'] == 'transparent' ) {
@@ -239,7 +239,7 @@ foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
 			$bgcolor = $sidebar_data['background_color'];
 		}
 ?>
-	.sb-slidebar.sb-<?php echo $sidebar; ?> {background-color: <?php echo $bgcolor; ?>;}
+	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {background-color: <?php echo $bgcolor; ?>;}
 <?php }} ?>
 </style>
 			<?php
