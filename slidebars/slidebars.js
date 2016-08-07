@@ -12,7 +12,11 @@
  * Modified by: Jory Hogeveen
  */
 
-var slidebars = function ($) {
+var slidebars;
+
+(function($) {
+	
+slidebars = function () {
 
 	/**
 	 * Setup
@@ -462,3 +466,5 @@ var slidebars = function ($) {
 
 	$( window ).on( 'resize', this.css.bind( this ) );
 };
+
+}(jQuery));
