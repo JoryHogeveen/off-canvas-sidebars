@@ -43,7 +43,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			return;
 		}
 
-		wp_enqueue_style( 'off-canvas-sidebars-admin', OCS_OFF_CANVAS_SIDEBARS_URL . '/css/off-canvas-sidebars-admin.css' );
+		wp_enqueue_style( 'off-canvas-sidebars-admin', OCS_PLUGIN_URL . '/css/off-canvas-sidebars-admin.css', array(), OCS_PLUGIN_VERSION );
 
         // Add the color picker css and script file
         wp_enqueue_style( 'wp-color-picker' );
@@ -56,12 +56,23 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
 		
 		register_setting( $this->general_key, $this->general_key, array( $this, 'validate_input' ) );
+		register_setting( $this->sidebars_tab, $this->general_key, array( $this, 'validate_input' ) );
 		
-		add_settings_section( 'section_general', esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' ), array( $this, 'register_general_settings' ), $this->general_key );
+		add_settings_section( 
+			'section_general', 
+			esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' ), 
+			array( $this, 'register_general_settings' ), 
+			$this->general_key 
+		);
 		
 		// Register sidebar settings
 		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
-			add_settings_section( 'section_sidebar_'.$sidebar, __( 'Off-Canvas Sidebar - '.$this->general_settings['sidebars'][ $sidebar ]['label'] . ' - <code>.sb-'.$sidebar.'</code>', 'off-canvas-sidebars' ), '', $this->sidebars_tab );
+			add_settings_section( 
+				'section_sidebar_'.$sidebar, 
+				__( 'Off-Canvas Sidebar - '.$this->general_settings['sidebars'][ $sidebar ]['label'] . ' - <code>.sb-'.$sidebar.'</code>', 'off-canvas-sidebars' ), 
+				array( $this, 'register_general_settings' ), 
+				$this->sidebars_tab 
+			);
 			$this->register_sidebar_settings( $sidebar );
 		}
 		
@@ -161,6 +172,15 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 	
 	function register_sidebar_settings( $sidebar_id ) {
+
+		add_settings_field( 
+			'sidebar_enable', 
+			esc_attr__( 'Enable', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'enable' ) 
+		);
 		add_settings_field( 
 			'sidebar_id', 
 			esc_attr__( 'ID', 'off-canvas-sidebars' ), 
@@ -411,48 +431,87 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 */
 	function validate_input( $input ) {
 		$output = array();
-		// First set default values
+		// First set current values
 		$output = $this->general_settings;
-		
-		// Make sure unchecked checkboxes are 0 on save
-		foreach ( $output['sidebars'] as $key => $value ) {
-			$output['sidebars'][$key]['enable'] = ( ! empty( $input['sidebars'][$key]['enable'] ) ) ? strip_tags( $input['sidebars'][$key]['enable'] ) : '0';
 
-			if ( empty( $input['sidebars'][$key]['label'] ) ) {
-				$input['sidebars'][$key]['label'] = $input['sidebars'][$key]['id'];
-			}
-
-			// Change sidebar ID
-			if ( ! empty( $input['sidebars'][ $key ]['id'] ) && $output['sidebars'][$key] != $input['sidebars'][ $key ]['id'] ) {
-				$output['sidebars'][ $input['sidebars'][ $key ]['id'] ] = $output['sidebars'][ $key ];
-				$input['sidebars'][ $input['sidebars'][ $key ]['id'] ]['id'] = $input['sidebars'][ $key ];
-
-				unset( $output['sidebars'][ $key ] );
-				unset( $input['sidebars'][ $key ] );
-			}
+		// Add new sidebar
+		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
+			$input['sidebars'][ $this->validate_id( $input['sidebars']['ocs_add_new'] ) ] = array(
+				'enable' => 1,
+				'label' => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
+			);
 		}
-		
-		$output['enable_frontend'] 					= $this->validate_checkbox( $input['enable_frontend'] );
-		$output['site_close'] 						= $this->validate_checkbox( $input['site_close'] ) ;
-		$output['hide_control_classes'] 			= $this->validate_checkbox( $input['hide_control_classes'] ) ;
-		$output['scroll_lock'] 						= $this->validate_checkbox( $input['scroll_lock'] ) ;
-		$output['compatibility_position_fixed'] 	= $this->validate_checkbox( $input['compatibility_position_fixed'] ) ;
-		
-		// Allow 3 level arrays
-		foreach ( $input as $key => $value ) {
-			if ( is_array( $value ) ) {
-				foreach ( $input[$key] as $key2 => $value2 ) {
-					if ( is_array( $value2 ) ) {
-						foreach ( $input[$key][$key2] as $key3 => $value3 ) {
-							$output[$key][$key2][$key3] = strip_tags( stripslashes( $input[$key][$key2][$key3] ) );
-						}
-					} else {
-						$output[$key][$key2] = strip_tags( stripslashes( $input[$key][$key2] ) );
+		unset( $input['sidebars']['ocs_add_new'] );
+
+		// Handle existing sidebars
+		if ( isset( $input['sidebars'] ) ) {
+			foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
+
+				if ( ! isset( $input['sidebars'][ $sidebar_id ] ) ) {
+					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
+				}
+
+				// Global settings page
+				if ( count( $input['sidebars'][ $sidebar_id ] ) < 2 ) {
+					$output['sidebars'][ $sidebar_id ]['enable'] = $input['sidebars'][ $sidebar_id ]['enable'];
+					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
+				}
+
+				// Default label is sidebar ID
+				if ( empty( $input['sidebars'][ $sidebar_id ]['label'] ) ) {
+					$input['sidebars'][ $sidebar_id ]['label'] = $sidebar_id;
+				}
+
+				// Change sidebar ID
+				if ( ! empty( $input['sidebars'][ $sidebar_id ]['id'] ) && $sidebar_id != $input['sidebars'][ $sidebar_id ]['id'] ) {
+
+					$new_id = $this->validate_id( $input['sidebars'][ $sidebar_id ]['id'] );
+
+					if ( $sidebar_id != $new_id ) {
+						$input['sidebars'][ $new_id ] = $input['sidebars'][ $sidebar_id ];
+						$input['sidebars'][ $new_id ]['id'] = $new_id;
+
+						unset( $input['sidebars'][ $sidebar_id ] );
 					}
 				}
-			} else {
-				$output[$key] = strip_tags( stripslashes( $input[$key] ) );
 			}
+		}
+
+		// Overwrite non existing values with current values
+		foreach ( $output as $key => $value ) {
+			if ( ! isset( $input[ $key ] ) ) {
+				$input[ $key ] = $value;
+			}
+		}
+
+		$input['enable_frontend'] 				= ( isset( $input['enable_frontend'] ) ) ? $this->validate_checkbox( $input['enable_frontend'] ) : 0;
+		$input['site_close'] 					= ( isset( $input['site_close'] ) ) ? $this->validate_checkbox( $input['site_close'] ) : 0 ;
+		$input['hide_control_classes'] 			= ( isset( $input['hide_control_classes'] ) ) ? $this->validate_checkbox( $input['hide_control_classes'] ) : 0 ;
+		$input['scroll_lock'] 					= ( isset( $input['scroll_lock'] ) ) ? $this->validate_checkbox( $input['scroll_lock'] ) : 0 ;
+		$input['compatibility_position_fixed'] 	= ( isset( $input['compatibility_position_fixed'] ) ) ? $this->validate_checkbox( $input['compatibility_position_fixed'] ) : 0 ;
+
+		// Overwrite the old settings
+		$output = $input;
+
+		foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
+
+			// Make sure unchecked checkboxes are 0 on save
+			$output['sidebars'][ $sidebar_id ]['enable'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['enable'] ) ) ? strip_tags( $output['sidebars'][ $sidebar_id ]['enable'] ) : 0;
+
+			$new_id = $this->validate_id( $sidebar_id );
+			if ( $sidebar_id != $new_id ) {
+				$output['sidebars'][ $new_id ] = $output['sidebars'][ $sidebar_id ];
+				$output['sidebars'][ $new_id ]['id'] = $new_id;
+
+				unset( $output['sidebars'][ $sidebar_id ] );
+			}
+		}
+
+		// Validate global settings with defaults
+		$output = Off_Canvas_Sidebars()->validate_settings( $output, Off_Canvas_Sidebars()->get_default_settings() );
+		// Validate sidebar settings with defaults
+		foreach ( $output['sidebars'] as $sidebar_id => $sidebar_settings ) {
+			$output['sidebars'][ $sidebar_id ] = Off_Canvas_Sidebars()->validate_settings( $sidebar_settings, Off_Canvas_Sidebars()->get_default_sidebar_settings() );
 		}
 
 		return $output;
@@ -468,6 +527,18 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 */
 	function validate_checkbox($value) {
 		return ( ! empty( $value ) ) ? strip_tags( $value ) : '0';
+	}
+
+	/**
+	 * Validates id values, used by validate_input
+	 *
+	 * @since 0.2
+	 *
+	 * @param string $value
+	 * @return string $value
+	 */
+	function validate_id( $value ) {
+		return preg_replace('/[^a-z0-9_-]+/i', '', $value);
 	}
 
 	/**
@@ -513,21 +584,21 @@ class OCS_Off_Canvas_Sidebars_Settings {
 						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"> <?php _e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
 						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"> <?php _e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a>
 						</p>
-						<!--
 						<hr />
-						<p class="ocs-link inner"><?php _e( 'Created by', 'off-canvas-sidebars' ) ?> <a href="" target="_blank" title="Keraweb - Jory Hogeveen"><img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" /></a></p>
-						-->
+						<p class="ocs-link inner"><?php _e( 'Created by', 'off-canvas-sidebars' ) ?> <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
 					</div>
 				</div>
 			</div>
 
 			<form method="post" action="options.php" enctype="multipart/form-data">
 
+				<?php settings_errors(); ?>  
+
 	            <?php if ( $tab == $this->general_key ) { ?>
 				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'http://plugins.adchsm.me/slidebars/usage.php' ); ?></p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 	            <?php } elseif ( $tab == $this->sidebars_tab ) { ?>
-	            <p>Add New</p>
+	            <p>Add a new sidebar <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" /> <a href="" class="button button-primary">Add New</a></p>
 	            <?php } ?>
 
 	        	<div id="main-sortables" class="meta-box-sortables ui-sortable">
@@ -544,19 +615,32 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				jQuery(document).ready(function($){
 					<?php foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) { ?>
 					/*gocs_show_hide_options('off_canvas_sidebars_options_sidebars_enable_<?php echo $sidebar; ?>', 'section_sidebar_<?php echo $sidebar; ?>');*/
-					gocs_show_hide_options('off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_type_color', 'off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_wrapper');
+					gocs_show_hide_options_radio('off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_type_color', 'off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_wrapper', 'color');
 					<?php } ?>
-					gocs_show_hide_options('off_canvas_sidebars_options_background_color_type_color', 'off_canvas_sidebars_options_background_color_wrapper');
+					gocs_show_hide_options_radio( 'off_canvas_sidebars_options_background_color_type', 'off_canvas_sidebars_options_background_color_wrapper', 'color' );
 					
 					function gocs_show_hide_options(trigger, target) {
 						if (!$('#'+trigger).is(':checked')) {
 							$('.'+target).slideUp('fast');				
 						}
-						$('#'+trigger).bind('change', function() {
+						$('#'+trigger).change( function() {
 							if ($(this).is(':checked')) {
-								$('.'+target).slideDown('fast');				
+								$('.'+target).slideDown('fast');
 							} else {
-								$('.'+target).slideUp('fast');				
+								$('.'+target).slideUp('fast');
+							}
+						});
+					}
+
+					function gocs_show_hide_options_radio(trigger, target, compare) {
+						if ($('.'+trigger).val() != compare) {
+							$('.'+target).slideUp('fast');				
+						}
+						$('.'+trigger).change( function() {
+							if ($(this).val() == compare) {
+								$('.'+target).slideDown('fast');
+							} else {
+								$('.'+target).slideUp('fast');
 							}
 						});
 					}
