@@ -2,7 +2,7 @@
 ;(function($) {
 
 	var ocs_controller = {
-		
+
 		slidebars_controller: false,
 		site_close: OCS_OFF_CANVAS_SIDEBARS.site_close,
 		disable_over: OCS_OFF_CANVAS_SIDEBARS.disable_over,
@@ -102,7 +102,7 @@
 	};
 
 	if ( $('#sb-site').length > 0 && ( typeof slidebars != 'undefined' ) ) {
-		ocs_controller.slidebars_controller = new slidebars($);
+		ocs_controller.slidebars_controller = new slidebars();
 		ocs_controller.init();
 	}
 
