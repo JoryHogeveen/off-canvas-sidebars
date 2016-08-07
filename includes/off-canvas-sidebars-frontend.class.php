@@ -119,7 +119,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		$data = $this->general_settings['sidebars'][ $sidebar ];
 		$classes = 'sb-slidebar sb-' . esc_attr( $sidebar );
 		$attributes = '';
-		echo '<div class="' . $classes . $this->get_sidebar_attributes( $sidebar, $data, 'class') . '" ' . $attributes . $this->get_sidebar_attributes( $sidebar, $data, 'other') . '>';
+		echo '<div id="sb-' . esc_attr( $sidebar ) . '" class="' . $classes . $this->get_sidebar_attributes( $sidebar, $data, 'class') . '" ' . $attributes . $this->get_sidebar_attributes( $sidebar, $data, 'other') . '>';
 		if ( get_template() == 'genesis' ) {
 			genesis_widget_area( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 		} else {
