@@ -1,30 +1,37 @@
 
-.off-canvas-sidebars-settings {
-	margin-right: 300px;
-}
-
-.off-canvas-sidebars-settings form {
-	float: left;
-	min-width: 100%;
-	width: auto;
-}
-
 .ocs-credits {
-	float: right;
-    width: 280px;
+	overflow: hidden;
     background: #fff;
-    margin: 20px -300px 20px 20px;
     position: relative;
+    margin: 20px 0;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .ocs-credits .inner { padding-left: 10px; padding-right: 10px; }
 .ocs-credits h3 { font-size: 14px; line-height: 1.4; margin: 0;  padding: 8px 12px; border-bottom: 1px solid #eee; }
 
+@media only screen and (min-width: 850px) {
+	.off-canvas-sidebars-settings {
+		margin-right: 300px;
+	}
+
+	.off-canvas-sidebars-settings form {
+		float: left;
+		min-width: 100%;
+		width: auto;
+	}
+
+	.ocs-credits {
+		float: right;
+    	margin: 20px -300px 20px 20px;
+	    width: 280px;
+	}
+}
+
 @media only screen and (min-width: 959px) {
 	.ocs-credits {
 		position: fixed;
 	    right: 0;
-	    margin: 0 20px;
+	    margin: 20px;
 	}
 }
