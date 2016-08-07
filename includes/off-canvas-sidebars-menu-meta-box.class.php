@@ -191,7 +191,8 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	 * @return 	array 	modified items
 	 */
 	public function wp_get_nav_menu_items($items) {
-		if (doing_action('customize_register') || is_admin()) { // needed since WP 4.3, doing_action available since WP 3.9
+		if ( function_exists( 'doing_action' ) && doing_action('customize_register') || is_admin() ) {
+			// needed since WP 4.3, doing_action available since WP 3.9
 			return $items;
 		}
 		foreach ($items as $key => $item) {
