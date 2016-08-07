@@ -13,12 +13,6 @@
  
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-define( 'OCS_OFF_CANVAS_SIDEBARS_VERSION', '0.2.0' );
-define( 'OCS_OFF_CANVAS_SIDEBARS_FILE', __FILE__ );
-define( 'OCS_OFF_CANVAS_SIDEBARS_BASENAME', plugin_basename( OCS_OFF_CANVAS_SIDEBARS_FILE ) );
-define( 'OCS_OFF_CANVAS_SIDEBARS_DIR', plugin_dir_path( OCS_OFF_CANVAS_SIDEBARS_FILE ) );
-define( 'OCS_OFF_CANVAS_SIDEBARS_URL', plugin_dir_url( OCS_OFF_CANVAS_SIDEBARS_FILE ) );
-
 class OCS_Off_Canvas_Sidebars {
 
 	/**
@@ -35,7 +29,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @var    String
 	 * @since  0.1
 	 */
-	protected $version = OCS_OFF_CANVAS_SIDEBARS_VERSION;
+	protected $version = '0.2.0';
 
 	/**
 	 * User ignore nag key
@@ -91,7 +85,46 @@ class OCS_Off_Canvas_Sidebars {
 	 * @var    Boolean
 	 * @since  0.1
 	 */
-	protected $general_labels = array();	
+	protected $general_labels = array();
+
+	/**
+	 * Default settings
+	 *
+	 * @var    Boolean
+	 * @since  0.2
+	 */
+	protected $default_settings = array(
+		'enable_frontend' => '1',
+		'frontend_type' => 'action',
+		'site_close' => 1,
+		'disable_over' => '',
+		'hide_control_classes' => 0,
+		'scroll_lock' => 0,
+		'background_color_type' => '',
+		'background_color' => '',
+		'website_before_hook' => 'website_before',
+		'website_after_hook' => 'website_after',
+		'compatibility_position_fixed' => 0,
+		'sidebars' => array(),
+	);
+
+	/**
+	 * Default sidebar settings
+	 *
+	 * @var    Boolean
+	 * @since  0.2
+	 */
+	protected $default_sidebar_settings = array(
+		'enable' => 0,
+		'label' => '',
+		'location' => '',
+		'style' => 'push',
+		'width' => 'default',
+		'width_input' => '',
+		'width_input_type' => '%',
+		'background_color' => '',
+		'background_color_type' => '',
+	);
 	
 	/**
 	 * Init function to register plugin hook
@@ -221,56 +254,52 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since   0.1
 	 */
 	function get_settings() {
-		$args = $this->general_settings;
-		$defaults = array(
-			'enable_frontend' => '1',
-			'frontend_type' => 'action',
-			'site_close' => 1,
-			'disable_over' => '',
-			'hide_control_classes' => 0,
-			'scroll_lock' => 0,
-			'background_color_type' => '',
-			'background_color' => '',
-			'website_before_hook' => 'website_before',
-			'website_after_hook' => 'website_after',
-			'compatibility_position_fixed' => 0,
-			'sidebars' => array(),
-		);
-		$sidebar_defaults = array(
-			'enable' => 0,
-			'label' => '',
-			'location' => '',
-			'width' => 'default',
-			'width_input' => '',
-			'width_input_type' => '%',
-			'style' => 'push',
-			'background_color_type' => '',
-			'background_color' => '',
-		);
-		// Add values that are missing
-		$args = array_merge( $defaults, $args ); // supports one lever array
-		foreach ( $args['sidebars'] as $sidebar_id => $sidebar_data ) {
-			foreach ( $sidebar_defaults as $key => $value ) {
-				if ( ! isset( $args['sidebars'][ $sidebar_id ][ $key ] ) ) {
-					$args['sidebars'][ $sidebar_id ][ $key ] = $sidebar_defaults[ $key ];
-				}
-			}
+		$settings = $this->general_settings;
+
+		// Validate global settings
+		$settings = $this->validate_settings( $settings, $this->get_default_settings() );
+		// Validate sidebar settings
+		foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_settings ) {
+			$settings['sidebars'][ $sidebar_id ] = $this->validate_settings( $sidebar_settings, $this->get_default_sidebar_settings() );
 		}
-		// Remove values that should not exist
-		foreach ( $args as $key => $value ) {
-			if ( ! isset( $defaults[$key] ) ) {
-				unset( $args[$key] );
-			}
-			foreach ( $sidebar_defaults as $sidebar_prop => $sidebar_prop_data ) {
-				foreach ( $args['sidebars'] as $sidebar_id => $sidebar_data ) {
-					if ( ! isset( $sidebars_defaults[ $sidebar_prop_data ] ) ) {
-						unset( $args['sidebars'][ $sidebar_id ][ $sidebar_prop_data ] );
-					}
-				}
-			}
-		}
-		return $args;
+		
+		return $settings;
 	}
+
+	/**
+	 * Validate setting keys
+	 *
+	 * @param   array
+	 * @return	array
+	 * @since   0.2
+	 */
+	function validate_settings( $settings, $defaults ) {
+		// supports one level array
+		$settings = array_merge( $defaults, $settings );
+		// Remove unknown keys
+		foreach ( $settings as $key => $value ) {
+			if ( ! isset( $defaults[ $key ] ) ) {
+				unset( $settings[ $key ] );
+			}
+		}
+		return $settings;
+	}
+	
+	/**
+	 * Returns the default settings
+	 *
+	 * @return	String
+	 * @since   0.2
+	 */
+	function get_default_settings() { return $this->default_settings; }
+	
+	/**
+	 * Returns the default sidebar_settings
+	 *
+	 * @return	String
+	 * @since   0.2
+	 */
+	function get_default_sidebar_settings() { return $this->default_sidebar_settings; }
 	
 	/**
 	 * Returns the plugin version
