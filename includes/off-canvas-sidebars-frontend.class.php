@@ -139,6 +139,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		switch( $attr ) {
 			case 'class':
 				$return .= ' sb-width-' . esc_attr( $data['width'] );
+				$return .= ' sb-location-' . esc_attr( $data['location'] );
 				$return .= ' sb-style-' . esc_attr( $data['style'] );
 			break;
 			case 'other':
