@@ -13,7 +13,9 @@
 class OCS_Off_Canvas_Sidebars_Settings {
 	
 	private $general_key = '';
-	private $sidebars_tab = 'sidebars';
+	private $settings_tab = 'ocs-settings';
+	private $sidebars_tab = 'ocs-sidebars';
+	private $importexport_tab = 'ocs-importexport';
 	private $plugin_key = '';
 	private $plugin_tabs = array();
 	private $general_settings = array();
@@ -52,17 +54,17 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function register_settings() {
-		$this->plugin_tabs[$this->general_key] = esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' );
+		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
 		
-		register_setting( $this->general_key, $this->general_key, array( $this, 'validate_input' ) );
+		register_setting( $this->settings_tab, $this->general_key, array( $this, 'validate_input' ) );
 		register_setting( $this->sidebars_tab, $this->general_key, array( $this, 'validate_input' ) );
 		
 		add_settings_section( 
 			'section_general', 
 			esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' ), 
 			array( $this, 'register_general_settings' ), 
-			$this->general_key 
+			$this->settings_tab 
 		);
 		
 		// Register sidebar settings
@@ -84,7 +86,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'enable_frontend', 
 			esc_attr__( 'Enable front-end', 'off-canvas-sidebars' ), 
 			array( $this, 'checkbox_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general' ,
 			array( 
 				'name' => 'enable_frontend', 
@@ -96,21 +98,21 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'frontend_type', 
 			esc_attr__( 'Front-end type', 'off-canvas-sidebars' ), 
 			array( $this, 'frontend_type_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general' 
 		);*/
 		add_settings_field( 
 			'enabled_sidebars', 
 			esc_attr__( 'Enable Sidebars', 'off-canvas-sidebars' ), 
 			array( $this, 'enabled_sidebars_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general' 
 		);
 		add_settings_field( 
 			'site_close', 
 			esc_attr__( 'Close sidebar when clicking on the site', 'off-canvas-sidebars' ), 
 			array( $this, 'checkbox_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'site_close', 'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site. Default: true.', 'off-canvas-sidebars' ) ) 
 		);
@@ -118,7 +120,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'disable_over', 
 			esc_attr__( 'Disable over', 'off-canvas-sidebars' ), 
 			array( $this, 'number_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'disable_over', 'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', 'off-canvas-sidebars' ) ) 
 		);
@@ -126,14 +128,15 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'hide_control_classes', 
 			esc_attr__( 'Auto-hide control classes', 'off-canvas-sidebars' ), 
 			array( $this, 'checkbox_option' ), 
-			$this->general_key, 'section_general', 
+			$this->settings_tab, 
+			'section_general', 
 			array( 'name' => 'hide_control_classes', 'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>. Default: false.', 'off-canvas-sidebars' ) ) 
 		);
 		add_settings_field( 
 			'scroll_lock', 
 			esc_attr__( 'Scroll lock', 'off-canvas-sidebars' ), 
 			array( $this, 'checkbox_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'scroll_lock', 'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open. Default: false.', 'off-canvas-sidebars' ) ) 
 		);
@@ -141,7 +144,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'background_color', 
 			esc_attr__( 'Background color', 'off-canvas-sidebars' ), 
 			array( $this, 'color_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'background_color', 'description' => __( 'Choose a background color for the site container. Default: <code>#ffffff</code>.', 'off-canvas-sidebars' ) ) 
 		);
@@ -149,7 +152,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'website_before_hook', 
 			esc_attr__( '"website_before" hook name', 'off-canvas-sidebars' ), 
 			array( $this, 'text_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'website_before_hook', 'placeholder' => 'website_before' ) 
 		);
@@ -157,7 +160,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'website_after_hook', 
 			esc_attr__( '"website_after" hook name', 'off-canvas-sidebars' ), 
 			array( $this, 'text_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'website_after_hook', 'placeholder' => 'website_after' ) 
 		);
@@ -165,7 +168,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'compatibility_position_fixed', 
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ), 
 			array( $this, 'checkbox_option' ), 
-			$this->general_key, 
+			$this->settings_tab, 
 			'section_general', 
 			array( 'name' => 'compatibility_position_fixed', 'label' => '('.__( 'Experimental', 'off-canvas-sidebars' ).')' ) 
 		);
@@ -558,7 +561,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 * @since 0.1
 	 */
 	function plugin_options_page() {
-		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_key;
+		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
 		?>
 	<div class="wrap">
 		<?php $this->plugin_options_tabs(); ?>
@@ -592,9 +595,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 			<form method="post" action="options.php" enctype="multipart/form-data">
 
-				<?php settings_errors(); ?>  
+				<?php settings_errors(); ?>
 
-	            <?php if ( $tab == $this->general_key ) { ?>
+	            <?php if ( $tab == $this->settings_tab ) { ?>
 				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'http://plugins.adchsm.me/slidebars/usage.php' ); ?></p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 	            <?php } elseif ( $tab == $this->sidebars_tab ) { ?>
@@ -606,16 +609,16 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<?php $this->do_settings_sections( $tab ); ?>
 	            </div>
 
-				<?php if ( $tab == 'importexport' ) $this->importexport_fields(); ?>
-				<?php if ( $tab != 'importexport' ) submit_button(); ?>
+				<?php if ( $tab == $this->importexport_tab ) $this->importexport_fields(); ?>
+				<?php if ( $tab != $this->importexport_tab ) submit_button(); ?>
 
 			</form>
 			<script type="text/javascript">
 			<!--
 				jQuery(document).ready(function($){
-					<?php foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) { ?>
+					<?php foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) { ?>
 					/*gocs_show_hide_options('off_canvas_sidebars_options_sidebars_enable_<?php echo $sidebar; ?>', 'section_sidebar_<?php echo $sidebar; ?>');*/
-					gocs_show_hide_options_radio('off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_type_color', 'off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_wrapper', 'color');
+					gocs_show_hide_options_radio('off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_type', 'off_canvas_sidebars_options_sidebars_<?php echo $sidebar; ?>_background_color_wrapper', 'color');
 					<?php } ?>
 					gocs_show_hide_options_radio( 'off_canvas_sidebars_options_background_color_type', 'off_canvas_sidebars_options_background_color_wrapper', 'color' );
 					
@@ -685,6 +688,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				continue;
 			echo '<div class="inside"><table class="form-table">';
 			do_settings_fields( $page, $section['id'] );
+			if ( $page == $this->sidebars_tab ) {
+				submit_button();
+			}
 			echo '</table></div>';
 			echo '</div>';
 		}
@@ -699,7 +705,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 * @since 0.1
 	 */
 	function plugin_options_tabs() {
-		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_key;
+		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
 
 		echo '<h1 class="nav-tab-wrapper">';
 		foreach ( $this->plugin_tabs as $tab_key => $tab_caption ) {
@@ -725,7 +731,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function register_importexport_settings() {
-		$this->plugin_tabs['importexport'] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
+		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
 
 		if ( isset( $_GET['gocs_message'] ) ) {
 			switch ( $_GET['gocs_message'] ) {
@@ -784,7 +790,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				$gocs_message = 3;
 			}
 
-			wp_redirect( admin_url( '/themes.php?page=off-canvas-sidebars-settings&tab=importexport&gocs_message='.esc_attr( $gocs_message ) ) );
+			wp_redirect( admin_url( '/themes.php?page=off-canvas-sidebars-settings&tab=' . $this->importexport_tab . '&gocs_message='.esc_attr( $gocs_message ) ) );
 			exit;
 		}
 	}
