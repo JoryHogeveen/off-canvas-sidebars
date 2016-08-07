@@ -94,6 +94,8 @@ The final output of your theme should be similar to this:
 *	Feature: An unlimited amount of off-canvas sidebars (No longer just one left, one right)
 *	Feature: 2 new locations (top and bottom)
 *	Feature: 2 new effects (reveal and shift)
+*	UI: Improved settings pages
+*	I18n: Translations are now managed at [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars "translate.wordpress.org")
 *	Tested with WordPress 4.6
 
 = 0.1.2 =
