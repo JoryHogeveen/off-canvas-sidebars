@@ -357,6 +357,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$prefixValue = $prefixes['prefixValue'];
 		$prefixId = $prefixes['prefixId'];
 		if ( isset( $args['name'] ) ) {
+			if ( isset( $args['value'] ) ) {
+				$prefixValue[ $args['name'] ] = $args['value'];
+			}
 		?><fieldset>
 			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
             <input type="checkbox" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" value="1" <?php checked( $prefixValue[$args['name']], 1 ); ?> /> 
