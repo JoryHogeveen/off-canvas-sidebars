@@ -698,10 +698,11 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				continue;
 			echo '<div class="inside"><table class="form-table">';
 			do_settings_fields( $page, $section['id'] );
+			echo '</table>';
 			if ( $page == $this->sidebars_tab ) {
-				submit_button();
+				submit_button( null, 'primary', 'submit', false );
 			}
-			echo '</table></div>';
+			echo '</div>';
 			echo '</div>';
 		}
 	}
