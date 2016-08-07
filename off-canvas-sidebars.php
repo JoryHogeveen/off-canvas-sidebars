@@ -94,7 +94,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since  0.2
 	 */
 	protected $default_settings = array(
-		'enable_frontend' => '1',
+		'enable_frontend' => 1,
 		'frontend_type' => 'action',
 		'site_close' => 1,
 		'disable_over' => '',
@@ -117,7 +117,7 @@ class OCS_Off_Canvas_Sidebars {
 	protected $default_sidebar_settings = array(
 		'enable' => 0,
 		'label' => '',
-		'location' => '',
+		'location' => 'left',
 		'style' => 'push',
 		'width' => 'default',
 		'width_input' => '',
@@ -280,6 +280,9 @@ class OCS_Off_Canvas_Sidebars {
 		foreach ( $settings as $key => $value ) {
 			if ( ! isset( $defaults[ $key ] ) ) {
 				unset( $settings[ $key ] );
+			} else {
+				// Validate types
+				settype( $settings[ $key ], gettype( $defaults[ $key ] ) );
 			}
 		}
 		return $settings;
