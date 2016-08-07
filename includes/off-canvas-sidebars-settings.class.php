@@ -624,31 +624,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		?>
 	<div class="wrap">
 		<?php $this->plugin_options_tabs(); ?>
-        <div class="metabox-holder"><div class="off-canvas-sidebars-settings container">
-
-			<div class="ocs-sidebar">
-				<div class="ocs-credits">
-					<h3 class="hndle"><?php echo __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION ?></h3>
-					<div class="inside">
-						<h4 class="inner"><?php _e( 'Need support?', 'off-canvas-sidebars' ) ?></h4>
-						<p class="inner">
-							<?php echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%s" target="_blank">Documentation</a> or talk about them in the <a href="%s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/', 'https://wordpress.org/support/plugin/off-canvas-sidebars' ) ?>
-						</p>
-						<hr />
-						<h4 class="inner"><?php _e( 'Do you like this plugin?', 'off-canvas-sidebars' ) ?></h4>
-						<a class="inner" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
-							<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
-						</a>
-						<p class="inner">
-						<a href="http://wordpress.org/support/view/plugin-reviews/off-canvas-sidebars" target="_blank"><?php _e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ) ?></a><br />
-						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"> <?php _e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
-						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"> <?php _e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a>
-						</p>
-						<hr />
-						<p class="ocs-link inner"><?php _e( 'Created by', 'off-canvas-sidebars' ) ?> <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
-					</div>
-				</div>
-			</div>
+        <div class="off-canvas-sidebars-settings container">
 
 			<form method="post" action="options.php" enctype="multipart/form-data">
 
@@ -664,9 +640,13 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	            </p>
 	            <?php } ?>
 
+	            <div class="metabox-holder">
+	            <div class="postbox-container">
 	        	<div id="main-sortables" class="meta-box-sortables ui-sortable">
 				<?php settings_fields( $tab ); ?>
 				<?php $this->do_settings_sections( $tab ); ?>
+	            </div>
+	            </div>
 	            </div>
 
 				<?php if ( $tab == $this->importexport_tab ) $this->importexport_fields(); ?>
@@ -729,7 +709,31 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				});
 			-->
 			</script>
-		</div></div>
+			
+			<div class="ocs-sidebar">
+				<div class="ocs-credits">
+					<h3 class="hndle"><?php echo __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION ?></h3>
+					<div class="inside">
+						<h4 class="inner"><?php _e( 'Need support?', 'off-canvas-sidebars' ) ?></h4>
+						<p class="inner">
+							<?php echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%s" target="_blank">Documentation</a> or talk about them in the <a href="%s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/', 'https://wordpress.org/support/plugin/off-canvas-sidebars' ) ?>
+						</p>
+						<hr />
+						<h4 class="inner"><?php _e( 'Do you like this plugin?', 'off-canvas-sidebars' ) ?></h4>
+						<a class="inner" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
+							<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
+						</a>
+						<p class="inner">
+						<a href="http://wordpress.org/support/view/plugin-reviews/off-canvas-sidebars" target="_blank"><?php _e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ) ?></a><br />
+						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"> <?php _e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
+						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"> <?php _e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a>
+						</p>
+						<hr />
+						<p class="ocs-link inner"><?php _e( 'Created by', 'off-canvas-sidebars' ) ?> <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<?php
 		//add_action( 'in_admin_footer', array( 'OCS_Lib', 'admin_footer' ) );
@@ -753,7 +757,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			return;
 	 
 		foreach ( (array) $wp_settings_sections[$page] as $section ) {
-			echo '<div id="" class="stuffbox postbox '.$section['id'].'">';
+			echo '<div id="'.$section['id'].'" class="stuffbox postbox '.$section['id'].'">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">' . __('Toggle panel', 'off-canvas-sidebars') . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
 			if ( $section['title'] )
 				echo "<h3 class=\"hndle\"><span>{$section['title']}</span></h3>\n";
