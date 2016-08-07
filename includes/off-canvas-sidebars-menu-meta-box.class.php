@@ -5,7 +5,7 @@
  * Menu Meta Box
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.0
+ * @version 0.2
  *
  * Credits to the Polylang plugin
  */

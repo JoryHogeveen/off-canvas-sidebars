@@ -5,7 +5,7 @@
  * Settings
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.0
+ * @version 0.2
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -709,7 +709,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				});
 			-->
 			</script>
-			
+
 			<div class="ocs-sidebar">
 				<div class="ocs-credits">
 					<h3 class="hndle"><?php echo __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION ?></h3>

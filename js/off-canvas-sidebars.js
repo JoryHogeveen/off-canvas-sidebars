@@ -4,7 +4,7 @@
  * OCS_OFF_CANVAS_SIDEBARS
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.0
+ * @version 0.2
  */
 
 if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {

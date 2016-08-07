@@ -1,4 +1,12 @@
 <?php
+/**
+ * Off-Canvas Sidebars plugin uninstall
+ *
+ * Uninstall
+ * @author Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @version 0.2
+ */
 
 //if uninstall not called from WordPress exit
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
