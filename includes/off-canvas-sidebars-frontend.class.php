@@ -13,7 +13,6 @@
 class OCS_Off_Canvas_Sidebars_Frontend {
 	
 	private $general_settings = array();
-	private $version = false;
 	
 	function __construct() {
 		$this->load_plugin_data();
@@ -35,7 +34,6 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	function load_plugin_data() {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$this->general_settings = $off_canvas_sidebars->get_settings();
-		$this->version = $off_canvas_sidebars->get_version();
 	}
 
 	/**
@@ -55,11 +53,11 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			$before_hook = 'website_before';
 			$after_hook = 'website_after';
 		}
-		add_action( $before_hook, array( $this, 'before_site' ), 0.000000001 ); // enforce first addition
+		add_action( $before_hook, array( $this, 'before_site' ), 0 ); // enforce first addition
 		add_action( $after_hook, array( $this, 'after_site' ), 999999999 ); // enforce last addition
 		
 		/* EXPERIMENTAL */
-		//add_action( 'wp_footer', array( $this, 'after_site' ), 0.000000001 ); // enforce first addition
+		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition
 		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition
 	}
 
@@ -85,7 +83,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			echo '</div>'; // close #sb-site
 		}
 		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
-			if ($sidebar_data['enable'] == 1) {
+			if ( $sidebar_data['enable'] == 1 ) {
 				$this->add_slidebar($sidebar);
 			}
 		}
@@ -104,7 +102,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site"></div>');       
+		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site" canvas="container"></div>');       
 	}) (jQuery);
 </script>
 			<?php
@@ -118,10 +116,10 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @return  void
 	 */
 	function add_slidebar( $sidebar ) {
-		$prefix = $this->general_settings['sidebars'][ $sidebar ];
+		$data = $this->general_settings['sidebars'][ $sidebar ];
 		$classes = 'sb-slidebar sb-' . esc_attr( $sidebar );
 		$attributes = '';
-		echo '<div class="' . $classes . $this->get_sidebar_attributes( $sidebar, $prefix, 'class') . '" ' . $attributes . $this->get_sidebar_attributes( $sidebar, $prefix, 'other') . '>';
+		echo '<div class="' . $classes . $this->get_sidebar_attributes( $sidebar, $data, 'class') . '" ' . $attributes . $this->get_sidebar_attributes( $sidebar, $data, 'other') . '>';
 		if ( get_template() == 'genesis' ) {
 			genesis_widget_area( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 		} else {
@@ -136,18 +134,19 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @since   0.1
 	 * @return  void
 	 */
-	function get_sidebar_attributes( $sidebar, $prefix, $attr ) {
+	function get_sidebar_attributes( $sidebar, $data, $attr ) {
 		$return = '';
 		switch( $attr ) {
 			case 'class':
-				$return .= ' sb-width-' . esc_attr( $prefix['width'] );
-				$return .= ' sb-style-' . esc_attr( $prefix['style'] );
+				$return .= ' sb-width-' . esc_attr( $data['width'] );
+				$return .= ' sb-style-' . esc_attr( $data['style'] );
 			break;
 			case 'other':
-				if ( $prefix['width'] == 'custom' ) { $return .= ' data-sb-width="' . $prefix['width_input'] . $prefix['width_input_type'] . '"'; }
+				if ( $data['width'] == 'custom' ) { $return .= ' data-sb-width="' . $data['width_input'] . $data['width_input_type'] . '"'; }
 
 				// Slidebars 2.0
-				$return .= ' off-canvas="sb-' . esc_attr( $sidebar ) . ' ' . esc_attr( $prefix['location'] ) . ' ' . esc_attr( $prefix['width'] ) . ' ' . esc_attr( $prefix['style'] ) . '"';
+				$return .= ' off-canvas="sb-' . esc_attr( $sidebar ) . ' ' . esc_attr( $data['location'] ) . ' ' . esc_attr( $data['style'] ) . '"';
+				$return .= ' off-canvas-sidebar-id="' . esc_attr( $sidebar ) . '"';
 			break;
 		}
 		return $return;
@@ -164,10 +163,10 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '2.0.2' );
 		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2' );
 		
-		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), $this->version ); //'.$suffix.'
+		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), OCS_PLUGIN_VERSION ); //'.$suffix.'
 
 		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
-			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $this->version );
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION );
 		}
 	}
 	
@@ -182,13 +181,25 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			?>
 <script type="text/javascript">
 	(function($) {
-		if ($('#sb-site').length > 0 && (typeof $.slidebars == 'function')) {
-			var slidebars_controller = new slidebars();
+		if ($('#sb-site').length > 0 && (typeof slidebars != 'undefined') ) {
+			var slidebars_controller = new slidebars($);
 			slidebars_controller.init({
 				siteClose: <?php echo ($this->general_settings['site_close'])?'true':'false'; ?>,
 				hideControlClasses: <?php echo ($this->general_settings['hide_control_classes'])?'true':'false'; ?>,
 				scrollLock: <?php echo ($this->general_settings['scroll_lock'])?'true':'false'; ?>,
-				disableOver: <?php echo ($this->general_settings['disable_over'])?$this->general_settings['disable_over']:'false'; ?>,
+				disableOver: <?php echo ($this->general_settings['disable_over'])?$this->general_settings['disable_over']:'false'; ?>
+			});
+
+			$( '.sb-slidebar' ).each(function(e){
+				var id = $( this ).attr('off-canvas-sidebar-id');
+				$(document).on( 'click', '.sb-toggle-' + id, function(e) {
+					// Stop default action and bubbling
+  					event.stopPropagation();
+  					event.preventDefault();
+
+  					// Toggle the slidebar
+  					slidebars_controller.toggle( 'sb-' + id );
+				} );
 			});
 		}
 	}) (jQuery);
