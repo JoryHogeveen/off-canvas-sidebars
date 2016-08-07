@@ -611,7 +611,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'http://plugins.adchsm.me/slidebars/usage.php' ); ?></p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 	            <?php } elseif ( $tab == $this->sidebars_tab ) { ?>
-	            <p>Add a new sidebar <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" /> <a href="" class="button button-primary">Add New</a></p>
+	            <p>
+	            	Add a new sidebar <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e('Name', 'off-canvas-sidebars') ?>" /> 
+	            	<?php submit_button( __( 'Add sidebar', 'off-canvas-sidebars'), 'primary', 'submit', false ); ?>
+	            </p>
 	            <?php } ?>
 
 	        	<div id="main-sortables" class="meta-box-sortables ui-sortable">
