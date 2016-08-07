@@ -644,7 +644,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<input type="hidden" name="ocs_tab" value="<?php echo $tab ?>" />
 
 				<?php if ( $tab == $this->settings_tab ) { ?>
-				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'http://plugins.adchsm.me/slidebars/usage.php' ); ?></p>
+				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://www.adchsm.com/slidebars/help/usage/' ); ?></p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 				<?php } elseif ( $tab == $this->sidebars_tab ) { ?>
 				<p>
@@ -759,6 +759,13 @@ class OCS_Off_Canvas_Sidebars_Settings {
 						});
 					}
 				});
+
+				jQuery(document).ready( function ($) {
+					// close postboxes that should be closed
+					$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+					// postboxes setup
+					postboxes.add_postbox_toggles('toplevel_page_genesis');
+				});
 			-->
 			</script>
 
@@ -809,7 +816,11 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			return;
 	 
 		foreach ( (array) $wp_settings_sections[$page] as $section ) {
-			echo '<div id="'.$section['id'].'" class="stuffbox postbox '.$section['id'].'">';
+			$box_classes = 'stuffbox postbox '.$section['id'].'';
+			if ( $page == $this->sidebars_tab ) {
+				$box_classes .= ' if-js-closed';
+			}
+			echo '<div id="'.$section['id'].'" class="'.$box_classes.'">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">' . __('Toggle panel', 'off-canvas-sidebars') . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
 			if ( $section['title'] )
 				echo "<h3 class=\"hndle\"><span>{$section['title']}</span></h3>\n";
