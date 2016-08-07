@@ -232,6 +232,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'section_sidebar_' . $sidebar_id, 
 			array( 'sidebar' => $sidebar_id, 'name' => 'background_color', 'description' => __( 'Choose a background color for this sidebar. Default: <code>#222222</code>.', 'off-canvas-sidebars' ) . '<br>' . __( 'You can overwrite this with CSS', 'off-canvas-sidebars' ) ) 
 		);
+		add_settings_field( 
+			'sidebar_delete', 
+			esc_attr__( 'Delete sidebar', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'delete', 'value' => 0 ) 
+		);
 	}
 	
 	/* 
@@ -510,15 +518,22 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 		foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
 
-			// Make sure unchecked checkboxes are 0 on save
-			$output['sidebars'][ $sidebar_id ]['enable'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['enable'] ) ) ? strip_tags( $output['sidebars'][ $sidebar_id ]['enable'] ) : 0;
-
-			$new_id = $this->validate_id( $sidebar_id );
-			if ( $sidebar_id != $new_id ) {
-				$output['sidebars'][ $new_id ] = $output['sidebars'][ $sidebar_id ];
-				$output['sidebars'][ $new_id ]['id'] = $new_id;
-
+			// Delete sidebar
+			if ( isset( $input['sidebars'][ $sidebar_id ]['delete'] ) && $input['sidebars'][ $sidebar_id ]['delete'] == '1' ) {
+				unset( $input['sidebars'][ $sidebar_id ] );
 				unset( $output['sidebars'][ $sidebar_id ] );
+			} else {
+
+				// Make sure unchecked checkboxes are 0 on save
+				$output['sidebars'][ $sidebar_id ]['enable'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['enable'] ) ) ? strip_tags( $output['sidebars'][ $sidebar_id ]['enable'] ) : 0;
+
+				$new_sidebar_id = $this->validate_id( $sidebar_id );
+				if ( $sidebar_id != $new_sidebar_id ) {
+					$output['sidebars'][ $new_sidebar_id ] = $output['sidebars'][ $sidebar_id ];
+					$output['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
+
+					unset( $output['sidebars'][ $sidebar_id ] );
+				}
 			}
 		}
 
