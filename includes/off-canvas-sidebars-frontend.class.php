@@ -162,12 +162,20 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	function add_styles_scripts() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '2.0.2' );
-		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2' );
+		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2', true );
 		
 		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), OCS_PLUGIN_VERSION ); //'.$suffix.'
+		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars.js', array( 'jquery', 'slidebars' ), OCS_PLUGIN_VERSION, true ); //'.$suffix.'
+		wp_localize_script( 'off-canvas-sidebars', 'OCS_OFF_CANVAS_SIDEBARS', array(
+			'site_close'           => ( $this->general_settings['site_close'] ) ? true : false,
+			'disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
+			'hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,
+			'scroll_lock'          => ( $this->general_settings['scroll_lock'] ) ? true : false,
+			'sidebars'             => $this->general_settings['sidebars']
+		) );
 
 		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
-			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION );
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
 		}
 	}
 	
@@ -181,29 +189,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		if ( ! is_admin() ) {
 			?>
 <script type="text/javascript">
-	(function($) {
-		if ($('#sb-site').length > 0 && (typeof slidebars != 'undefined') ) {
-			var slidebars_controller = new slidebars($);
-			slidebars_controller.init({
-				siteClose: <?php echo ($this->general_settings['site_close'])?'true':'false'; ?>,
-				hideControlClasses: <?php echo ($this->general_settings['hide_control_classes'])?'true':'false'; ?>,
-				scrollLock: <?php echo ($this->general_settings['scroll_lock'])?'true':'false'; ?>,
-				disableOver: <?php echo ($this->general_settings['disable_over'])?$this->general_settings['disable_over']:'false'; ?>
-			});
 
-			$( '.sb-slidebar' ).each(function(e){
-				var id = $( this ).attr('off-canvas-sidebar-id');
-				$(document).on( 'click', '.sb-toggle-' + id, function(e) {
-					// Stop default action and bubbling
-  					event.stopPropagation();
-  					event.preventDefault();
-
-  					// Toggle the slidebar
-  					slidebars_controller.toggle( 'sb-' + id );
-				} );
-			});
-		}
-	}) (jQuery);
 </script>
 			<?php
 		}
