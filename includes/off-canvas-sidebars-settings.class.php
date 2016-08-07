@@ -709,6 +709,23 @@ class OCS_Off_Canvas_Sidebars_Settings {
 					}
 					
 					$('input.color-picker').wpColorPicker();
+
+					// Hide options when set to delete
+					$(document).on( 'change', '.off_canvas_sidebars_options_sidebars_delete', function() {
+						var parent_container = $(this).parents('.postbox');
+						if ( $(this).is(':checked') ) {
+							var parent_row = $(this).parents('tr');
+							$( 'tr', parent_container ).hide( 'fast', function() {
+								$( 'tr', parent_container ).each(function(){
+									if ( $(this).is( parent_row ) ) {
+										$(this).show( 'fast' );
+									}
+								});
+							} );
+						} else {
+							$( 'tr', parent_container ).show( 'fast' );
+						}
+					} );
 				});
 			-->
 			</script>
