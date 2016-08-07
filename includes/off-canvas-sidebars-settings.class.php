@@ -442,10 +442,15 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 		// Add new sidebar
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
-			$input['sidebars'][ $this->validate_id( $input['sidebars']['ocs_add_new'] ) ] = array(
-				'enable' => 1,
-				'label' => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
-			);
+			$new_sidebar_id = $this->validate_id( $input['sidebars']['ocs_add_new'] );
+			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $output['sidebars'][ $new_sidebar_id ] ) ) {
+				$input['sidebars'][ $this->validate_id( $input['sidebars']['ocs_add_new'] ) ] = array(
+					'enable' => 1,
+					'label' => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
+				);
+			} else {
+				add_settings_error( $new_sidebar_id . '_duplicate_id', esc_attr( 'ocs_duplicate_id' ), sprintf( __( 'The ID %s already exists! Sidebar not added.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' ) );
+			}
 		}
 		unset( $input['sidebars']['ocs_add_new'] );
 
@@ -471,13 +476,16 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				// Change sidebar ID
 				if ( ! empty( $input['sidebars'][ $sidebar_id ]['id'] ) && $sidebar_id != $input['sidebars'][ $sidebar_id ]['id'] ) {
 
-					$new_id = $this->validate_id( $input['sidebars'][ $sidebar_id ]['id'] );
+					$new_sidebar_id = $this->validate_id( $input['sidebars'][ $sidebar_id ]['id'] );
 
-					if ( $sidebar_id != $new_id ) {
-						$input['sidebars'][ $new_id ] = $input['sidebars'][ $sidebar_id ];
-						$input['sidebars'][ $new_id ]['id'] = $new_id;
-
-						unset( $input['sidebars'][ $sidebar_id ] );
+					if ( $sidebar_id != $new_sidebar_id ) {
+						if ( empty( $input['sidebars'][ $new_sidebar_id ] ) ) {
+							$input['sidebars'][ $new_sidebar_id ] = $input['sidebars'][ $sidebar_id ];
+							$input['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
+							unset( $input['sidebars'][ $sidebar_id ] );
+						} else {
+							add_settings_error( $sidebar_id . '_duplicate_id', esc_attr( 'ocs_duplicate_id' ), sprintf( __( 'The ID %s already exists! The ID is not changed.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' ) );
+						}
 					}
 				}
 			}
@@ -490,6 +498,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			}
 		}
 
+		// Make sure unchecked checkboxes are 0 on save
 		$input['enable_frontend'] 				= ( isset( $input['enable_frontend'] ) ) ? $this->validate_checkbox( $input['enable_frontend'] ) : 0;
 		$input['site_close'] 					= ( isset( $input['site_close'] ) ) ? $this->validate_checkbox( $input['site_close'] ) : 0 ;
 		$input['hide_control_classes'] 			= ( isset( $input['hide_control_classes'] ) ) ? $this->validate_checkbox( $input['hide_control_classes'] ) : 0 ;
