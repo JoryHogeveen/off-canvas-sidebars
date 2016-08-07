@@ -569,13 +569,11 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 			<div class="ocs-sidebar">
 				<div class="ocs-credits">
-					<h3 class="hndle"><?php echo __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_OFF_CANVAS_SIDEBARS_VERSION ?></h3>
+					<h3 class="hndle"><?php echo __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION ?></h3>
 					<div class="inside">
 						<h4 class="inner"><?php _e( 'Need support?', 'off-canvas-sidebars' ) ?></h4>
 						<p class="inner">
-
-							<?php echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%s" target="_blank">Documentation</a> or talk about them in the <a href="%s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'yay', 'whohooo' ) ?>
-
+							<?php echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%s" target="_blank">Documentation</a> or talk about them in the <a href="%s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/', 'https://wordpress.org/support/plugin/off-canvas-sidebars' ) ?>
 						</p>
 						<hr />
 						<h4 class="inner"><?php _e( 'Do you like this plugin?', 'off-canvas-sidebars' ) ?></h4>
