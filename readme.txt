@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, off-canvas, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 3.8
 Tested up to: 4.6
-Stable tag: 0.1.2
+Stable tag: 0.2
 
 Add off-canvas sidebars using the Slidebars jQuery plugin.
 
@@ -115,3 +115,8 @@ You can find me here:
 = Ideas? =
 
 Please let me know through the support page!
+
+== Upgrade Notice ==
+
+= 0.2 =
+Version 0.2 introduces some radical code changes to the plugin. Please clear your cache after updating
