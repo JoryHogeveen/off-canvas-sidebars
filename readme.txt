@@ -23,7 +23,7 @@ If the plugin does not work for your theme, please let me know through the suppo
 
 = Overview / Features =
 
-*	Add off-canvas sidebars to the left and right of your website
+*	Add off-canvas sidebars to the left, right, top and bottom of your website
 *	You can add the control buttons with a widget, a menu item or with custom code, [click here for documentation](http://plugins.adchsm.me/slidebars/usage.php "click here for documentation")
 *	Various customisation options under the Appearances menu
 
@@ -87,6 +87,14 @@ The final output of your theme should be similar to this:
 5. Sidebar right (Overlay effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.2 =
+
+*	Update Slidebars plugin to v2.0.2: [click here for info](https://www.adchsm.com/slidebars/features/ "Slidebars Features")
+*	Feature: An unlimited amount of off-canvas sidebars (No longer just one left, one right)
+*	Feature: 2 new locations (top and bottom)
+*	Feature: 2 new effects (reveal and shift)
+*	Tested with WordPress 4.6
 
 = 0.1.2 =
 
