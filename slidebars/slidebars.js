@@ -1,4 +1,4 @@
-/*!
+;/*!
  * Slidebars - A jQuery Framework for Off-Canvas Menus and Sidebars
  * Version: 2.0.2
  * Url: http://www.adchsm.com/slidebars/
@@ -8,7 +8,11 @@
  * License url: http://www.adchsm.com/slidebars/license/
  */
 
-var slidebars = function () {
+/*!
+ * Modified by: Jory Hogeveen
+ */
+
+var slidebars = function ($) {
 
 	/**
 	 * Setup
