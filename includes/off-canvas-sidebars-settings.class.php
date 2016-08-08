@@ -62,7 +62,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function register_settings() {
-		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' );
+		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Settings', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
 		
 		register_setting( $this->settings_tab, $this->general_key, array( $this, 'validate_input' ) );
@@ -70,7 +70,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		
 		add_settings_section( 
 			'section_general', 
-			esc_attr__( 'Off-Canvas Sidebars Settings', 'off-canvas-sidebars' ), 
+			esc_attr__( 'Global Settings', 'off-canvas-sidebars' ), 
 			array( $this, 'register_general_settings' ), 
 			$this->settings_tab 
 		);
@@ -642,6 +642,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
 		?>
 	<div class="wrap">
+		<h1><?php _e( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) ?></h1>
 		<?php $this->plugin_options_tabs(); ?>
 		<div class="<?php echo $this->plugin_key ?> container">
 
