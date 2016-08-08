@@ -156,22 +156,24 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'section_general', 
 			array( 'name' => 'background_color', 'description' => __( 'Choose a background color for the site container. Default: <code>#ffffff</code>.', 'off-canvas-sidebars' ) ) 
 		);
-		add_settings_field( 
-			'website_before_hook', 
-			esc_attr__( '"website_before" hook name', 'off-canvas-sidebars' ), 
-			array( $this, 'text_option' ), 
-			$this->settings_tab, 
-			'section_general', 
-			array( 'name' => 'website_before_hook', 'placeholder' => 'website_before' ) 
-		);
-		add_settings_field( 
-			'website_after_hook', 
-			esc_attr__( '"website_after" hook name', 'off-canvas-sidebars' ), 
-			array( $this, 'text_option' ), 
-			$this->settings_tab, 
-			'section_general', 
-			array( 'name' => 'website_after_hook', 'placeholder' => 'website_after' ) 
-		);
+		if ( get_template() != 'genesis' ) {
+			add_settings_field( 
+				'website_before_hook', 
+				esc_attr__( '"website_before" hook name', 'off-canvas-sidebars' ), 
+				array( $this, 'text_option' ), 
+				$this->settings_tab, 
+				'section_general', 
+				array( 'name' => 'website_before_hook', 'placeholder' => 'website_before' ) 
+			);
+			add_settings_field( 
+				'website_after_hook', 
+				esc_attr__( '"website_after" hook name', 'off-canvas-sidebars' ), 
+				array( $this, 'text_option' ), 
+				$this->settings_tab, 
+				'section_general', 
+				array( 'name' => 'website_after_hook', 'placeholder' => 'website_after' ) 
+			);
+		}
 		add_settings_field( 
 			'compatibility_position_fixed', 
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ), 
