@@ -70,6 +70,7 @@ class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
             	<div class="inner">
                 <?php if ( $widget_data['show_icon'] == 1 ) { ?>
                 	<?php if ( $widget_data['icon'] != '' ) { ?>
+                	<?php if ( strpos( $widget_data['icon'], 'dashicons' ) !== false ) { wp_enqueue_style('dashicons'); } ?>
                 	<span class="icon <?php echo $widget_data['icon'] ?>"></span>
 					<?php } else { 
 					wp_enqueue_style('dashicons'); ?>
