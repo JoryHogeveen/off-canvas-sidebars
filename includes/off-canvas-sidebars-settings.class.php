@@ -749,7 +749,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 					// Dynamic sidebar ID
 					if ( $('.js-dynamic-id').length ) {
-						$('.postbox').each(function(){
+						$('.postbox').each(function() {
 							var sidebar = this;
 							$('.js-dynamic-id', sidebar).text( $('input.off_canvas_sidebars_options_sidebars_id', sidebar).val() );
 							$('.sidebar_classes').show();
@@ -758,13 +758,33 @@ class OCS_Off_Canvas_Sidebars_Settings {
 							});
 						});
 					}
-				});
 
-				jQuery(document).ready( function ($) {
 					// close postboxes that should be closed
 					$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
 					// postboxes setup
-					postboxes.add_postbox_toggles('toplevel_page_genesis');
+					postboxes.add_postbox_toggles('<?php echo $this->plugin_key ?>');
+
+					// Half opacity for closed disabled sidebars
+					$('.postbox').each(function(){
+						var sidebar = this;
+						if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') && $(sidebar).hasClass('closed') ) {
+							$(sidebar).css('opacity', '0.5');
+						}
+						$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).on('change', function() {
+							if ( ! $(this).is(':checked') && $(sidebar).hasClass('closed') ) {
+								$(sidebar).css('opacity', '0.5');
+							} else {
+								$(sidebar).css('opacity', '');
+							}
+						});
+						$(sidebar).on('click', function() {
+							if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') && $(sidebar).hasClass('closed') ) {
+								$(sidebar).css('opacity', '0.5');
+							} else {
+								$(sidebar).css('opacity', '');
+							}
+						});
+					});
 				});
 			-->
 			</script>
