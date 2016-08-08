@@ -157,6 +157,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Add nessesary scripts and styles
 	 *
 	 * @since   0.1
+	 * @since   0.2  Add our own scripts and styles + localize them
 	 * @return  void
 	 */
 	function add_styles_scripts() {
