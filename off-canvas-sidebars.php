@@ -459,7 +459,10 @@ class OCS_Off_Canvas_Sidebars {
 		if ( version_compare( $db_version, '0.2', '<' ) ) {
 			foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 				if ( empty( $sidebar_data['label'] ) ) {
+					// Label is new
 					$settings['sidebars'][ $sidebar_id ]['label'] = __( ucfirst( $sidebar_id ), 'off-canvas-sidebars' );
+					// Location is new. In older versions the location was the sidebar_id (left or right)
+					$settings['sidebars'][ $sidebar_id ]['location'] = $sidebar_id;
 				}
 			}
 		}
