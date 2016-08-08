@@ -99,7 +99,7 @@ The final output of your theme should be similar to this:
 *	Feature: 2 new effects (reveal and shift)
 *	UI: Improved settings pages
 *	I18n: Translations are now managed at [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars "translate.wordpress.org")
-*	Updated screenshots
+*	Screenshots updated
 *	Tested with WordPress 4.6
 
 = 0.1.2 =
