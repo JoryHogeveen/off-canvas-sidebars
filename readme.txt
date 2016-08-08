@@ -94,6 +94,7 @@ The final output of your theme should be similar to this:
 = 0.2.0.1 =
 
 *	Fix: Global variable bug
+*	UI: Improve settings page
 
 = 0.2 =
 
