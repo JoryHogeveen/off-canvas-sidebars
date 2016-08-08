@@ -95,7 +95,7 @@ class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
-		global $off_canvas_sidebars;
+		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
 		//print_r($this);

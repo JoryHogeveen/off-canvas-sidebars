@@ -46,7 +46,8 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	}
 	
 	function meta_box() {
-		global $_nav_menu_placeholder, $nav_menu_selected_id, $off_canvas_sidebars;
+		global $_nav_menu_placeholder, $nav_menu_selected_id;
+		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
 		?>
 		<div class="off-canvas-control-meta-box posttypediv" id="off-canvas-control-meta-box">
@@ -142,7 +143,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	 * @param 	int 	$menu_item_db_id
 	 */
 	public function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0 ) {
-		global $off_canvas_sidebars;
+		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		if (empty($_POST['menu-item-url'][$menu_item_db_id]) || $_POST['menu-item-url'][$menu_item_db_id] != '#off_canvas_control')
 			return;
 		
