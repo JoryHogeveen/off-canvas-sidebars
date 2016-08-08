@@ -163,10 +163,9 @@ class OCS_Off_Canvas_Sidebars {
 
 			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
 			$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
+			$this->general_labels = $this->get_general_labels();
 
 			$this->maybe_db_update();
-
-			$this->general_labels = $this->get_general_labels();
 			
 			// Register the widget
 			include_once 'widgets/off-canvas-sidebars-widget.php';
@@ -363,7 +362,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return	String	$key
 	 * @since   0.1
 	 */
-	function get_sidebar_key_by_label($label) {
+	function get_sidebar_key_by_label( $label ) {
 		foreach ( $this->general_settings['sidebars'] as $key => $value ) {
 			if ( $label == $value['label'] ) 
 				return $key;
@@ -378,7 +377,7 @@ class OCS_Off_Canvas_Sidebars {
 	 */
 	function is_sidebar_enabled() {
 		foreach ( $this->general_settings['sidebars'] as $key => $value ) {
-			if ( $value['enable'] == 1 ) 
+			if ( 1 == $value['enable'] ) 
 				return true;
 		}
 		return false;
@@ -392,12 +391,12 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since   0.1
 	 */
 	function register_sidebars() {
-		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
-			if ( $sidebar_data['enable'] == 1 ) {
+		foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+			if ( 1 == $sidebar_data['enable'] ) {
 				$args = array(
-					'id'            => 'off-canvas-' . $sidebar,
+					'id'            => 'off-canvas-' . $sidebar_id,
 					'class'			=> 'off-canvas-sidebar',
-					'name'          => __( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar ]['label'],
+					'name'          => __( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar_id ]['label'],
 					'description'   => __( 'This is a widget area that is used for off-canvas widgets.', 'off-canvas-sidebars' ),
 					//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
 					//'after_widget' 	=> '</div></div></section>',
@@ -452,7 +451,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return  void
 	 */
 	private function db_update() {
-		$settings = $this->get_settings();
+		$settings = $this->general_settings;
 		$db_version = strtolower( $settings['db_version'] );
 
 		// Compare versions
@@ -469,6 +468,7 @@ class OCS_Off_Canvas_Sidebars {
 
 		$settings['db_version'] = $this->db_version;
 		update_option( $this->general_key, $settings );
+		$this->general_settings = $settings;
 	}
 	
 	/**
@@ -479,8 +479,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @return  void
 	 */
 	public function maybe_db_update() {
-		$settings = $this->get_settings();
-		$db_version = strtolower( $settings['db_version'] );
+		$db_version = strtolower( $this->general_settings['db_version'] );
 		if ( version_compare( $db_version, $this->db_version, '<' ) ) {
 			$this->db_update();
 		}
