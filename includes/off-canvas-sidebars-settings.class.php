@@ -122,7 +122,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			array( $this, 'number_option' ), 
 			$this->settings_tab, 
 			'section_general', 
-			array( 'name' => 'disable_over', 'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', 'off-canvas-sidebars' ) ) 
+			array( 'name' => 'disable_over', 'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', 'off-canvas-sidebars' ), 'input_after' => '<code>px</code>' ) 
 		);
 		add_settings_field( 
 			'hide_control_classes', 
@@ -399,7 +399,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		if ( isset( $args['name'] ) ) {
 			$classes = $this->get_option_classes( $prefixClasses, $args['name'] );
 		?><fieldset>
-			<input type="number" id="<?php echo $prefixId.'_'.$args['name']; ?>" class="<?php echo $classes; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" min="1" max="" step="1" /> px&nbsp;&nbsp;
+			<input type="number" id="<?php echo $prefixId.'_'.$args['name']; ?>" class="<?php echo $classes; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" min="1" max="" step="1" /> <?php echo ( ! empty( $args['input_after'] ) ) ? $args['input_after'] : ''; ?>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
 			<?php } ?>
