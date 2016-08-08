@@ -22,6 +22,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	private $general_labels = array();
 
 	function __construct() {
+		$this->plugin_key = Off_Canvas_Sidebars()->get_plugin_key();
 		add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_init', array( $this, 'register_importexport_settings' ) );
@@ -37,11 +38,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$this->general_settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
-		$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
 	}
 	
 	function enqueue_styles_scripts( $hook ) {
-		if ( $hook != 'appearance_page_off-canvas-sidebars-settings' ) {
+		if ( $hook != 'appearance_page_' . $this->plugin_key ) {
 			return;
 		}
 
@@ -617,7 +617,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 * @since 0.1
 	 */
 	function add_admin_menus() {
-		add_submenu_page( 'themes.php', esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), 'edit_theme_options', 'off-canvas-sidebars-settings', array( $this, 'plugin_options_page' ) );
+		add_submenu_page( 'themes.php', esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), 'edit_theme_options', $this->plugin_key, array( $this, 'plugin_options_page' ) );
 	}
 
 	/*
@@ -633,7 +633,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		?>
 	<div class="wrap">
 		<?php $this->plugin_options_tabs(); ?>
-		<div class="off-canvas-sidebars-settings container">
+		<div class="<?php echo $this->plugin_key ?> container">
 
 			<form id="<?php echo $this->general_key ?>" method="post" action="options.php" enctype="multipart/form-data">
 
@@ -648,7 +648,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 				<?php } elseif ( $tab == $this->sidebars_tab ) { ?>
 				<p>
-					Add a new sidebar <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e('Name', 'off-canvas-sidebars') ?>" /> 
+					Add a new sidebar <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e( 'Name', 'off-canvas-sidebars' ) ?>" /> 
 					<?php submit_button( __( 'Add sidebar', 'off-canvas-sidebars'), 'primary', 'submit', false ); ?>
 				</p>
 				<?php } ?>
@@ -888,12 +888,12 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		?>
 	<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
-	<p><a class="submit button" href="?off-canvas-sidebars-settings-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
+	<p><a class="submit button" href="?<?php echo $this->plugin_key ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
 
 	<p>
-		<input type="hidden" name="off-canvas-sidebars-settings-import" id="off-canvas-sidebars-settings-import" value="true" />
-		<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', 'off-canvas-sidebars-settings-submit', false ); ?>
-		<input type="file" name="off-canvas-sidebars-settings-import-file" id="off-canvas-sidebars-settings-import-file" />
+		<input type="hidden" name="<?php echo $this->plugin_key ?>-import" id="<?php echo $this->plugin_key ?>-import" value="true" />
+		<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', $this->plugin_key . '-submit', false ); ?>
+		<input type="file" name="<?php echo $this->plugin_key ?>-import-file" id="<?php echo $this->plugin_key ?>-import-file" />
 	</p>
 
 	<?php
@@ -928,8 +928,8 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		}
 
 		// export settings
-		if ( isset( $_GET['off-canvas-sidebars-settings-export'] ) ) {
-			header( "Content-Disposition: attachment; filename=off-canvas-sidebars-settings.txt" );
+		if ( isset( $_GET[ $this->plugin_key . '-export'] ) ) {
+			header( "Content-Disposition: attachment; filename=" . $this->plugin_key . ".txt" );
 			header( 'Content-Type: text/plain; charset=utf-8' );
 			$general = $this->general_settings;
 
@@ -941,10 +941,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		}
 
 		// import settings
-		if ( isset( $_POST['off-canvas-sidebars-settings-import'] ) ) {
+		if ( isset( $_POST[ $this->plugin_key . '-import'] ) ) {
 			$gocs_message = '';
-			if ( $_FILES['off-canvas-sidebars-settings-import-file']['tmp_name'] ) {
-				$import = explode( "\n", file_get_contents( $_FILES['off-canvas-sidebars-settings-import-file']['tmp_name'] ) );
+			if ( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) {
+				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) );
 				if ( array_shift( $import ) == "[START=OCS SETTINGS]" && array_pop( $import ) == "[STOP=OCS SETTINGS]" ) {
 					foreach ( $import as $import_option ) {
 						list( $key, $value ) = explode( "\t", $import_option );
@@ -959,7 +959,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				$gocs_message = 3;
 			}
 
-			wp_redirect( admin_url( '/themes.php?page=off-canvas-sidebars-settings&tab=' . $this->importexport_tab . '&gocs_message='.esc_attr( $gocs_message ) ) );
+			wp_redirect( admin_url( '/themes.php?page=' . $this->plugin_key . '&tab=' . $this->importexport_tab . '&gocs_message='.esc_attr( $gocs_message ) ) );
 			exit;
 		}
 	}
