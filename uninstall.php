@@ -1,4 +1,12 @@
 <?php
+/**
+ * Off-Canvas Sidebars plugin uninstall
+ *
+ * Uninstall
+ * @author Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @version 0.2
+ */
 
 //if uninstall not called from WordPress exit
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
@@ -8,9 +16,16 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
 if ( ! is_multisite() ) {
 	ocs_uninstall();
 } else {
-    $blogs = wp_get_sites(); // Sadly does not work for large networks -> return false
-	if ($blogs) {
+	global $wp_version;
+	if ( version_compare( $wp_version, '4.5.999', '<' ) ) {
+		// Sadly does not work for large networks -> return false
+		$blogs = wp_get_sites();
+	} else {
+		$blogs = get_sites();
+	}
+	if ( ! empty( $blogs ) ) {
 		foreach ( $blogs as $blog ) {
+			$blog = (array) $blog;
 			switch_to_blog( intval( $blog['blog_id'] ) );
 			ocs_uninstall();
 		}

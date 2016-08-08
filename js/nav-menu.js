@@ -1,15 +1,15 @@
-/**
+;/**
  * Off-Canvas Sidebars menu meta box scripts
  *
  * Menu Meta Box scripts
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.1.2
+ * @version 0.2
  *
  * Credits to the Polylang plugin
  */
 
-;jQuery(document).ready(function($) {
+jQuery(document).ready(function($) {
 	
 	$("input[value='#off_canvas_control'][type=text]").parent().parent().parent().parent().each( function() {
 		$(this).addClass('off-canvas-control');

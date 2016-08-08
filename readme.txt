@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, off-canvas, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 3.8
 Tested up to: 4.6
-Stable tag: 0.1.2
+Stable tag: 0.2
 
 Add off-canvas sidebars using the Slidebars jQuery plugin.
 
@@ -23,8 +23,8 @@ If the plugin does not work for your theme, please let me know through the suppo
 
 = Overview / Features =
 
-*	Add off-canvas sidebars to the left and right of your website
-*	You can add the control buttons with a widget, a menu item or with custom code, [click here for documentation](http://plugins.adchsm.me/slidebars/usage.php "click here for documentation")
+*	Add off-canvas sidebars to the left, right, top and bottom of your website
+*	You can add the control buttons with a widget, a menu item or with custom code, [click here for documentation](https://www.adchsm.com/slidebars/help/usage/ "click here for documentation")
 *	Various customisation options under the Appearances menu
 
 = It's not working! / I found a bug! =
@@ -33,7 +33,7 @@ Please let me know through the support and add a plugins and themes list! :)
 
 = Credits =
 
-*	Slidebars jQuery plugin by [Adam](http://plugins.adchsm.me/slidebars/ "Adam"), thank you for this great plugin!
+*	Slidebars jQuery plugin by [Adam](https://www.adchsm.com/slidebars/ "Adam"), thank you for this great plugin!
 
 == Installation ==
 
@@ -74,19 +74,33 @@ The final output of your theme should be similar to this:
 
 = Custom theme setup =
 
-*	Please [click here for documentation](http://plugins.adchsm.me/slidebars/usage.php "click here for documentation").
+*	Please [click here for documentation](https://www.adchsm.com/slidebars/help/usage/ "click here for documentation").
 *	Disable the front-end option in the settings page under the Appearances menu.
 *	Scripts and styles will still be included!
 
 == Screenshots ==
 
 1. Settings page
-2. Control Widget
-3. Menu item
-4. Sidebar left (Push effect) -> image from Slidebars website
-5. Sidebar right (Overlay effect) -> image from Slidebars website
+2. Sidebars settings page (sidebars closed)
+3. Sidebars settings page (sidebar opened)
+4. Control Widget
+5. Menu item
+6. Sidebar left (Push effect) -> image from Slidebars website
+7. Sidebar left (Overlay effect) -> image from Slidebars website
+8. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.2 =
+
+*	Update Slidebars plugin to v2.0.2: [click here for info](https://www.adchsm.com/slidebars/features/ "Slidebars Features")
+*	Feature: An unlimited amount of off-canvas sidebars (No longer just one left, one right)
+*	Feature: 2 new locations (top and bottom)
+*	Feature: 2 new effects (reveal and shift)
+*	UI: Improved settings pages
+*	I18n: Translations are now managed at [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars "translate.wordpress.org")
+*	Screenshots updated
+*	Tested with WordPress 4.6
 
 = 0.1.2 =
 
@@ -110,8 +124,13 @@ You can find me here:
 
 = Credits =
 
-*	Slidebars jQuery plugin by [Adam](http://plugins.adchsm.me/slidebars/ "Adam"), thank you for this great plugin!
+*	Slidebars jQuery plugin by [Adam](https://www.adchsm.com/slidebars/ "Adam"), thank you for this great plugin!
 
 = Ideas? =
 
 Please let me know through the support page!
+
+== Upgrade Notice ==
+
+= 0.2 =
+Version 0.2 introduces some radical code changes to the plugin. Please clear your cache after updating
