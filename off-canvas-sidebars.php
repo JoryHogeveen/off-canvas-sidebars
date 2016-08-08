@@ -13,6 +13,12 @@
  
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
+if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', '0.2.5' );
+if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
+if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
+if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
 class OCS_Off_Canvas_Sidebars {
 
 	/**
@@ -29,7 +35,15 @@ class OCS_Off_Canvas_Sidebars {
 	 * @var    String
 	 * @since  0.1
 	 */
-	protected $version = '0.2';
+	protected $version = OCS_PLUGIN_VERSION;
+	
+	/**
+	 * Database version
+	 *
+	 * @var    String
+	 * @since  0.2
+	 */
+	protected $db_version = '0';
 
 	/**
 	 * User ignore nag key
@@ -64,7 +78,7 @@ class OCS_Off_Canvas_Sidebars {
 	protected $plugin_key = 'off-canvas-sidebars-settings';
 
 	/**
-	 * Plugin general settings key
+	 * Plugin general settings key, also used as option key
 	 *
 	 * @var    Boolean
 	 * @since  0.1
@@ -94,6 +108,7 @@ class OCS_Off_Canvas_Sidebars {
 	 * @since  0.2
 	 */
 	protected $default_settings = array(
+		'db_version' => '0',
 		'enable_frontend' => 1,
 		'frontend_type' => 'action',
 		'site_close' => 1,
@@ -134,12 +149,9 @@ class OCS_Off_Canvas_Sidebars {
 	 */
 	function __construct() {
 		self::$_instance = $this;
-		
-		if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', $this->version );
-		if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
-		if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
-		if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-		if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
+		// DB version (only major version tags)
+		$this->db_version = substr( OCS_PLUGIN_VERSION, 0, 3 );
 		
 		$this->enable = true; // Added for possible use in future
 		if ($this->enable == true) {
@@ -148,6 +160,13 @@ class OCS_Off_Canvas_Sidebars {
 			
 			// Load translations
 			$this->load_textdomain();
+
+			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
+			$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
+
+			$this->maybe_db_update();
+
+			$this->general_labels = $this->get_general_labels();
 			
 			// Register the widget
 			include_once 'widgets/off-canvas-sidebars-widget.php';
@@ -190,11 +209,7 @@ class OCS_Off_Canvas_Sidebars {
 	function init() {		
 		// Get the current user
 		//$this->curUser = wp_get_current_user();
-		
-		$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
-		$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
-		$this->general_labels = $this->get_general_labels();
-		
+
 		// Register the enabled sidebars
 		$this->register_sidebars();
 		
@@ -411,7 +426,7 @@ class OCS_Off_Canvas_Sidebars {
 		if ( !$this_plugin ) $this_plugin = OCS_BASENAME;
 
 		if ( $file == $this_plugin ) {
-			$settings_link = '<a href="'.admin_url( 'themes.php?page=off-canvas-sidebars-settings' ).'">'.esc_attr__( 'Settings', 'off-canvas-sidebars' ).'</a>';
+			$settings_link = '<a href="'.admin_url( 'themes.php?page=' . $this->plugin_key ).'">'.esc_attr__( 'Settings', 'off-canvas-sidebars' ).'</a>';
 			array_unshift( $links, $settings_link );
 		}
 
@@ -426,6 +441,46 @@ class OCS_Off_Canvas_Sidebars {
 	 */
 	function load_textdomain() {
 		load_plugin_textdomain( 'off-canvas-sidebars', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' ); 
+	}
+
+
+	/**
+	 * Update settings
+	 *
+	 * @since   0.2
+	 * @access  private
+	 * @return  void
+	 */
+	private function db_update() {
+		$settings = $this->get_settings();
+		$db_version = strtolower( $settings['db_version'] );
+
+		// Compare versions
+		if ( version_compare( $db_version, '0.2', '<' ) ) {
+			foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+				if ( empty( $sidebar_data['label'] ) ) {
+					$settings['sidebars'][ $sidebar_id ]['label'] = __( ucfirst( $sidebar_id ), 'off-canvas-sidebars' );
+				}
+			}
+		}
+
+		$settings['db_version'] = $this->db_version;
+		update_option( $this->general_key, $settings );
+	}
+	
+	/**
+	 * Check the correct DB version in the DB
+	 *
+	 * @since   0.2
+	 * @access  public
+	 * @return  void
+	 */
+	public function maybe_db_update() {
+		$settings = $this->get_settings();
+		$db_version = strtolower( $settings['db_version'] );
+		if ( version_compare( $db_version, $this->db_version, '<' ) ) {
+			$this->db_update();
+		}
 	}
 	
 } // end class
