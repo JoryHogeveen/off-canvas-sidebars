@@ -9,11 +9,11 @@
 
 if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 	var OCS_OFF_CANVAS_SIDEBARS = {
-		"site_close":"",
-		"disable_over":"",
-		"hide_control_classes":"",
-		"scroll_lock":"",
-		"sidebars":{}
+		"site_close": true,
+		"disable_over": false,
+		"hide_control_classes": false,
+		"scroll_lock": false,
+		"sidebars": {}
 	};
 }
 
@@ -26,9 +26,8 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 		if ( false === OCS_OFF_CANVAS_SIDEBARS.slidebars_controller ) {
 			return;
 		}
-
+		OCS_OFF_CANVAS_SIDEBARS.slidebars_controller.init();
 		var controller = OCS_OFF_CANVAS_SIDEBARS.slidebars_controller;
-		controller.init();
 
 		$( '.sb-slidebar' ).each( function(e) {
 			var id = $( this ).attr('off-canvas-sidebar-id');
@@ -39,7 +38,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 
 				// Toggle the slidebar with respect for the disable_over setting
 				if ( OCS_OFF_CANVAS_SIDEBARS.disable_over ) {
-				if ( $( window ).width() <= disable_over ) {
+				if ( $( window ).width() <= parseInt( OCS_OFF_CANVAS_SIDEBARS.disable_over ) ) {
   					controller.toggle( 'sb-' + id );
   				}
 				} else {
@@ -85,7 +84,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 		// Disable slidebars when the window is wider than the set width
 		if ( OCS_OFF_CANVAS_SIDEBARS.disable_over ) {
 			var disableOver = function() {
-				if ( $( window ).width() > OCS_OFF_CANVAS_SIDEBARS.disable_over ) {
+				if ( $( window ).width() > parseInt( OCS_OFF_CANVAS_SIDEBARS.disable_over ) ) {
 					controller.close();
 					// Hide control classes
 					if ( OCS_OFF_CANVAS_SIDEBARS.hide_control_classes ) {
