@@ -513,6 +513,4 @@ class OCS_Off_Canvas_Sidebars {
 function Off_Canvas_Sidebars() {
 	return OCS_Off_Canvas_Sidebars::get_instance();
 }
-
-// Global for backwards compatibility.
-$GLOBALS['off_canvas_sidebars'] = Off_Canvas_Sidebars();
+Off_Canvas_Sidebars();
