@@ -239,7 +239,7 @@ class OCS_Off_Canvas_Sidebars {
 	function compatibility_notice() {
 		if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) != $this->version ) {
 			$class = 'error notice is-dismissible';
-			$message = '<strong>Off-Canvas Sidebars:</strong> ' . $this->general_labels['compatibility_notice_theme'];
+			$message = '<strong>' . __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> ' . $this->general_labels['compatibility_notice_theme'];
 			$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'off-canvas-sidebars' ) . '</span></a>';
 			$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e){e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
 			echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
