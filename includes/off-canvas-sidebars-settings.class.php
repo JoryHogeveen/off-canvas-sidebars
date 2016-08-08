@@ -336,10 +336,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		if ( isset( $args['sidebar'] ) ) {
 			$classes = $this->get_option_classes( $prefixClasses, 'style' );
 		?><fieldset>
-			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_push'; ?>" value="push" <?php checked( $prefixValue['style'], 'push' ); ?> /> <?php _e( 'Sidebar pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_overlay'; ?>" value="overlay" <?php checked( $prefixValue['style'], 'overlay' ); ?> /> <?php _e( 'Sidebar overlays the site when opened.', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_reveal'; ?>" value="reveal" <?php checked( $prefixValue['style'], 'reveal' ); ?> /> <?php _e( 'Sidebar reveals when opened.', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_shift'; ?>" value="shift" <?php checked( $prefixValue['style'], 'shift' ); ?> /> <?php _e( 'Sidebar shifts when opened.', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_push'; ?>" value="push" <?php checked( $prefixValue['style'], 'push' ); ?> /> <?php _e( 'Sidebar slides and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_reveal'; ?>" value="reveal" <?php checked( $prefixValue['style'], 'reveal' ); ?> /> <?php _e( 'Sidebar reveals and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_shift'; ?>" value="shift" <?php checked( $prefixValue['style'], 'shift' ); ?> /> <?php _e( 'Sidebar shifts and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_style_overlay'; ?>" value="overlay" <?php checked( $prefixValue['style'], 'overlay' ); ?> /> <?php _e( 'Sidebar overlays the site when opened.', 'off-canvas-sidebars' ); ?></label>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
 			<?php } ?>
