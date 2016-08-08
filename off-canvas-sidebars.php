@@ -134,9 +134,9 @@ class OCS_Off_Canvas_Sidebars {
 		'label' => '',
 		'location' => 'left',
 		'style' => 'push',
-		'width' => 'default',
-		'width_input' => '',
-		'width_input_type' => '%',
+		'size' => 'default',
+		'size_input' => '',
+		'size_input_type' => '%',
 		'background_color' => '',
 		'background_color_type' => '',
 	);
@@ -463,6 +463,20 @@ class OCS_Off_Canvas_Sidebars {
 					$settings['sidebars'][ $sidebar_id ]['label'] = __( ucfirst( $sidebar_id ), 'off-canvas-sidebars' );
 					// Location is new. In older versions the location was the sidebar_id (left or right)
 					$settings['sidebars'][ $sidebar_id ]['location'] = $sidebar_id;
+					if ( isset($sidebar_data['width']) ) {
+						if ( $sidebar_data['width'] == 'thin' ) {
+							$sidebar_data['width'] = 'small';
+						} elseif ( $sidebar_data['width'] == 'wide' ) {
+							$sidebar_data['width'] = 'large';
+						}
+						$settings['sidebars'][ $sidebar_id ]['size'] = $sidebar_data['width'];
+					}
+					if ( isset($sidebar_data['width_input']) ) {
+						$settings['sidebars'][ $sidebar_id ]['size_input'] = $sidebar_data['width_input'];
+					}
+					if ( isset($sidebar_data['width_input_type']) ) {
+						$settings['sidebars'][ $sidebar_id ]['size_input_type'] = $sidebar_data['width_input_type'];
+					}
 				}
 			}
 		}

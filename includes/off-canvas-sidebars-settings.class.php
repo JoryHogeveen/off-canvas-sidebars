@@ -217,9 +217,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			array( 'sidebar' => $sidebar_id, 'required' => true ) 
 		);
 		add_settings_field( 
-			'sidebar_width', 
-			esc_attr__( 'Width', 'off-canvas-sidebars' ), 
-			array( $this, 'sidebar_width' ), 
+			'sidebar_size', 
+			esc_attr__( 'Size', 'off-canvas-sidebars' ), 
+			array( $this, 'sidebar_size' ), 
 			$this->sidebars_tab, 
 			'section_sidebar_' . $sidebar_id, 
 			array( 'sidebar' => $sidebar_id, 'description' => __( 'You can overwrite this with CSS', 'off-canvas-sidebars' ) ) 
@@ -300,24 +300,24 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		}
 	}
 	
-	function sidebar_width( $args ) {
+	function sidebar_size( $args ) {
 		$prefixes = $this->get_option_prefixes( $args );
 		$prefixName = $prefixes['prefixName'];
 		$prefixValue = $prefixes['prefixValue'];
 		$prefixId = $prefixes['prefixId'];
 		$prefixClasses = $prefixes['prefixClasses'];
 		if ( isset( $args['sidebar'] ) ) {
-			$classes = $this->get_option_classes( $prefixClasses, 'width' );
+			$classes = $this->get_option_classes( $prefixClasses, 'size' );
 		?><fieldset>
-			<label><input type="radio" name="<?php echo $prefixName.'[width]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_width_default'; ?>" value="default" <?php checked( $prefixValue['width'], 'default' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefixName.'[width]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_width_thin'; ?>" value="thin" <?php checked( $prefixValue['width'], 'thin' ); ?> /> <?php _e( 'Thin', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefixName.'[width]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_width_wide'; ?>" value="wide" <?php checked( $prefixValue['width'], 'wide' ); ?> /> <?php _e( 'Wide', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefixName.'[width]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_width_custom'; ?>" value="custom" <?php checked( $prefixValue['width'], 'custom' ); ?> /> <?php _e( 'Custom', 'off-canvas-sidebars' ); ?></label>: 
+			<label><input type="radio" name="<?php echo $prefixName.'[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_size_default'; ?>" value="default" <?php checked( $prefixValue['size'], 'default' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_size_small'; ?>" value="small" <?php checked( $prefixValue['size'], 'small' ); ?> /> <?php _e( 'Small', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_size_large'; ?>" value="large" <?php checked( $prefixValue['size'], 'large' ); ?> /> <?php _e( 'Large', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefixName.'[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_size_custom'; ?>" value="custom" <?php checked( $prefixValue['size'], 'custom' ); ?> /> <?php _e( 'Custom', 'off-canvas-sidebars' ); ?></label>: 
 			<div style="display: inline-block; vertical-align:top">
-				<input type="number" name="<?php echo $prefixName.'[width_input]'; ?>" class="<?php echo $this->get_option_classes( $prefixClasses, 'width_input' ); ?>" min="1" max="" step="1" value="<?php echo $prefixValue['width_input'] ?>" /> 
-				<select name="<?php echo $prefixName.'[width_input_type]'; ?>" class="<?php echo $this->get_option_classes( $prefixClasses, 'width_input_type' ); ?>">
-					<option value="%" <?php selected( $prefixValue['width_input_type'], '%' ); ?>>%</option>
-					<option value="px" <?php selected( $prefixValue['width_input_type'], 'px' ); ?>>px</option>
+				<input type="number" name="<?php echo $prefixName.'[size_input]'; ?>" class="<?php echo $this->get_option_classes( $prefixClasses, 'size_input' ); ?>" min="1" max="" step="1" value="<?php echo $prefixValue['size_input'] ?>" /> 
+				<select name="<?php echo $prefixName.'[size_input_type]'; ?>" class="<?php echo $this->get_option_classes( $prefixClasses, 'size_input_type' ); ?>">
+					<option value="%" <?php selected( $prefixValue['size_input_type'], '%' ); ?>>%</option>
+					<option value="px" <?php selected( $prefixValue['size_input_type'], 'px' ); ?>>px</option>
 				</select>
 			</div>
 			<?php if ( isset( $args['description'] ) ) { ?>

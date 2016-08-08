@@ -138,12 +138,12 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		$return = '';
 		switch( $attr ) {
 			case 'class':
-				$return .= ' sb-width-' . esc_attr( $data['width'] );
+				$return .= ' sb-size-' . esc_attr( $data['size'] );
 				$return .= ' sb-location-' . esc_attr( $data['location'] );
 				$return .= ' sb-style-' . esc_attr( $data['style'] );
 			break;
 			case 'other':
-				if ( $data['width'] == 'custom' ) { $return .= ' data-sb-width="' . $data['width_input'] . $data['width_input_type'] . '"'; }
+				//if ( $data['size'] == 'custom' ) { $return .= ' data-sb-size="' . $data['width_input'] . $data['width_input_type'] . '"'; }
 
 				// Slidebars 2.0
 				$return .= ' off-canvas="sb-' . esc_attr( $sidebar ) . ' ' . esc_attr( $data['location'] ) . ' ' . esc_attr( $data['style'] ) . '"';
@@ -227,12 +227,12 @@ foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 				$atts .= 'background-color: ' . $sidebar_data['background_color'] . ';';
 			}
 		}
-		if ( $sidebar_data['width'] == 'custom' && $sidebar_data['width_input'] != '' ) {
+		if ( $sidebar_data['size'] == 'custom' && $sidebar_data['size_input'] != '' ) {
 			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ) ) ) {
-				$atts .= 'width: ' . (int) $sidebar_data['width_input'] . $sidebar_data['width_input_type'] . ';';
+				$atts .= 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 			elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ) ) ) {
-				$atts .= 'height: ' . (int) $sidebar_data['width_input'] . $sidebar_data['width_input_type'] . ';';
+				$atts .= 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 		}
 ?>
