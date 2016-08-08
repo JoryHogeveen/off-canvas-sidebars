@@ -162,10 +162,11 @@ class OCS_Off_Canvas_Sidebars {
 			$this->load_textdomain();
 
 			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
-			$this->general_settings = $this->get_settings(); // Merge DB settings with default settings
-			$this->general_labels = $this->get_general_labels();
-
 			$this->maybe_db_update();
+
+			// Merge DB settings with default settings
+			$this->general_settings = $this->get_settings();
+			$this->general_labels = $this->get_general_labels();
 			
 			// Register the widget
 			include_once 'widgets/off-canvas-sidebars-widget.php';
