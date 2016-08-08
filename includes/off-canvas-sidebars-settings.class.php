@@ -45,12 +45,20 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			return;
 		}
 
-		wp_enqueue_style( 'off-canvas-sidebars-admin', OCS_PLUGIN_URL . '/css/off-canvas-sidebars-admin.css', array(), OCS_PLUGIN_VERSION );
-
 		// Add the color picker css and script file
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( 'postbox' );
+
+		// Add our own scripts
+		wp_enqueue_style( 'off-canvas-sidebars-admin', OCS_PLUGIN_URL . '/css/off-canvas-sidebars-admin.css', array(), OCS_PLUGIN_VERSION );
+		wp_enqueue_script( 'off-canvas-sidebars-settings', OCS_PLUGIN_URL . '/js/off-canvas-sidebars-settings.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
+		wp_localize_script( 'off-canvas-sidebars-settings', 'OCS_OFF_CANVAS_SIDEBARS_SETTINGS', array(
+			'general_key' => $this->general_key,
+			'plugin_key' => $this->plugin_key,
+			'__required_fields_not_set' => __( 'Some required fields are not set!', 'off-canvas-sidebars' ),
+		) );
+
 	}
 
 	function register_settings() {
@@ -641,7 +649,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<?php if ( $tab != $this->importexport_tab ) { ?>
 				<p class="alignright"><?php submit_button( null, 'primary', 'submit', false ); ?></p>
 				<?php } ?>
-				<input type="hidden" name="ocs_tab" value="<?php echo $tab ?>" />
+				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $tab ?>" />
 
 				<?php if ( $tab == $this->settings_tab ) { ?>
 				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://www.adchsm.com/slidebars/help/usage/' ); ?></p>
@@ -666,149 +674,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<?php if ( $tab != $this->importexport_tab ) submit_button(); ?>
 
 			</form>
-			<script type="text/javascript">
-			<!--
-				jQuery(document).ready(function($){
-
-					// close postboxes that should be closed
-					$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-					// postboxes setup
-					postboxes.add_postbox_toggles('<?php echo $this->plugin_key ?>');
-
-					<?php foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) { ?>
-					/*ocs_show_hide_options( '#off_canvas_sidebars_options_sidebars_enable_<?php echo $sidebar_id; ?>', '.section_sidebar_<?php echo $sidebar_id; ?>' );*/
-					ocs_show_hide_options_radio( '.off_canvas_sidebars_options_sidebars_<?php echo $sidebar_id; ?>_background_color_type', '.off_canvas_sidebars_options_sidebars_<?php echo $sidebar_id; ?>_background_color_wrapper', 'color' );
-					<?php } ?>
-					ocs_show_hide_options_radio( '.off_canvas_sidebars_options_background_color_type', '.off_canvas_sidebars_options_background_color_wrapper', 'color' );
-					
-					function ocs_show_hide_options( trigger, target ) {
-						if ( ! $(trigger).is(':checked') ) {
-							$(target).slideUp('fast');              
-						}
-						$(trigger).change( function() {
-							if ( $(this).is(':checked') ) {
-								$(target).slideDown('fast');
-							} else {
-								$(target).slideUp('fast');
-							}
-						});
-					}
-
-					function ocs_show_hide_options_radio( trigger, target, compare ) {
-						if ( $(trigger).val() != compare ) {
-							$(target).slideUp('fast');              
-						}
-						$(trigger).change( function() {
-							if ($(this).val() == compare) {
-								$(target).slideDown('fast');
-							} else {
-								$(target).slideUp('fast');
-							}
-						});
-					}
-					
-					$('input.color-picker').wpColorPicker();
-
-					// Validate required fields
-					$('input.required', this).each(function(){
-						$(this).on('change', function() {
-							if ( $(this).val() == '' ) {
-								$(this).parents('tr').addClass('form-invalid');
-							} else {
-								$(this).parents('tr').removeClass('form-invalid');
-							}
-						});
-					});
-
-					// Validate form submit
-					$('#<?php echo $this->general_key ?>').submit( function(e) {
-						var valid = true;
-						var errors = {};
-						$('input.required', this).each(function(){
-							if ( $(this).val() == '' ) {
-								$(this).trigger('change');
-								valid = false;
-							}
-						});
-						if ( ! valid ) {
-							e.preventDefault();
-							alert('<?php _e('Some required fields are not set!', 'off-canvas-sidebars' ) ?>');
-						}
-					} );
-
-					<?php if ( $tab == $this->sidebars_tab ) { ?>
-
-					// Dynamic sidebar ID
-					if ( $('.js-dynamic-id').length ) {
-						$('.postbox').each(function() {
-							var sidebar = this;
-							$('.js-dynamic-id', sidebar).text( $('input.off_canvas_sidebars_options_sidebars_id', sidebar).val() );
-							$('.sidebar_classes').show();
-							$('input.off_canvas_sidebars_options_sidebars_id', this).on('keyup', function() {
-								$('.js-dynamic-id', sidebar).text( $(this).val() );
-							});
-						});
-					}
-
-					// Half opacity for closed disabled sidebars
-					$('.postbox').each(function(){
-						var sidebar = this;
-						$(sidebar).css({'border-left':'5px solid #eee'});
-						if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') ) {
-							if ( $(sidebar).hasClass('closed') ) {
-								$(sidebar).css('opacity', '0.5');
-							}
-							$(sidebar).css('border-left-color','#ffb900');
-						} else {
-							$(sidebar).css('border-left-color','#46b450');
-						}
-						$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).on('change', function() {
-							if ( ! $(this).is(':checked') ) {
-								$(sidebar).css('border-left-color','#ffb900');
-								if ( $(sidebar).hasClass('closed') ) {
-									$(sidebar).css('opacity', '0.5');
-								} else {
-									$(sidebar).css('opacity', '');
-								}
-							} else {
-								$(sidebar).css('border-left-color','#46b450');
-								$(sidebar).css('opacity', '');
-								$(sidebar).addClass('notice-warning').removeClass('notice-error').removeClass('notice-success');
-							}
-						});
-						$(sidebar).on('click', function() {
-							if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') && $(sidebar).hasClass('closed') ) {
-								$(sidebar).css('opacity', '0.5');
-							} else {
-								$(sidebar).css('opacity', '');
-							}
-						});
-					});
-
-					// Hide options when set to delete
-					$(document).on( 'change', '.off_canvas_sidebars_options_sidebars_delete', function() {
-						var sidebar = $(this).parents('.postbox');
-						if ( $(this).is(':checked') ) {
-							var parent_row = $(this).parents('tr');
-							$( 'tr', sidebar ).hide( 'fast', function() {
-								$( 'tr', sidebar ).each(function(){
-									if ( $(this).is( parent_row ) ) {
-										$(this).show( 'fast' );
-									}
-								});
-							} );
-							$(sidebar).css('border-left-color','#dc3232');
-						} else {
-							$( 'tr', sidebar ).show( 'fast' );
-							$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).trigger('change');
-						}
-					} );
-
-					<?php } ?>
-				});
-			-->
-			</script>
-
+			
 			<div class="ocs-sidebar">
 				<div class="ocs-credits">
 					<h3 class="hndle"><?php echo __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION ?></h3>
