@@ -705,18 +705,20 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 					// Hide options when set to delete
 					$(document).on( 'change', '.off_canvas_sidebars_options_sidebars_delete', function() {
-						var parent_container = $(this).parents('.postbox');
+						var sidebar = $(this).parents('.postbox');
 						if ( $(this).is(':checked') ) {
 							var parent_row = $(this).parents('tr');
-							$( 'tr', parent_container ).hide( 'fast', function() {
-								$( 'tr', parent_container ).each(function(){
+							$( 'tr', sidebar ).hide( 'fast', function() {
+								$( 'tr', sidebar ).each(function(){
 									if ( $(this).is( parent_row ) ) {
 										$(this).show( 'fast' );
 									}
 								});
 							} );
+							$(sidebar).css('border-left-color','#dc3232');
 						} else {
-							$( 'tr', parent_container ).show( 'fast' );
+							$( 'tr', sidebar ).show( 'fast' );
+							$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).trigger('change');
 						}
 					} );
 
@@ -767,14 +769,27 @@ class OCS_Off_Canvas_Sidebars_Settings {
 					// Half opacity for closed disabled sidebars
 					$('.postbox').each(function(){
 						var sidebar = this;
-						if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') && $(sidebar).hasClass('closed') ) {
-							$(sidebar).css('opacity', '0.5');
+						$(sidebar).css({'border-left':'5px solid #eee'});
+						if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') ) {
+							if ( $(sidebar).hasClass('closed') ) {
+								$(sidebar).css('opacity', '0.5');
+							}
+							$(sidebar).css('border-left-color','#ffb900');
+						} else {
+							$(sidebar).css('border-left-color','#46b450');
 						}
 						$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).on('change', function() {
-							if ( ! $(this).is(':checked') && $(sidebar).hasClass('closed') ) {
-								$(sidebar).css('opacity', '0.5');
+							if ( ! $(this).is(':checked') ) {
+								$(sidebar).css('border-left-color','#ffb900');
+								if ( $(sidebar).hasClass('closed') ) {
+									$(sidebar).css('opacity', '0.5');
+								} else {
+									$(sidebar).css('opacity', '');
+								}
 							} else {
+								$(sidebar).css('border-left-color','#46b450');
 								$(sidebar).css('opacity', '');
+								$(sidebar).addClass('notice-warning').removeClass('notice-error').removeClass('notice-success');
 							}
 						});
 						$(sidebar).on('click', function() {
