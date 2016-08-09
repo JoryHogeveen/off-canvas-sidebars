@@ -13,7 +13,7 @@
  
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', '0.2.5' );
+if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', '0.2' );
 if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
 if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
 if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
