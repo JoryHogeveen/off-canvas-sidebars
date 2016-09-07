@@ -31,7 +31,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 
 		$( '.sb-slidebar' ).each( function(e) {
 			var id = $( this ).attr('off-canvas-sidebar-id');
-			$(document).on( 'click', '.sb-toggle-' + id, function(e) {
+			$(document).on( 'touchend click', '.sb-toggle-' + id, function(e) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -48,7 +48,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 		} );
 
 		// Close any
-		$( document ).on( 'click', '.sb-close-any', function( e ) {
+		$( document ).on( 'touchend click', '.sb-close-any', function( e ) {
 			if ( controller.getActiveSlidebar() ) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -57,7 +57,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 		} );
 
 		// Close Slidebars when clicking on a link within a slidebar
-		$( '[off-canvas] a' ).on( 'click', function( e ) {
+		$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
 			e.preventDefault();
 			e.stopPropagation();
 
