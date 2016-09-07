@@ -281,7 +281,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
 		<?php
 		}
-		?></fieldset><?php 
+		?>
+		<input type="hidden" name="<?php echo $prefixName.'[ocs_update]'; ?>" value="1" />
+		</fieldset><?php 
 	}
 	
 	function sidebar_location( $args ) {
@@ -520,6 +522,12 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 		// Handle existing sidebars
 		if ( isset( $input['sidebars'] ) ) {
+
+			// Update trigger, always remove
+			if ( isset( $input['sidebars']['ocs_update'] ) ) {
+				unset( $input['sidebars']['ocs_update'] );
+			}
+			
 			foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
 
 				if ( ! isset( $input['sidebars'][ $sidebar_id ] ) ) {
@@ -530,7 +538,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 				// Global settings page
 				if ( count( $input['sidebars'][ $sidebar_id ] ) < 2 ) {
-					$output['sidebars'][ $sidebar_id ]['enable'] = $input['sidebars'][ $sidebar_id ]['enable'];
+					$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $input['sidebars'][ $sidebar_id ]['enable'] );
 					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
 				}
 
@@ -576,7 +584,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			} else {
 
 				// Make sure unchecked checkboxes are 0 on save
-				$output['sidebars'][ $sidebar_id ]['enable'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['enable'] ) ) ? strip_tags( $output['sidebars'][ $sidebar_id ]['enable'] ) : 0;
+				$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['enable'] );
 
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id != $new_sidebar_id ) {
