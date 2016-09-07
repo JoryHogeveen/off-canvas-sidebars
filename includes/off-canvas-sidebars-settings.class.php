@@ -5,7 +5,7 @@
  * Settings
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2
+ * @version 0.2.1
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -692,7 +692,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 							<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
 						</a>
 						<p class="inner">
-						<a href="http://wordpress.org/support/view/plugin-reviews/off-canvas-sidebars" target="_blank"><?php _e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ) ?></a><br />
+						<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><?php _e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ) ?></a><br />
 						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"> <?php _e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
 						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"> <?php _e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a>
 						</p>

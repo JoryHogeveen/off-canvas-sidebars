@@ -5,7 +5,7 @@
  * Control Widget
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.2
+ * @version 0.2.1
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );

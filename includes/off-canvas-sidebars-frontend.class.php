@@ -5,7 +5,7 @@
  * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2
+ * @version 0.2.1
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -53,7 +53,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			$before_hook = 'website_before';
 			$after_hook = 'website_after';
 		}
-		add_action( $before_hook, array( $this, 'before_site' ), 0 ); // enforce first addition
+		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition
 		add_action( $after_hook, array( $this, 'after_site' ), 999999999 ); // enforce last addition
 		
 		/* EXPERIMENTAL */
@@ -64,24 +64,40 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	/**
 	 * before_site action hook
 	 *
-	 * @since   0.1
-	 * @since   0.2  Add canvas attribute (Slidebars 2.0)
+	 * @since   0.1    
+	 * @since   0.2    Add canvas attribute (Slidebars 2.0)
+	 * @since   0.2.1  Add actions
 	 * @return  void
 	 */
 	function before_site() {
+
+		// Add content before the site container
+		do_action( 'ocs_container_before' );
+
 		echo '<div id="sb-site" canvas="container">';
+
+		// Add content before other content in the site container
+		do_action( 'ocs_container_inner_before' );
 	}
 	
 	/**
 	 * after_site action hook
 	 *
 	 * @since   0.1
+	 * @since   0.2.1  Add actions
 	 * @return  void
 	 */
 	function after_site() {
+
+		// Add content after other content in the site container
+		do_action( 'ocs_container_inner_after' );
+
 		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
 			echo '</div>'; // close #sb-site
 		}
+		// Add content after the site container
+		do_action( 'ocs_container_after' );
+
 		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
 			if ( $sidebar_data['enable'] == 1 ) {
 				$this->add_slidebar($sidebar);
