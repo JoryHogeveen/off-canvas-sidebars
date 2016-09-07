@@ -64,24 +64,40 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	/**
 	 * before_site action hook
 	 *
-	 * @since   0.1
-	 * @since   0.2  Add canvas attribute (Slidebars 2.0)
+	 * @since   0.1    
+	 * @since   0.2    Add canvas attribute (Slidebars 2.0)
+	 * @since   0.2.1  Add actions
 	 * @return  void
 	 */
 	function before_site() {
+
+		// Add content before the site container
+		do_action( 'ocs_container_before' );
+
 		echo '<div id="sb-site" canvas="container">';
+
+		// Add content before other content in the site container
+		do_action( 'ocs_website_before' );
 	}
 	
 	/**
 	 * after_site action hook
 	 *
 	 * @since   0.1
+	 * @since   0.2.1  Add actions
 	 * @return  void
 	 */
 	function after_site() {
+
+		// Add content after other content in the site container
+		do_action( 'ocs_website_after' );
+
 		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
 			echo '</div>'; // close #sb-site
 		}
+		// Add content after the site container
+		do_action( 'ocs_container_after' );
+
 		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
 			if ( $sidebar_data['enable'] == 1 ) {
 				$this->add_slidebar($sidebar);
