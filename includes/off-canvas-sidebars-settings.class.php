@@ -274,12 +274,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$prefixValue = $this->general_settings['sidebars'];
 		$prefixId = $this->general_key.'_sidebars';
 		$prefixClasses = array( $prefixId );
+		?><fieldset><?php
 		foreach ($prefixValue as $sidebar => $sidebar_data) {
 			$classes = $this->get_option_classes( $prefixClasses, 'enable' );
-		?><fieldset>
-		<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
-	<?php }
-		?></fieldset><?php
+		?>
+			<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
+		<?php
+		}
+		?></fieldset><?php 
 	}
 	
 	function sidebar_location( $args ) {
