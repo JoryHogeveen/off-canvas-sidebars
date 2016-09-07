@@ -524,6 +524,8 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 				if ( ! isset( $input['sidebars'][ $sidebar_id ] ) ) {
 					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
+					// Sidebars are set but this sidebar isn't checked as active
+					$input['sidebars'][ $sidebar_id ]['enable'] = 0;
 				}
 
 				// Global settings page
