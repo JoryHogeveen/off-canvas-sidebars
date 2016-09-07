@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, off-canvas, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 3.8
 Tested up to: 4.6
-Stable tag: 0.2.0.1
+Stable tag: 0.2.1
 
 Add off-canvas sidebars using the Slidebars jQuery plugin.
 
@@ -91,6 +91,11 @@ The final output of your theme should be similar to this:
 
 == Changelog ==
 
+= 0.2.1 =
+
+*	Fix: Add touch events for iOS mobile device compatibility
+*	Added some actions for front-end (see Other Notes)
+
 = 0.2.0.1 =
 
 *	Fix: Global variable bug
@@ -126,6 +131,13 @@ You can find me here:
 
 *	[Keraweb](http://www.keraweb.nl/ "Keraweb")
 *	[LinkedIn](https://nl.linkedin.com/in/joryhogeveen "LinkedIn profile")
+
+= Actions =
+
+- `ocs_container_before` Add content before the site container
+- `ocs_container_inner_before` Add content before other content in the site container
+- `ocs_container_inner_after` Add content after other content in the site container
+- `ocs_container_after` Add content after the site container
 
 = Credits =
 
