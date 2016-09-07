@@ -77,7 +77,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		echo '<div id="sb-site" canvas="container">';
 
 		// Add content before other content in the site container
-		do_action( 'ocs_website_before' );
+		do_action( 'ocs_container_inner_before' );
 	}
 	
 	/**
@@ -90,7 +90,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	function after_site() {
 
 		// Add content after other content in the site container
-		do_action( 'ocs_website_after' );
+		do_action( 'ocs_container_inner_after' );
 
 		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
 			echo '</div>'; // close #sb-site
