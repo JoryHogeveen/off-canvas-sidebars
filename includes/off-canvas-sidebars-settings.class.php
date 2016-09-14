@@ -527,7 +527,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			if ( isset( $input['sidebars']['ocs_update'] ) ) {
 				unset( $input['sidebars']['ocs_update'] );
 			}
-			
+
 			foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
 
 				if ( ! isset( $input['sidebars'][ $sidebar_id ] ) ) {
@@ -804,6 +804,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
 
 		if ( isset( $_GET['gocs_message'] ) ) {
+
+			$gocs_message_class = '';
+			$gocs_message = '';
+
 			switch ( $_GET['gocs_message'] ) {
 				case 1:
 					$gocs_message_class = 'updated';
@@ -818,14 +822,12 @@ class OCS_Off_Canvas_Sidebars_Settings {
 					$gocs_message = esc_attr__( 'No Settings File Selected', 'off-canvas-sidebars' );
 					break;
 				default:
-					$gocs_message_class = '';
-					$gocs_message = '';
 					break;
 			}
-		}
 
-		if ( isset( $gocs_message ) && $gocs_message != '' ) {
-			echo '<div class="' . $gocs_message_class . '"><p>'.esc_html( $gocs_message ).'</p></div>';
+			if ( ! empty( $gocs_message ) ) {
+				echo '<div class="' . $gocs_message_class . '"><p>'.esc_html( $gocs_message ).'</p></div>';
+			}
 		}
 
 		// export settings
@@ -843,23 +845,29 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 		// import settings
 		if ( isset( $_POST[ $this->plugin_key . '-import'] ) ) {
+
 			$gocs_message = '';
 			if ( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) {
+
 				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) );
 				if ( array_shift( $import ) == "[START=OCS SETTINGS]" && array_pop( $import ) == "[STOP=OCS SETTINGS]" ) {
+
 					$settings = array();
 					foreach ( $import as $import_option ) {
 						list( $key, $value ) = explode( "\t", $import_option );
 						$settings[$key] = json_decode( sanitize_text_field( $value ), true );
 					}
+
 					// Validate global settings
 					$settings = Off_Canvas_Sidebars()->validate_settings( $settings, Off_Canvas_Sidebars()->get_default_settings() );
+
 					// Validate sidebar settings
 					if ( ! empty( $settings['sidebars'] ) ) {
 						foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_settings ) {
 							$settings['sidebars'][ $sidebar_id ] = Off_Canvas_Sidebars()->validate_settings( $sidebar_settings, Off_Canvas_Sidebars()->get_default_sidebar_settings() );
 						}					
 					}
+					
 					update_option( $this->general_key, $settings );
 					$gocs_message = 1;
 				} else {
