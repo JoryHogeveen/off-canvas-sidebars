@@ -5,7 +5,7 @@
  * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.1
+ * @version 0.2.2
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
