@@ -5,7 +5,7 @@
  * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.2
+ * @version 0.3
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -148,6 +148,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * Get sidebar attributes
 	 *
 	 * @since   0.1
+	 * @since   0.3  Overwrite global setting attributes
 	 * @return  void
 	 */
 	function get_sidebar_attributes( $sidebar, $data, $attr ) {
