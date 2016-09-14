@@ -119,6 +119,7 @@ class OCS_Off_Canvas_Sidebars {
 		'background_color' => '',
 		'website_before_hook' => 'website_before',
 		'website_after_hook' => 'website_after',
+		'use_fastclick' => 0,
 		'compatibility_position_fixed' => 0,
 		'sidebars' => array(),
 	);

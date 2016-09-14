@@ -174,6 +174,15 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				array( 'name' => 'website_after_hook', 'placeholder' => 'website_after' ) 
 			);
 		}
+		//https://github.com/ftlabs/fastclick
+		add_settings_field( 
+			'use_fastclick', 
+			esc_attr__( 'Use the FastClick library?', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->settings_tab, 
+			'section_general', 
+			array( 'name' => 'use_fastclick', 'label' => __( 'Yes. Default: disabled', 'off-canvas-sidebars' ), 'description' => 'Devices with touch capability often have a 300ms delay on click triggers. FastClick is a JavaScript library purposely built to elimate the delay where neccesary.' ) 
+		);
 		add_settings_field( 
 			'compatibility_position_fixed', 
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ), 

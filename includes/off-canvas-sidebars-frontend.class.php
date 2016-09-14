@@ -194,6 +194,11 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
 		}
+
+		// FastClick library https://github.com/ftlabs/fastclick
+		if ( $this->general_settings['use_fastclick'] == true ) { 
+			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick.js', array( 'jquery' ), false, true );
+		}
 	}
 	
 	/**
