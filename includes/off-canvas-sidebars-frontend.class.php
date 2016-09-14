@@ -241,25 +241,25 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 <?php 
 foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 	if ( $sidebar_data['enable'] == 1 ) {
-		$atts = '';
+		$prop = array();
 		if ( $sidebar_data['background_color_type'] != '' ) {
 			if ( $sidebar_data['background_color_type'] == 'transparent' ) {
-				$atts .= 'background-color: transparent;';
+				$prop[] = 'background-color: transparent;';
 			} else if ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
-				$atts .= 'background-color: ' . $sidebar_data['background_color'] . ';';
+				$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
 			}
 		}
 		if ( $sidebar_data['size'] == 'custom' && $sidebar_data['size_input'] != '' ) {
 			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ) ) ) {
-				$atts .= 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
+				$prop[] = 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 			elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ) ) ) {
-				$atts .= 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
+				$prop[] = 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 		}
 ?>
-	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo $atts; ?>}
-<?php }} ?>
+	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
+<?php }} //endif endforeach ?>
 </style>
 			<?php
 		}
