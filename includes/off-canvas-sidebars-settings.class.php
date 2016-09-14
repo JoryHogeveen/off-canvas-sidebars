@@ -244,6 +244,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			array( 'sidebar' => $sidebar_id, 'required' => true ) 
 		);
 		add_settings_field( 
+			'animation_speed', 
+			esc_attr__( 'Animation speed', 'off-canvas-sidebars' ), 
+			array( $this, 'number_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'animation_speed', 'description' => __( 'Set the animation speed for showing and hiding this sidebar. Default: 300ms', 'off-canvas-sidebars' ), 'input_after' => '<code>ms</code>' ) 
+		);
+		add_settings_field( 
 			'background_color', 
 			esc_attr__( 'Background color', 'off-canvas-sidebars' ), 
 			array( $this, 'color_option' ), 
@@ -595,6 +603,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				// Make sure unchecked checkboxes are 0 on save
 				$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['enable'] );
 
+				// Numeric values (not integers!)
+				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
+
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id != $new_sidebar_id ) {
 					$output['sidebars'][ $new_sidebar_id ] = $output['sidebars'][ $sidebar_id ];
@@ -641,6 +652,18 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 */
 	function validate_id( $value ) {
 		return preg_replace('/[^a-z0-9_-]+/i', '', $value);
+	}
+	
+	/**
+	 * Validates numeric values, used by validate_input
+	 *
+	 * @since 0.2.2
+	 *
+	 * @param mixed $value
+	 * @return string $value
+	 */
+	function validate_numeric( $value ) {
+		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
 	}
 
 	/**

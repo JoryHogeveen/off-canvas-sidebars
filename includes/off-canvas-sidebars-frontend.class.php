@@ -257,6 +257,14 @@ foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 				$prop[] = 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 		}
+		if ( ! empty( $sidebar_data['animation_speed'] ) ) {
+			// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
+			$speed = (string) absint( $sidebar_data['animation_speed'] );
+			$prop[] = '-webkit-transition-duration: ' . $speed . 'ms;';
+			$prop[] = '-moz-transition-duration: ' . $speed . 'ms;';
+			$prop[] = '-o-transition-duration: ' . $speed . 'ms;';
+			$prop[] = 'transition-duration: ' . $speed . 'ms;';
+		}
 ?>
 	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
 <?php }} //endif endforeach ?>
