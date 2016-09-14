@@ -29,6 +29,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 		OCS_OFF_CANVAS_SIDEBARS.slidebars_controller.init();
 		var controller = OCS_OFF_CANVAS_SIDEBARS.slidebars_controller;
 
+
 		$( '.sb-slidebar' ).each( function(e) {
 			var id = $( this ).attr('off-canvas-sidebar-id');
 			$(document).on( 'touchend click', '.sb-toggle-' + id, function(e) {
@@ -37,24 +38,22 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 				e.preventDefault();
 
 				// Toggle the slidebar with respect for the disable_over setting
-				if ( OCS_OFF_CANVAS_SIDEBARS.disable_over ) {
-				if ( $( window ).width() <= parseInt( OCS_OFF_CANVAS_SIDEBARS.disable_over ) ) {
-  					controller.toggle( 'sb-' + id );
-  				}
-				} else {
+				if ( OCS_OFF_CANVAS_SIDEBARS.checkDisableOver( 'sb-' + id ) ) {
 					controller.toggle( 'sb-' + id );
 				}
 			} );
 		} );
 
+
 		// Close any
 		$( document ).on( 'touchend click', '.sb-close-any', function( e ) {
-			if ( controller.getActiveSlidebar() ) {
+			if ( parseInt( OCS_OFF_CANVAS_SIDEBARS.getSetting( 'site_close', false ) ) ) {
 				e.preventDefault();
 				e.stopPropagation();
 				controller.close();
 			}
 		} );
+
 
 		// Close Slidebars when clicking on a link within a slidebar
 		$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
@@ -69,46 +68,97 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 			} );
 		} );
 
-		if ( OCS_OFF_CANVAS_SIDEBARS.site_close ) {
-			// Add close class to canvas container when Slidebar is opened
-			$( controller.events ).on( 'opening', function ( e ) {
-				$( '[canvas]' ).addClass( 'sb-close-any' );
-			} );
 
-			// Add close class to canvas container when Slidebar is opened
-			$( controller.events ).on( 'closing', function ( e ) {
-				$( '[canvas]' ).removeClass( 'sb-close-any' );
-			} );
-		}
+		// Add close class to canvas container when Slidebar is opened
+		$( controller.events ).on( 'opening', function ( e ) {
+			$( '[canvas]' ).addClass( 'sb-close-any' );
+		} );
+
+		// Add close class to canvas container when Slidebar is opened
+		$( controller.events ).on( 'closing', function ( e ) {
+			$( '[canvas]' ).removeClass( 'sb-close-any' );
+		} );
+
 
 		// Disable slidebars when the window is wider than the set width
-		if ( OCS_OFF_CANVAS_SIDEBARS.disable_over ) {
-			var disableOver = function() {
-				if ( $( window ).width() > parseInt( OCS_OFF_CANVAS_SIDEBARS.disable_over ) ) {
-					controller.close();
+		var disableOver = function() {
+			$( '.sb-slidebar' ).each( function(e) {
+				var id = $( this ).attr('off-canvas-sidebar-id');
+
+				if ( ! OCS_OFF_CANVAS_SIDEBARS.checkDisableOver( 'sb-' + id ) ) {
+					if ( controller.isActiveSlidebar( 'sb-' + id ) ) {
+						controller.close();
+					}
 					// Hide control classes
-					if ( OCS_OFF_CANVAS_SIDEBARS.hide_control_classes ) {
-						$( '.sb-toggle' ).hide();
+					if ( parseInt( OCS_OFF_CANVAS_SIDEBARS.getSetting( 'hide_control_classes', 'sb-' + id ) ) ) {
+						$( '.sb-toggle-' + id ).hide();
 					}
 				} else {
-					$( '.sb-toggle' ).show();
+					$( '.sb-toggle-' + id ).show();
 				}
-			};
-			disableOver();
-			$( window ).on( 'resize', disableOver );
-
-		}
-
-		if ( OCS_OFF_CANVAS_SIDEBARS.scroll_lock ) {
-			$('#sb-site').on( 'scroll touchmove mousewheel', function( e ) {
-				if ( false != controller.getActiveSlidebar() ) {
-					e.preventDefault();
-					e.stopPropagation();
-					return false;
-				}
+				
 			} );
+		};
+		disableOver();
+		$( window ).on( 'resize', disableOver );
+
+		// Disable scrolling on active sidebar
+		$('#sb-site').on( 'scroll touchmove mousewheel', function( e ) {
+			if ( parseInt( OCS_OFF_CANVAS_SIDEBARS.getSetting( 'scroll_lock' ) ) && false != controller.getActiveSlidebar() ) {
+				e.preventDefault();
+				e.stopPropagation();
+				return false;
+			}
+		} );
+
+	};
+
+	OCS_OFF_CANVAS_SIDEBARS.checkDisableOver = function( sidebarId ) {
+		var check = true;
+		disable_over = parseInt( OCS_OFF_CANVAS_SIDEBARS.getSetting( 'disable_over', sidebarId ) );
+		if ( disable_over && ! isNaN( disable_over ) ) {
+			if ( $( window ).width() > disable_over ) {
+	  			check = false;
+	  		}
+		}
+		return check;
+	};
+
+	OCS_OFF_CANVAS_SIDEBARS.getSetting = function( key, sidebarId ) {
+
+		if ( ! sidebarId ) {
+			sidebarId = OCS_OFF_CANVAS_SIDEBARS.slidebars_controller.getActiveSlidebar();
+		}
+		if ( sidebarId ) {
+			if ( ! $.isEmptyObject( OCS_OFF_CANVAS_SIDEBARS.sidebars ) ) {
+				sidebarId = sidebarId.replace('sb-', '');
+				var overwrite = OCS_OFF_CANVAS_SIDEBARS.sidebars[sidebarId].overwrite_global_settings;
+				if ( overwrite ) {
+					var setting = OCS_OFF_CANVAS_SIDEBARS.sidebars[sidebarId].key;
+					if ( setting ) {
+						return setting;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				var overwrite = $('#' + sidebarId).attr('off-canvas-overwrite_global_settings');
+				if ( typeof overwrite !== undefined && overwrite ) {
+					var setting = $('#' + sidebarId).attr('off-canvas-' + key);
+					if ( typeof setting != 'undefined' ) {
+						return setting;
+					} else {
+						return false;
+					}
+				}
+			}
 		}
 
+		if ( typeof OCS_OFF_CANVAS_SIDEBARS[ key ] != 'undefined' ) {
+			return OCS_OFF_CANVAS_SIDEBARS[ key ];
+		} else {
+			return false;
+		}
 	};
 
 	if ( $('#sb-site').length > 0 && ( typeof slidebars != 'undefined' ) ) {
