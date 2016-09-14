@@ -164,6 +164,15 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 				// Slidebars 2.0
 				$return .= ' off-canvas="sb-' . esc_attr( $sidebar ) . ' ' . esc_attr( $data['location'] ) . ' ' . esc_attr( $data['style'] ) . '"';
 				$return .= ' off-canvas-sidebar-id="' . esc_attr( $sidebar ) . '"';
+
+				// Overwrite global settings
+				if ( true === (bool) $data['overwrite_global_settings'] ) {
+					$return .= ' off-canvas-overwrite_global_settings="' . esc_attr( (int) $data['overwrite_global_settings'] ) . '"';
+					$return .= ' off-canvas-site_close="' . esc_attr( (int) $data['site_close'] ) . '"';
+					$return .= ' off-canvas-disable_over="' . esc_attr( (int) $data['disable_over'] ) . '"';
+					$return .= ' off-canvas-hide_control_classes="' . esc_attr( (int) $data['hide_control_classes'] ) . '"';
+					$return .= ' off-canvas-scroll_lock="' . esc_attr( (int) $data['scroll_lock'] ) . '"';
+				}
 			break;
 		}
 		return $return;
