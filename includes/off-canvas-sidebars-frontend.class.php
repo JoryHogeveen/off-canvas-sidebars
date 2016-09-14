@@ -191,12 +191,12 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			'sidebars'             => $this->general_settings['sidebars']
 		) );
 
-		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
+		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) { 
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
 		}
 
 		// FastClick library https://github.com/ftlabs/fastclick
-		if ( $this->general_settings['use_fastclick'] == true ) { 
+		if ( true === (bool) $this->general_settings['use_fastclick'] ) { 
 			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick.js', array( 'jquery' ), false, true );
 		}
 	}
@@ -240,16 +240,16 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 <?php } ?>
 <?php 
 foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
-	if ( $sidebar_data['enable'] == 1 ) {
+	if ( true === (bool) $sidebar_data['enable'] ) {
 		$prop = array();
-		if ( $sidebar_data['background_color_type'] != '' ) {
+		if ( ! empty( $sidebar_data['background_color_type'] ) ) {
 			if ( $sidebar_data['background_color_type'] == 'transparent' ) {
 				$prop[] = 'background-color: transparent;';
 			} else if ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
 				$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
 			}
 		}
-		if ( $sidebar_data['size'] == 'custom' && $sidebar_data['size_input'] != '' ) {
+		if ( $sidebar_data['size'] == 'custom' && ! empty( $sidebar_data['size_input'] ) ) {
 			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ) ) ) {
 				$prop[] = 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
@@ -259,7 +259,7 @@ foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 		}
 		if ( ! empty( $sidebar_data['animation_speed'] ) ) {
 			// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
-			$speed = (string) absint( $sidebar_data['animation_speed'] );
+			$speed = (int) $sidebar_data['animation_speed'];
 			$prop[] = '-webkit-transition-duration: ' . $speed . 'ms;';
 			$prop[] = '-moz-transition-duration: ' . $speed . 'ms;';
 			$prop[] = '-o-transition-duration: ' . $speed . 'ms;';
