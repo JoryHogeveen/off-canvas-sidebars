@@ -141,6 +141,11 @@ class OCS_Off_Canvas_Sidebars {
 		'animation_speed' => '',
 		'background_color' => '',
 		'background_color_type' => '',
+		'overwrite_global_settings' => 0,
+			'site_close' => 1,
+			'disable_over' => '',
+			'hide_control_classes' => 0,
+			'scroll_lock' => 0,
 	);
 	
 	/**

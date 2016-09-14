@@ -259,6 +259,50 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'section_sidebar_' . $sidebar_id, 
 			array( 'sidebar' => $sidebar_id, 'name' => 'background_color', 'description' => __( 'Choose a background color for this sidebar. Default: <code>#222222</code>.', 'off-canvas-sidebars' ) . '<br>' . __( 'You can overwrite this with CSS', 'off-canvas-sidebars' ) ) 
 		);
+
+
+		add_settings_field( 
+			'overwrite_global_settings', 
+			esc_attr__( 'Overwrite global settings', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'overwrite_global_settings' ) 
+		);
+		add_settings_field( 
+			'site_close', 
+			esc_attr__( 'Close sidebar when clicking on the site', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'site_close', 'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site. Default: true.', 'off-canvas-sidebars' ) ) 
+		);
+		add_settings_field( 
+			'disable_over', 
+			esc_attr__( 'Disable over', 'off-canvas-sidebars' ), 
+			array( $this, 'number_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'disable_over', 'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', 'off-canvas-sidebars' ), 'input_after' => '<code>px</code>' ) 
+		);
+		add_settings_field( 
+			'hide_control_classes', 
+			esc_attr__( 'Auto-hide control classes', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'hide_control_classes', 'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>. Default: false.', 'off-canvas-sidebars' ) ) 
+		);
+		add_settings_field( 
+			'scroll_lock', 
+			esc_attr__( 'Scroll lock', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'scroll_lock', 'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open. Default: false.', 'off-canvas-sidebars' ) ) 
+		);
+
+
 		add_settings_field( 
 			'sidebar_delete', 
 			esc_attr__( 'Delete sidebar', 'off-canvas-sidebars' ), 
@@ -267,6 +311,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			'section_sidebar_' . $sidebar_id, 
 			array( 'sidebar' => $sidebar_id, 'name' => 'delete', 'value' => 0 ) 
 		);
+
 	}
 	
 	/* 
@@ -516,16 +561,6 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		// First set current values
 		$output = $this->general_settings;
 
-		if ( $_POST['ocs_tab'] == $this->settings_tab ) {
-			// Make sure unchecked checkboxes are 0 on save
-			$input['enable_frontend']              = ( isset( $input['enable_frontend'] ) ) ? $this->validate_checkbox( $input['enable_frontend'] ) : 0;
-			$input['site_close']                   = ( isset( $input['site_close'] ) ) ? $this->validate_checkbox( $input['site_close'] ) : 0;
-			$input['hide_control_classes']         = ( isset( $input['hide_control_classes'] ) ) ? $this->validate_checkbox( $input['hide_control_classes'] ) : 0;
-			$input['scroll_lock']                  = ( isset( $input['scroll_lock'] ) ) ? $this->validate_checkbox( $input['scroll_lock'] ) : 0;
-			$input['use_fastclick']                = ( isset( $input['use_fastclick'] ) ) ? $this->validate_checkbox( $input['use_fastclick'] ) : 0;
-			$input['compatibility_position_fixed'] = ( isset( $input['compatibility_position_fixed'] ) ) ? $this->validate_checkbox( $input['compatibility_position_fixed'] ) : 0;
-		}
-
 		// Add new sidebar
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
 			$new_sidebar_id = $this->validate_id( $input['sidebars']['ocs_add_new'] );
@@ -595,6 +630,19 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		// Overwrite the old settings
 		$output = $input;
 
+		if ( $_POST['ocs_tab'] == $this->settings_tab ) {
+			// Make sure unchecked checkboxes are 0 on save
+			$output['enable_frontend']              = $this->validate_checkbox( $output['enable_frontend'] );
+			$output['site_close']                   = $this->validate_checkbox( $output['site_close'] );
+			$output['hide_control_classes']         = $this->validate_checkbox( $output['hide_control_classes'] );
+			$output['scroll_lock']                  = $this->validate_checkbox( $output['scroll_lock'] );
+			$output['use_fastclick']                = $this->validate_checkbox( $output['use_fastclick'] );
+			$output['compatibility_position_fixed'] = $this->validate_checkbox( $output['compatibility_position_fixed'] );
+
+			// Numeric values (not integers!)
+			$output['disable_over'] = $this->validate_numeric( $output['disable_over'] );
+		}
+
 		foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
 
 			// Delete sidebar
@@ -604,9 +652,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			} else {
 
 				// Make sure unchecked checkboxes are 0 on save
-				$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['enable'] );
+				$output['sidebars'][ $sidebar_id ]['enable']                    = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['enable'] );
+				$output['sidebars'][ $sidebar_id ]['overwrite_global_settings'] = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['overwrite_global_settings'] );
+				$output['sidebars'][ $sidebar_id ]['site_close']                = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['site_close'] );
+				$output['sidebars'][ $sidebar_id ]['hide_control_classes']      = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['hide_control_classes'] );
+				$output['sidebars'][ $sidebar_id ]['scroll_lock']               = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['scroll_lock'] );
 
 				// Numeric values (not integers!)
+				$output['sidebars'][ $sidebar_id ]['disable_over']    = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['disable_over'] );
 				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
 
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
