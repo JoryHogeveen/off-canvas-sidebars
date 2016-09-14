@@ -637,10 +637,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 *
 	 * @since 0.1.2
 	 *
-	 * @param string $value
-	 * @return string $value
+	 * @param mixed $value
+	 * @return int $value
 	 */
-	function validate_checkbox($value) {
+	function validate_checkbox( $value ) {
 		return ( ! empty( $value ) && $value == 1 ) ? (int) strip_tags( $value ) : 0;
 	}
 
