@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, off-canvas, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 3.8
 Tested up to: 4.6
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 
 Add off-canvas sidebars using the Slidebars jQuery plugin.
 
@@ -90,6 +90,12 @@ The final output of your theme should be similar to this:
 8. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.2.2 =
+
+*	Feature: Option to set the animation speed for sidebars
+*	Feature: Option to use the FastClick library [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/9 "Click here for info")
+*	Fix: Disabling sidebars on global settings page didn't work
 
 = 0.2.1 =
 

@@ -5,7 +5,7 @@
  * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.1
+ * @version 0.2.2
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -191,8 +191,13 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			'sidebars'             => $this->general_settings['sidebars']
 		) );
 
-		if ( $this->general_settings['compatibility_position_fixed'] == true ) { 
+		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) { 
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
+		}
+
+		// FastClick library https://github.com/ftlabs/fastclick
+		if ( true === (bool) $this->general_settings['use_fastclick'] ) { 
+			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick.js', array( 'jquery' ), false, true );
 		}
 	}
 	
@@ -235,26 +240,34 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 <?php } ?>
 <?php 
 foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
-	if ( $sidebar_data['enable'] == 1 ) {
-		$atts = '';
-		if ( $sidebar_data['background_color_type'] != '' ) {
+	if ( true === (bool) $sidebar_data['enable'] ) {
+		$prop = array();
+		if ( ! empty( $sidebar_data['background_color_type'] ) ) {
 			if ( $sidebar_data['background_color_type'] == 'transparent' ) {
-				$atts .= 'background-color: transparent;';
+				$prop[] = 'background-color: transparent;';
 			} else if ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
-				$atts .= 'background-color: ' . $sidebar_data['background_color'] . ';';
+				$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
 			}
 		}
-		if ( $sidebar_data['size'] == 'custom' && $sidebar_data['size_input'] != '' ) {
+		if ( $sidebar_data['size'] == 'custom' && ! empty( $sidebar_data['size_input'] ) ) {
 			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ) ) ) {
-				$atts .= 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
+				$prop[] = 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 			elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ) ) ) {
-				$atts .= 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
+				$prop[] = 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 		}
+		if ( ! empty( $sidebar_data['animation_speed'] ) ) {
+			// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
+			$speed = (int) $sidebar_data['animation_speed'];
+			$prop[] = '-webkit-transition-duration: ' . $speed . 'ms;';
+			$prop[] = '-moz-transition-duration: ' . $speed . 'ms;';
+			$prop[] = '-o-transition-duration: ' . $speed . 'ms;';
+			$prop[] = 'transition-duration: ' . $speed . 'ms;';
+		}
 ?>
-	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo $atts; ?>}
-<?php }} ?>
+	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
+<?php }} //endif endforeach ?>
 </style>
 			<?php
 		}

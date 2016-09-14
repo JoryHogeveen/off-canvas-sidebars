@@ -5,7 +5,7 @@
  * Settings
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2.1
+ * @version 0.2.2
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
@@ -174,6 +174,15 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				array( 'name' => 'website_after_hook', 'placeholder' => 'website_after' ) 
 			);
 		}
+		//https://github.com/ftlabs/fastclick
+		add_settings_field( 
+			'use_fastclick', 
+			esc_attr__( 'Use the FastClick library?', 'off-canvas-sidebars' ), 
+			array( $this, 'checkbox_option' ), 
+			$this->settings_tab, 
+			'section_general', 
+			array( 'name' => 'use_fastclick', 'label' => __( 'Yes. Default: disabled', 'off-canvas-sidebars' ), 'description' => 'Devices with touch capability often have a 300ms delay on click triggers. FastClick is a JavaScript library purposely built to elimate the delay where neccesary.' ) 
+		);
 		add_settings_field( 
 			'compatibility_position_fixed', 
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ), 
@@ -235,6 +244,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			array( 'sidebar' => $sidebar_id, 'required' => true ) 
 		);
 		add_settings_field( 
+			'animation_speed', 
+			esc_attr__( 'Animation speed', 'off-canvas-sidebars' ), 
+			array( $this, 'number_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'animation_speed', 'description' => __( 'Set the animation speed for showing and hiding this sidebar. Default: 300ms', 'off-canvas-sidebars' ), 'input_after' => '<code>ms</code>' ) 
+		);
+		add_settings_field( 
 			'background_color', 
 			esc_attr__( 'Background color', 'off-canvas-sidebars' ), 
 			array( $this, 'color_option' ), 
@@ -274,12 +291,16 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$prefixValue = $this->general_settings['sidebars'];
 		$prefixId = $this->general_key.'_sidebars';
 		$prefixClasses = array( $prefixId );
+		?><fieldset><?php
 		foreach ($prefixValue as $sidebar => $sidebar_data) {
 			$classes = $this->get_option_classes( $prefixClasses, 'enable' );
-		?><fieldset>
-		<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
-	<?php }
-		?></fieldset><?php
+		?>
+			<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
+		<?php
+		}
+		?>
+		<input type="hidden" name="<?php echo $prefixName.'[ocs_update]'; ?>" value="1" />
+		</fieldset><?php 
 	}
 	
 	function sidebar_location( $args ) {
@@ -409,7 +430,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		if ( isset( $args['name'] ) ) {
 			$classes = $this->get_option_classes( $prefixClasses, $args['name'] );
 		?><fieldset>
+			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
 			<input type="number" id="<?php echo $prefixId.'_'.$args['name']; ?>" class="<?php echo $classes; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" min="1" max="" step="1" /> <?php echo ( ! empty( $args['input_after'] ) ) ? $args['input_after'] : ''; ?>
+			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
 			<?php } ?>
@@ -499,6 +522,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			$input['site_close']                   = ( isset( $input['site_close'] ) ) ? $this->validate_checkbox( $input['site_close'] ) : 0;
 			$input['hide_control_classes']         = ( isset( $input['hide_control_classes'] ) ) ? $this->validate_checkbox( $input['hide_control_classes'] ) : 0;
 			$input['scroll_lock']                  = ( isset( $input['scroll_lock'] ) ) ? $this->validate_checkbox( $input['scroll_lock'] ) : 0;
+			$input['use_fastclick']                = ( isset( $input['use_fastclick'] ) ) ? $this->validate_checkbox( $input['use_fastclick'] ) : 0;
 			$input['compatibility_position_fixed'] = ( isset( $input['compatibility_position_fixed'] ) ) ? $this->validate_checkbox( $input['compatibility_position_fixed'] ) : 0;
 		}
 
@@ -518,15 +542,23 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 		// Handle existing sidebars
 		if ( isset( $input['sidebars'] ) ) {
+
+			// Update trigger, always remove
+			if ( isset( $input['sidebars']['ocs_update'] ) ) {
+				unset( $input['sidebars']['ocs_update'] );
+			}
+
 			foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
 
 				if ( ! isset( $input['sidebars'][ $sidebar_id ] ) ) {
 					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
+					// Sidebars are set but this sidebar isn't checked as active
+					$input['sidebars'][ $sidebar_id ]['enable'] = 0;
 				}
 
 				// Global settings page
 				if ( count( $input['sidebars'][ $sidebar_id ] ) < 2 ) {
-					$output['sidebars'][ $sidebar_id ]['enable'] = $input['sidebars'][ $sidebar_id ]['enable'];
+					$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $input['sidebars'][ $sidebar_id ]['enable'] );
 					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
 				}
 
@@ -572,7 +604,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			} else {
 
 				// Make sure unchecked checkboxes are 0 on save
-				$output['sidebars'][ $sidebar_id ]['enable'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['enable'] ) ) ? strip_tags( $output['sidebars'][ $sidebar_id ]['enable'] ) : 0;
+				$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['enable'] );
+
+				// Numeric values (not integers!)
+				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
 
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id != $new_sidebar_id ) {
@@ -603,10 +638,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 *
 	 * @since 0.1.2
 	 *
-	 * @param string $value
-	 * @return string $value
+	 * @param mixed $value
+	 * @return int $value
 	 */
-	function validate_checkbox($value) {
+	function validate_checkbox( $value ) {
 		return ( ! empty( $value ) && $value == 1 ) ? (int) strip_tags( $value ) : 0;
 	}
 
@@ -620,6 +655,18 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 */
 	function validate_id( $value ) {
 		return preg_replace('/[^a-z0-9_-]+/i', '', $value);
+	}
+	
+	/**
+	 * Validates numeric values, used by validate_input
+	 *
+	 * @since 0.2.2
+	 *
+	 * @param mixed $value
+	 * @return string $value
+	 */
+	function validate_numeric( $value ) {
+		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
 	}
 
 	/**
@@ -792,6 +839,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
 
 		if ( isset( $_GET['gocs_message'] ) ) {
+
+			$gocs_message_class = '';
+			$gocs_message = '';
+
 			switch ( $_GET['gocs_message'] ) {
 				case 1:
 					$gocs_message_class = 'updated';
@@ -806,14 +857,12 @@ class OCS_Off_Canvas_Sidebars_Settings {
 					$gocs_message = esc_attr__( 'No Settings File Selected', 'off-canvas-sidebars' );
 					break;
 				default:
-					$gocs_message_class = '';
-					$gocs_message = '';
 					break;
 			}
-		}
 
-		if ( isset( $gocs_message ) && $gocs_message != '' ) {
-			echo '<div class="' . $gocs_message_class . '"><p>'.esc_html( $gocs_message ).'</p></div>';
+			if ( ! empty( $gocs_message ) ) {
+				echo '<div class="' . $gocs_message_class . '"><p>'.esc_html( $gocs_message ).'</p></div>';
+			}
 		}
 
 		// export settings
@@ -831,23 +880,29 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 		// import settings
 		if ( isset( $_POST[ $this->plugin_key . '-import'] ) ) {
+
 			$gocs_message = '';
 			if ( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) {
+
 				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) );
 				if ( array_shift( $import ) == "[START=OCS SETTINGS]" && array_pop( $import ) == "[STOP=OCS SETTINGS]" ) {
+
 					$settings = array();
 					foreach ( $import as $import_option ) {
 						list( $key, $value ) = explode( "\t", $import_option );
 						$settings[$key] = json_decode( sanitize_text_field( $value ), true );
 					}
+
 					// Validate global settings
 					$settings = Off_Canvas_Sidebars()->validate_settings( $settings, Off_Canvas_Sidebars()->get_default_settings() );
+
 					// Validate sidebar settings
 					if ( ! empty( $settings['sidebars'] ) ) {
 						foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_settings ) {
 							$settings['sidebars'][ $sidebar_id ] = Off_Canvas_Sidebars()->validate_settings( $sidebar_settings, Off_Canvas_Sidebars()->get_default_sidebar_settings() );
 						}					
 					}
+					
 					update_option( $this->general_key, $settings );
 					$gocs_message = 1;
 				} else {

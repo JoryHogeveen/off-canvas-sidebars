@@ -3,7 +3,7 @@
  * Plugin Name: Off-Canvas Sidebars
  * Description: Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:  https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:     0.2.1
+ * Version:     0.2.2
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: off-canvas-sidebars
@@ -13,7 +13,7 @@
  
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', '0.2.1' );
+if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', '0.2.2' );
 if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
 if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
 if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -119,6 +119,7 @@ class OCS_Off_Canvas_Sidebars {
 		'background_color' => '',
 		'website_before_hook' => 'website_before',
 		'website_after_hook' => 'website_after',
+		'use_fastclick' => 0,
 		'compatibility_position_fixed' => 0,
 		'sidebars' => array(),
 	);
@@ -137,6 +138,7 @@ class OCS_Off_Canvas_Sidebars {
 		'size' => 'default',
 		'size_input' => '',
 		'size_input_type' => '%',
+		'animation_speed' => '',
 		'background_color' => '',
 		'background_color_type' => '',
 	);
