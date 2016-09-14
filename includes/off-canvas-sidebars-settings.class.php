@@ -522,6 +522,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			$input['site_close']                   = ( isset( $input['site_close'] ) ) ? $this->validate_checkbox( $input['site_close'] ) : 0;
 			$input['hide_control_classes']         = ( isset( $input['hide_control_classes'] ) ) ? $this->validate_checkbox( $input['hide_control_classes'] ) : 0;
 			$input['scroll_lock']                  = ( isset( $input['scroll_lock'] ) ) ? $this->validate_checkbox( $input['scroll_lock'] ) : 0;
+			$input['use_fastclick']                = ( isset( $input['use_fastclick'] ) ) ? $this->validate_checkbox( $input['use_fastclick'] ) : 0;
 			$input['compatibility_position_fixed'] = ( isset( $input['compatibility_position_fixed'] ) ) ? $this->validate_checkbox( $input['compatibility_position_fixed'] ) : 0;
 		}
 
