@@ -430,7 +430,9 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		if ( isset( $args['name'] ) ) {
 			$classes = $this->get_option_classes( $prefixClasses, $args['name'] );
 		?><fieldset>
+			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
 			<input type="number" id="<?php echo $prefixId.'_'.$args['name']; ?>" class="<?php echo $classes; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" min="1" max="" step="1" /> <?php echo ( ! empty( $args['input_after'] ) ) ? $args['input_after'] : ''; ?>
+			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
 			<?php } ?>
