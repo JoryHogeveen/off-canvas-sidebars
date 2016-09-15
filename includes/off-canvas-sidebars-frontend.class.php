@@ -59,6 +59,9 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			$after_hook  = 'website_after';
 		}
 
+		$before_hook = trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
+		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
+
 		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition
 		add_action( $after_hook,  array( $this, 'after_site' ), 999999999 ); // enforce last addition
 		add_action( $after_hook,  array( $this, 'do_sidebars' ), 999999999 ); // enforce last addition
