@@ -170,6 +170,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
+
+		// Function call before initializing to change the ocsOffCanvasSidebars object it needed
+		if ( typeof ocsBeforeInitHook == 'function' ) {
+			ocsBeforeInitHook();
+		}
 		ocsOffCanvasSidebars.init();
 	}
 
