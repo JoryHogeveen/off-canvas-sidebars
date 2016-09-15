@@ -923,8 +923,13 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 						</a>
 						<p class="inner">
 						<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><?php _e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ) ?></a><br />
-						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"> <?php _e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
-						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"> <?php _e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a>
+						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><?php _e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
+						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"><?php _e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a><br />
+						</p>
+						<hr />
+						<h4 class="inner"><?php _e( 'Want to help?', 'off-canvas-sidebars' ) ?></h4>
+						<p class="inner">
+						<a href="https://github.com/JoryHogeveen/off-canvas-sidebars" target="_blank"><?php _e( 'Follow and/or contribute on GitHub', 'off-canvas-sidebars' ) ?></a>
 						</p>
 						<hr />
 						<p class="ocs-link inner"><?php _e( 'Created by', 'off-canvas-sidebars' ) ?> <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
