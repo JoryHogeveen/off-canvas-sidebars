@@ -742,6 +742,10 @@ class OCS_Off_Canvas_Sidebars_Settings {
 
 			// Numeric values (not integers!)
 			$output['disable_over'] = $this->validate_numeric( $output['disable_over'] );
+
+			// Remove whitespaces
+			$output['website_before_hook'] = $this->remove_whitespace( $output['website_before_hook'] );
+			$output['website_after_hook']  = $this->remove_whitespace( $output['website_after_hook'] );
 		}
 
 		foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
@@ -822,6 +826,18 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	 */
 	function validate_numeric( $value ) {
 		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
+	}
+
+	/**
+	 * Remove whitespace
+	 *
+	 * @since 0.3
+	 *
+	 * @param mixed $value
+	 * @return string $value
+	 */
+	function remove_whitespace( $value ) {
+		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
 	}
 
 	/**

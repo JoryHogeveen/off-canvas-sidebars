@@ -42,19 +42,26 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @since   0.1
 	 * @return  void
 	 */
-	function default_actions() {
-		$before_hook = str_replace( array(' '), '', $this->general_settings['website_before_hook'] );
-		$after_hook = str_replace( array(' '), '', $this->general_settings['website_after_hook'] );
+	private function default_actions() {
+
+		$before_hook = trim( $this->general_settings['website_before_hook'] );
+		$after_hook  = trim( $this->general_settings['website_after_hook'] );
+
 		if ( get_template() == 'genesis' ) {
 			$before_hook = 'genesis_before';
-			$after_hook = 'genesis_after';
+			$after_hook  = 'genesis_after';
 		}
-		if ( empty( $before_hook ) || empty( $after_hook ) ) {
+		if ( empty( $before_hook ) ) {
 			$before_hook = 'website_before';
 			$after_hook = 'website_after';
 		}
+		if ( empty( $after_hook ) ) {
+			$after_hook  = 'website_after';
+		}
+
 		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition
-		add_action( $after_hook, array( $this, 'after_site' ), 999999999 ); // enforce last addition
+		add_action( $after_hook,  array( $this, 'after_site' ), 999999999 ); // enforce last addition
+		add_action( $after_hook,  array( $this, 'do_sidebars' ), 999999999 ); // enforce last addition
 
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition
