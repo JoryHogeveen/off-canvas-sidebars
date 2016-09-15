@@ -412,6 +412,21 @@ class OCS_Off_Canvas_Sidebars {
 					//'before_title' 	=> '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
 					//'after_title' 	=> '</h3></div>',
 				);
+
+				/**
+				 * Filter the register_sidebar arguments
+				 *
+				 * @since 0.3
+				 *
+				 * @see https://codex.wordpress.org/Function_Reference/register_sidebar
+				 * @see $default_sidebar_settings for the sidebar settings
+				 *
+				 * @param  array  $args          The register_sidebar arguments
+				 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+				 * @param  array  $sidebar_data  The sidebar settings
+				 */
+				$args = apply_filters( 'ocs_register_sidebar_args', $args, $sidebar_id, $sidebar_data );
+
 				if ( get_template() == 'genesis' ) {
 					genesis_register_sidebar( $args );
 				} else {
