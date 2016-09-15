@@ -10,7 +10,15 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-class OCS_Off_Canvas_Sidebars_Settings {
+final class OCS_Off_Canvas_Sidebars_Settings {
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var    OCS_Off_Canvas_Sidebars_Settings
+	 * @since  0.3
+	 */
+	protected static $_instance = null;
 
 	private $general_key = '';
 	private $settings_tab = 'ocs-settings';
@@ -21,7 +29,11 @@ class OCS_Off_Canvas_Sidebars_Settings {
 	private $general_settings = array();
 	private $general_labels = array();
 
-	function __construct() {
+	/**
+	 * @since  0.3  private constructor
+	 * @access private
+	 */
+	private function __construct() {
 		$this->plugin_key = Off_Canvas_Sidebars()->get_plugin_key();
 		add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
@@ -1086,6 +1098,22 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			wp_redirect( admin_url( '/themes.php?page=' . $this->plugin_key . '&tab=' . $this->importexport_tab . '&gocs_message='.esc_attr( $gocs_message ) ) );
 			exit;
 		}
+	}
+
+	/**
+	 * Main Off-Canvas Sidebars Settings Instance.
+	 *
+	 * Ensures only one instance of this class is loaded or can be loaded.
+	 *
+	 * @since   0.3
+	 * @static
+	 * @return  OCS_Off_Canvas_Sidebars_Settings
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
 	}
 
 } // end class

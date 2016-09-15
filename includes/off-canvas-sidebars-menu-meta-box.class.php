@@ -12,7 +12,15 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
+final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var    OCS_Off_Canvas_Sidebars_Menu_Meta_box
+	 * @since  0.3
+	 */
+	protected static $_instance = null;
 
 	private $general_key = '';
 	private $plugin_key = '';
@@ -25,7 +33,11 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		// ocs-toggle-
 	);
 
-	function __construct() {
+	/**
+	 * @since  0.3  private constructor
+	 * @access private
+	 */
+	private function __construct() {
 		//add_action( 'admin_init', array( $this, 'load_settings' ) );
 		add_action( 'init', array( $this, 'load_plugin_data' ) );
 		add_action( 'admin_init', array( $this, 'add_meta_box' ), 11 );
@@ -223,6 +235,22 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 			}
 		}
 		return $items;
+	}
+
+	/**
+	 * Main Off-Canvas Sidebars Menu Meta Box Instance.
+	 *
+	 * Ensures only one instance of this class is loaded or can be loaded.
+	 *
+	 * @since   0.3
+	 * @static
+	 * @return  OCS_Off_Canvas_Sidebars_Menu_Meta_box
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
 	}
 
 } // end class

@@ -19,7 +19,7 @@ if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FIL
 if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-class OCS_Off_Canvas_Sidebars {
+final class OCS_Off_Canvas_Sidebars {
 
 	/**
 	 * The single instance of the class.
@@ -154,8 +154,9 @@ class OCS_Off_Canvas_Sidebars {
 	 *
 	 * @return	void
 	 * @since   0.1
+	 * @access  private
 	 */
-	function __construct() {
+	private function __construct() {
 		self::$_instance = $this;
 
 		// DB version (only major version tags)
@@ -183,29 +184,12 @@ class OCS_Off_Canvas_Sidebars {
 			} );
 			// Load menu-meta-box option
 			include_once 'includes/off-canvas-sidebars-menu-meta-box.class.php';
-			new OCS_Off_Canvas_Sidebars_Menu_Meta_box();
+			OCS_Off_Canvas_Sidebars_Menu_Meta_box::get_instance();
 		} else {
 			// Added for possible use in future
 			add_action( 'admin_notices', array( $this, 'compatibility_notice' ) );
 			add_action( 'wp_ajax_'.$this->noticeKey, array( $this, 'ignore_compatibility_notice' ) );
 		}
-	}
-
-	/**
-	 * Main Off-Canvas Sidebars Instance.
-	 *
-	 * Ensures only one instance of Off-Canvas Sidebars is loaded or can be loaded.
-	 *
-	 * @since 0.1.2
-	 * @static
-	 * @see Off_Canvas_Sidebars()
-	 * @return Off-Canvas Sidebars - Main instance.
-	 */
-	public static function get_instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
-		return self::$_instance;
 	}
 
 	/**
@@ -224,7 +208,7 @@ class OCS_Off_Canvas_Sidebars {
 		if ( is_admin() ) {
 			// Load the admin
 			include_once 'includes/off-canvas-sidebars-settings.class.php';
-			new OCS_Off_Canvas_Sidebars_Settings();
+			OCS_Off_Canvas_Sidebars_Settings::get_instance();
 
 			// Add settings link to plugins page
 			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
@@ -232,7 +216,7 @@ class OCS_Off_Canvas_Sidebars {
 			// If a sidebar is enabled, load the front-end
 			if ( $this->is_sidebar_enabled() ) {
 				include_once 'includes/off-canvas-sidebars-frontend.class.php';
-				new OCS_Off_Canvas_Sidebars_Frontend();
+				OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 			}
 		}
 	}
@@ -521,6 +505,71 @@ class OCS_Off_Canvas_Sidebars {
 		if ( version_compare( $db_version, $this->db_version, '<' ) ) {
 			$this->db_update();
 		}
+	}
+
+	/**
+	 * Main Off-Canvas Sidebars Instance.
+	 *
+	 * Ensures only one instance of Off-Canvas Sidebars is loaded or can be loaded.
+	 *
+	 * @since   0.1.2
+	 * @static
+	 * @see     Off_Canvas_Sidebars()
+	 * @return  Off-Canvas Sidebars - Main instance.
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	/**
+	 * Magic method to output a string if trying to use the object as a string.
+	 *
+	 * @since   0.3
+	 * @access  public
+	 * @return  string
+	 */
+	public function __toString() {
+		return get_class( $this );
+	}
+
+	/**
+	 * Magic method to keep the object from being cloned.
+	 *
+	 * @since   0.3
+	 * @access  public
+	 * @return  void
+	 */
+	public function __clone() {
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'off-canvas-sidebars' ), null );
+	}
+
+	/**
+	 * Magic method to keep the object from being unserialized.
+	 *
+	 * @since   0.3
+	 * @access  public
+	 * @return  void
+	 */
+	public function __wakeup() {
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'off-canvas-sidebars' ), null );
+	}
+
+	/**
+	 * Magic method to prevent a fatal error when calling a method that doesn't exist.
+	 *
+	 * @since   0.3
+	 * @access  public
+	 * @param   string
+	 * @param   array
+	 * @return  null
+	 */
+	public function __call( $method = '', $args = array() ) {
+		_doing_it_wrong( get_class( $this ) . "::{$method}", esc_html__( 'Method does not exist.', 'off-canvas-sidebars' ), null );
+		unset( $method, $args );
+		return null;
 	}
 
 } // end class

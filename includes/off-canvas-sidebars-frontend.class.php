@@ -10,11 +10,23 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-class OCS_Off_Canvas_Sidebars_Frontend {
+final class OCS_Off_Canvas_Sidebars_Frontend {
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var    OCS_Off_Canvas_Sidebars_Frontend
+	 * @since  0.3
+	 */
+	protected static $_instance = null;
 
 	private $general_settings = array();
 
-	function __construct() {
+	/**
+	 * @since  0.3  private constructor
+	 * @access private
+	 */
+	private function __construct() {
 		$this->load_plugin_data();
 
 		if ( $this->general_settings['enable_frontend'] == true ) {
@@ -350,6 +362,22 @@ foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 </style>
 			<?php
 		}
+	}
+
+	/**
+	 * Main Off-Canvas Sidebars Frontend Instance.
+	 *
+	 * Ensures only one instance of this class is loaded or can be loaded.
+	 *
+	 * @since   0.3
+	 * @static
+	 * @return  OCS_Off_Canvas_Sidebars_Frontend
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
 	}
 
 } // end class
