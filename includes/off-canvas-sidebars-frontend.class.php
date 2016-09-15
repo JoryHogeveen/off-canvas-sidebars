@@ -275,6 +275,11 @@ foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 			$prop[] = '-o-transition-duration: ' . $speed . 'ms;';
 			$prop[] = 'transition-duration: ' . $speed . 'ms;';
 		}
+		if ( ! empty( $sidebar_data['padding'] ) ) {
+			// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
+			$padding = (int) $sidebar_data['padding'];
+			$prop[] = 'padding: ' . $padding . 'px;';
+		}
 ?>
 	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
 <?php }} //endif endforeach ?>

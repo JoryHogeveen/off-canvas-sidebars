@@ -139,6 +139,7 @@ class OCS_Off_Canvas_Sidebars {
 		'size_input' => '',
 		'size_input_type' => '%',
 		'animation_speed' => '',
+		'padding' => '',
 		'background_color' => '',
 		'background_color_type' => '',
 		'overwrite_global_settings' => 0,

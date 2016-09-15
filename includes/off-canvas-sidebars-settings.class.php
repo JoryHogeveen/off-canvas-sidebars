@@ -252,6 +252,14 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			array( 'sidebar' => $sidebar_id, 'name' => 'animation_speed', 'description' => __( 'Set the animation speed for showing and hiding this sidebar. Default: 300ms', 'off-canvas-sidebars' ), 'input_after' => '<code>ms</code>' ) 
 		);
 		add_settings_field( 
+			'padding', 
+			esc_attr__( 'Padding', 'off-canvas-sidebars' ), 
+			array( $this, 'number_option' ), 
+			$this->sidebars_tab, 
+			'section_sidebar_' . $sidebar_id, 
+			array( 'sidebar' => $sidebar_id, 'name' => 'padding', 'description' => __( 'Add CSS padding (in pixels) to this sidebar. Default: none', 'off-canvas-sidebars' ), 'input_after' => '<code>px</code>' ) 
+		);
+		add_settings_field( 
 			'background_color', 
 			esc_attr__( 'Background color', 'off-canvas-sidebars' ), 
 			array( $this, 'color_option' ), 
@@ -659,6 +667,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				$output['sidebars'][ $sidebar_id ]['scroll_lock']               = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['scroll_lock'] );
 
 				// Numeric values (not integers!)
+				$output['sidebars'][ $sidebar_id ]['padding']         = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['padding'] );
 				$output['sidebars'][ $sidebar_id ]['disable_over']    = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['disable_over'] );
 				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
 
