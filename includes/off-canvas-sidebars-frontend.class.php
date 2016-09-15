@@ -120,12 +120,6 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		}
 		// Add content after the site container
 		do_action( 'ocs_container_after' );
-
-		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
-			if ( $sidebar_data['enable'] == 1 ) {
-				$this->add_slidebar($sidebar);
-			}
-		}
 	}
 
 	/**
@@ -149,7 +143,24 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	}
 
 	/**
-	 * Add the slidebar action hook
+	 * Echo all sidebars
+	 *
+	 * @since   0.3
+	 * @return  void
+	 * @access  public
+	 */
+	function do_sidebars() {
+		if ( ! empty( $this->general_settings['sidebars'] ) ) {
+			foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
+				if ( ! empty( $sidebar_data['enable'] ) ) {
+					$this->do_sidebar( $sidebar );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Echos a sidebar
 	 *
 	 * @since   0.1
 	 * @return  void
