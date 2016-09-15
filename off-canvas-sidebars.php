@@ -168,6 +168,9 @@ final class OCS_Off_Canvas_Sidebars {
 			// Lets start!
 			add_action( 'init', array( $this, 'init' ) );
 
+			// Load the OCS API
+			include_once 'includes/off-canvas-sidebars-api.class.php';
+
 			// Load translations
 			$this->load_textdomain();
 
