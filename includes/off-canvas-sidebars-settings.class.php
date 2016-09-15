@@ -623,19 +623,19 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Returns attribute prefixes for general settings and sidebar settings
 	 *
-	 * @since 0.1
+	 * @since  0.1
 	 *
-	 * @param array $args Arguments from the settings field
-	 * @return array $prefixes Prefixes for name, value and id attributes
+	 * @param  array  $args      Arguments from the settings field
+	 * @return array  $prefixes  Prefixes for name, value and id attributes
 	 */
 	function get_option_prefixes( $args ) {
 		if ( isset( $args['sidebar'] ) ) {
-			$prefixName = esc_attr( $this->general_key ).'[sidebars]['.$args['sidebar'].']';
+			$prefixName = esc_attr( $this->general_key ) . '[sidebars][' . $args['sidebar'] . ']';
 			$prefixValue = $this->general_settings['sidebars'][$args['sidebar']];
-			$prefixId = $this->general_key.'_sidebars_'.$args['sidebar'];
+			$prefixId = $this->general_key . '_sidebars_' . $args['sidebar'];
 			$prefixClasses = array(
-				$this->general_key.'_sidebars_'.$args['sidebar'],
-				$this->general_key.'_sidebars'
+				$this->general_key . '_sidebars_' . $args['sidebar'],
+				$this->general_key . '_sidebars'
 			);
 		} else {
 			$prefixName = esc_attr( $this->general_key );
@@ -664,10 +664,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Validates post values
 	 *
-	 * @since 0.1
+	 * @since  0.1
 	 *
-	 * @param array $input
-	 * @return array $output
+	 * @param  array  $input
+	 * @return array  $output
 	 */
 	function validate_input( $input ) {
 		$output = array();
@@ -807,9 +807,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Validates checkbox values, used by validate_input
 	 *
-	 * @since 0.1.2
+	 * @since  0.1.2
 	 *
-	 * @param mixed $value
+	 * @param  mixed $value
 	 * @return int $value
 	 */
 	function validate_checkbox( $value ) {
@@ -819,13 +819,13 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Validates id values, used by validate_input
 	 *
-	 * @since 0.2
+	 * @since  0.2
 	 *
-	 * @param string $value
+	 * @param  string $value
 	 * @return string $value
 	 */
 	function validate_id( $value ) {
-		return preg_replace('/[^a-z0-9_-]+/i', '', $value);
+		return preg_replace( '/[^a-z0-9_-]+/i', '', $value );
 	}
 
 	/**
@@ -854,7 +854,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 
 	/**
 	 * Create admin menu page
-	 * @since 0.1
+	 * @since  0.1
 	 */
 	function add_admin_menus() {
 		add_submenu_page( 'themes.php', esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), 'edit_theme_options', $this->plugin_key, array( $this, 'plugin_options_page' ) );
@@ -866,7 +866,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * settings key. Uses the plugin_options_tabs method
 	 * to render the tabs.
 	 *
-	 * @since 0.1
+	 * @since  0.1
 	 */
 	function plugin_options_page() {
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
@@ -943,23 +943,23 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 *
 	 * @global $wp_settings_fields Storage array of settings fields and their pages/sections
 	 *
-	 * @since 0.1
+	 * @since  0.1
 	 *
-	 * @param string $page Slug title of the admin page who's settings fields you want to show.
-	 * @param string $section Slug title of the settings section who's fields you want to show.
+	 * @param  string  $page     Slug title of the admin page who's settings fields you want to show.
+	 * @param  string  $section  Slug title of the settings section who's fields you want to show.
 	 */
 	function do_settings_sections( $page ) {
 		global $wp_settings_sections, $wp_settings_fields;
 
-		if ( ! isset( $wp_settings_sections[$page] ) )
+		if ( ! isset( $wp_settings_sections[ $page ] ) )
 			return;
 
-		foreach ( (array) $wp_settings_sections[$page] as $section ) {
-			$box_classes = 'stuffbox postbox '.$section['id'].'';
+		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
+			$box_classes = 'stuffbox postbox ' . $section['id'] . '';
 			if ( $page == $this->sidebars_tab ) {
 				$box_classes .= ' section-sidebar if-js-closed';
 			}
-			echo '<div id="'.$section['id'].'" class="'.$box_classes.'">';
+			echo '<div id="' . $section['id'] . '" class="' . $box_classes . '">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">' . __('Toggle panel', 'off-canvas-sidebars') . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
 			if ( $section['title'] )
 				echo "<h3 class=\"hndle\"><span>{$section['title']}</span></h3>\n";
@@ -967,7 +967,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			if ( $section['callback'] )
 				call_user_func( $section['callback'], $section );
 
-			if ( ! isset( $wp_settings_fields ) || !isset( $wp_settings_fields[$page] ) || !isset( $wp_settings_fields[$page][$section['id']] ) )
+			if ( ! isset( $wp_settings_fields ) || !isset( $wp_settings_fields[ $page ] ) || !isset( $wp_settings_fields[ $page ][ $section['id'] ] ) )
 				continue;
 			echo '<div class="inside"><table class="form-table">';
 
@@ -990,7 +990,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * them one by one. Provides the heading for the
 	 * plugin_options_page method.
 	 *
-	 * @since 0.1
+	 * @since  0.1
 	 */
 	function plugin_options_tabs() {
 		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
@@ -998,7 +998,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		echo '<h1 class="nav-tab-wrapper">';
 		foreach ( $this->plugin_tabs as $tab_key => $tab_caption ) {
 			$active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-			echo '<a class="nav-tab '.esc_attr( $active ).'" href="?page='.esc_attr( $this->plugin_key ).'&amp;tab='.esc_attr( $tab_key ).'">'.esc_html( $tab_caption ).'</a>';
+			echo '<a class="nav-tab ' . esc_attr( $active ) . '" href="?page=' . esc_attr( $this->plugin_key ) . '&amp;tab=' . esc_attr( $tab_key )  .'">' . esc_html( $tab_caption ) . '</a>';
 		}
 		echo '</h1>';
 	}

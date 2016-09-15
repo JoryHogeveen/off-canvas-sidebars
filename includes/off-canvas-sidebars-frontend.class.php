@@ -43,7 +43,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	/**
 	 * Get plugin defaults
 	 */
-	function load_plugin_data() {
+	private function load_plugin_data() {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$this->general_settings = $off_canvas_sidebars->get_settings();
 	}
@@ -65,7 +65,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 		}
 		if ( empty( $before_hook ) ) {
 			$before_hook = 'website_before';
-			$after_hook = 'website_after';
 		}
 		if ( empty( $after_hook ) ) {
 			$after_hook  = 'website_after';
@@ -179,6 +178,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	 *
 	 * @since   0.1
 	 * @return  void
+	 * @access  public
 	 */
 	function do_sidebar( $sidebar ) {
 		if ( ! empty( $this->general_settings['sidebars'][ $sidebar ] ) ) {
@@ -325,7 +325,7 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 	#ocs-site {background-color: <?php echo $bgcolor; ?>;}
 <?php } ?>
 <?php
-foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
+foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 	if ( true === (bool) $sidebar_data['enable'] ) {
 		$prop = array();
 		if ( ! empty( $sidebar_data['background_color_type'] ) ) {
