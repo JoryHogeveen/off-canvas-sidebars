@@ -74,7 +74,23 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		// Add content before the site container
 		do_action( 'ocs_container_before' );
 
-		echo '<div id="sb-site" canvas="container">';
+		$atts = array(
+			'ocs-site_close'           => ( $this->general_settings['site_close'] ) ? true : false,
+			'ocs-disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
+			'ocs-hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,
+			'ocs-scroll_lock'          => ( $this->general_settings['scroll_lock'] ) ? true : false,
+		);
+
+		foreach ( $atts as $name => $value ) {
+			if ( is_array( $value ) ) {
+				$value = implode( ' ', $value );
+			}
+
+			$atts[ $name ] = $name . '="' . $value . '"';
+		}
+		$atts = implode( ' ', $atts );
+
+		echo '<div id="ocs-site" canvas="container" ' . $atts . '>';
 
 		// Add content before other content in the site container
 		do_action( 'ocs_container_inner_before' );
@@ -93,7 +109,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		do_action( 'ocs_container_inner_after' );
 
 		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
-			echo '</div>'; // close #sb-site
+			echo '</div>'; // close #ocs-site
 		}
 		// Add content after the site container
 		do_action( 'ocs_container_after' );
@@ -118,7 +134,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site" canvas="container"></div>');
+		$('div.ocs-slidebar:first').prevAll().wrapAll('<div id="ocs-site" canvas="container"></div>');
 	}) (jQuery);
 </script>
 			<?php
@@ -131,17 +147,21 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @since   0.1
 	 * @return  void
 	 */
-	function add_slidebar( $sidebar ) {
-		$data = $this->general_settings['sidebars'][ $sidebar ];
-		$classes = 'sb-slidebar sb-' . esc_attr( $sidebar );
-		$attributes = '';
-		echo '<div id="sb-' . esc_attr( $sidebar ) . '" class="' . $classes . $this->get_sidebar_attributes( $sidebar, $data, 'class') . '" ' . $attributes . $this->get_sidebar_attributes( $sidebar, $data, 'other') . '>';
-		if ( get_template() == 'genesis' ) {
-			genesis_widget_area( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
-		} else {
-			dynamic_sidebar( 'off-canvas-'.$sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+	function do_sidebar( $sidebar ) {
+		if ( ! empty( $this->general_settings['sidebars'][ $sidebar ] ) ) {
+
+			$data = $this->general_settings['sidebars'][ $sidebar ];
+
+			echo '<div id="ocs-' . esc_attr( $sidebar ) . '" ' . $this->get_sidebar_attributes( $sidebar, $data ) . '>';
+
+			if ( get_template() == 'genesis' ) {
+				genesis_widget_area( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+			} else {
+				dynamic_sidebar( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+			}
+
+			echo '</div>';
 		}
-		echo '</div>';
 	}
 
 	/**
@@ -151,31 +171,53 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @since   0.3  Overwrite global setting attributes
 	 * @return  void
 	 */
-	function get_sidebar_attributes( $sidebar, $data, $attr ) {
-		$return = '';
-		switch( $attr ) {
-			case 'class':
-				$return .= ' sb-size-' . esc_attr( $data['size'] );
-				$return .= ' sb-location-' . esc_attr( $data['location'] );
-				$return .= ' sb-style-' . esc_attr( $data['style'] );
-			break;
-			case 'other':
-				//if ( $data['size'] == 'custom' ) { $return .= ' data-sb-size="' . $data['width_input'] . $data['width_input_type'] . '"'; }
+	function get_sidebar_attributes( $sidebar, $data ) {
+		$atts = array();
 
-				// Slidebars 2.0
-				$return .= ' off-canvas="sb-' . esc_attr( $sidebar ) . ' ' . esc_attr( $data['location'] ) . ' ' . esc_attr( $data['style'] ) . '"';
-				$return .= ' off-canvas-sidebar-id="' . esc_attr( $sidebar ) . '"';
+		$atts['class'] = array();
+		$atts['class'][] = 'ocs-slidebar';
+		$atts['class'][] = 'ocs-' . esc_attr( $sidebar );
+		$atts['class'][] = 'ocs-size-' . esc_attr( $data['size'] );
+		$atts['class'][] = 'ocs-location-' . esc_attr( $data['location'] );
+		$atts['class'][] = 'ocs-style-' . esc_attr( $data['style'] );
 
-				// Overwrite global settings
-				if ( true === (bool) $data['overwrite_global_settings'] ) {
-					$return .= ' off-canvas-overwrite_global_settings="' . esc_attr( (int) $data['overwrite_global_settings'] ) . '"';
-					$return .= ' off-canvas-site_close="' . esc_attr( (int) $data['site_close'] ) . '"';
-					$return .= ' off-canvas-disable_over="' . esc_attr( (int) $data['disable_over'] ) . '"';
-					$return .= ' off-canvas-hide_control_classes="' . esc_attr( (int) $data['hide_control_classes'] ) . '"';
-					$return .= ' off-canvas-scroll_lock="' . esc_attr( (int) $data['scroll_lock'] ) . '"';
-				}
-			break;
+		/**
+		 * Filter the classes for a sidebar
+		 *
+		 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+		 *
+		 * @param  array  $classes       Classes
+		 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+		 * @param  array  $sidebar_data  The sidebar settings
+		 */
+		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar, $data );
+
+		// Slidebars 2.0
+		$atts['off-canvas'] = array(
+			'ocs-' . esc_attr( $sidebar ), // ID
+			esc_attr( $data['location'] ), // Location
+			esc_attr( $data['style'] )     // Animation style
+		);
+		$atts['ocs-sidebar-id'] = esc_attr( $sidebar );
+
+		// Overwrite global settings
+		if ( true === (bool) $data['overwrite_global_settings'] ) {
+			$atts['ocs-overwrite_global_settings'] = esc_attr( (int) $data['overwrite_global_settings'] );
+			$atts['ocs-site_close']                = esc_attr( (int) $data['site_close'] );
+			$atts['ocs-disable_over']              = esc_attr( (int) $data['disable_over'] );
+			$atts['ocs-hide_control_classes']      = esc_attr( (int) $data['hide_control_classes'] );
+			$atts['ocs-scroll_lock']               = esc_attr( (int) $data['scroll_lock'] );
 		}
+
+		foreach ( $atts as $name => $value ) {
+			if ( is_array( $value ) ) {
+				$value = implode( ' ', $value );
+			}
+
+			$atts[ $name ] = $name . '="' . $value . '"';
+		}
+		$return = implode( ' ', $atts );
+
 		return $return;
 	}
 
@@ -246,7 +288,7 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 		$bgcolor = $this->general_settings['background_color'];
 	}
 ?>
-	#sb-site {background-color: <?php echo $bgcolor; ?>;}
+	#ocs-site {background-color: <?php echo $bgcolor; ?>;}
 <?php } ?>
 <?php
 foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
@@ -281,7 +323,7 @@ foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 			$prop[] = 'padding: ' . $padding . 'px;';
 		}
 ?>
-	.sb-slidebar.sb-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
+	.ocs-slidebar.ocs-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
 <?php }} //endif endforeach ?>
 </style>
 			<?php

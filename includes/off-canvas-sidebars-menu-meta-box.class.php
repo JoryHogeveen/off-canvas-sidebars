@@ -19,7 +19,11 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	private $plugin_tabs = array();
 	private $general_settings = array();
 	private $general_labels = array();
-	private $link_classes = 'sb-button sb-toggle'; // sb-toggle-
+	private $link_classes = array(
+		'ocs-button',
+		'ocs-toggle',
+		// ocs-toggle-
+	);
 
 	function __construct() {
 		//add_action( 'admin_init', array( $this, 'load_settings' ) );
@@ -202,13 +206,19 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 				if (isset($this->general_settings['sidebars'][$options['off-canvas-control']]) && $this->general_settings['sidebars'][$options['off-canvas-control']]['enable'] == 1) {
 					//$item->title = $options['show_flags'] && $options['show_names'] ? $lang['flag'].'&nbsp;'.esc_html($lang['name']) : ($options['show_flags'] ? $lang['flag'] : esc_html($lang['name']));
 					$link_classes = $this->link_classes;
-					if ($options['off-canvas-control'] != '') {
-						$link_classes .= ' sb-toggle-'.$options['off-canvas-control'];
+					if ( ! is_array( $link_classes ) ){
+						$link_classes = explode(' ', $link_classes);
 					}
-					if (!is_array($item->classes)){
+
+					if ( ! empty( $options['off-canvas-control'] ) ) {
+						$link_classes[] = 'ocs-toggle-'.$options['off-canvas-control'];
+					}
+
+					if ( ! is_array( $item->classes ) ){
 						$item->classes = explode(' ', $item->classes);
 					}
-					$item->classes = array_merge($item->classes, explode(' ', $link_classes));
+
+					$item->classes = array_merge( $item->classes, $link_classes );
 				}
 			}
 		}

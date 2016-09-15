@@ -944,7 +944,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 			echo '<div class="inside"><table class="form-table">';
 
 			if ( $page == $this->sidebars_tab ) {
-				echo '<tr class="sidebar_classes" style="display: none;"><th>'.__('ID & Classes', 'off-canvas-sidebars').'</th><td>'.__('Sidebar ID', 'off-canvas-sidebars').': <code>#sb-<span class="js-dynamic-id"></span></code> &nbsp; '.__('Sidebar Toggle Class', 'off-canvas-sidebars').': <code>.sb-toggle-<span class="js-dynamic-id"></span></code></td></tr>';
+				echo '<tr class="sidebar_classes" style="display: none;"><th>' . __('ID & Classes', 'off-canvas-sidebars') . '</th><td>' . __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#ocs-<span class="js-dynamic-id"></span></code> &nbsp; ' . __('Sidebar Toggle Class', 'off-canvas-sidebars') . ': <code>.ocs-toggle-<span class="js-dynamic-id"></span></code></td></tr>';
 			}
 			do_settings_fields( $page, $section['id'] );
 			echo '</table>';

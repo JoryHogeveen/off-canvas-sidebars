@@ -15,7 +15,7 @@
 			ocsScrollTopFixed();
 			$(window).on('scroll resize', function() {
 				curScrollTopElements;
-				var newScrollTopElements = $('#sb-site *').filter(function(){ return $(this).css('position') === 'fixed' });
+				var newScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 				curScrollTopElements = curScrollTopElements.add(newScrollTopElements);
 				ocsScrollTopFixed();
 			});

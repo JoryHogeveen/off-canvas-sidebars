@@ -3,7 +3,7 @@
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.2
+ * @version 0.3
  */
 
 /**
@@ -11,198 +11,198 @@
  */
 
 /* Slidebar widths for browsers/devices that don't support media queries. */
-	.sb-size-default.sb-location-left,
-	.sb-size-default.sb-location-right {
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
 		width: 30%;
 	}
 
-	.sb-size-small.sb-location-left,
-	.sb-size-small.sb-location-right {
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
 		width: 15%;
 	}
 
-	.sb-size-large.sb-location-left,
-	.sb-size-large.sb-location-right {
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
 		width: 45%;
 	}
 
-	.sb-size-default.sb-location-top,
-	.sb-size-default.sb-location-bottom {
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
 		height: 30%;
 	}
 
-	.sb-size-small.sb-location-top,
-	.sb-size-small.sb-location-bottom {
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
 		height: 15%;
 	}
 
-	.sb-size-large.sb-location-top,
-	.sb-size-large.sb-location-bottom {
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
 		height: 45%;
 	}
 
 @media (max-width: 480px) { /* Slidebar widths on extra small screens. */
 
-	.sb-size-default.sb-location-left,
-	.sb-size-default.sb-location-right {
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
 		width: 70%;
 	}
 
-	.sb-size-small.sb-location-left,
-	.sb-size-small.sb-location-right {
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
 		width: 55%;
 	}
 
-	.sb-size-large.sb-location-left,
-	.sb-size-large.sb-location-right {
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
 		width: 85%;
 	}
 
-	.sb-size-default.sb-location-top,
-	.sb-size-default.sb-location-bottom {
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
 		height: 70%;
 	}
 
-	.sb-size-small.sb-location-top,
-	.sb-size-small.sb-location-bottom {
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
 		height: 55%;
 	}
 
-	.sb-size-large.sb-location-top,
-	.sb-size-large.sb-location-bottom {
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
 		height: 85%;
 	}
 }
 
 @media (min-width: 481px) { /* Slidebar widths on small screens. */
 
-	.sb-size-default.sb-location-left,
-	.sb-size-default.sb-location-right {
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
 		width: 55%;
 	}
 
-	.sb-size-small.sb-location-left,
-	.sb-size-small.sb-location-right {
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
 		width: 40%;
 	}
 
-	.sb-size-large.sb-location-left,
-	.sb-size-large.sb-location-right {
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
 		width: 70%;
 	}
 
-	.sb-size-default.sb-location-top,
-	.sb-size-default.sb-location-bottom {
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
 		height: 55%;
 	}
 
-	.sb-size-small.sb-location-top,
-	.sb-size-small.sb-location-bottom {
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
 		height: 40%;
 	}
 
-	.sb-size-large.sb-location-top,
-	.sb-size-large.sb-location-bottom {
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
 		height: 70%;
 	}
 }
 
 @media (min-width: 768px) { /* Slidebar widths on medium screens. */
 
-	.sb-size-default.sb-location-left,
-	.sb-size-default.sb-location-right {
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
 		width: 40%;
 	}
 
-	.sb-size-small.sb-location-left,
-	.sb-size-small.sb-location-right {
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
 		width: 25%;
 	}
 
-	.sb-size-large.sb-location-left,
-	.sb-size-large.sb-location-right {
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
 		width: 55%;
 	}
 
-	.sb-size-default.sb-location-top,
-	.sb-size-default.sb-location-bottom {
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
 		height: 40%;
 	}
 
-	.sb-size-small.sb-location-top,
-	.sb-size-small.sb-location-bottom {
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
 		height: 25%;
 	}
 
-	.sb-size-large.sb-location-top,
-	.sb-size-large.sb-location-bottom {
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
 		height: 55%;
 	}
 }
 
 @media (min-width: 992px) { /* Slidebar widths on large screens. */
 
-	.sb-size-default.sb-location-left,
-	.sb-size-default.sb-location-right {
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
 		width: 30%;
 	}
 
-	.sb-size-small.sb-location-left,
-	.sb-size-small.sb-location-right {
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
 		width: 15%;
 	}
 
-	.sb-size-large.sb-location-left,
-	.sb-size-large.sb-location-right {
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
 		width: 45%;
 	}
 
-	.sb-size-default.sb-location-top,
-	.sb-size-default.sb-location-bottom {
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
 		height: 30%;
 	}
 
-	.sb-size-small.sb-location-top,
-	.sb-size-small.sb-location-bottom {
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
 		height: 15%;
 	}
 
-	.sb-size-large.sb-location-top,
-	.sb-size-large.sb-location-bottom {
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
 		height: 45%;
 	}
 }
 
 @media (min-width: 1200px) { /* Slidebar widths on extra large screens. */
 
-	.sb-size-default.sb-location-left,
-	.sb-size-default.sb-location-right {
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
 		width: 20%;
 	}
 
-	.sb-size-small.sb-location-left,
-	.sb-size-small.sb-location-right {
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
 		width: 5%;
 	}
 
-	.sb-size-large.sb-location-left,
-	.sb-size-large.sb-location-right {
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
 		width: 35%;
 	}
 
 
-	.sb-size-default.sb-location-top,
-	.sb-size-default.sb-location-bottom {
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
 		height: 20%;
 	}
 
-	.sb-size-small.sb-location-top,
-	.sb-size-small.sb-location-bottom {
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
 		height: 5%;
 	}
 
-	.sb-size-large.sb-location-top,
-	.sb-size-large.sb-location-bottom {
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
 		height: 35%;
 	}
 }
