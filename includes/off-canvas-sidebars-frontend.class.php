@@ -235,7 +235,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 
 		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), OCS_PLUGIN_VERSION ); //'.$suffix.'
 		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars.js', array( 'jquery', 'slidebars' ), OCS_PLUGIN_VERSION, true ); //'.$suffix.'
-		wp_localize_script( 'off-canvas-sidebars', 'OCS_OFF_CANVAS_SIDEBARS', array(
+		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
 			'site_close'           => ( $this->general_settings['site_close'] ) ? true : false,
 			'disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
 			'hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,

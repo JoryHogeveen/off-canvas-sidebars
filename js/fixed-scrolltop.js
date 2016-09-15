@@ -4,14 +4,14 @@
  * Compatibility for fixed elements with Slidebars
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.2
+ * @version 0.3
  */
 ( function ( $ ) {
 
 	$(window).load(function () {
 
-		if ($('#sb-site').css('transform') != 'none') {
-			var curScrollTopElements = $('#sb-site *').filter(function(){ return $(this).css('position') === 'fixed' });
+		if ($('#ocs-site').css('transform') != 'none') {
+			var curScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 			ocsScrollTopFixed();
 			$(window).on('scroll resize', function() {
 				curScrollTopElements;
@@ -26,8 +26,8 @@
 			if (curScrollTopElements.length > 0) {
 				var scrollTop = $(window).scrollTop();
 				var winHeight = $(window).height();
-				var conOffset = $('#sb-site').offset();
-				var conHeight = $('#sb-site').outerHeight();
+				var conOffset = $('#ocs-site').offset();
+				var conHeight = $('#ocs-site').outerHeight();
 				curScrollTopElements.each(function(){
 					if ($(this).css('position') == 'fixed') {
 						var top = $(this).css('top');
