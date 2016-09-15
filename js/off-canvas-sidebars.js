@@ -96,7 +96,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS == 'undefined' ) {
 				} else {
 					$( '.sb-toggle-' + id ).show();
 				}
-				
+
 			} );
 		};
 		disableOver();

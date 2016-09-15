@@ -9,7 +9,7 @@
  */
 
 //if uninstall not called from WordPress exit
-if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
+if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
     exit();
 
 
@@ -34,11 +34,11 @@ if ( ! is_multisite() ) {
 }
 
 function ocs_uninstall() {
-	
+
 	// Delete all options
 	$option_keys = array( 'off_canvas_sidebars_options' );
 	foreach ( $option_keys as $option_key ) {
 		delete_option( $option_key );
 	}
-		
+
 }

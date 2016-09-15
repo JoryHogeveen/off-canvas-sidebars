@@ -7,9 +7,9 @@
  * @version 0.2
  */
 ( function ( $ ) {
-	
+
 	$(window).load(function () {
-		
+
 		if ($('#sb-site').css('transform') != 'none') {
 			var curScrollTopElements = $('#sb-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 			ocsScrollTopFixed();
@@ -20,7 +20,7 @@
 				ocsScrollTopFixed();
 			});
 		}
-		
+
 		function ocsScrollTopFixed() {
 			curScrollTopElements;
 			if (curScrollTopElements.length > 0) {
@@ -46,7 +46,7 @@
 				});
 			}
 		}
-		
+
 	});
-	
+
 } ) ( jQuery );

@@ -11,23 +11,23 @@
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
 class OCS_Off_Canvas_Sidebars_Frontend {
-	
+
 	private $general_settings = array();
-	
+
 	function __construct() {
 		$this->load_plugin_data();
-		
-		if ( $this->general_settings['enable_frontend'] == true ) { 
+
+		if ( $this->general_settings['enable_frontend'] == true ) {
 			$this->default_actions();
 		}
-				
+
 		// Dúh..
 		//add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		//add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 	}
-	
+
 	/**
 	 * Get plugin defaults
 	 */
@@ -55,7 +55,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		}
 		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition
 		add_action( $after_hook, array( $this, 'after_site' ), 999999999 ); // enforce last addition
-		
+
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition
 		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition
@@ -64,7 +64,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 	/**
 	 * before_site action hook
 	 *
-	 * @since   0.1    
+	 * @since   0.1
 	 * @since   0.2    Add canvas attribute (Slidebars 2.0)
 	 * @since   0.2.1  Add actions
 	 * @return  void
@@ -79,7 +79,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		// Add content before other content in the site container
 		do_action( 'ocs_container_inner_before' );
 	}
-	
+
 	/**
 	 * after_site action hook
 	 *
@@ -104,10 +104,10 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			}
 		}
 	}
-	
+
 	/**
 	 * EXPERIMENTAL: Not used in this version
-	 * 
+	 *
 	 * after_site action hook for scripts
 	 *
 	 * @since   0.1
@@ -118,13 +118,13 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site" canvas="container"></div>');       
+		$('div.sb-slidebar:first').prevAll().wrapAll('<div id="sb-site" canvas="container"></div>');
 	}) (jQuery);
 </script>
 			<?php
 		}
 	}
-	
+
 	/**
 	 * Add the slidebar action hook
 	 *
@@ -190,7 +190,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '2.0.2' );
 		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2', true );
-		
+
 		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), OCS_PLUGIN_VERSION ); //'.$suffix.'
 		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars.js', array( 'jquery', 'slidebars' ), OCS_PLUGIN_VERSION, true ); //'.$suffix.'
 		wp_localize_script( 'off-canvas-sidebars', 'OCS_OFF_CANVAS_SIDEBARS', array(
@@ -201,16 +201,16 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 			'sidebars'             => $this->general_settings['sidebars']
 		) );
 
-		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) { 
+		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) {
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
 		}
 
 		// FastClick library https://github.com/ftlabs/fastclick
-		if ( true === (bool) $this->general_settings['use_fastclick'] ) { 
+		if ( true === (bool) $this->general_settings['use_fastclick'] ) {
 			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick.js', array( 'jquery' ), false, true );
 		}
 	}
-	
+
 	/**
 	 * Add nessesary inline scripts
 	 *
@@ -237,7 +237,7 @@ class OCS_Off_Canvas_Sidebars_Frontend {
 		if ( ! is_admin() ) {
 			?>
 <style type="text/css">
-<?php 
+<?php
 if ( $this->general_settings['background_color_type'] != '' ) {
 	$bgcolor = '';
 	if ( $this->general_settings['background_color_type'] == 'transparent' ) {
@@ -248,7 +248,7 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 ?>
 	#sb-site {background-color: <?php echo $bgcolor; ?>;}
 <?php } ?>
-<?php 
+<?php
 foreach ($this->general_settings['sidebars'] as $sidebar_id => $sidebar_data) {
 	if ( true === (bool) $sidebar_data['enable'] ) {
 		$prop = array();

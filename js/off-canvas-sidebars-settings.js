@@ -40,14 +40,14 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			ocs_show_hide_options_radio( '.off_canvas_sidebars_options_background_color_type', '.off_canvas_sidebars_options_background_color_wrapper', 'color' );
 		}
 
-		
+
 		function ocs_show_hide_options( trigger, target, parent ) {
 			if ( ! $(trigger).is(':checked') ) {
 				if ( parent ) {
 					$(target).closest(parent).slideUp('fast');
 				} else {
 					$(target).slideUp('fast');
-				}         
+				}
 			}
 			$(trigger).change( function() {
 				if ( $(this).is(':checked') ) {
@@ -90,7 +90,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 				}
 			});
 		}
-		
+
 		$('input.color-picker').wpColorPicker();
 
 		// Validate required fields

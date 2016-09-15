@@ -13,7 +13,7 @@
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
 class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
-	
+
 	private $general_key = '';
 	private $plugin_key = '';
 	private $plugin_tabs = array();
@@ -40,11 +40,11 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 		$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
 	}
-	
+
 	function add_meta_box() {
 		add_meta_box( $this->plugin_key.'-meta-box', __('Off-Canvas Control', 'off-canvas-sidebars'), array( $this, 'meta_box' ), 'nav-menus', 'side', 'low' );
 	}
-	
+
 	function meta_box() {
 		global $_nav_menu_placeholder, $nav_menu_selected_id;
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
@@ -53,7 +53,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		<div class="off-canvas-control-meta-box posttypediv" id="off-canvas-control-meta-box">
             <div id="tabs-panel-off-canvas-control" class="tabs-panel tabs-panel-active">
                 <ul id="off-canvas-control" class="categorychecklist form-no-clear">
-                <?php foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) { 
+                <?php foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
 						if ($sidebar_data['enable'] == 1) {
 				?>
                     <li>
@@ -66,7 +66,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
                         <input type="hidden" class="menu-item-classes" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-classes]" value="">
                     </li>
                 <?php } } ?>
-                <?php 
+                <?php
 				if ( ! $off_canvas_sidebars->is_sidebar_enabled() ) {
 					?>
                     <li><?php echo $this->general_labels['no_sidebars_available']; ?></li>
@@ -102,7 +102,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL .'/js/nav-menu'.$suffix.'.js', array('jquery'), OCS_PLUGIN_VERSION );
-		
+
 		$data['strings'] = array(
 			'show_icon' => __( 'Show icon', 'off-canvas-sidebars' ),
 			'icon' => __( 'Icon classes', 'off-canvas-sidebars' ),
@@ -129,7 +129,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		$data['val'] = array();
 		foreach ($items as $item)
 			$data['val'][$item] = get_post_meta( $item, '_off_canvas_control_menu_item', true );
-		
+
 		// send all these data to javascript
 		wp_localize_script( 'off_canvas_control_nav_menu', 'off_canvas_control_data', $data );
 	}
@@ -146,12 +146,12 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		if (empty($_POST['menu-item-url'][$menu_item_db_id]) || $_POST['menu-item-url'][$menu_item_db_id] != '#off_canvas_control')
 			return;
-		
+
 		// security check
 		// as 'wp_update_nav_menu_item' can be called from outside WP admin
 		if (current_user_can('edit_theme_options')) {
 			check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
-			
+
 			$available_controls = array();
 			foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
 				$available_controls[$sidebar] = $sidebar_data['label'];
@@ -169,7 +169,7 @@ class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 			}
 			else {
 				$options['off-canvas-control'] = '';
-				// Of only one is available, allways select it	
+				// Of only one is available, allways select it
 				if ( ! empty($_POST['menu-item-off-canvas-control'][$menu_item_db_id]) && array_key_exists( $_POST['menu-item-off-canvas-control'][$menu_item_db_id], $available_controls ) ) {
 					$options['off-canvas-control'] = strip_tags( stripslashes( $_POST['menu-item-off-canvas-control'][$menu_item_db_id] ) );
 				}
