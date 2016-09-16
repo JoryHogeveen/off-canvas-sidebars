@@ -837,6 +837,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 				$output['sidebars'][ $sidebar_id ]['disable_over']    = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['disable_over'] );
 				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
 
+				// Validate object value + set to default of not valid
+				$output['sidebars'][ $sidebar_id ]['object'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['object'] ) && in_array( $output['sidebars'][ $sidebar_id ]['object'], array( 'sidebar', 'menu', 'action' ) ) ) ? $output['sidebars'][ $sidebar_id ]['object'] : 'sidebar';
+
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id != $new_sidebar_id ) {
 					$output['sidebars'][ $new_sidebar_id ] = $output['sidebars'][ $sidebar_id ];
