@@ -180,21 +180,22 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @return  void
 	 * @access  public
 	 */
-	function do_sidebar( $sidebar ) {
-		if ( ! empty( $this->general_settings['sidebars'][ $sidebar ] ) ) {
+	function do_sidebar( $sidebar_id ) {
+		if ( ! empty( $this->general_settings['sidebars'][ $sidebar_id ] ) ) {
 
-			$data = $this->general_settings['sidebars'][ $sidebar ];
+			$sidebar_data = $this->general_settings['sidebars'][ $sidebar_id ];
 
-			echo '<div id="ocs-' . esc_attr( $sidebar ) . '" ' . $this->get_sidebar_attributes( $sidebar, $data ) . '>';
+			echo '<div id="ocs-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+			if ( 'sidebar' == $sidebar_data['object'] ) {
 
-			if ( 'sidebar' == $data['object'] ) {
 				if ( get_template() == 'genesis' ) {
-					genesis_widget_area( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+					genesis_widget_area( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 				} else {
-					dynamic_sidebar( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+					dynamic_sidebar( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 				}
 			}
-			elseif( 'menu' == $data['object'] ) {
+
+			elseif( 'menu' == $sidebar_data['object'] ) {
 
 				$args = array(
 					'fallback_cb' => false,
@@ -215,10 +216,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
 				 * @param  array  $sidebar_data  The sidebar settings
 				 */
-				apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar, $data );
+				apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
 
 				// Force our ID
-				$args['menu'] = 'off-canvas-' . $sidebar;
+				$args['menu'] = 'off-canvas-' . $sidebar_id;
 				// Force echo
 				$args['echo'] = true;
 
