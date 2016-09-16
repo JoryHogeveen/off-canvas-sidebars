@@ -25,12 +25,24 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.init = function() {
 
+		// Function call before initializing to change the ocsOffCanvasSidebars object it needed
+		if ( typeof ocsBeforeInitHook == 'function' ) {
+			ocsBeforeInitHook();
+		}
+
 		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
 			return;
 		}
 		ocsOffCanvasSidebars.slidebarsController.init();
-		var controller = ocsOffCanvasSidebars.slidebarsController;
 
+		// Function call after initializing to change the ocsOffCanvasSidebars object it needed
+		if ( typeof ocsAfterInitHook == 'function' ) {
+			ocsAfterInitHook();
+		}
+
+	};
+
+		var controller = ocsOffCanvasSidebars.slidebarsController;
 
 		$( '.ocs-slidebar' ).each( function(e) {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
@@ -73,7 +85,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		// Close any
 		$( document ).on( 'touchend click', '.ocs-close-any', function( e ) {
-			if ( parseInt( ocsOffCanvasSidebars.getSetting( 'site_close', false ) ) ) {
+			if ( ocsOffCanvasSidebars.getSetting( 'site_close', false ) ) {
 				e.preventDefault();
 				e.stopPropagation();
 				controller.close();
@@ -116,7 +128,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 						controller.close();
 					}
 					// Hide control classes
-					if ( parseInt( ocsOffCanvasSidebars.getSetting( 'hide_control_classes', 'ocs-' + id ) ) ) {
+					if ( ocsOffCanvasSidebars.getSetting( 'hide_control_classes', 'ocs-' + id ) ) {
 						$( '.ocs-toggle-' + id ).hide();
 					}
 				} else {
@@ -130,7 +142,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		// Disable scrolling on active sidebar
 		$( '#ocs-site' ).on( 'scroll touchmove mousewheel', function( e ) {
-			if ( parseInt( ocsOffCanvasSidebars.getSetting( 'scroll_lock' ) ) && false != controller.getActiveSlidebar() ) {
+			if ( ocsOffCanvasSidebars.getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
@@ -151,18 +163,18 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	};
 
 	ocsOffCanvasSidebars.getSetting = function( key, sidebarId ) {
+		var overwrite, setting;
 
 		if ( ! sidebarId ) {
 			sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 		}
 		if ( sidebarId ) {
-			var overwrite, setting;
 
 			if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 				sidebarId = sidebarId.replace( 'ocs-', '' );
 				overwrite = ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings;
 				if ( overwrite ) {
-					setting = ocsOffCanvasSidebars.sidebars[ sidebarId ].key;
+					setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
 					if ( setting ) {
 						return setting;
 					} else {
@@ -184,20 +196,22 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			}
 		}
 
-		if ( typeof ocsOffCanvasSidebars[ key ] != 'undefined' ) {
+		if ( typeof ocsOffCanvasSidebars[ key ] != 'undefined' && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 			return ocsOffCanvasSidebars[ key ];
 		} else {
-			return false;
+			setting = $( '#ocs-site' ).attr( 'ocs-' + key );
+			if ( typeof setting != 'undefined' ) {
+				return setting;
+			} else {
+				return false;
+			}
 		}
+
+		return null;
 	};
 
 	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
-
-		// Function call before initializing to change the ocsOffCanvasSidebars object it needed
-		if ( typeof ocsBeforeInitHook == 'function' ) {
-			ocsBeforeInitHook();
-		}
 		ocsOffCanvasSidebars.init();
 	}
 
