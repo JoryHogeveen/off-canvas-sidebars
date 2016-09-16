@@ -30,9 +30,13 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			ocsBeforeInitHook();
 		}
 
+		// Slidebars constructor
+		ocsOffCanvasSidebars.slidebarsController = new slidebars();
+
 		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
 			return;
 		}
+		// Initialize slidebars
 		ocsOffCanvasSidebars.slidebarsController.init();
 
 		// Function call after initializing
@@ -218,7 +222,6 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	};
 
 	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {
-		ocsOffCanvasSidebars.slidebarsController = new slidebars();
 		ocsOffCanvasSidebars.init();
 	}
 
