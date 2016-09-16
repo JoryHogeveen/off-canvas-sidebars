@@ -17,6 +17,15 @@
 .ocs-credits .inner { padding-left: 10px; padding-right: 10px; }
 .ocs-credits h3 { font-size: 14px; line-height: 1.4; margin: 0;  padding: 8px 12px; border-bottom: 1px solid #eee; }
 
+.postbox.section-sidebar {
+	-webkit-transition: all .1s;
+	-moz-transition: all .1s;
+	-ms-transition: all .1s;
+	-o-transition: all .1s;
+	transition: all .1s;
+}
+.postbox.section-sidebar:hover {opacity: 1 !important;}
+
 @media only screen and (min-width: 850px) {
 	.off-canvas-sidebars-settings {
 		margin-right: 300px;

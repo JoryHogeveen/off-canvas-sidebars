@@ -929,7 +929,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 		foreach ( (array) $wp_settings_sections[$page] as $section ) {
 			$box_classes = 'stuffbox postbox '.$section['id'].'';
 			if ( $page == $this->sidebars_tab ) {
-				$box_classes .= ' if-js-closed';
+				$box_classes .= ' section-sidebar if-js-closed';
 			}
 			echo '<div id="'.$section['id'].'" class="'.$box_classes.'">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">' . __('Toggle panel', 'off-canvas-sidebars') . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
