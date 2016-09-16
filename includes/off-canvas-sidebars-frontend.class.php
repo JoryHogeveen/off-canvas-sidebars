@@ -190,7 +190,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			/**
 			 * Action to add content before the default sidebar content
 			 *
-			 * @since 1.3
+			 * @since 0.3
 			 *
 			 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
 			 *
@@ -220,7 +220,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				 *
 				 * Please note that the ID will be overwritten!
 				 *
-				 * @since 1.3
+				 * @since 0.3
 				 *
 				 * @see https://developer.wordpress.org/reference/functions/wp_nav_menu/
 				 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
@@ -244,7 +244,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				/**
 				 * Action to hook into the sidebar content
 				 *
-				 * @since 1.3
+				 * @since 0.3
 				 *
 				 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
 				 *
@@ -257,7 +257,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			/**
 			 * Action to add content after the default sidebar content
 			 *
-			 * @since 1.3
+			 * @since 0.3
 			 *
 			 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
 			 *
