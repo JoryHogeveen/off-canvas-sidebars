@@ -25,7 +25,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.init = function() {
 
-		// Function call before initializing
+		/**
+		 * Function call before initializing
+		 * @since  0.3
+		 */
 		if ( typeof ocsBeforeInitHook == 'function' ) {
 			ocsBeforeInitHook();
 		}
@@ -39,12 +42,21 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		// Initialize slidebars
 		ocsOffCanvasSidebars.slidebarsController.init();
 
-		// Function call after initializing
+		/**
+		 * Function call after initializing
+		 * @since  0.3
+		 */
 		if ( typeof ocsAfterInitHook == 'function' ) {
 			ocsAfterInitHook();
 		}
 
-		// Internal function, do not overwrite
+		/**
+		 * Validate the disable_over setting ( using _getSetting() )
+
+		 * Internal function, do not overwrite
+
+		 * @since  0.3
+		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check = true;
 			disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ) );
@@ -56,7 +68,13 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			return check;
 		};
 
-		// Internal function, do not overwrite
+		/**
+		 * Get the global setting or the sidebar setting (if set to overwrite)
+
+		 * Internal function, do not overwrite
+
+		 * @since  0.3
+		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
 			var overwrite, setting;
 
@@ -117,6 +135,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		$( '.ocs-slidebar' ).each( function(e) {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
 
+			/**
+			 * Toggle the sidebar
+			 * @since  0.1
+			 */
 			$( document ).on( 'touchend click', '.ocs-toggle-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
@@ -128,6 +150,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				}
 			} );
 
+			/**
+			 * Open the sidebar
+			 * @since  0.3
+			 */
 			$( document ).on( 'touchend click', '.ocs-open-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
@@ -139,6 +165,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				}
 			} );
 
+			/**
+			 * Close the sidebar
+			 * @since  0.3
+			 */
 			$( document ).on( 'touchend click', '.ocs-close-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
