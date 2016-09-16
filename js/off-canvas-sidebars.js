@@ -40,8 +40,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			ocsAfterInitHook();
 		}
 
+		ocsOffCanvasSidebars.setupTriggers();
 	};
 
+	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller = ocsOffCanvasSidebars.slidebarsController;
 
 		$( '.ocs-slidebar' ).each( function(e) {
