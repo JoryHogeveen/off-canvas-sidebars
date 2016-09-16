@@ -157,7 +157,6 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 					} else {
 						$(sidebar).css('border-left-color','#46b450');
 						$(sidebar).css('opacity', '');
-						$(sidebar).addClass('notice-warning').removeClass('notice-error').removeClass('notice-success');
 					}
 				});
 				$(sidebar).on('click', function() {
