@@ -413,6 +413,8 @@ final class OCS_Off_Canvas_Sidebars {
 					/**
 					 * Filter the register_sidebar arguments
 					 *
+					 * Please note that the ID will be overwritten!
+					 *
 					 * @since 0.3
 					 *
 					 * @see https://codex.wordpress.org/Function_Reference/register_sidebar
@@ -423,6 +425,9 @@ final class OCS_Off_Canvas_Sidebars {
 					 * @param  array  $sidebar_data  The sidebar settings
 					 */
 					$args = apply_filters( 'ocs_register_sidebar_args', $args, $sidebar_id, $sidebar_data );
+
+					// Force our ID
+					$args['id'] = 'off-canvas-' . $sidebar_id;
 
 					if ( get_template() == 'genesis' ) {
 						genesis_register_sidebar( $args );
