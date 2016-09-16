@@ -186,6 +186,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			$sidebar_data = $this->general_settings['sidebars'][ $sidebar_id ];
 
 			echo '<div id="ocs-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+
+			/**
+			 * Action to add content before the default sidebar content
+			 *
+			 * @since 1.3
+			 *
+			 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+			 *
+			 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+			 * @param  array  $sidebar_data  The sidebar settings
+			 */
+			do_action( 'ocs_custom_content_sidebar_before', $sidebar_id, $sidebar_data );
+
 			if ( 'sidebar' == $sidebar_data['object'] ) {
 
 				if ( get_template() == 'genesis' ) {
@@ -240,6 +253,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				 */
 				do_action( 'ocs_custom_content_sidebar_' . $sidebar_id, $sidebar_id, $sidebar_data );
 			}
+
+			/**
+			 * Action to add content after the default sidebar content
+			 *
+			 * @since 1.3
+			 *
+			 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+			 *
+			 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+			 * @param  array  $sidebar_data  The sidebar settings
+			 */
+			do_action( 'ocs_custom_content_sidebar_after', $sidebar_id, $sidebar_data );
+
 			echo '</div>';
 		}
 	}
