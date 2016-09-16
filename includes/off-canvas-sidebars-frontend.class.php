@@ -187,10 +187,42 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 
 			echo '<div id="ocs-' . esc_attr( $sidebar ) . '" ' . $this->get_sidebar_attributes( $sidebar, $data ) . '>';
 
-			if ( get_template() == 'genesis' ) {
-				genesis_widget_area( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
-			} else {
-				dynamic_sidebar( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+			if ( 'sidebar' == $data['object'] ) {
+				if ( get_template() == 'genesis' ) {
+					genesis_widget_area( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+				} else {
+					dynamic_sidebar( 'off-canvas-' . $sidebar );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+				}
+			}
+			elseif( 'menu' == $data['object'] ) {
+
+				$args = array(
+					'fallback_cb' => false,
+					'container' => 'nav' // HTML5 FTW!
+				);
+
+				/**
+				 * Filter nav menu args
+				 *
+				 * Please note that the ID will be overwritten!
+				 *
+				 * @since 1.3
+				 *
+				 * @see https://developer.wordpress.org/reference/functions/wp_nav_menu/
+				 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+				 *
+				 * @param  array  $args          The wp_nav_menu() arguments
+				 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+				 * @param  array  $sidebar_data  The sidebar settings
+				 */
+				apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar, $data );
+
+				// Force our ID
+				$args['menu'] = 'off-canvas-' . $sidebar;
+				// Force echo
+				$args['echo'] = true;
+
+				wp_nav_menu( $args );
 			}
 
 			echo '</div>';

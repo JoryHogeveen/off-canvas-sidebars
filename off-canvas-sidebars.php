@@ -133,6 +133,7 @@ final class OCS_Off_Canvas_Sidebars {
 	protected $default_sidebar_settings = array(
 		'enable' => 0,
 		'label' => '',
+		'object' => 'sidebar',
 		'location' => 'left',
 		'style' => 'push',
 		'size' => 'default',
@@ -397,35 +398,43 @@ final class OCS_Off_Canvas_Sidebars {
 	function register_sidebars() {
 		foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 			if ( 1 == $sidebar_data['enable'] ) {
-				$args = array(
-					'id'            => 'off-canvas-' . $sidebar_id,
-					'class'         => 'off-canvas-sidebar',
-					'name'          => __( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar_id ]['label'],
-					'description'   => __( 'This is a widget area that is used for off-canvas widgets.', 'off-canvas-sidebars' ),
-					//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
-					//'after_widget'  => '</div></div></section>',
-					//'before_title'  => '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
-					//'after_title'   => '</h3></div>',
-				);
+				if ( 'sidebar' == $sidebar_data['object'] ) {
+					$args = array(
+						//'id'            => 'off-canvas-' . $sidebar_id,
+						'class'         => 'off-canvas-sidebar',
+						'name'          => __( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar_id ]['label'],
+						'description'   => __( 'This is a widget area that is used for off-canvas widgets.', 'off-canvas-sidebars' ),
+						//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
+						//'after_widget'  => '</div></div></section>',
+						//'before_title'  => '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
+						//'after_title'   => '</h3></div>',
+					);
 
-				/**
-				 * Filter the register_sidebar arguments
-				 *
-				 * @since 0.3
-				 *
-				 * @see https://codex.wordpress.org/Function_Reference/register_sidebar
-				 * @see $default_sidebar_settings for the sidebar settings
-				 *
-				 * @param  array  $args          The register_sidebar arguments
-				 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
-				 * @param  array  $sidebar_data  The sidebar settings
-				 */
-				$args = apply_filters( 'ocs_register_sidebar_args', $args, $sidebar_id, $sidebar_data );
+					/**
+					 * Filter the register_sidebar arguments
+					 *
+					 * @since 0.3
+					 *
+					 * @see https://codex.wordpress.org/Function_Reference/register_sidebar
+					 * @see $default_sidebar_settings for the sidebar settings
+					 *
+					 * @param  array  $args          The register_sidebar() arguments
+					 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+					 * @param  array  $sidebar_data  The sidebar settings
+					 */
+					$args = apply_filters( 'ocs_register_sidebar_args', $args, $sidebar_id, $sidebar_data );
 
-				if ( get_template() == 'genesis' ) {
-					genesis_register_sidebar( $args );
-				} else {
-					register_sidebar( $args );
+					if ( get_template() == 'genesis' ) {
+						genesis_register_sidebar( $args );
+					} else {
+						register_sidebar( $args );
+					}
+				}
+				elseif ( 'menu' == $sidebar_data['object'] ) {
+					register_nav_menu(
+						'off-canvas-' . $sidebar_id,
+						__( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar_id ]['label']
+					);
 				}
 			}
 		}
