@@ -199,7 +199,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			 */
 			do_action( 'ocs_custom_content_sidebar_before', $sidebar_id, $sidebar_data );
 
-			if ( 'sidebar' == $sidebar_data['object'] ) {
+			if ( 'sidebar' == $sidebar_data['content'] ) {
 
 				if ( get_template() == 'genesis' ) {
 					genesis_widget_area( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
@@ -208,7 +208,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				}
 			}
 
-			elseif( 'menu' == $sidebar_data['object'] ) {
+			elseif( 'menu' == $sidebar_data['content'] ) {
 
 				$args = array(
 					'fallback_cb' => false,
@@ -239,10 +239,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				wp_nav_menu( $args );
 			}
 
-			elseif( 'action' == $sidebar_data['object'] ) {
+			elseif( 'action' == $sidebar_data['content'] ) {
 
 				/**
-				 * Action to hook into the sidebar instead of rendering an object
+				 * Action to hook into the sidebar content
 				 *
 				 * @since 1.3
 				 *

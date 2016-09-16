@@ -273,14 +273,14 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			)
 		);
 		add_settings_field(
-			'sidebar_object',
-			esc_attr__( 'Object type', 'off-canvas-sidebars' ),
+			'sidebar_content',
+			esc_attr__( 'Content', 'off-canvas-sidebars' ),
 			array( $this, 'radio_option' ),
 			$this->sidebars_tab,
 			'section_sidebar_' . $sidebar_id,
 			array(
 				'sidebar' => $sidebar_id,
-				'name' => 'object',
+				'name' => 'content',
 				'default' => 'sidebar',
 				'options' => array(
 					'sidebar' => array(
@@ -837,8 +837,8 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 				$output['sidebars'][ $sidebar_id ]['disable_over']    = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['disable_over'] );
 				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
 
-				// Validate object value + set to default of not valid
-				$output['sidebars'][ $sidebar_id ]['object'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['object'] ) && in_array( $output['sidebars'][ $sidebar_id ]['object'], array( 'sidebar', 'menu', 'action' ) ) ) ? $output['sidebars'][ $sidebar_id ]['object'] : 'sidebar';
+				// Validate content value + set to default of not valid
+				$output['sidebars'][ $sidebar_id ]['content'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['content'] ) && in_array( $output['sidebars'][ $sidebar_id ]['content'], array( 'sidebar', 'menu', 'action' ) ) ) ? $output['sidebars'][ $sidebar_id ]['content'] : 'sidebar';
 
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id != $new_sidebar_id ) {

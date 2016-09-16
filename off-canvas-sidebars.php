@@ -133,7 +133,7 @@ final class OCS_Off_Canvas_Sidebars {
 	protected $default_sidebar_settings = array(
 		'enable' => 0,
 		'label' => '',
-		'object' => 'sidebar',
+		'content' => 'sidebar',
 		'location' => 'left',
 		'style' => 'push',
 		'size' => 'default',
@@ -397,8 +397,11 @@ final class OCS_Off_Canvas_Sidebars {
 	 */
 	function register_sidebars() {
 		foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+
 			if ( 1 == $sidebar_data['enable'] ) {
-				if ( 'sidebar' == $sidebar_data['object'] ) {
+
+				if ( 'sidebar' == $sidebar_data['content'] ) {
+
 					$args = array(
 						//'id'            => 'off-canvas-' . $sidebar_id,
 						'class'         => 'off-canvas-sidebar',
@@ -435,7 +438,9 @@ final class OCS_Off_Canvas_Sidebars {
 						register_sidebar( $args );
 					}
 				}
-				elseif ( 'menu' == $sidebar_data['object'] ) {
+
+				elseif ( 'menu' == $sidebar_data['content'] ) {
+
 					register_nav_menu(
 						'off-canvas-' . $sidebar_id,
 						__( 'Off Canvas', 'off-canvas-sidebars' ) . ': ' . $this->general_settings['sidebars'][ $sidebar_id ]['label']
