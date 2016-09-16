@@ -34,7 +34,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		$( '.ocs-slidebar' ).each( function(e) {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
-			console.log('test');
+
 			$( document ).on( 'touchend click', '.ocs-toggle-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
@@ -45,6 +45,29 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 					controller.toggle( 'ocs-' + id );
 				}
 			} );
+
+			$( document ).on( 'touchend click', '.ocs-open-' + id, function( e ) {
+				// Stop default action and bubbling
+				e.stopPropagation();
+				e.preventDefault();
+
+				// Open the slidebar with respect for the disable_over setting
+				if ( ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
+					controller.open( 'ocs-' + id );
+				}
+			} );
+
+			$( document ).on( 'touchend click', '.ocs-close-' + id, function( e ) {
+				// Stop default action and bubbling
+				e.stopPropagation();
+				e.preventDefault();
+
+				// Close the slidebar
+				//if ( ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
+					controller.close( 'ocs-' + id );
+				//}
+			} );
+
 		} );
 
 

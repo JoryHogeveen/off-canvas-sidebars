@@ -294,7 +294,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 						'value' => 'menu'
 					)
 				),
-				'description' => __( 'Please note that WordPress has a menu widget, the "sidebar" object is your best bet in most cases.', 'off-canvas-sidebars' )
+				'description' => __( 'Keep in mind that WordPress has a menu widget, the "sidebar" object is your best option in most cases.', 'off-canvas-sidebars' )
 			)
 		);
 		add_settings_field(
@@ -1029,7 +1029,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			echo '<div class="inside"><table class="form-table">';
 
 			if ( $page == $this->sidebars_tab ) {
-				echo '<tr class="sidebar_classes" style="display: none;"><th>' . __('ID & Classes', 'off-canvas-sidebars') . '</th><td>' . __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#ocs-<span class="js-dynamic-id"></span></code> &nbsp; ' . __('Sidebar Toggle Class', 'off-canvas-sidebars') . ': <code>.ocs-toggle-<span class="js-dynamic-id"></span></code></td></tr>';
+				echo '<tr class="sidebar_classes" style="display: none;"><th>' . __('ID & Classes', 'off-canvas-sidebars') . '</th><td>';
+				echo  __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#ocs-<span class="js-dynamic-id"></span></code> &nbsp; '
+					. __('Trigger Classes', 'off-canvas-sidebars') . ': <code>.ocs-toggle-<span class="js-dynamic-id"></span></code> <code>.ocs-open-<span class="js-dynamic-id"></span></code> <code>.ocs-close-<span class="js-dynamic-id"></span></code>';
+				echo '</td></tr>';
 			}
 			do_settings_fields( $page, $section['id'] );
 			echo '</table>';
