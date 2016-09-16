@@ -861,7 +861,7 @@ class OCS_Off_Canvas_Sidebars_Settings {
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 				<?php } elseif ( $tab == $this->sidebars_tab ) { ?>
 				<p>
-					Add a new sidebar <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e( 'Name', 'off-canvas-sidebars' ) ?>" />
+					<?php _e( 'Add a new sidebar', 'off-canvas-sidebars' ) ?> <input name="<?php echo esc_attr( $this->general_key ).'[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e( 'Name', 'off-canvas-sidebars' ) ?>" />
 					<?php submit_button( __( 'Add sidebar', 'off-canvas-sidebars'), 'primary', 'submit', false ); ?>
 				</p>
 				<?php } ?>
