@@ -285,7 +285,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 				'options' => array(
 					'sidebar' => array(
 						'name' => 'sidebar',
-						'label' => __( 'Sidebar', 'off-canvas-sidebars' ) . ' (' . __( 'Default', 'off-canvas-sidebars' ),
+						'label' => __( 'Sidebar', 'off-canvas-sidebars' ) . ' (' . __( 'Default', 'off-canvas-sidebars' ) . ')',
 						'value' => 'sidebar'
 					),
 					'menu' => array(
