@@ -25,7 +25,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.init = function() {
 
-		// Function call before initializing to change the ocsOffCanvasSidebars object it needed
+		// Function call before initializing
 		if ( typeof ocsBeforeInitHook == 'function' ) {
 			ocsBeforeInitHook();
 		}
@@ -35,12 +35,76 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		}
 		ocsOffCanvasSidebars.slidebarsController.init();
 
-		// Function call after initializing to change the ocsOffCanvasSidebars object it needed
+		// Function call after initializing
 		if ( typeof ocsAfterInitHook == 'function' ) {
 			ocsAfterInitHook();
 		}
 
-		ocsOffCanvasSidebars.setupTriggers();
+		// Internal function, do not overwrite
+		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
+			var check = true;
+			disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ) );
+			if ( disableOver && ! isNaN( disableOver ) ) {
+				if ( $( window ).width() > disableOver ) {
+		  			check = false;
+		  		}
+			}
+			return check;
+		};
+
+		// Internal function, do not overwrite
+		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
+			var overwrite, setting;
+
+			if ( ! sidebarId ) {
+				sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
+			}
+			if ( sidebarId ) {
+
+				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
+					sidebarId = sidebarId.replace( 'ocs-', '' );
+					overwrite = ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings;
+					if ( overwrite ) {
+						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
+						if ( setting ) {
+							return setting;
+						} else {
+							return false;
+						}
+					}
+
+				// Fallback/Overwrite to enable sidebar settings from available attributes
+				} else {
+					overwrite = $( '#' + sidebarId ).attr( 'ocs-overwrite_global_settings' );
+					if ( typeof overwrite !== undefined && overwrite ) {
+						setting = $( '#' + sidebarId ).attr( 'ocs-' + key );
+						if ( typeof setting != 'undefined' ) {
+							return setting;
+						} else {
+							return false;
+						}
+					}
+				}
+			}
+
+			if ( typeof ocsOffCanvasSidebars[ key ] != 'undefined' && ! ocsOffCanvasSidebars.useAttributeSettings ) {
+				return ocsOffCanvasSidebars[ key ];
+			} else {
+				setting = $( '#ocs-site' ).attr( 'ocs-' + key );
+				if ( typeof setting != 'undefined' ) {
+					return setting;
+				} else {
+					return false;
+				}
+			}
+
+			return null;
+		};
+
+		// Validate type, this could be changed with the hooks
+		if ( typeof ocsOffCanvasSidebars.setupTriggers == 'function' ) {
+			ocsOffCanvasSidebars.setupTriggers();
+		}
 	};
 
 	ocsOffCanvasSidebars.setupTriggers = function() {
@@ -55,7 +119,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.preventDefault();
 
 				// Toggle the slidebar with respect for the disable_over setting
-				if ( ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
+				if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
 					controller.toggle( 'ocs-' + id );
 				}
 			} );
@@ -66,7 +130,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.preventDefault();
 
 				// Open the slidebar with respect for the disable_over setting
-				if ( ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
+				if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
 					controller.open( 'ocs-' + id );
 				}
 			} );
@@ -77,7 +141,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.preventDefault();
 
 				// Close the slidebar, no need to check the disable_over setting since we're closing the slidebar
-				//if ( ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
+				//if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
 					controller.close( 'ocs-' + id );
 				//}
 			} );
@@ -87,7 +151,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		// Close any
 		$( document ).on( 'touchend click', '.ocs-close-any', function( e ) {
-			if ( ocsOffCanvasSidebars.getSetting( 'site_close', false ) ) {
+			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
 				e.preventDefault();
 				e.stopPropagation();
 				controller.close();
@@ -125,12 +189,12 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			$( '.ocs-slidebar' ).each( function( e ) {
 				var id = $( this ).attr( 'ocs-sidebar-id' );
 
-				if ( ! ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
+				if ( ! ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
 					if ( controller.isActiveSlidebar( 'ocs-' + id ) ) {
 						controller.close();
 					}
 					// Hide control classes
-					if ( ocsOffCanvasSidebars.getSetting( 'hide_control_classes', 'ocs-' + id ) ) {
+					if ( ocsOffCanvasSidebars._getSetting( 'hide_control_classes', 'ocs-' + id ) ) {
 						$( '.ocs-toggle-' + id ).hide();
 					}
 				} else {
@@ -144,72 +208,13 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		// Disable scrolling on active sidebar
 		$( '#ocs-site' ).on( 'scroll touchmove mousewheel', function( e ) {
-			if ( ocsOffCanvasSidebars.getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
+			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
 			}
 		} );
 
-	};
-
-	ocsOffCanvasSidebars.checkDisableOver = function( sidebarId ) {
-		var check = true;
-		disableOver = parseInt( ocsOffCanvasSidebars.getSetting( 'disable_over', sidebarId ) );
-		if ( disableOver && ! isNaN( disableOver ) ) {
-			if ( $( window ).width() > disableOver ) {
-	  			check = false;
-	  		}
-		}
-		return check;
-	};
-
-	ocsOffCanvasSidebars.getSetting = function( key, sidebarId ) {
-		var overwrite, setting;
-
-		if ( ! sidebarId ) {
-			sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
-		}
-		if ( sidebarId ) {
-
-			if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
-				sidebarId = sidebarId.replace( 'ocs-', '' );
-				overwrite = ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings;
-				if ( overwrite ) {
-					setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
-					if ( setting ) {
-						return setting;
-					} else {
-						return false;
-					}
-				}
-
-			// Fallback/Overwrite to enable sidebar settings from available attributes
-			} else {
-				overwrite = $( '#' + sidebarId ).attr( 'ocs-overwrite_global_settings' );
-				if ( typeof overwrite !== undefined && overwrite ) {
-					setting = $( '#' + sidebarId ).attr( 'ocs-' + key );
-					if ( typeof setting != 'undefined' ) {
-						return setting;
-					} else {
-						return false;
-					}
-				}
-			}
-		}
-
-		if ( typeof ocsOffCanvasSidebars[ key ] != 'undefined' && ! ocsOffCanvasSidebars.useAttributeSettings ) {
-			return ocsOffCanvasSidebars[ key ];
-		} else {
-			setting = $( '#ocs-site' ).attr( 'ocs-' + key );
-			if ( typeof setting != 'undefined' ) {
-				return setting;
-			} else {
-				return false;
-			}
-		}
-
-		return null;
 	};
 
 	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {
