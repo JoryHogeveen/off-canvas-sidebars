@@ -285,16 +285,21 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 				'options' => array(
 					'sidebar' => array(
 						'name' => 'sidebar',
-						'label' => __( 'Sidebar', 'off-canvas-sidebars' ) . ' (' . __( 'Default', 'off-canvas-sidebars' ) . ')',
+						'label' => __( 'Sidebar', 'off-canvas-sidebars' ) . ' &nbsp (' . __( 'Default', 'off-canvas-sidebars' ) . ')',
 						'value' => 'sidebar'
 					),
 					'menu' => array(
 						'name' => 'menu',
 						'label' => __( 'Menu', 'off-canvas-sidebars' ),
 						'value' => 'menu'
+					),
+					'action' => array(
+						'name' => 'action',
+						'label' => __( 'Hook', 'off-canvas-sidebars' ) . ' &nbsp; (' . __( 'Action hook', 'off-canvas-sidebars' ) . ': <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
+						'value' => 'action'
 					)
 				),
-				'description' => __( 'Keep in mind that WordPress has a menu widget, the "sidebar" object is your best option in most cases.', 'off-canvas-sidebars' )
+				'description' => __( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', 'off-canvas-sidebars' )
 			)
 		);
 		add_settings_field(

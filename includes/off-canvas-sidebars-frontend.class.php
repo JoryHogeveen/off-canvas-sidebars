@@ -226,6 +226,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 				wp_nav_menu( $args );
 			}
 
+			elseif( 'action' == $sidebar_data['object'] ) {
+
+				/**
+				 * Action to hook into the sidebar instead of rendering an object
+				 *
+				 * @since 1.3
+				 *
+				 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+				 *
+				 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+				 * @param  array  $sidebar_data  The sidebar settings
+				 */
+				do_action( 'ocs_custom_content_sidebar_' . $sidebar_id, $sidebar_id, $sidebar_data );
+			}
 			echo '</div>';
 		}
 	}
