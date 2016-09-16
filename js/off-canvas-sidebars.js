@@ -62,7 +62,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.stopPropagation();
 				e.preventDefault();
 
-				// Close the slidebar
+				// Close the slidebar, no need to check the disable_over setting since we're closing the slidebar
 				//if ( ocsOffCanvasSidebars.checkDisableOver( 'ocs-' + id ) ) {
 					controller.close( 'ocs-' + id );
 				//}
@@ -82,7 +82,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 
 		// Close Slidebars when clicking on a link within a slidebar
-		$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
+		/*$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
 			e.preventDefault();
 			e.stopPropagation();
 
@@ -92,7 +92,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			controller.close( function () {
 				window.open( url, target );
 			} );
-		} );
+		} );*/
 
 
 		// Add close class to canvas container when Slidebar is opened
