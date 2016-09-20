@@ -22,6 +22,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.slidebarsController = false;
 	ocsOffCanvasSidebars.useAttributeSettings = false;
+	ocsOffCanvasSidebars.touchmove = false;
 
 	ocsOffCanvasSidebars.init = function() {
 
@@ -123,6 +124,14 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			return null;
 		};
 
+		// Prevent touch+swipe
+		$( document ).on( 'touchmove', function() {
+			ocsOffCanvasSidebars.touchmove = true;
+		} );
+		$( document ).on( 'touchstart', function() {
+			ocsOffCanvasSidebars.touchmove = false;
+		} );
+
 		// Validate type, this could be changed with the hooks
 		if ( typeof ocsOffCanvasSidebars.setupTriggers == 'function' ) {
 			ocsOffCanvasSidebars.setupTriggers();
@@ -144,6 +153,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.stopPropagation();
 				e.preventDefault();
 
+				// Prevent touch+swipe
+				if ( true === ocsOffCanvasSidebars.touchmove ) {
+					return;
+				}
+
 				// Toggle the slidebar with respect for the disable_over setting
 				if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
 					controller.toggle( 'ocs-' + id );
@@ -159,6 +173,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.stopPropagation();
 				e.preventDefault();
 
+				// Prevent touch+swipe
+				if ( true === ocsOffCanvasSidebars.touchmove ) {
+					return;
+				}
+
 				// Open the slidebar with respect for the disable_over setting
 				if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
 					controller.open( 'ocs-' + id );
@@ -173,6 +192,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
+
+				// Prevent touch+swipe
+				if ( true === ocsOffCanvasSidebars.touchmove ) {
+					return;
+				}
 
 				// Close the slidebar, no need to check the disable_over setting since we're closing the slidebar
 				//if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
