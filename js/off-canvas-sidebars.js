@@ -142,6 +142,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		$( '.ocs-slidebar' ).each( function() {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
 
+			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
+
 			/**
 			 * Toggle the sidebar
 			 * @since  0.1
@@ -270,6 +272,19 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				return false;
 			}
 		} );
+
+	};
+
+	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
+
+		if ( typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] == 'undefined' ) {
+			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
+				'overwrite_global_settings': false,
+				"site_close": ocsOffCanvasSidebars.site_close,
+				"disable_over": ocsOffCanvasSidebars.disable_over,
+				"hide_control_classes": ocsOffCanvasSidebars.hide_control_classes,
+				"scroll_lock": ocsOffCanvasSidebars.scroll_lock
+			}
 
 	};
 
