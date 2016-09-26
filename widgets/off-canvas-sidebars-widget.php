@@ -65,7 +65,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 			if ( $sidebar_data['enable'] == 1 && $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] == 1 ) {
 				$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
 		?>
-			<div class="ocs-button ocs-toggle ocs-toggle-<?php echo $sidebar_id; ?> <?php echo ( $widget_data['button_class'] == 1 ) ? 'button' : ''; ?>">
+			<div class="ocs-button ocs-toggle ocs-toggle-<?php echo $sidebar_id; ?><?php echo ( $widget_data['button_class'] == 1 ) ? ' button' : ''; ?>">
 				<div class="inner">
 				<?php if ( $widget_data['show_icon'] == 1 ) { ?>
 					<?php if ( $widget_data['icon'] != '' ) { ?>
@@ -74,11 +74,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 					<?php } else {
 					wp_enqueue_style('dashicons'); ?>
 					<span class="icon dashicons dashicons-menu"></span>
-					<?php }?>
-				<?php }?>
+					<?php } ?>
+				<?php } ?>
 				<?php if ( $widget_data['show_label'] == 1 ) { ?>
 					<span class="label"><?php echo $widget_data['label'] ?></span>
-				<?php }?>
+				<?php } ?>
 				</div>
 			</div>
 		<?php } } ?>
@@ -125,7 +125,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 				continue;
 			}
 			$hidden = '';
-			if ( empty( $instance[ $this->widget_setting][ $sidebar_id ]['enable'] ) ) {
+			if ( empty( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) ) {
 				$hidden = 'style="display:none;"';
 			}
 		?>
