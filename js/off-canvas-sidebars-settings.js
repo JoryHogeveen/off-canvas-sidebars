@@ -11,7 +11,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 	var OCS_OFF_CANVAS_SIDEBARS_SETTINGS = {
 		'general_key': 'off_canvas_sidebars_options',
 		'plugin_key': 'off-canvas-sidebars-settings',
-		'__required_fields_not_set': '', //Some required fields are not set!
+		'__required_fields_not_set': '' //Some required fields are not set!
 	};
 }
 
@@ -19,14 +19,17 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 
 	OCS_OFF_CANVAS_SIDEBARS_SETTINGS.init = function() {
 
+		var tab = $('#ocs_tab');
+		var postbox = $('.postbox');
+
 		// close postboxes that should be closed
 		$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
 		// postboxes setup
 		postboxes.add_postbox_toggles( OCS_OFF_CANVAS_SIDEBARS_SETTINGS.plugin_key );
 
 
-		if ( $('#ocs_tab').val() == 'ocs-sidebars' ) {
-			$('.postbox').each( function() {
+		if ( tab.val() == 'ocs-sidebars' ) {
+			postbox.each( function() {
 				var sidebar_id = $(this).attr('id').replace('section_sidebar_', '');
 
 				ocs_show_hide_options_radio( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_background_color_type', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_background_color_wrapper', 'color', false );
@@ -107,7 +110,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		// Validate form submit
 		$('#' + OCS_OFF_CANVAS_SIDEBARS_SETTINGS.general_key).submit( function(e) {
 			var valid = true;
-			var errors = {};
+			//var errors = {};
 			$('input.required', this).each(function(){
 				if ( $(this).val() == '' ) {
 					$(this).trigger('change');
@@ -120,11 +123,11 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			}
 		} );
 
-		if ( $('#ocs_tab').val() == 'ocs-sidebars' ) {
+		if ( tab.val() == 'ocs-sidebars' ) {
 
 			// Dynamic sidebar ID
 			if ( $('.js-dynamic-id').length ) {
-				$('.postbox').each(function() {
+				postbox.each(function() {
 					var sidebar = this;
 					$('.js-dynamic-id', sidebar).text( $('input.off_canvas_sidebars_options_sidebars_id', sidebar).val() );
 					$('.sidebar_classes').show();
@@ -135,7 +138,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			}
 
 			// Half opacity for closed disabled sidebars
-			$('.postbox').each(function(){
+			postbox.each(function(){
 				var sidebar = this;
 				$(sidebar).css({'border-left':'5px solid #eee'});
 				if ( ! $('input.off_canvas_sidebars_options_sidebars_enable', sidebar).is(':checked') ) {

@@ -60,7 +60,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check = true;
-			disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ) );
+			var disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ) );
 			if ( disableOver && ! isNaN( disableOver ) ) {
 				if ( $( window ).width() > disableOver ) {
 		  			check = false;
@@ -86,8 +86,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 					sidebarId = sidebarId.replace( 'ocs-', '' );
-					overwrite = ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings;
-					if ( overwrite ) {
+					if ( ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings ) {
 						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
 						if ( setting ) {
 							return setting;
@@ -98,9 +97,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 				// Fallback/Overwrite to enable sidebar settings from available attributes
 				} else {
-					overwrite = $( '#' + sidebarId ).attr( 'ocs-overwrite_global_settings' );
-					if ( typeof overwrite !== undefined && overwrite ) {
-						setting = $( '#' + sidebarId ).attr( 'ocs-' + key );
+					var sidebarElement = $( '#' + sidebarId );
+					overwrite = sidebarElement.attr( 'ocs-overwrite_global_settings' );
+					if ( typeof overwrite !== 'undefined' && overwrite ) {
+						setting = sidebarElement.attr( 'ocs-' + key );
 						if ( typeof setting != 'undefined' ) {
 							return setting;
 						} else {
@@ -116,12 +116,10 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				setting = $( '#ocs-site' ).attr( 'ocs-' + key );
 				if ( typeof setting != 'undefined' ) {
 					return setting;
-				} else {
-					return false;
 				}
 			}
 
-			return null;
+			return false;
 		};
 
 		// Prevent touch+swipe
@@ -141,7 +139,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller = ocsOffCanvasSidebars.slidebarsController;
 
-		$( '.ocs-slidebar' ).each( function(e) {
+		$( '.ocs-slidebar' ).each( function() {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
 
 			/**
@@ -232,19 +230,19 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 
 		// Add close class to canvas container when Slidebar is opened
-		$( controller.events ).on( 'opening', function ( e ) {
+		$( controller.events ).on( 'opening', function () {
 			$( '[canvas]' ).addClass( 'ocs-close-any' );
 		} );
 
 		// Add close class to canvas container when Slidebar is opened
-		$( controller.events ).on( 'closing', function ( e ) {
+		$( controller.events ).on( 'closing', function () {
 			$( '[canvas]' ).removeClass( 'ocs-close-any' );
 		} );
 
 
 		// Disable slidebars when the window is wider than the set width
 		var disableOver = function() {
-			$( '.ocs-slidebar' ).each( function( e ) {
+			$( '.ocs-slidebar' ).each( function() {
 				var id = $( this ).attr( 'ocs-sidebar-id' );
 
 				if ( ! ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {

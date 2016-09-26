@@ -44,7 +44,7 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    Off-Canvas Sidebars
+	 * @var    OCS_Off_Canvas_Sidebars
 	 * @since  0.1.2
 	 */
 	protected static $_instance = null;
@@ -173,7 +173,6 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Init function to register plugin hook
 	 *
-	 * @return  void
 	 * @since   0.1
 	 * @access  private
 	 */
@@ -275,7 +274,6 @@ final class OCS_Off_Canvas_Sidebars {
 	 *
 	 * Store format: boolean
 	 *
-	 * @return  string
 	 * @since   0.1
 	 */
 	function ignore_compatibility_notice() {
@@ -288,7 +286,7 @@ final class OCS_Off_Canvas_Sidebars {
 	 *
 	 * TODO: Make adding more sidebars dynamic (Slidebars will need to support more sidebars aswell)
 	 *
-	 * @return  void
+	 * @return  array
 	 * @since   0.1
 	 */
 	function get_settings() {
@@ -307,7 +305,8 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Validate setting keys
 	 *
-	 * @param   array
+	 * @param   array  $settings
+	 * @param   array  $defaults
 	 * @return  array
 	 * @since   0.2
 	 */
@@ -374,8 +373,8 @@ final class OCS_Off_Canvas_Sidebars {
 	 */
 	function get_general_labels() {
 		return array(
-			'no_sidebars_available' => __( 'Please enable an off-canvas sidebar', 'off-canvas-sidebars' ), //themes.php?page=off-canvas-sidebars-settings
-			'compatibility_notice_theme' => sprintf( __('If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank">please let me know!</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/support/plugin/off-canvas-sidebars' ),
+			'no_sidebars_available' => __( 'Please enable an off-canvas sidebar', 'off-canvas-sidebars' ),
+			'compatibility_notice_theme' => sprintf( __( 'If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank">please let me know!</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/support/plugin/off-canvas-sidebars' ),
 		);
 	}
 
@@ -565,7 +564,7 @@ final class OCS_Off_Canvas_Sidebars {
 	 * @since   0.1.2
 	 * @static
 	 * @see     Off_Canvas_Sidebars()
-	 * @return  Off-Canvas Sidebars - Main instance.
+	 * @return  OCS_Off_Canvas_Sidebars
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

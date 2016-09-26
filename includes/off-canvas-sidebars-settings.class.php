@@ -727,7 +727,6 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * @return array  $output
 	 */
 	function validate_input( $input ) {
-		$output = array();
 		// First set current values
 		$output = $this->general_settings;
 
@@ -1006,7 +1005,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
 	 * Print out the settings fields for a particular settings section
 	 *
-	 * @global $wp_settings_fields Storage array of settings fields and their pages/sections
+	 * @global $wp_settings_fields  array of settings fields and their pages/sections
 	 *
 	 * @since  0.1
 	 *
@@ -1132,7 +1131,6 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		// import settings
 		if ( isset( $_POST[ $this->plugin_key . '-import'] ) ) {
 
-			$gocs_message = '';
 			if ( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) {
 
 				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) );

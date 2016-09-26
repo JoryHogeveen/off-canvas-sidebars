@@ -14,7 +14,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 
 	private $general_settings = array();
 	private $general_labels = array();
-	private $widget_settings = array();
 	private $widget_setting = 'off-canvas-controls';
 
 	/**
@@ -93,13 +92,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 	 * Outputs the options form on admin
 	 *
 	 * @param array $instance The widget options
+	 * @return void
 	 */
 	public function form( $instance ) {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
-		//print_r($this);
-
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( $this->widget_setting ); ?>"><?php _e( 'Controls', 'off-canvas-sidebars' ); ?>:</label>&nbsp;
@@ -110,7 +108,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 						$hidden = 'style="display: none;"';
 					}
 			?>
-			<span <?php echo $hidden; ?>><input type="checkbox" id="<?php echo $this->get_field_id( $this->widget_setting ).'_'.$sidebar; ?>" class="off-canvas-control-left" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting][ $sidebar ]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?>&nbsp;</span>
+			<span <?php echo $hidden; ?>><input type="checkbox" id="<?php echo $this->get_field_id( $this->widget_setting ).'_'.$sidebar; ?>" class="off-canvas-control-left" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting][ $sidebar ]['enable'], 1 ); ?> /> <label for="<?php echo $this->get_field_id( $this->widget_setting ).'_'.$sidebar; ?>"><?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label> </span>
 			<?php } ?>
 
 		</p>
@@ -138,14 +136,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 			</p>
 			<p class="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_label" <?php echo ($instance[ $this->widget_setting ][ $key ]['show_label'] != 1)?'style="display: none;"':''; ?>>
 				<label for="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_label"><?php _e( 'Label text', 'off-canvas-sidebars' ); ?></label>
-				<input type="input" class="widefat" id="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $key . '][label]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $key ]['label']; ?>">
+				<input type="text" class="widefat" id="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $key . '][label]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $key ]['label']; ?>">
 			<p>
 				<input type="checkbox" id="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_show_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $key . '][show_icon]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $key ]['show_icon'], 1 ); ?>>
 				<label for="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_show_icon"><?php _e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
 			</p>
 			<p class="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_icon" <?php echo ($instance[ $this->widget_setting ][ $key ]['show_icon'] != 1)?'style="display: none;"':''; ?>>
 				<label for="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_icon"><?php _e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
-				<input type="input" class="widefat" id="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $key . '][icon]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $key ]['icon']; ?>">
+				<input type="text" class="widefat" id="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $key . '][icon]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $key ]['icon']; ?>">
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $this->get_field_id( $this->widget_setting ) . '_' . $key; ?>_button_class" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $key . '][button_class]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $key ]['button_class'], 1 ); ?>>
@@ -172,10 +170,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 				<?php } ?>
 
 				function gocs_show_hide_options(trigger, target) {
-					if ( ! $('#'+trigger).is(':checked') ) {
+					trigger = $('#'+trigger);
+					if ( ! trigger.is(':checked') ) {
 						$('.'+target).slideUp('fast');
 					}
-					$('#'+trigger).bind('change', function() {
+					trigger.bind('change', function() {
 						if ( $(this).is(':checked') ) {
 							$('.'+target).slideDown('fast');
 						} else {
@@ -193,8 +192,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 	/**
 	 * Processing widget options on save
 	 *
-	 * @param array $new_instance The new options
-	 * @param array $old_instance The previous options
+	 * @param  array $new_instance The new options
+	 * @param  array $old_instance The previous options
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// processes widget options to be saved

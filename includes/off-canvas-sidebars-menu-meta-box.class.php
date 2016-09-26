@@ -24,7 +24,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 
 	private $general_key = '';
 	private $plugin_key = '';
-	private $plugin_tabs = array();
+	//private $plugin_tabs = array();
 	private $general_settings = array();
 	private $general_labels = array();
 	private $link_classes = array(
@@ -62,7 +62,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	}
 
 	function meta_box() {
-		global $_nav_menu_placeholder, $nav_menu_selected_id;
+		global $_nav_menu_placeholder;//, $nav_menu_selected_id;
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
 		?>

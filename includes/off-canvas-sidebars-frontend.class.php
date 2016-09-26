@@ -275,7 +275,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	 *
 	 * @since   0.1
 	 * @since   0.3  Overwrite global setting attributes
-	 * @return  void
+	 * @return  string
 	 */
 	function get_sidebar_attributes( $sidebar, $data ) {
 		$atts = array();
@@ -328,7 +328,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	}
 
 	/**
-	 * Add nessesary scripts and styles
+	 * Add necessary scripts and styles
 	 *
 	 * @since   0.1
 	 * @since   0.2    Add our own scripts and styles + localize them

@@ -10,11 +10,13 @@
 
 	$(window).load(function () {
 
-		if ($('#ocs-site').css('transform') != 'none') {
-			var curScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
+		var curScrollTopElements;
+		var ocs_site = $('#ocs-site');
+
+		if ( ocs_site.css('transform') != 'none' ) {
+			curScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 			ocsScrollTopFixed();
 			$(window).on('scroll resize', function() {
-				curScrollTopElements;
 				var newScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 				curScrollTopElements = curScrollTopElements.add(newScrollTopElements);
 				ocsScrollTopFixed();
@@ -22,23 +24,23 @@
 		}
 
 		function ocsScrollTopFixed() {
-			curScrollTopElements;
-			if (curScrollTopElements.length > 0) {
+			if ( curScrollTopElements.length > 0 ) {
 				var scrollTop = $(window).scrollTop();
 				var winHeight = $(window).height();
-				var conOffset = $('#ocs-site').offset();
-				var conHeight = $('#ocs-site').outerHeight();
+				var conOffset = ocs_site.offset();
+				var conHeight = ocs_site.outerHeight();
 				curScrollTopElements.each(function(){
-					if ($(this).css('position') == 'fixed') {
+					if ( $(this).css('position') == 'fixed' ) {
 						var top = $(this).css('top');
 						var bottom = $(this).css('bottom');
+						var px;
 						if ( top == 'auto' && bottom != 'auto' ) {
-							var px = (scrollTop + winHeight) - (conOffset.top + conHeight);
+							px = (scrollTop + winHeight) - (conOffset.top + conHeight);
 						} else {
-							var px = scrollTop - conOffset.top;
+							px = scrollTop - conOffset.top;
 						}
-						$(this).css('-webkit-transform', 'translateY('+px+'px)');
-						$(this).css('-moz-transform', 'translateY('+px+'px)');
+						$(this).css('-webkit-transform', 'translateY(' + px + 'px)');
+						$(this).css('-moz-transform', 'translateY(' + px + 'px)');
 					} else {
 						$(this).css({'-webkit-transform' : ''});
 						$(this).css({'-moz-transform' : ''});

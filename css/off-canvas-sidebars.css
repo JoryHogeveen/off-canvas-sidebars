@@ -11,35 +11,35 @@
  */
 
 /* Slidebar widths for browsers/devices that don't support media queries. */
-	.ocs-size-default.ocs-location-left,
-	.ocs-size-default.ocs-location-right {
-		width: 30%;
-	}
+.ocs-size-default.ocs-location-left,
+.ocs-size-default.ocs-location-right {
+	width: 30%;
+}
 
-	.ocs-size-small.ocs-location-left,
-	.ocs-size-small.ocs-location-right {
-		width: 15%;
-	}
+.ocs-size-small.ocs-location-left,
+.ocs-size-small.ocs-location-right {
+	width: 15%;
+}
 
-	.ocs-size-large.ocs-location-left,
-	.ocs-size-large.ocs-location-right {
-		width: 45%;
-	}
+.ocs-size-large.ocs-location-left,
+.ocs-size-large.ocs-location-right {
+	width: 45%;
+}
 
-	.ocs-size-default.ocs-location-top,
-	.ocs-size-default.ocs-location-bottom {
-		height: 30%;
-	}
+.ocs-size-default.ocs-location-top,
+.ocs-size-default.ocs-location-bottom {
+	height: 30%;
+}
 
-	.ocs-size-small.ocs-location-top,
-	.ocs-size-small.ocs-location-bottom {
-		height: 15%;
-	}
+.ocs-size-small.ocs-location-top,
+.ocs-size-small.ocs-location-bottom {
+	height: 15%;
+}
 
-	.ocs-size-large.ocs-location-top,
-	.ocs-size-large.ocs-location-bottom {
-		height: 45%;
-	}
+.ocs-size-large.ocs-location-top,
+.ocs-size-large.ocs-location-bottom {
+	height: 45%;
+}
 
 @media (max-width: 480px) { /* Slidebar widths on extra small screens. */
 
