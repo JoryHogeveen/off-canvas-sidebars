@@ -22,7 +22,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.slidebarsController = false;
 	ocsOffCanvasSidebars.useAttributeSettings = false;
-	ocsOffCanvasSidebars.touchmove = false;
+	ocsOffCanvasSidebars._touchmove = false;
 
 	ocsOffCanvasSidebars.init = function() {
 
@@ -122,17 +122,35 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			return false;
 		};
 
-		// Prevent touch+swipe
+		// Prevent swipe events to be seen as a click (bug in some browsers)
 		$( document ).on( 'touchmove', function() {
-			ocsOffCanvasSidebars.touchmove = true;
+			ocsOffCanvasSidebars._touchmove = true;
 		} );
 		$( document ).on( 'touchstart', function() {
-			ocsOffCanvasSidebars.touchmove = false;
+			ocsOffCanvasSidebars._touchmove = false;
 		} );
 
 		// Validate type, this could be changed with the hooks
 		if ( typeof ocsOffCanvasSidebars.setupTriggers == 'function' ) {
 			ocsOffCanvasSidebars.setupTriggers();
+		}
+	};
+
+	/**
+	 * Set the default settings for sidebars if they are not found
+
+	 * @since  0.3
+	 */
+	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
+
+		if ( typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] == 'undefined' ) {
+			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
+				'overwrite_global_settings': false,
+				"site_close": ocsOffCanvasSidebars.site_close,
+				"disable_over": ocsOffCanvasSidebars.disable_over,
+				"hide_control_classes": ocsOffCanvasSidebars.hide_control_classes,
+				"scroll_lock": ocsOffCanvasSidebars.scroll_lock
+			}
 		}
 	};
 
@@ -154,7 +172,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.preventDefault();
 
 				// Prevent touch+swipe
-				if ( true === ocsOffCanvasSidebars.touchmove ) {
+				if ( true === ocsOffCanvasSidebars._touchmove ) {
 					return;
 				}
 
@@ -174,7 +192,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.preventDefault();
 
 				// Prevent touch+swipe
-				if ( true === ocsOffCanvasSidebars.touchmove ) {
+				if ( true === ocsOffCanvasSidebars._touchmove ) {
 					return;
 				}
 
@@ -194,7 +212,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				e.preventDefault();
 
 				// Prevent touch+swipe
-				if ( true === ocsOffCanvasSidebars.touchmove ) {
+				if ( true === ocsOffCanvasSidebars._touchmove ) {
 					return;
 				}
 
@@ -273,19 +291,6 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			}
 		} );
 
-	};
-
-	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
-
-		if ( typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] == 'undefined' ) {
-			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
-				'overwrite_global_settings': false,
-				"site_close": ocsOffCanvasSidebars.site_close,
-				"disable_over": ocsOffCanvasSidebars.disable_over,
-				"hide_control_classes": ocsOffCanvasSidebars.hide_control_classes,
-				"scroll_lock": ocsOffCanvasSidebars.scroll_lock
-			}
-		}
 	};
 
 	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {

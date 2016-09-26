@@ -302,7 +302,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 					),
 					'action' => array(
 						'name' => 'action',
-						'label' => __( 'Hook', 'off-canvas-sidebars' ) . ' &nbsp; (' . __( 'Action hook', 'off-canvas-sidebars' ) . ': <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
+						'label' => __( 'Custom', 'off-canvas-sidebars' ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank">' . __( 'Action hook', 'off-canvas-sidebars' ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
 						'value' => 'action'
 					)
 				),
