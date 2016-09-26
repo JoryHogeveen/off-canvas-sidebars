@@ -91,6 +91,16 @@ The final output of your theme should be similar to this:
 
 == Changelog ==
 
+= 0.3 =
+
+*	!! CSS Change: All prefixes `sb-` have been changed to `ocs-` to represent this plugin's name instead of the old Slidebars prefixes, Please update your CSS !!
+*	Feature: Allow sidebars to overwrite some general settings
+*	Feature: Option to set padding to sidebars
+*	Feature: Option to choose other content types than only a WP sidebar for an off-canvas sidebar
+*	Feature: Added various actions, filters and JS hooks
+*   Fix: Sidebar ID validation wasn't correct
+*	OCS API functions to output off canvas sidebars in your theme instead of using this plugin frontend functions
+
 = 0.2.2 =
 
 *	Feature: Option to set the animation speed for sidebars
@@ -154,6 +164,9 @@ You can find me here:
 Please let me know through the support page!
 
 == Upgrade Notice ==
+
+= 0.3 =
+Version 0.3 introduces some radical code changes to the plugin. Please READ THE CHANGELOG!!, update and clear your cache after updating
 
 = 0.2 =
 Version 0.2 introduces some radical code changes to the plugin. Please clear your cache after updating
