@@ -290,6 +290,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 		/**
 		 * Filter the classes for a sidebar
 		 *
+		 * @since  0.3
+		 *
 		 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
 		 *
 		 * @param  array  $classes       Classes

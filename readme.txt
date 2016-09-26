@@ -18,7 +18,7 @@ The structure of your theme is of great importance for this plugin. Please read 
 
 *Most themes based on the Genesis Framework are supported by default. Please read the installation instructions for other themes!*
 
-This plugin should work with most themes and plugins allthough I can't be sure for all use-cases. At this point it's still a 0.x version...
+This plugin should work with most themes and plugins although I can't be sure for all use-cases. At this point it's still a 0.x version...
 If the plugin does not work for your theme, please let me know through the support and add a plugins and themes list and I will take a look!
 
 = Overview / Features =
@@ -50,7 +50,7 @@ Or search for "Off-Canvas Sidebars" via your plugins menu.
 
 *Please note that it is possible that there are some Genesis themes that can not be supported due to their structure.*
 
-First of all, I strongly advice to create a child theme if you didn't allready! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information").
+First of all, I strongly advice to create a child theme if you didn't already! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information").
 
 Add this code directly after the &lt;body&gt; tag. This is probably located in the header.php or index.php theme file.
 `<?php do_action('website_before'); ?>`
@@ -77,6 +77,8 @@ The final output of your theme should be similar to this:
 *	Please [click here for documentation](https://www.adchsm.com/slidebars/help/usage/ "click here for documentation").
 *	Disable the front-end option in the settings page under the Appearances menu.
 *	Scripts and styles will still be included!
+*	[Click here for info on available actions and filters](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info on available actions and filters")
+*	[Click here for info on available API functions](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info on available API functions")
 
 == Screenshots ==
 
@@ -94,17 +96,17 @@ The final output of your theme should be similar to this:
 = 0.3 =
 
 *	!! CSS Change: All prefixes `sb-` have been changed to `ocs-` to represent this plugin's name instead of the old Slidebars prefixes, Please update your CSS !!
+*   Fix: Sidebar ID validation wasn't correct
 *	Feature: Allow sidebars to overwrite some general settings
 *	Feature: Option to set padding to sidebars
 *	Feature: Option to choose other content types than only a WP sidebar for an off-canvas sidebar
-*	Feature: Added various actions, filters and JS hooks
-*   Fix: Sidebar ID validation wasn't correct
-*	OCS API functions to output off canvas sidebars in your theme instead of using this plugin frontend functions
+*	Feature: Added various actions, filters and JS hooks - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info")
+*	OCS API functions to output off canvas sidebars in your theme instead of using this plugin frontend functions - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info")
 
 = 0.2.2 =
 
 *	Feature: Option to set the animation speed for sidebars
-*	Feature: Option to use the FastClick library [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/9 "Click here for info")
+*	Feature: Option to use the FastClick library - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/9 "Click here for info")
 *	Fix: Disabling sidebars on global settings page didn't work
 
 = 0.2.1 =
@@ -146,14 +148,13 @@ Created from nothingness just to be one of the cool kids. Yay!
 You can find me here:
 
 *	[Keraweb](http://www.keraweb.nl/ "Keraweb")
+*	[GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/ "GitHub")
 *	[LinkedIn](https://nl.linkedin.com/in/joryhogeveen "LinkedIn profile")
 
-= Actions =
+= Actions | Filters | API =
 
-- `ocs_container_before` Add content before the site container
-- `ocs_container_inner_before` Add content before other content in the site container
-- `ocs_container_inner_after` Add content after other content in the site container
-- `ocs_container_after` Add content after the site container
+- [Click here for info on available actions and filters](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info on available actions and filters")
+- [Click here for info on available API functions](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info on available API functions")
 
 = Credits =
 

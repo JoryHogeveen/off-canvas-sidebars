@@ -980,7 +980,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $tab ?>" />
 
 				<?php if ( $tab == $this->settings_tab ) { ?>
-				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://www.adchsm.com/slidebars/help/usage/' ); ?></p>
+				<p><?php echo sprintf( __('You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/' ); ?></p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 				<?php } elseif ( $tab == $this->sidebars_tab ) { ?>
 				<p>
