@@ -285,7 +285,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				"hide_control_classes": ocsOffCanvasSidebars.hide_control_classes,
 				"scroll_lock": ocsOffCanvasSidebars.scroll_lock
 			}
-
+		}
 	};
 
 	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {
