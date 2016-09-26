@@ -203,6 +203,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
+
 		// checkboxes
 		foreach ( $instance[ $this->widget_setting ] as $sidebar_id => $value ) {
 			$instance[ $this->widget_setting ][ $sidebar_id ]['enable']       = ( ! empty( $new_instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) )       ? strip_tags( $new_instance[ $this->widget_setting ][ $sidebar_id ]['enable'] )       : '0';
@@ -235,7 +236,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 	 * @param   array   $args
 	 * @return  array   $args
 	 */
-	function merge_settings($args) {
+	function merge_settings( $args ) {
 		$defaults = array(
 			$this->widget_setting => array()
 		);
@@ -254,11 +255,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 		$args = array_merge( $defaults, $args );
 
 		foreach ( $defaults[ $this->widget_setting ] as $key => $value ) {
-			if ( ! isset( $args[ $this->widget_setting ][ $key ] ) ) {
+			if ( empty( $args[ $this->widget_setting ][ $key ] ) ) {
 				$args[ $this->widget_setting ][ $key ] = $defaults[ $this->widget_setting ][ $key ];
 			}
 			foreach ( $defaults[ $this->widget_setting ][ $key ] as $key2 => $value2 ) {
-				if ( ! isset( $args[ $this->widget_setting ][ $key ][ $key2 ] ) ) {
+				if ( empty( $args[ $this->widget_setting ][ $key ][ $key2 ] ) ) {
 					$args[ $this->widget_setting ][ $key ][ $key2 ] = $defaults[ $this->widget_setting ][ $key ][ $key2 ];
 				}
 			}
