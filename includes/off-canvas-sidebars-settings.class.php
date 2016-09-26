@@ -184,29 +184,36 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 				'description' => __( 'Choose a background color for the site container. Default: <code>#ffffff</code>.', 'off-canvas-sidebars' )
 			)
 		);
+		// Genesis already has before and after hooks set
 		if ( get_template() != 'genesis' ) {
-			add_settings_field(
-				'website_before_hook',
-				esc_attr__( '"website_before" hook name', 'off-canvas-sidebars' ),
-				array( $this, 'text_option' ),
-				$this->settings_tab,
-				'section_general',
-				array(
-					'name' => 'website_before_hook',
-					'placeholder' => 'website_before'
-				)
-			);
-			add_settings_field(
-				'website_after_hook',
-				esc_attr__( '"website_after" hook name', 'off-canvas-sidebars' ),
-				array( $this, 'text_option' ),
-				$this->settings_tab,
-				'section_general',
-				array(
-					'name' => 'website_after_hook',
-					'placeholder' => 'website_after'
-				)
-			);
+			// Check if the before hook is filtered. If it is this setting is not needed
+			if ( '' != apply_filters( 'ocs_website_before_hook', '' ) ) {
+				add_settings_field(
+					'website_before_hook',
+					esc_attr__( '<code>website_before</code> hook name', 'off-canvas-sidebars' ),
+					array( $this, 'text_option' ),
+					$this->settings_tab,
+					'section_general',
+					array(
+						'name'        => 'website_before_hook',
+						'placeholder' => 'website_before'
+					)
+				);
+			}
+			// Check if the after hook is filtered. If it is this setting is not needed
+			if ( '' != apply_filters( 'ocs_website_after_hook', '' ) ) {
+				add_settings_field(
+					'website_after_hook',
+					esc_attr__( '<code>website_after</code> hook name', 'off-canvas-sidebars' ),
+					array( $this, 'text_option' ),
+					$this->settings_tab,
+					'section_general',
+					array(
+						'name'        => 'website_after_hook',
+						'placeholder' => 'website_after'
+					)
+				);
+			}
 		}
 		//https://github.com/ftlabs/fastclick
 		add_settings_field(
