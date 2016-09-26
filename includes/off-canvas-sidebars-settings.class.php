@@ -734,7 +734,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
 			$new_sidebar_id = $this->validate_id( $input['sidebars']['ocs_add_new'] );
 			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $output['sidebars'][ $new_sidebar_id ] ) ) {
-				$input['sidebars'][ $this->validate_id( $input['sidebars']['ocs_add_new'] ) ] = array(
+				$input['sidebars'][ $new_sidebar_id ] = array(
 					'enable' => 1,
 					'label' => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
 				);
@@ -777,10 +777,15 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 					$new_sidebar_id = $this->validate_id( $input['sidebars'][ $sidebar_id ]['id'] );
 
 					if ( $sidebar_id != $new_sidebar_id ) {
+
 						if ( empty( $input['sidebars'][ $new_sidebar_id ] ) ) {
+
 							$input['sidebars'][ $new_sidebar_id ] = $input['sidebars'][ $sidebar_id ];
 							$input['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
+
 							unset( $input['sidebars'][ $sidebar_id ] );
+
+							$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
 						} else {
 							add_settings_error( $sidebar_id . '_duplicate_id', esc_attr( 'ocs_duplicate_id' ), sprintf( __( 'The ID %s already exists! The ID is not changed.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' ) );
 						}
@@ -845,6 +850,8 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 					$output['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
 
 					unset( $output['sidebars'][ $sidebar_id ] );
+
+					$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
 				}
 			}
 		}
@@ -861,6 +868,27 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Updates the existing widgets when a sidebar ID changes
+	 *
+	 * @since 0.3
+	 *
+	 * @param  string  $oldId
+	 * @param  string  $newId
+	 */
+	function migrate_sidebars_widgets( $oldId, $newId ) {
+		$oldId = 'off-canvas-' . $oldId;
+		$newId = 'off-canvas-' . $newId;
+		$sidebars_widgets = wp_get_sidebars_widgets();
+
+		if ( ! empty( $sidebars_widgets[ $oldId ] ) ) {
+			$sidebars_widgets[ $newId ] = $sidebars_widgets[ $oldId ];
+			unset( $sidebars_widgets[ $oldId ] );
+		}
+
+		wp_set_sidebars_widgets( $sidebars_widgets );
 	}
 
 	/**
