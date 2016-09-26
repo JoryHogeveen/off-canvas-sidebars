@@ -879,12 +879,13 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * Validates id values, used by validate_input
 	 *
 	 * @since  0.2
+	 * @since  0.3  Convert to lowercase and convert spaces to dashes before preg_replace
 	 *
 	 * @param  string $value
 	 * @return string $value
 	 */
 	function validate_id( $value ) {
-		return preg_replace( '/[^a-z0-9_-]+/i', '', $value );
+		return preg_replace( '/[^a-z0-9_-]+/i', '', str_replace( ' ', '-', strtolower( $value ) ) );
 	}
 
 	/**
