@@ -94,10 +94,11 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			});
 		}
 
+		// Enable the WP Color Picker
 		$('input.color-picker').wpColorPicker();
 
 		// Validate required fields
-		$('input.required', this).each(function(){
+		$('input.required').each(function(){
 			$(this).on('change', function() {
 				if ( $(this).val() == '' ) {
 					$(this).parents('tr').addClass('form-invalid');
