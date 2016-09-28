@@ -107,7 +107,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			esc_attr__( 'Enable front-end', 'off-canvas-sidebars' ),
 			array( $this, 'checkbox_option' ),
 			$this->settings_tab,
-			'section_general' ,
+			'section_general',
 			array(
 				'name' => 'enable_frontend',
 				'label' => __( 'Let this plugin add the necessary elements on the front-end.', 'off-canvas-sidebars' ),
@@ -121,6 +121,18 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			$this->settings_tab,
 			'section_general'
 		);*/
+		add_settings_field(
+			'css_prefix',
+			esc_attr__( 'CSS Prefix', 'off-canvas-sidebars' ),
+			array( $this, 'text_option' ),
+			$this->settings_tab,
+			'section_general',
+			array(
+				'name' => 'css_prefix',
+				'label' => __( 'Default', 'off-canvas-sidebars' ) . ': <code>ocs</code>',
+				'placeholder' => 'ocs',
+			)
+		);
 		add_settings_field(
 			'enabled_sidebars',
 			esc_attr__( 'Enable Sidebars', 'off-canvas-sidebars' ),
@@ -826,6 +838,14 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			// Remove whitespaces
 			$output['website_before_hook'] = $this->remove_whitespace( $output['website_before_hook'] );
 			$output['website_after_hook']  = $this->remove_whitespace( $output['website_after_hook'] );
+
+			// Attribute validation
+			$output['css_prefix'] = $this->validate_id( $output['css_prefix'] );
+
+			// Set default values if no value is set
+			if ( empty( $output['css_prefix'] ) ) {
+				$output['css_prefix'] = 'ocs';
+			}
 		}
 
 		foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
@@ -1073,8 +1093,8 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 
 			if ( $page == $this->sidebars_tab ) {
 				echo '<tr class="sidebar_classes" style="display: none;"><th>' . __('ID & Classes', 'off-canvas-sidebars') . '</th><td>';
-				echo  __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#ocs-<span class="js-dynamic-id"></span></code> &nbsp; '
-					. __('Trigger Classes', 'off-canvas-sidebars') . ': <code>.ocs-toggle-<span class="js-dynamic-id"></span></code> <code>.ocs-open-<span class="js-dynamic-id"></span></code> <code>.ocs-close-<span class="js-dynamic-id"></span></code>';
+				echo  __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#' . $this->general_settings['css_prefix'] . '-<span class="js-dynamic-id"></span></code> &nbsp; '
+					. __('Trigger Classes', 'off-canvas-sidebars') . ': <code>.' . $this->general_settings['css_prefix'] . '-toggle-<span class="js-dynamic-id"></span></code> <code>.' . $this->general_settings['css_prefix'] . '-open-<span class="js-dynamic-id"></span></code> <code>.' . $this->general_settings['css_prefix'] . '-close-<span class="js-dynamic-id"></span></code>';
 				echo '</td></tr>';
 			}
 			do_settings_fields( $page, $section['id'] );

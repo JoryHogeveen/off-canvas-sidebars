@@ -10,14 +10,19 @@
 
 	$(window).load(function () {
 
+		var prefix = 'ocs';
+		if ( typeof ocsOffCanvasSidebars != 'undefined' ) {
+			prefix = ocsOffCanvasSidebars.css_prefix;
+		}
+
 		var curScrollTopElements;
-		var ocs_site = $('#ocs-site');
+		var ocs_site = $('#' + prefix + '-site');
 
 		if ( ocs_site.css('transform') != 'none' ) {
-			curScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
+			curScrollTopElements = $('#' + prefix + '-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 			ocsScrollTopFixed();
 			$(window).on('scroll resize', function() {
-				var newScrollTopElements = $('#ocs-site *').filter(function(){ return $(this).css('position') === 'fixed' });
+				var newScrollTopElements = $('#' + prefix + '-site *').filter(function(){ return $(this).css('position') === 'fixed' });
 				curScrollTopElements = curScrollTopElements.add(newScrollTopElements);
 				ocsScrollTopFixed();
 			});

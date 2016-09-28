@@ -54,6 +54,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
+		$prefix = $this->general_settings['css_prefix'];
 
 		// outputs the content of the widget
 		echo $args['before_widget'].'<div class="off-canvas-control-wrapper">';
@@ -64,8 +65,16 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
 		foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 			if ( $sidebar_data['enable'] == 1 && $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] == 1 ) {
 				$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
+				$classes = array(
+					$prefix . '-button',
+					$prefix . '-toggle',
+					$prefix . '-toggle-' . $sidebar_id
+				);
+				if ( $widget_data['button_class'] == 1 ) {
+					$classes[] = 'button';
+				}
 		?>
-			<div class="ocs-button ocs-toggle ocs-toggle-<?php echo $sidebar_id; ?><?php echo ( $widget_data['button_class'] == 1 ) ? ' button' : ''; ?>">
+			<div class="<?php echo implode( ' ', $classes ); ?>">
 				<div class="inner">
 				<?php if ( $widget_data['show_icon'] == 1 ) { ?>
 					<?php if ( $widget_data['icon'] != '' ) { ?>

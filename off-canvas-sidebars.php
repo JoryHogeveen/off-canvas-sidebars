@@ -141,6 +141,7 @@ final class OCS_Off_Canvas_Sidebars {
 		'website_after_hook' => 'website_after',
 		'use_fastclick' => 0,
 		'compatibility_position_fixed' => 0,
+		'css_prefix' => 'ocs',
 		'sidebars' => array(),
 	);
 
@@ -535,6 +536,9 @@ final class OCS_Off_Canvas_Sidebars {
 					}
 				}
 			}
+		}
+		if ( version_compare( $db_version, '0.2', '<' ) ) {
+			$settings['css_prefix'] = 'sb'; // Old Slidebars classes
 		}
 
 		$settings['db_version'] = $this->db_version;

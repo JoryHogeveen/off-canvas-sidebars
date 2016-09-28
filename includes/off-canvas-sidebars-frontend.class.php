@@ -111,7 +111,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 		}
 		$atts = implode( ' ', $atts );
 
-		echo '<div id="ocs-site" canvas="container" ' . $atts . '>';
+		echo '<div id="' . $this->general_settings['css_prefix'] . '-site" canvas="container" ' . $atts . '>';
 
 		// Add content before other content in the site container
 		do_action( 'ocs_container_inner_before' );
@@ -149,7 +149,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.ocs-slidebar:first').prevAll().wrapAll('<div id="ocs-site" canvas="container"></div>');
+		$('div.<?php echo $this->general_settings['css_prefix']; ?>-slidebar:first').prevAll().wrapAll('<div id="<?php echo $this->general_settings['css_prefix']; ?> -site" canvas="container"></div>');
 	}) (jQuery);
 </script>
 			<?php
@@ -185,7 +185,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 
 			$sidebar_data = $this->general_settings['sidebars'][ $sidebar_id ];
 
-			echo '<div id="ocs-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+			echo '<div id="' . $this->general_settings['css_prefix'] . '-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
 
 			/**
 			 * Action to add content before the default sidebar content
@@ -278,9 +278,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	 * @return  string
 	 */
 	function get_sidebar_attributes( $sidebar, $data ) {
+		$prefix = $this->general_settings['css_prefix'];
 		$atts = array();
 
 		$atts['class'] = array();
+		$atts['class'][] = $prefix . '-slidebar';
+		$atts['class'][] = $prefix . '-' . esc_attr( $sidebar );
 		$atts['class'][] = 'ocs-slidebar';
 		$atts['class'][] = 'ocs-' . esc_attr( $sidebar );
 		$atts['class'][] = 'ocs-size-' . esc_attr( $data['size'] );
@@ -302,7 +305,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 
 		// Slidebars 2.0
 		$atts['off-canvas'] = array(
-			'ocs-' . esc_attr( $sidebar ), // ID
+			$prefix . '-' . esc_attr( $sidebar ), // ID
 			esc_attr( $data['location'] ), // Location
 			esc_attr( $data['style'] )     // Animation style
 		);
@@ -350,6 +353,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			'disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
 			'hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,
 			'scroll_lock'          => ( $this->general_settings['scroll_lock'] ) ? true : false,
+			'css_prefix'           => $this->general_settings['css_prefix'],
 			'sidebars'             => $this->general_settings['sidebars']
 		) );
 
@@ -398,7 +402,7 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 		$bgcolor = $this->general_settings['background_color'];
 	}
 ?>
-	#ocs-site {background-color: <?php echo $bgcolor; ?>;}
+	#<?php echo $this->general_settings['css_prefix']; ?>-site {background-color: <?php echo $bgcolor; ?>;}
 <?php } ?>
 <?php
 foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {

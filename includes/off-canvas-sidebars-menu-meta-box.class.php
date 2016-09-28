@@ -28,9 +28,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 	private $general_settings = array();
 	private $general_labels = array();
 	private $link_classes = array(
-		'ocs-button',
-		'ocs-toggle',
-		// ocs-toggle-
+		'-button',
+		'-toggle',
+		// -toggle-
 	);
 
 	/**
@@ -55,6 +55,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 		$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
+
+		foreach ( $this->link_classes as $key => $class ) {
+			$this->link_classes[ $key ] = $this->general_settings['css_prefix'] . $class;
+		}
 	}
 
 	function add_meta_box() {
@@ -234,7 +238,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 					}
 
 					if ( ! empty( $options['off-canvas-control'] ) ) {
-						$link_classes[] = 'ocs-toggle-'.$options['off-canvas-control'];
+						$link_classes[] = $this->general_settings['css_prefix'] . '-toggle-' . $options['off-canvas-control'];
 					}
 
 					if ( ! is_array( $item->classes ) ){

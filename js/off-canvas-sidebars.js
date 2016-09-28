@@ -14,6 +14,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		"disable_over": false,
 		"hide_control_classes": false,
 		"scroll_lock": false,
+		"css_prefix": 'ocs',
 		"sidebars": {}
 	};
 }
@@ -78,6 +79,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
 			var overwrite, setting;
+			var prefix = ocsOffCanvasSidebars.css_prefix;
 
 			if ( ! sidebarId ) {
 				sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
@@ -85,7 +87,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			if ( sidebarId ) {
 
 				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
-					sidebarId = sidebarId.replace( 'ocs-', '' );
+					sidebarId = sidebarId.replace( prefix + '-', '' );
 					if ( ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings ) {
 						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
 						if ( setting ) {
@@ -113,7 +115,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			if ( typeof ocsOffCanvasSidebars[ key ] != 'undefined' && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 				return ocsOffCanvasSidebars[ key ];
 			} else {
-				setting = $( '#ocs-site' ).attr( 'ocs-' + key );
+				setting = $( '#' + prefix + '-site' ).attr( 'ocs-' + key );
 				if ( typeof setting != 'undefined' ) {
 					return setting;
 				}
@@ -156,8 +158,9 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller = ocsOffCanvasSidebars.slidebarsController;
+		var prefix = ocsOffCanvasSidebars.css_prefix;
 
-		$( '.ocs-slidebar' ).each( function() {
+		$( '.' + prefix + '-slidebar' ).each( function() {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
 
 			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
@@ -166,7 +169,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			 * Toggle the sidebar
 			 * @since  0.1
 			 */
-			$( document ).on( 'touchend click', '.ocs-toggle-' + id, function( e ) {
+			$( document ).on( 'touchend click', '.' + prefix + '-toggle-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -177,8 +180,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				}
 
 				// Toggle the slidebar with respect for the disable_over setting
-				if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
-					controller.toggle( 'ocs-' + id );
+				if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
+					controller.toggle( prefix + '-' + id );
 				}
 			} );
 
@@ -186,7 +189,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			 * Open the sidebar
 			 * @since  0.3
 			 */
-			$( document ).on( 'touchend click', '.ocs-open-' + id, function( e ) {
+			$( document ).on( 'touchend click', '.' + prefix + '-open-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -197,8 +200,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				}
 
 				// Open the slidebar with respect for the disable_over setting
-				if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
-					controller.open( 'ocs-' + id );
+				if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
+					controller.open( prefix + '-' + id );
 				}
 			} );
 
@@ -206,7 +209,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			 * Close the sidebar
 			 * @since  0.3
 			 */
-			$( document ).on( 'touchend click', '.ocs-close-' + id, function( e ) {
+			$( document ).on( 'touchend click', '.' + prefix + '-close-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -217,8 +220,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				}
 
 				// Close the slidebar, no need to check the disable_over setting since we're closing the slidebar
-				//if ( ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
-					controller.close( 'ocs-' + id );
+				//if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
+					controller.close( prefix + '-' + id );
 				//}
 			} );
 
@@ -226,7 +229,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 
 		// Close any
-		$( document ).on( 'touchend click', '.ocs-close-any', function( e ) {
+		$( document ).on( 'touchend click', '.' + prefix + '-close-any', function( e ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -251,30 +254,31 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		// Add close class to canvas container when Slidebar is opened
 		$( controller.events ).on( 'opening', function () {
-			$( '[canvas]' ).addClass( 'ocs-close-any' );
+			$( '[canvas]' ).addClass( prefix + '-close-any' );
 		} );
 
 		// Add close class to canvas container when Slidebar is opened
 		$( controller.events ).on( 'closing', function () {
-			$( '[canvas]' ).removeClass( 'ocs-close-any' );
+			$( '[canvas]' ).removeClass( prefix + '-close-any' );
 		} );
 
 
 		// Disable slidebars when the window is wider than the set width
 		var disableOver = function() {
-			$( '.ocs-slidebar' ).each( function() {
+			var prefix = ocsOffCanvasSidebars.css_prefix;
+			$( '.' + prefix + '-slidebar' ).each( function() {
 				var id = $( this ).attr( 'ocs-sidebar-id' );
 
-				if ( ! ocsOffCanvasSidebars._checkDisableOver( 'ocs-' + id ) ) {
-					if ( controller.isActiveSlidebar( 'ocs-' + id ) ) {
+				if ( ! ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
+					if ( controller.isActiveSlidebar( prefix + '-' + id ) ) {
 						controller.close();
 					}
 					// Hide control classes
-					if ( ocsOffCanvasSidebars._getSetting( 'hide_control_classes', 'ocs-' + id ) ) {
-						$( '.ocs-toggle-' + id ).hide();
+					if ( ocsOffCanvasSidebars._getSetting( 'hide_control_classes', prefix + '-' + id ) ) {
+						$( '.' + prefix + '-toggle-' + id ).hide();
 					}
 				} else {
-					$( '.ocs-toggle-' + id ).show();
+					$( '.' + prefix + '-toggle-' + id ).show();
 				}
 
 			} );
@@ -283,7 +287,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		$( window ).on( 'resize', disableOver );
 
 		// Disable scrolling on active sidebar
-		$( '#ocs-site' ).on( 'scroll touchmove mousewheel', function( e ) {
+		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel', function( e ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -293,7 +297,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	};
 
-	if ( $( '#ocs-site' ).length && ( typeof slidebars != 'undefined' ) ) {
+	if ( $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length && ( typeof slidebars != 'undefined' ) ) {
 		ocsOffCanvasSidebars.init();
 	}
 
