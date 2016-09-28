@@ -45,40 +45,9 @@ Installation of this plugin works like any other plugin out there. Either:
 Or search for "Off-Canvas Sidebars" via your plugins menu.
 
 ### Theme setup
-**Themes based on the Genesis Framework are supported by default! No changes needed.**
 
-*Please note that it is possible that there are some Genesis themes that can not be supported due to their structure.*
-
-First of all, I strongly advice to create a child theme if you didn't already! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information").
-
-Add this code directly after the &lt;body&gt; tag. This is probably located in the header.php or index.php theme file.
-`<?php do_action('website_before'); ?>`
-
-Add this code directly after the site content, before the wp_footer() function. This is probably located in the footer.php or index.php theme file.
-`<?php do_action('website_after'); ?>`
-*Important: This code needs to be a direct child of the &lt;body&gt; tag!*
-
-The final output of your theme should be similar to this:
-```
-<html>
-	<head>
-		** HEADER CONTENT **
-	</head>
-	<body>
-		<?php do_action('website_before'); ?>
-		** WEBSITE CONTENT **
-		<?php do_action('website_after'); ?>
-		<?php wp_footer(); ?>
-	</body>
-</html>
-```
-
-### Custom theme setup
-*	Please [click here for documentation](https://www.adchsm.com/slidebars/help/usage/ "click here for documentation").
-*	Disable the front-end option in the settings page under the Appearances menu.
-*	Scripts and styles will still be included!
-*	[Click here for info on available actions and filters](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info on available actions and filters")
-*	[Click here for info on available API functions](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info on available API functions")
+Off-Canvas Sidebars won't work "out of the box" with most themes, please read the Wiki!
+[Click here!](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup)
 
 ### Other Notes
 You can find me here:
