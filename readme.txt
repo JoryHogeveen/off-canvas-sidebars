@@ -95,12 +95,12 @@ The final output of your theme should be similar to this:
 
 = 0.3 =
 
-*	!! CSS Change: All prefixes `sb-` have been changed to `ocs-` to represent this plugin's name instead of the old Slidebars prefixes, Please update your CSS !!
 *   Fix: Sidebar ID validation wasn't correct
 *	Feature: Allow sidebars to overwrite some general settings
 *	Feature: Option to set padding to sidebars
 *	Feature: Option to choose other content types than only a WP sidebar for an off-canvas sidebar
 *	Feature: Added various actions, filters and JS hooks - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info")
+*   Option to set your own CSS prefix (some classes are fixes to `ocs` and can't be changed, the prefix `ocs` is also the default prefix)
 *	OCS API functions to output off canvas sidebars in your theme instead of using this plugin frontend functions - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info")
 
 = 0.2.2 =
@@ -165,9 +165,6 @@ You can find me here:
 Please let me know through the support page!
 
 == Upgrade Notice ==
-
-= 0.3 =
-Version 0.3 introduces some radical code changes to the plugin. Please READ THE CHANGELOG!!, update and clear your cache after updating
 
 = 0.2 =
 Version 0.2 introduces some radical code changes to the plugin. Please clear your cache after updating
