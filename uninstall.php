@@ -6,6 +6,7 @@
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @version 0.3
+ * @todo Uninstall for multi-networks aswell
  */
 
 //if uninstall not called from WordPress exit
@@ -28,7 +29,7 @@ if ( ! is_multisite() ) {
 			$blog = (array) $blog;
 			ocs_uninstall( intval( $blog['blog_id'] ) );
 		}
-		ocs_uninstall();
+		ocs_uninstall( 'site' );
 	}
 }
 
@@ -37,8 +38,14 @@ function ocs_uninstall( $blog_id = false ) {
 	// Delete all options
 	$option_keys = array( 'off_canvas_sidebars_options' );
 	if ( $blog_id ) {
-		foreach ( $option_keys as $option_key ) {
-			delete_blog_option( $blog_id, $option_key );
+		if ( $blog_id == 'site' ) {
+			foreach ( $option_keys as $option_key ) {
+				delete_site_option( $option_key );
+			}
+		} else {
+			foreach ( $option_keys as $option_key ) {
+				delete_blog_option( $blog_id, $option_key );
+			}
 		}
 	} else {
 		foreach ( $option_keys as $option_key ) {
