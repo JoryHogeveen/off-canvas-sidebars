@@ -436,9 +436,11 @@ foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) 
 			$padding = (int) $sidebar_data['padding'];
 			$prop[] = 'padding: ' . $padding . 'px;';
 		}
+
+		if ( ! empty( $prop ) ) {
 ?>
 	.ocs-slidebar.ocs-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
-<?php }} //endif endforeach ?>
+<?php }}} //endif //endif endforeach ?>
 </style>
 			<?php
 		}
