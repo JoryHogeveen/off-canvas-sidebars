@@ -358,7 +358,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 		) );
 
 		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) {
-			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop'.$suffix.'.js', array( 'jquery' ), $version, true );
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $version, true );
 		}
 
 		// FastClick library https://github.com/ftlabs/fastclick

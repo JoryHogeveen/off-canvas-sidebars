@@ -120,8 +120,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
 		if ( 'nav-menus' != $screen->base )
 			return;
 
-		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array('jquery'), OCS_PLUGIN_VERSION );
+		$suffix = ''; //defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
+		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array('jquery'), $version );
 
 		$data['strings'] = array(
 			'show_icon' => __( 'Show icon', 'off-canvas-sidebars' ),
