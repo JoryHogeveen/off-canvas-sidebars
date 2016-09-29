@@ -537,7 +537,7 @@ final class OCS_Off_Canvas_Sidebars {
 				}
 			}
 		}
-		if ( version_compare( $db_version, '0.3', '<' ) ) {
+		if ( version_compare( $db_version, '0.3', '<' ) && version_compare( $db_version, '0', '>' ) ) {
 			$settings['css_prefix'] = 'sb'; // Old Slidebars classes
 		}
 
