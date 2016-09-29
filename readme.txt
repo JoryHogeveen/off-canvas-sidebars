@@ -1,16 +1,23 @@
 === Off-Canvas Sidebars ===
 Contributors: keraweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
-Tags: genesis, off-canvas, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
+Tags: genesis, off-canvas, menus, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 3.8
 Tested up to: 4.6
 Stable tag: 0.3
 
-Add off-canvas sidebars using the Slidebars jQuery plugin.
+Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
 
 == Description ==
 
 This plugin will add various options to implement off-canvas sidebars in your WordPress theme using the Slidebars jQuery plugin.
+
+= Overview / Features =
+
+*	Add off-canvas sidebars to the left, right, top and bottom of your website
+*	Use sidebar areas (widget-ready areas), menu locations or [custom hooks](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters) to place content into the off-canvas sidebars
+*	You can add control buttons with a widget, a menu item or with [custom code](https://wordpress.org/plugins/off-canvas-sidebars/installation/)
+*	Various customisation options and settings available in the Appearances menu
 
 = Compatibility (IMPORTANT!) =
 
@@ -18,12 +25,6 @@ The structure of your theme is of great importance for this plugin. Please read 
 
 This plugin should work with most themes and plugins although I can't be sure for all use-cases. At this point it's still a 0.x version...
 If the plugin does not work for your theme, please let me know through the support and add a plugins and themes list and I will take a look!
-
-= Overview / Features =
-
-*	Add off-canvas sidebars to the left, right, top and bottom of your website
-*	You can add the control buttons with a widget, a menu item or with custom code, [click here for documentation](https://www.adchsm.com/slidebars/help/usage/ "click here for documentation")
-*	Various customisation options under the Appearances menu
 
 = It's not working! / I found a bug! =
 
@@ -46,18 +47,19 @@ Or search for "Off-Canvas Sidebars" via your plugins menu.
 
 **Themes based on the Genesis Framework are supported by default! No changes needed.**
 
-*Please note that it is possible that there are some Genesis themes that can not be supported due to their structure.*
+*Please note that it is possible that there are some Genesis themes that can not be supported out-of-the-box due to their structure.*
 
-There are more themes with similar implementations like Genesis to insert code before and after the website HTML through actions hooks.
+There are more themes with similar implementations like Genesis to insert code before and after the website HTML through actions hooks. These theme can most likely be supported without any changes.
 [See a full list here with currently known themes](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks)
 
 For other themes there are two options:
+
 1. Simple theme setup
 2. Custom theme setup
 
 = 1: Simple theme setup =
 
-First of all, I strongly advice to create a child theme if you didn't already! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information").
+*First of all, I strongly advice to create a child theme if you didn't already! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information").*
 
 Add this code directly after the &lt;body&gt; tag. This is probably located in the header.php or index.php theme file.
 `<?php do_action('website_before'); ?>`
