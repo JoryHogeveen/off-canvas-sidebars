@@ -6,11 +6,11 @@
  * @package off-canvas-slidebars
  * @version 0.2
  *
- * Credits to the Polylang plugin
+ * Credits to the Polylang plugin for inspiration
  */
 
 jQuery(document).ready(function($) {
-	
+
 	$("input[value='#off_canvas_control'][type=text]").parent().parent().parent().parent().each( function() {
 		$(this).addClass('off-canvas-control');
 		/* Is control selected, then show it */
@@ -21,25 +21,25 @@ jQuery(document).ready(function($) {
 		}
 		$(this).find('.menu-item-bar .item-type').html(off_canvas_control_data.strings.menu_item_type+control_type);
 	});
-	
+
 	/* change menu type label on selecting a controller */
 	$(document).on('change', '.field-off-canvas-control input', function(e) {
 		var key = $(this).val();
 		var control_type = ' <i class="item-type-off-canvas-control">('+off_canvas_control_data.controls[key]+')</i>';
 		$(this).parents('.menu-item').find('.menu-item-bar .item-type').html(off_canvas_control_data.strings.menu_item_type+control_type);
 	});
-	
+
 	/* init/change menu item options */
 	$('#update-nav-menu').bind('click load', function(e) {
 		if ( e.target && e.target.className && -1 != e.target.className.indexOf('item-edit')) {
 			$("input[value='#off_canvas_control'][type=text]").parent().parent().parent().each( function(){
 				var item = $(this).attr('id').substring(19);
-				
+
 				var strings = off_canvas_control_data.strings;
-				
+
 				$(this).children('p.field-url, p.field-link-target, .field-xfn, .field-description').remove(); // remove default fields we don't need
 				$(this).children('p.field-css-classes').removeClass('description-thin').addClass('description-wide');
-				
+
 				/*option = $('<input>').attr({
 						type: 'hidden',
 						id: 'edit-menu-item-title-'+item,
@@ -47,7 +47,7 @@ jQuery(document).ready(function($) {
 						value: off_canvas_control_data.title
 				});
 				$(this).append(option);*/
-				
+
 				option = $('<input>').attr({
 						type: 'hidden',
 						id: 'edit-menu-item-url-'+item,
@@ -55,7 +55,7 @@ jQuery(document).ready(function($) {
 						value: '#off_canvas_control'
 				});
 				$(this).append(option);
-				
+
 				// a hidden field which exits only if our jQuery code has been executed
 				option = $('<input>').attr({
 						type: 'hidden',
@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
 						value: 1
 				});
 				$(this).append(option);
-				
+
 				o = '';
 				o += '<p class="field-off-canvas-control description description-wide">'+strings.menu_item_type+'<br>';
 				controls = off_canvas_control_data.controls;
@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
 				};
 				o += '</p>';
 				$(this).prepend(o);
-				
+
 				// Of only one sidebar is available, allways select its control
 				if ($(this).children('p.field-off-canvas-control').find('input[type="radio"]').length == 1) {
 					$(this).children('p.field-off-canvas-control').find('input[type="radio"]').prop('checked', true);
