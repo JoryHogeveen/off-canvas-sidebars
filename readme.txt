@@ -52,7 +52,7 @@ Or search for "Off-Canvas Sidebars" via your plugins menu.
 There are more themes with similar implementations like Genesis to insert code before and after the website HTML through actions hooks. These theme can most likely be supported without any changes.
 [See a full list here with currently known themes](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks)
 
-For other themes there are two options:
+**For other themes there are two options:**
 
 1. Simple theme setup
 2. Custom theme setup
