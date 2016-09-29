@@ -14,9 +14,7 @@ This plugin will add various options to implement off-canvas sidebars in your Wo
 
 = Compatibility (IMPORTANT!) =
 
-The structure of your theme is of great importance for this plugin. Please read the installation guide carefully!!
-
-*Most themes based on the Genesis Framework are supported by default. Please read the installation instructions for other themes!*
+The structure of your theme is of great importance for this plugin. Please read the [installation guide](https://wordpress.org/plugins/off-canvas-sidebars/installation/) carefully!!
 
 This plugin should work with most themes and plugins although I can't be sure for all use-cases. At this point it's still a 0.x version...
 If the plugin does not work for your theme, please let me know through the support and add a plugins and themes list and I will take a look!
@@ -44,11 +42,20 @@ Installation of this plugin works like any other plugin out there. Either:
 
 Or search for "Off-Canvas Sidebars" via your plugins menu.
 
-= Theme setup =
+= Theme Setup =
 
 **Themes based on the Genesis Framework are supported by default! No changes needed.**
 
 *Please note that it is possible that there are some Genesis themes that can not be supported due to their structure.*
+
+There are more themes with similar implementations like Genesis to insert code before and after the website HTML through actions hooks.
+[See a full list here with currently known themes](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks)
+
+For other themes there are two options:
+1. Simple theme setup
+2. Custom theme setup
+
+= 1: Simple theme setup =
 
 First of all, I strongly advice to create a child theme if you didn't already! [Click here for more information](https://codex.wordpress.org/Child_Themes "Click here for more information").
 
@@ -72,13 +79,12 @@ The final output of your theme should be similar to this:
 	</body>
 </html>`
 
-= Custom theme setup =
+= 2: Custom theme setup =
 
-*	Please [click here for documentation](https://www.adchsm.com/slidebars/help/usage/ "click here for documentation").
 *	Disable the front-end option in the settings page under the Appearances menu.
 *	Scripts and styles will still be included!
-*	[Click here for info on available actions and filters](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info on available actions and filters")
-*	[Click here for info on available API functions](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info on available API functions")
+*	[Click here for documentation on the Slidebars jQuery plugin](https://www.adchsm.com/slidebars/help/usage/).
+*	[Click here for the API and available actions and filters](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki)
 
 == Screenshots ==
 
@@ -95,13 +101,15 @@ The final output of your theme should be similar to this:
 
 = 0.3 =
 
-*   Fix: Sidebar ID validation wasn't correct
 *	Feature: Allow sidebars to overwrite some general settings
 *	Feature: Option to set padding to sidebars
 *	Feature: Option to choose other content types than only a WP sidebar for an off-canvas sidebar
-*	Feature: Added various actions, filters and JS hooks - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info")
-*   Option to set your own CSS prefix (some classes are fixes to `ocs` and can't be changed, the prefix `ocs` is also the default prefix)
-*	OCS API functions to output off canvas sidebars in your theme instead of using this plugin frontend functions - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info")
+*	Feature: Option to set your own CSS prefix (some classes are fixes to `ocs` and can't be changed, the prefix `ocs` is also the default prefix for new installations)
+*	Feature: Added various actions, filters and JS hooks - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki)
+*	OCS API functions to output off canvas sidebars in your theme instead of using this plugin frontend functions - [Click here for info](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/PHP-API)
+*	Fix: Sidebar ID validation wasn't correct
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/10)
 
 = 0.2.2 =
 
@@ -132,7 +140,7 @@ The final output of your theme should be similar to this:
 
 = 0.1.2 =
 
-*	Feature: First experiment for compatibility with fixed elements within the site container with the use of tranform: translateZ (needed for -webkit- and -moz- only). [See problem here](http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform "See problem here")
+*	Feature: First experiment for compatibility with fixed elements within the site container with the use of `transform: translateZ` (needed for `-webkit-` and `-moz-` only). [See problem here](http://stackoverflow.com/questions/2637058/positions-fixed-doesnt-work-when-using-webkit-transform "See problem here")
 *	Improvement: Usage of a single instance of the class
 
 = 0.1.1 =
@@ -147,14 +155,13 @@ Created from nothingness just to be one of the cool kids. Yay!
 
 You can find me here:
 
-*	[Keraweb](http://www.keraweb.nl/ "Keraweb")
 *	[GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/ "GitHub")
+*	[Keraweb](http://www.keraweb.nl/ "Keraweb")
 *	[LinkedIn](https://nl.linkedin.com/in/joryhogeveen "LinkedIn profile")
 
 = Actions | Filters | API =
 
-- [Click here for info on available actions and filters](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters "Click here for info on available actions and filters")
-- [Click here for info on available API functions](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/API-functions "Click here for info on available API functions")
+*	[See Wiki on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki)
 
 = Credits =
 
