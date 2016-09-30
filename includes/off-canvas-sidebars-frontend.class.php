@@ -444,6 +444,7 @@ foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) 
 	} // endif
 } //endforeach
 ?>
+	.<?php echo $prefix; ?>-button {cursor: pointer;}
 </style>
 			<?php
 		}
