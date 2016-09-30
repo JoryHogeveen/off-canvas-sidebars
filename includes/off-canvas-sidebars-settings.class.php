@@ -113,7 +113,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		);
 
 		// Register sidebar settings
-		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
+		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
 			add_settings_section(
 				'section_sidebar_'.$sidebar,
 				__( 'Off-Canvas Sidebar', 'off-canvas-sidebars' ) . ' - <code class="js-dynamic-id">' . $this->general_settings['sidebars'][ $sidebar ]['label'] . '</code>',
@@ -523,16 +523,22 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		$prefixValue = $this->general_settings['sidebars'];
 		$prefixId = $this->general_key.'_sidebars';
 		//$prefixClasses = array( $prefixId );
+		if ( ! empty( $this->general_settings['sidebars'] ) ) {
 		?><fieldset><?php
-		foreach ($prefixValue as $sidebar => $sidebar_data) {
-			//$classes = $this->get_option_classes( $prefixClasses, 'enable' );
-		?>
-			<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
-		<?php
-		}
+			foreach ($prefixValue as $sidebar => $sidebar_data) {
+				//$classes = $this->get_option_classes( $prefixClasses, 'enable' );
+			?>
+				<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
+			<?php
+			}
 		?>
 		<input type="hidden" name="<?php echo $prefixName.'[ocs_update]'; ?>" value="1" />
-		</fieldset><?php
+		</fieldset>
+		<?php
+		} else {
+			echo '<a href="?page=' . esc_attr( $this->plugin_key ) . '&tab=' . esc_attr( $this->sidebars_tab ) . '">'
+			     . __( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
+		}
 	}
 
 	function sidebar_location( $args ) {
