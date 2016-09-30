@@ -522,10 +522,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		$prefixName = esc_attr( $this->general_key ).'[sidebars]';
 		$prefixValue = $this->general_settings['sidebars'];
 		$prefixId = $this->general_key.'_sidebars';
-		$prefixClasses = array( $prefixId );
+		//$prefixClasses = array( $prefixId );
 		?><fieldset><?php
 		foreach ($prefixValue as $sidebar => $sidebar_data) {
-			$classes = $this->get_option_classes( $prefixClasses, 'enable' );
+			//$classes = $this->get_option_classes( $prefixClasses, 'enable' );
 		?>
 			<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
 		<?php
@@ -712,7 +712,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_background_color_type_transparent'; ?>" value="transparent" <?php checked( $prefixValue[$args['name'].'_type'], 'transparent' ); ?> /> <?php _e( 'Transparent', 'off-canvas-sidebars' ); ?></label><br />
 			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_background_color_type_color'; ?>" value="color" <?php checked( $prefixValue[$args['name'].'_type'], 'color' ); ?> /> <?php _e( 'Color', 'off-canvas-sidebars' ); ?></label><br />
 			<div class="<?php echo $prefixId.'_'.$args['name'].'_wrapper'; ?>">
-			<input type="text" class="color-picker <?php echo $this->get_option_classes( $prefixClasses, $args['name'] ) ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" />
+				<input type="text" class="color-picker <?php echo $this->get_option_classes( $prefixClasses, $args['name'] ) ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" />
 			</div>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
