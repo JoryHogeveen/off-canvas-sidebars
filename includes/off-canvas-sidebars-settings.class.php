@@ -81,6 +81,20 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	/**
+	 * Create admin page under the appearance menu
+	 * @since  0.1
+	 */
+	function add_admin_menus() {
+		add_theme_page(
+			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
+			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
+			apply_filters( 'ocs_settings_capability', 'edit_theme_options' ),
+			$this->plugin_key,
+			array( $this, 'plugin_options_page' )
+		);
+	}
+
+	/**
 	 * Register our settings
 	 * @since 0.1
 	 */
@@ -983,14 +997,6 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 */
 	function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
-	}
-
-	/**
-	 * Create admin menu page
-	 * @since  0.1
-	 */
-	function add_admin_menus() {
-		add_submenu_page( 'themes.php', esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), 'edit_theme_options', $this->plugin_key, array( $this, 'plugin_options_page' ) );
 	}
 
 	/*
