@@ -30,6 +30,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	private $general_labels = array();
 
 	/**
+	 * @since  0.1
 	 * @since  0.3  private constructor
 	 * @access private
 	 */
@@ -44,6 +45,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 
 	/**
 	 * Get plugin defaults
+	 * @since  0.1
 	 */
 	function load_plugin_data() {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
@@ -52,6 +54,11 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 	}
 
+	/**
+	 * Enqueue our styles and scripts only when it's our page
+	 * @since  0.1
+	 * @param  $hook
+	 */
 	function enqueue_styles_scripts( $hook ) {
 		if ( $hook != 'appearance_page_' . $this->plugin_key ) {
 			return;
@@ -73,6 +80,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 
 	}
 
+	/**
+	 * Register our settings
+	 * @since 0.1
+	 */
 	function register_settings() {
 		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Settings', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
@@ -727,6 +738,13 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		return array( 'prefixName' => $prefixName, 'prefixValue' => $prefixValue, 'prefixId' => $prefixId, 'prefixClasses' => $prefixClasses );
 	}
 
+	/**
+	 * Combine classes prefixed with the field name
+	 * @since  0.2
+	 * @param  $classes
+	 * @param  $append
+	 * @return string
+	 */
 	function get_option_classes( $classes, $append ) {
 		if ( $append ) {
 			foreach ( $classes as $key => $class ) {
