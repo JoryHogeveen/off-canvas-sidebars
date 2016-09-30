@@ -116,7 +116,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
 			add_settings_section(
 				'section_sidebar_'.$sidebar,
-				__( 'Off-Canvas Sidebar - <code class="js-dynamic-id">'.$this->general_settings['sidebars'][ $sidebar ]['label'] . '</code>', 'off-canvas-sidebars' ),
+				__( 'Off-Canvas Sidebar', 'off-canvas-sidebars' ) . ' - <code class="js-dynamic-id">' . $this->general_settings['sidebars'][ $sidebar ]['label'] . '</code>',
 				array( $this, 'register_general_settings' ),
 				$this->sidebars_tab
 			);
