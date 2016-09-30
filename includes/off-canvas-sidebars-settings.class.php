@@ -10,8 +10,8 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-final class OCS_Off_Canvas_Sidebars_Settings {
-
+final class OCS_Off_Canvas_Sidebars_Settings
+{
 	/**
 	 * The single instance of the class.
 	 *
@@ -932,7 +932,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Updates the existing widgets when a sidebar ID changes
 	 *
-	 * @since 0.3
+	 * @since  0.3
 	 *
 	 * @param  string  $oldId
 	 * @param  string  $newId
@@ -978,9 +978,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Validates numeric values, used by validate_input
 	 *
-	 * @since 0.2.2
+	 * @since  0.2.2
 	 *
-	 * @param mixed $value
+	 * @param  mixed $value
 	 * @return string $value
 	 */
 	function validate_numeric( $value ) {
@@ -990,9 +990,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Remove whitespace
 	 *
-	 * @since 0.3
+	 * @since  0.3
 	 *
-	 * @param mixed $value
+	 * @param  mixed $value
 	 * @return string $value
 	 */
 	function remove_whitespace( $value ) {
@@ -1085,9 +1085,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
 	 * Print out the settings fields for a particular settings section
 	 *
-	 * @global $wp_settings_fields  array of settings fields and their pages/sections
-	 *
 	 * @since  0.1
+	 *
+	 * @global $wp_settings_sections  array of settings sections
+	 * @global $wp_settings_fields    array of settings fields and their pages/sections
 	 *
 	 * @param  string  $page     Slug title of the admin page who's settings fields you want to show.
 	 * @param  string  $section  Slug title of the settings section who's fields you want to show.
@@ -1151,17 +1152,16 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function importexport_fields() {
-		?>
-	<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
+	?>
+		<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
-	<p><a class="submit button" href="?<?php echo $this->plugin_key ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
+		<p><a class="submit button" href="?<?php echo $this->plugin_key ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
 
-	<p>
-		<input type="hidden" name="<?php echo $this->plugin_key ?>-import" id="<?php echo $this->plugin_key ?>-import" value="true" />
-		<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', $this->plugin_key . '-submit', false ); ?>
-		<input type="file" name="<?php echo $this->plugin_key ?>-import-file" id="<?php echo $this->plugin_key ?>-import-file" />
-	</p>
-
+		<p>
+			<input type="hidden" name="<?php echo $this->plugin_key ?>-import" id="<?php echo $this->plugin_key ?>-import" value="true" />
+			<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', $this->plugin_key . '-submit', false ); ?>
+			<input type="file" name="<?php echo $this->plugin_key ?>-import-file" id="<?php echo $this->plugin_key ?>-import-file" />
+		</p>
 	<?php
 	}
 
@@ -1211,9 +1211,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		// import settings
 		if ( isset( $_POST[ $this->plugin_key . '-import'] ) ) {
 
-			if ( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) {
+			if ( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) {
 
-				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) );
+				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) );
 				if ( array_shift( $import ) == "[START=OCS SETTINGS]" && array_pop( $import ) == "[STOP=OCS SETTINGS]" ) {
 
 					$settings = array();

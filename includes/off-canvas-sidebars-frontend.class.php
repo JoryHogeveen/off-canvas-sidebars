@@ -10,8 +10,8 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-final class OCS_Off_Canvas_Sidebars_Frontend {
-
+final class OCS_Off_Canvas_Sidebars_Frontend
+{
 	/**
 	 * The single instance of the class.
 	 *
@@ -106,12 +106,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 			if ( is_array( $value ) ) {
 				$value = implode( ' ', $value );
 			}
-
 			$atts[ $name ] = $name . '="' . $value . '"';
 		}
-		$atts = implode( ' ', $atts );
 
-		echo '<div id="' . $this->general_settings['css_prefix'] . '-site" canvas="container" ' . $atts . '>';
+		echo '<div id="' . $this->general_settings['css_prefix'] . '-site" canvas="container" ' . implode( ' ', $atts ) . '>';
 
 		// Add content before other content in the site container
 		do_action( 'ocs_container_inner_before' );
@@ -368,7 +366,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	}
 
 	/**
-	 * Add nessesary inline scripts
+	 * Add necessary inline scripts
 	 *
 	 * @since   0.1
 	 * @return  void
@@ -391,6 +389,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend {
 	 */
 	function add_inline_styles() {
 		if ( ! is_admin() ) {
+			$prefix = $this->general_settings['css_prefix'];
 			?>
 <style type="text/css">
 <?php
@@ -398,20 +397,22 @@ if ( $this->general_settings['background_color_type'] != '' ) {
 	$bgcolor = '';
 	if ( $this->general_settings['background_color_type'] == 'transparent' ) {
 		$bgcolor = 'transparent';
-	} else if ( $this->general_settings['background_color_type'] == 'color' && $this->general_settings['background_color'] != '' ) {
+	}
+	elseif ( $this->general_settings['background_color_type'] == 'color' && $this->general_settings['background_color'] != '' ) {
 		$bgcolor = $this->general_settings['background_color'];
 	}
 ?>
-	#<?php echo $this->general_settings['css_prefix']; ?>-site {background-color: <?php echo $bgcolor; ?>;}
-<?php } ?>
+	#<?php echo $prefix; ?>-site {background-color: <?php echo $bgcolor; ?>;}
 <?php
+} // endif
 foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 	if ( true === (bool) $sidebar_data['enable'] ) {
 		$prop = array();
 		if ( ! empty( $sidebar_data['background_color_type'] ) ) {
 			if ( $sidebar_data['background_color_type'] == 'transparent' ) {
 				$prop[] = 'background-color: transparent;';
-			} else if ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
+			}
+			elseif ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
 				$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
 			}
 		}
@@ -432,15 +433,17 @@ foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) 
 			$prop[] = 'transition-duration: ' . $speed . 'ms;';
 		}
 		if ( ! empty( $sidebar_data['padding'] ) ) {
-			// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
-			$padding = (int) $sidebar_data['padding'];
-			$prop[] = 'padding: ' . $padding . 'px;';
+			$prop[] = 'padding: ' . (int) $sidebar_data['padding'] . 'px;';
 		}
 
 		if ( ! empty( $prop ) ) {
 ?>
 	.ocs-slidebar.ocs-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
-<?php }}} //endif //endif endforeach ?>
+<?php
+		} //endif
+	} // endif
+} //endforeach
+?>
 </style>
 			<?php
 		}
