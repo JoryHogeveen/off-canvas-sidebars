@@ -192,9 +192,6 @@ final class OCS_Off_Canvas_Sidebars
 			// Load the OCS API
 			include_once 'includes/off-canvas-sidebars-api.class.php';
 
-			// Load translations
-			$this->load_textdomain();
-
 			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
 			$this->maybe_db_update();
 
@@ -229,6 +226,9 @@ final class OCS_Off_Canvas_Sidebars
 	function init() {
 		// Get the current user
 		//$this->curUser = wp_get_current_user();
+
+		// Load translations
+		$this->load_textdomain();
 
 		// Register the enabled sidebars
 		$this->register_sidebars();
