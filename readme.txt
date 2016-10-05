@@ -103,7 +103,7 @@ The final output of your theme should be similar to this:
 
 = 0.3.1 =
 *	Feature: Allow changing this plugin capability to show the settings page
-*	Fix: Update fixed element compat for the new Slidebars version (still experimental)
+*	Fix: Update fixed element compat for the new Slidebars version (still experimental, Slidebars still doesn't fully support fixed elements within the site container)
 *	Fix: Don't echo empty sidebar CSS selectors if no styles are set
 *	UI: Set `.ocs-button` to `cursor: pointer;` by default
 *	Update textdomain hook
