@@ -10,8 +10,8 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget {
-
+final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
+{
 	private $general_settings = array();
 	private $general_labels = array();
 	private $widget_setting = 'off-canvas-controls';

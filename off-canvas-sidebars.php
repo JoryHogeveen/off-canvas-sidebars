@@ -3,7 +3,7 @@
  * Plugin Name: Off-Canvas Sidebars
  * Description: Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:  https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:     0.3
+ * Version:     0.3.1
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: off-canvas-sidebars
@@ -33,14 +33,14 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-if ( !defined( 'OCS_PLUGIN_VERSION' ) ) define( 'OCS_PLUGIN_VERSION', '0.3' );
-if ( !defined( 'OCS_FILE' ) ) define( 'OCS_FILE', __FILE__ );
-if ( !defined( 'OCS_BASENAME' ) ) define( 'OCS_BASENAME', plugin_basename( __FILE__ ) );
-if ( !defined( 'OCS_PLUGIN_DIR' ) ) define( 'OCS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-if ( !defined( 'OCS_PLUGIN_URL' ) ) define( 'OCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'OCS_PLUGIN_VERSION', '0.3.1' );
+define( 'OCS_FILE', __FILE__ );
+define( 'OCS_BASENAME', plugin_basename( OCS_FILE ) );
+define( 'OCS_PLUGIN_DIR', plugin_dir_path( OCS_FILE ) );
+define( 'OCS_PLUGIN_URL', plugin_dir_url( OCS_FILE ) );
 
-final class OCS_Off_Canvas_Sidebars {
-
+final class OCS_Off_Canvas_Sidebars
+{
 	/**
 	 * The single instance of the class.
 	 *
@@ -192,9 +192,6 @@ final class OCS_Off_Canvas_Sidebars {
 			// Load the OCS API
 			include_once 'includes/off-canvas-sidebars-api.class.php';
 
-			// Load translations
-			$this->load_textdomain();
-
 			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
 			$this->maybe_db_update();
 
@@ -229,6 +226,9 @@ final class OCS_Off_Canvas_Sidebars {
 	function init() {
 		// Get the current user
 		//$this->curUser = wp_get_current_user();
+
+		// Load translations
+		$this->load_textdomain();
 
 		// Register the enabled sidebars
 		$this->register_sidebars();
@@ -285,10 +285,8 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Merge database plugin settings with default settings
 	 *
-	 * TODO: Make adding more sidebars dynamic (Slidebars will need to support more sidebars aswell)
-	 *
-	 * @return  array
 	 * @since   0.1
+	 * @return  array
 	 */
 	function get_settings() {
 		$settings = $this->general_settings;
@@ -306,10 +304,10 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Validate setting keys
 	 *
+	 * @since   0.2
 	 * @param   array  $settings
 	 * @param   array  $defaults
 	 * @return  array
-	 * @since   0.2
 	 */
 	function validate_settings( $settings, $defaults ) {
 		// supports one level array
@@ -329,48 +327,48 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Returns the default settings
 	 *
-	 * @return  string
 	 * @since   0.2
+	 * @return  string
 	 */
 	function get_default_settings() { return $this->default_settings; }
 
 	/**
 	 * Returns the default sidebar_settings
 	 *
-	 * @return  string
 	 * @since   0.2
+	 * @return  string
 	 */
 	function get_default_sidebar_settings() { return $this->default_sidebar_settings; }
 
 	/**
 	 * Returns the plugin version
 	 *
-	 * @return  string
 	 * @since   0.1.2
+	 * @return  string
 	 */
 	function get_version() { return $this->version; }
 
 	/**
 	 * Returns the plugin key
 	 *
-	 * @return  string
 	 * @since   0.1
+	 * @return  string
 	 */
 	function get_plugin_key() { return $this->plugin_key; }
 
 	/**
 	 * Returns the general key (plugin settings)
 	 *
-	 * @return  string
 	 * @since   0.1
+	 * @return  string
 	 */
 	function get_general_key() { return $this->general_key; }
 
 	/**
 	 * Returns the general labels
 	 *
-	 * @return  array
 	 * @since   0.1
+	 * @return  array
 	 */
 	function get_general_labels() {
 		return array(
@@ -382,9 +380,9 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Returns a sidebar key based on its label
 	 *
+	 * @since   0.1
 	 * @param   string  $label
 	 * @return  string  $key
-	 * @since   0.1
 	 */
 	function get_sidebar_key_by_label( $label ) {
 		foreach ( $this->general_settings['sidebars'] as $key => $value ) {
@@ -397,8 +395,8 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Checks if a sidebar is enabled
 	 *
-	 * @return  bool
 	 * @since   0.1
+	 * @return  bool
 	 */
 	function is_sidebar_enabled() {
 		foreach ( $this->general_settings['sidebars'] as $key => $value ) {
@@ -412,8 +410,8 @@ final class OCS_Off_Canvas_Sidebars {
 	 * Register slidebar sidebars
 	 * Also checks if theme is based on the Genesis Framework.
 	 *
-	 * @return  void
 	 * @since   0.1
+	 * @return  void
 	 */
 	function register_sidebars() {
 		foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
@@ -473,10 +471,10 @@ final class OCS_Off_Canvas_Sidebars {
 	/**
 	 * Add Settings link to plugin's entry on the Plugins page
 	 *
+	 * @since   0.1
 	 * @param   array   $links
 	 * @param   string  $file
 	 * @return  array
-	 * @since   0.1
 	 */
 	function add_settings_link( $links, $file ) {
 		static $this_plugin;
@@ -596,7 +594,11 @@ final class OCS_Off_Canvas_Sidebars {
 	 * @return  void
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'off-canvas-sidebars' ), null );
+		_doing_it_wrong(
+			__FUNCTION__,
+			get_class( $this ) . ': ' . esc_html__( 'This class does not want to be cloned', 'view-admin-as' ),
+			null
+		);
 	}
 
 	/**
@@ -607,7 +609,11 @@ final class OCS_Off_Canvas_Sidebars {
 	 * @return  void
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'off-canvas-sidebars' ), null );
+		_doing_it_wrong(
+			__FUNCTION__,
+			get_class( $this ) . ': ' . esc_html__( 'This class does not want to wake up', 'view-admin-as' ),
+			null
+		);
 	}
 
 	/**
@@ -620,7 +626,11 @@ final class OCS_Off_Canvas_Sidebars {
 	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
-		_doing_it_wrong( get_class( $this ) . "::{$method}", esc_html__( 'Method does not exist.', 'off-canvas-sidebars' ), null );
+		_doing_it_wrong(
+			get_class( $this ) . "::{$method}",
+			esc_html__( 'Method does not exist.', 'off-canvas-sidebars' ),
+			null
+		);
 		unset( $method, $args );
 		return null;
 	}

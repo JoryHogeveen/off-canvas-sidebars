@@ -12,8 +12,8 @@
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-final class OCS_Off_Canvas_Sidebars_Menu_Meta_box {
-
+final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
+{
 	/**
 	 * The single instance of the class.
 	 *

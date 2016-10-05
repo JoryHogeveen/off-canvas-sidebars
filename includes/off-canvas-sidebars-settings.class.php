@@ -5,13 +5,13 @@
  * Settings
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3
+ * @version 0.3.1
  */
 
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
-final class OCS_Off_Canvas_Sidebars_Settings {
-
+final class OCS_Off_Canvas_Sidebars_Settings
+{
 	/**
 	 * The single instance of the class.
 	 *
@@ -30,6 +30,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	private $general_labels = array();
 
 	/**
+	 * @since  0.1
 	 * @since  0.3  private constructor
 	 * @access private
 	 */
@@ -44,6 +45,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 
 	/**
 	 * Get plugin defaults
+	 * @since  0.1
 	 */
 	function load_plugin_data() {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
@@ -52,6 +54,11 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 	}
 
+	/**
+	 * Enqueue our styles and scripts only when it's our page
+	 * @since  0.1
+	 * @param  $hook
+	 */
 	function enqueue_styles_scripts( $hook ) {
 		if ( $hook != 'appearance_page_' . $this->plugin_key ) {
 			return;
@@ -73,6 +80,24 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 
 	}
 
+	/**
+	 * Create admin page under the appearance menu
+	 * @since  0.1
+	 */
+	function add_admin_menus() {
+		add_theme_page(
+			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
+			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
+			apply_filters( 'ocs_settings_capability', 'edit_theme_options' ),
+			$this->plugin_key,
+			array( $this, 'plugin_options_page' )
+		);
+	}
+
+	/**
+	 * Register our settings
+	 * @since 0.1
+	 */
 	function register_settings() {
 		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Settings', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
@@ -88,10 +113,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		);
 
 		// Register sidebar settings
-		foreach ($this->general_settings['sidebars'] as $sidebar => $sidebar_data) {
+		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
 			add_settings_section(
 				'section_sidebar_'.$sidebar,
-				__( 'Off-Canvas Sidebar - <code class="js-dynamic-id">'.$this->general_settings['sidebars'][ $sidebar ]['label'] . '</code>', 'off-canvas-sidebars' ),
+				__( 'Off-Canvas Sidebar', 'off-canvas-sidebars' ) . ' - <code class="js-dynamic-id">' . $this->general_settings['sidebars'][ $sidebar ]['label'] . '</code>',
 				array( $this, 'register_general_settings' ),
 				$this->sidebars_tab
 			);
@@ -497,17 +522,23 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		$prefixName = esc_attr( $this->general_key ).'[sidebars]';
 		$prefixValue = $this->general_settings['sidebars'];
 		$prefixId = $this->general_key.'_sidebars';
-		$prefixClasses = array( $prefixId );
+		//$prefixClasses = array( $prefixId );
+		if ( ! empty( $this->general_settings['sidebars'] ) ) {
 		?><fieldset><?php
-		foreach ($prefixValue as $sidebar => $sidebar_data) {
-			$classes = $this->get_option_classes( $prefixClasses, 'enable' );
-		?>
-			<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
-		<?php
-		}
+			foreach ($prefixValue as $sidebar => $sidebar_data) {
+				//$classes = $this->get_option_classes( $prefixClasses, 'enable' );
+			?>
+				<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
+			<?php
+			}
 		?>
 		<input type="hidden" name="<?php echo $prefixName.'[ocs_update]'; ?>" value="1" />
-		</fieldset><?php
+		</fieldset>
+		<?php
+		} else {
+			echo '<a href="?page=' . esc_attr( $this->plugin_key ) . '&tab=' . esc_attr( $this->sidebars_tab ) . '">'
+			     . __( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
+		}
 	}
 
 	function sidebar_location( $args ) {
@@ -687,7 +718,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_background_color_type_transparent'; ?>" value="transparent" <?php checked( $prefixValue[$args['name'].'_type'], 'transparent' ); ?> /> <?php _e( 'Transparent', 'off-canvas-sidebars' ); ?></label><br />
 			<label><input type="radio" name="<?php echo $prefixName.'['.$args['name'].'_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_background_color_type_color'; ?>" value="color" <?php checked( $prefixValue[$args['name'].'_type'], 'color' ); ?> /> <?php _e( 'Color', 'off-canvas-sidebars' ); ?></label><br />
 			<div class="<?php echo $prefixId.'_'.$args['name'].'_wrapper'; ?>">
-			<input type="text" class="color-picker <?php echo $this->get_option_classes( $prefixClasses, $args['name'] ) ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" />
+				<input type="text" class="color-picker <?php echo $this->get_option_classes( $prefixClasses, $args['name'] ) ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" value="<?php echo $prefixValue[$args['name']] ?>" />
 			</div>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
@@ -727,6 +758,13 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		return array( 'prefixName' => $prefixName, 'prefixValue' => $prefixValue, 'prefixId' => $prefixId, 'prefixClasses' => $prefixClasses );
 	}
 
+	/**
+	 * Combine classes prefixed with the field name
+	 * @since  0.2
+	 * @param  $classes
+	 * @param  $append
+	 * @return string
+	 */
 	function get_option_classes( $classes, $append ) {
 		if ( $append ) {
 			foreach ( $classes as $key => $class ) {
@@ -900,7 +938,7 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Updates the existing widgets when a sidebar ID changes
 	 *
-	 * @since 0.3
+	 * @since  0.3
 	 *
 	 * @param  string  $oldId
 	 * @param  string  $newId
@@ -946,9 +984,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Validates numeric values, used by validate_input
 	 *
-	 * @since 0.2.2
+	 * @since  0.2.2
 	 *
-	 * @param mixed $value
+	 * @param  mixed $value
 	 * @return string $value
 	 */
 	function validate_numeric( $value ) {
@@ -958,21 +996,13 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	/**
 	 * Remove whitespace
 	 *
-	 * @since 0.3
+	 * @since  0.3
 	 *
-	 * @param mixed $value
+	 * @param  mixed $value
 	 * @return string $value
 	 */
 	function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
-	}
-
-	/**
-	 * Create admin menu page
-	 * @since  0.1
-	 */
-	function add_admin_menus() {
-		add_submenu_page( 'themes.php', esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ), 'edit_theme_options', $this->plugin_key, array( $this, 'plugin_options_page' ) );
 	}
 
 	/*
@@ -1061,9 +1091,10 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
 	 * Print out the settings fields for a particular settings section
 	 *
-	 * @global $wp_settings_fields  array of settings fields and their pages/sections
-	 *
 	 * @since  0.1
+	 *
+	 * @global $wp_settings_sections  array of settings sections
+	 * @global $wp_settings_fields    array of settings fields and their pages/sections
 	 *
 	 * @param  string  $page     Slug title of the admin page who's settings fields you want to show.
 	 * @param  string  $section  Slug title of the settings section who's fields you want to show.
@@ -1127,17 +1158,16 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 	}
 
 	function importexport_fields() {
-		?>
-	<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
+	?>
+		<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
-	<p><a class="submit button" href="?<?php echo $this->plugin_key ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
+		<p><a class="submit button" href="?<?php echo $this->plugin_key ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
 
-	<p>
-		<input type="hidden" name="<?php echo $this->plugin_key ?>-import" id="<?php echo $this->plugin_key ?>-import" value="true" />
-		<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', $this->plugin_key . '-submit', false ); ?>
-		<input type="file" name="<?php echo $this->plugin_key ?>-import-file" id="<?php echo $this->plugin_key ?>-import-file" />
-	</p>
-
+		<p>
+			<input type="hidden" name="<?php echo $this->plugin_key ?>-import" id="<?php echo $this->plugin_key ?>-import" value="true" />
+			<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', $this->plugin_key . '-submit', false ); ?>
+			<input type="file" name="<?php echo $this->plugin_key ?>-import-file" id="<?php echo $this->plugin_key ?>-import-file" />
+		</p>
 	<?php
 	}
 
@@ -1187,9 +1217,9 @@ final class OCS_Off_Canvas_Sidebars_Settings {
 		// import settings
 		if ( isset( $_POST[ $this->plugin_key . '-import'] ) ) {
 
-			if ( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) {
+			if ( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) {
 
-				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file']['tmp_name'] ) );
+				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) );
 				if ( array_shift( $import ) == "[START=OCS SETTINGS]" && array_pop( $import ) == "[STOP=OCS SETTINGS]" ) {
 
 					$settings = array();
