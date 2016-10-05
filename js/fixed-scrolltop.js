@@ -30,7 +30,7 @@
 
 		function ocsScrollTopFixed() {
 			if ( curScrollTopElements.length > 0 ) {
-				var scrollTop = $(ocs_site).scrollTop();
+				var scrollTop = ocs_site.scrollTop();
 				var winHeight = $(window).height();
 				var conOffset = ocs_site.offset();
 				var conHeight = ocs_site.outerHeight();
