@@ -5,9 +5,9 @@
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @version 0.3
+ * @global ocsOffCanvasSidebars
  */
 
-/* global ocsOffCanvasSidebars */
 if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	var ocsOffCanvasSidebars = {
 		"site_close": true,
