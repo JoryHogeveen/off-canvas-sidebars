@@ -3,8 +3,27 @@
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3
+ * @version 0.3.2
  */
+
+/**
+ * Slidebar CSS overwrites
+ */
+
+html,
+.ocs-initialized html {
+	overflow-y: auto;
+	height: auto;
+}
+[canvas=container],
+.ocs-initialized [canvas=container] {
+	overflow-y: hidden;
+	height: auto;
+}
+
+html.ocs-scroll-lock {
+	overflow-y: hidden;
+}
 
 /**
  * Sidebar Widths (patched from older version of Slidebars)

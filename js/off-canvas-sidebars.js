@@ -4,7 +4,7 @@
  * ocsOffCanvasSidebars
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3
+ * @version 0.3.2
  * @global ocsOffCanvasSidebars
  */
 
@@ -23,9 +23,13 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.slidebarsController = false;
 	ocsOffCanvasSidebars.useAttributeSettings = false;
+	ocsOffCanvasSidebars.container = false;
+	ocsOffCanvasSidebars._html = $( 'html' );
 	ocsOffCanvasSidebars._touchmove = false;
 
 	ocsOffCanvasSidebars.init = function() {
+
+		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
 
 		/**
 		 * Function call before initializing
@@ -43,6 +47,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		}
 		// Initialize slidebars
 		ocsOffCanvasSidebars.slidebarsController.init();
+
+		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
 
 		/**
 		 * Function call after initializing
@@ -255,11 +261,17 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		// Add close class to canvas container when Slidebar is opened
 		$( controller.events ).on( 'opening', function () {
 			$( '[canvas]' ).addClass( prefix + '-close-any' );
+			ocsOffCanvasSidebars._html.addClass( 'ocs-sidebar-active' );
+			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) ) {
+				ocsOffCanvasSidebars._html.addClass( 'ocs-scroll-lock' );
+			}
 		} );
 
 		// Add close class to canvas container when Slidebar is opened
 		$( controller.events ).on( 'closing', function () {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
+			ocsOffCanvasSidebars._html.removeClass( 'ocs-sidebar-active' );
+			ocsOffCanvasSidebars._html.removeClass( 'ocs-scroll-lock' );
 		} );
 
 
