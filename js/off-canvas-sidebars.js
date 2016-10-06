@@ -162,6 +162,26 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
 
 		/**
+		 * Compatibility with WP Admin Bar
+		 * @since  0.3.2
+ 		 */
+		if ( $('body').hasClass('admin-bar') ) {
+			$( window ).on('load resize', function() {
+				var bodyOffset = $( 'body' ).offset();
+				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
+					// Top slidebars
+					if ( $(this).hasClass( 'ocs-location-top' ) ) {
+						$(this).css( 'margin-top', parseInt( $(this).css('margin-top').replace( 'px', '' ) ) + bodyOffset.top + 'px' );
+					}
+					// Bottom slidebars
+					else if ( $(this).hasClass( 'ocs-location-left' ) || $(this).hasClass( 'ocs-location-right' ) ) {
+						$(this).css( 'margin-top', bodyOffset.top + 'px' );
+					}
+				} );
+			} );
+		}
+
+		/**
 		 * Fix position issues for fixed elements on slidebar animations
 		 * @since  0.3.2
  		 */
