@@ -289,7 +289,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		$( controller.events ).on( 'opening', function () {
 			$( '[canvas]' ).addClass( prefix + '-close-any' );
 			ocsOffCanvasSidebars._html.addClass( 'ocs-sidebar-active' );
-			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) ) {
+			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 				ocsOffCanvasSidebars._html.addClass( 'ocs-scroll-lock' );
 			}
 		} );
@@ -297,8 +297,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		// Add close class to canvas container when Slidebar is opened
 		$( controller.events ).on( 'closing', function () {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
-			ocsOffCanvasSidebars._html.removeClass( 'ocs-sidebar-active' );
-			ocsOffCanvasSidebars._html.removeClass( 'ocs-scroll-lock' );
+			ocsOffCanvasSidebars._html.removeClass( 'ocs-sidebar-active ocs-scroll-lock' );
 		} );
 
 
@@ -327,7 +326,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		// Disable scrolling on active sidebar
 		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel', function( e ) {
-			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
+			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
+			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
