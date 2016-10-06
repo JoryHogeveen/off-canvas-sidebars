@@ -801,6 +801,15 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		}
 		unset( $input['sidebars']['ocs_add_new'] );
 
+		if ( $_POST['ocs_tab'] == $this->settings_tab ) {
+			$input[ 'enable_frontend' ]              = ( ! empty ( $input[ 'enable_frontend' ] ) ) ? 1 : 0;
+			$input[ 'site_close' ]                   = ( ! empty ( $input[ 'site_close' ] ) ) ? 1 : 0;
+			$input[ 'hide_control_classes' ]         = ( ! empty ( $input[ 'hide_control_classes' ] ) ) ? 1 : 0;
+			$input[ 'scroll_lock' ]                  = ( ! empty ( $input[ 'scroll_lock' ] ) ) ? 1 : 0;
+			$input[ 'use_fastclick' ]                = ( ! empty ( $input[ 'use_fastclick' ] ) ) ? 1 : 0;
+			$input[ 'compatibility_position_fixed' ] = ( ! empty ( $input[ 'compatibility_position_fixed' ] ) ) ? 1 : 0;
+		}
+
 		// Handle existing sidebars
 		if ( isset( $input['sidebars'] ) ) {
 
