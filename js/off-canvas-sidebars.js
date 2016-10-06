@@ -29,35 +29,6 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	ocsOffCanvasSidebars.init = function() {
 
-		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
-
-		/**
-		 * Function call before initializing
-		 * @since  0.3
-		 */
-		if ( typeof ocsBeforeInitHook == 'function' ) {
-			ocsBeforeInitHook();
-		}
-
-		// Slidebars constructor
-		ocsOffCanvasSidebars.slidebarsController = new slidebars();
-
-		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
-			return;
-		}
-		// Initialize slidebars
-		ocsOffCanvasSidebars.slidebarsController.init();
-
-		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
-
-		/**
-		 * Function call after initializing
-		 * @since  0.3
-		 */
-		if ( typeof ocsAfterInitHook == 'function' ) {
-			ocsAfterInitHook();
-		}
-
 		/**
 		 * Validate the disable_over setting ( using _getSetting() )
 
@@ -160,6 +131,36 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				return 0;
 			}
 		};
+
+		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
+
+		/**
+		 * Function call before initializing
+		 * @since  0.3
+		 */
+		if ( typeof ocsBeforeInitHook == 'function' ) {
+			ocsBeforeInitHook();
+		}
+
+		// Slidebars constructor
+		ocsOffCanvasSidebars.slidebarsController = new slidebars();
+
+		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
+			return;
+		}
+
+		// Initialize slidebars
+		ocsOffCanvasSidebars.slidebarsController.init();
+
+		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
+
+		/**
+		 * Function call after initializing
+		 * @since  0.3
+		 */
+		if ( typeof ocsAfterInitHook == 'function' ) {
+			ocsAfterInitHook();
+		}
 
 		// Prevent swipe events to be seen as a click (bug in some browsers)
 		$( document ).on( 'touchmove', function() {
