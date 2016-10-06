@@ -116,7 +116,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			if ( transformMatrix ) {
 				var matrix = transformMatrix.replace(/[^0-9\-.,]/g, '').split(',');
 				var val = false;
-				switch ( axix ) {
+				switch ( axis ) {
 					case 'x':
 						val = matrix[12] || matrix[4]; //translate x
 						break;
