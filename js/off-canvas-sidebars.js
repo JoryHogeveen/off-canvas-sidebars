@@ -14,6 +14,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		"disable_over": false,
 		"hide_control_classes": false,
 		"scroll_lock": false,
+		"legacy_css": false,
 		"css_prefix": 'ocs',
 		"sidebars": {}
 	};
@@ -147,6 +148,12 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
 			return;
+		}
+
+		// Legacy CSS mode?
+		if ( ocsOffCanvasSidebars.legacy_css ) {
+			ocsOffCanvasSidebars.slidebarsController.legacy = true;
+			ocsOffCanvasSidebars._html.addClass('ocs-legacy');
 		}
 
 		// Initialize slidebars
