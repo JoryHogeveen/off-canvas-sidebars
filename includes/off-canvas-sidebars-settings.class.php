@@ -265,6 +265,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 				'description' => __( 'Devices with touch capability often have a 300ms delay on click triggers. FastClick is a JavaScript library purposely built to elimate the delay where neccesary.', 'off-canvas-sidebars' )
 			)
 		);
+
 		add_settings_field(
 			'compatibility_position_fixed',
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ),
@@ -991,8 +992,8 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	 *
 	 * @since  0.1.2
 	 *
-	 * @param  mixed $value
-	 * @return int $value
+	 * @param  mixed  $value
+	 * @return int    $value
 	 */
 	function validate_checkbox( $value ) {
 		return ( ! empty( $value ) && $value == 1 ) ? (int) strip_tags( $value ) : 0;

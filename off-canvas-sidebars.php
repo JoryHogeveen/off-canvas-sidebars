@@ -510,7 +510,7 @@ final class OCS_Off_Canvas_Sidebars
 		$settings = $this->general_settings;
 		$db_version = strtolower( $settings['db_version'] );
 
-		// Compare versions
+		// Upgrade to 0.2.x
 		if ( version_compare( $db_version, '0.2', '<' ) ) {
 			foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 				if ( empty( $sidebar_data['label'] ) ) {
@@ -535,6 +535,8 @@ final class OCS_Off_Canvas_Sidebars
 				}
 			}
 		}
+
+		// Upgrade to 0.3.x
 		if ( version_compare( $db_version, '0.3', '<' ) && version_compare( $db_version, '0', '>' ) ) {
 			$settings['css_prefix'] = 'sb'; // Old Slidebars classes
 		}
