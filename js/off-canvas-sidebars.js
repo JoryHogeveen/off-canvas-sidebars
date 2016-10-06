@@ -130,6 +130,33 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			return false;
 		};
 
+		ocsOffCanvasSidebars._getTranslateAxis = function( obj, axis ) {
+			obj = $( obj );
+			var transformMatrix = obj.css("-webkit-transform") ||
+				obj.css("-moz-transform") ||
+				obj.css("-ms-transform")  ||
+				obj.css("-o-transform")   ||
+				obj.css("transform");
+			if ( transformMatrix ) {
+				var matrix = transformMatrix.replace(/[^0-9\-.,]/g, '').split(',');
+				var val = false;
+				switch ( axix ) {
+					case 'x':
+						val = matrix[12] || matrix[4]; //translate x
+						break;
+					case 'y':
+						val = matrix[13] || matrix[5]; //translate y
+						break;
+					case 'z':
+						val = matrix[14] || matrix[6]; //translate z
+						break;
+				}
+				return parseFloat( val );
+			} else {
+				return 0;
+			}
+		};
+
 		// Prevent swipe events to be seen as a click (bug in some browsers)
 		$( document ).on( 'touchmove', function() {
 			ocsOffCanvasSidebars._touchmove = true;
