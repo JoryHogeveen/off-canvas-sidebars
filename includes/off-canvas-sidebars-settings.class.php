@@ -936,8 +936,8 @@ final class OCS_Off_Canvas_Sidebars_Settings
 				$output['sidebars'][ $sidebar_id ]['disable_over']    = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['disable_over'] );
 				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
 
-				// Validate content value + set to default of not valid
-				$output['sidebars'][ $sidebar_id ]['content'] = ( ! empty( $output['sidebars'][ $sidebar_id ]['content'] ) && in_array( $output['sidebars'][ $sidebar_id ]['content'], array( 'sidebar', 'menu', 'action' ) ) ) ? $output['sidebars'][ $sidebar_id ]['content'] : 'sidebar';
+				// Validate radio options
+				$output['sidebars'][ $sidebar_id ]['content'] = $this->validate_radio( $output['sidebars'][ $sidebar_id ]['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
 
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id != $new_sidebar_id ) {
