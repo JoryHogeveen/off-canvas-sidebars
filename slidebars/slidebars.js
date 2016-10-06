@@ -216,6 +216,17 @@ slidebars = function () {
 				// Apply negative margins
 				if ( offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'overlay' || offCanvas[ id ].style === 'shift' ) {
 					offCanvas[ id ].element.css( 'margin-' + offCanvas[ id ].side, '-' + offset );
+
+					// Fix shift style locations for legacy mode (1.9 to fix minor px rendering issues)
+					if ( self.legacy && offCanvas[ id ].style === 'shift' ) {
+						var shiftPos;
+						if ( offCanvas[ id ].side == 'top' || offCanvas[ id ].side == 'bottom' ) {
+							shiftPos = offCanvas[ id ].element.height() / 1.9;
+						} else if ( offCanvas[ id ].side == 'left' || offCanvas[ id ].side == 'right' ) {
+							shiftPos = offCanvas[ id ].element.width() / 1.9;
+						}
+						offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
+					}
 				}
 			}
 		}
@@ -363,6 +374,17 @@ slidebars = function () {
 				} else {
 					// Top and Left sides can use the same css as all other elements.
 					animationProperties.elements.css( offCanvas[ id ].side, '' );
+				}
+
+				// Fix shift style for legacy mode (1.9 to fix minor px rendering issues)
+				if ( offCanvas[ id ].style == 'shift' ) {
+					var shiftPos;
+					if ( offCanvas[ id ].side == 'top' || offCanvas[ id ].side == 'bottom' ) {
+						shiftPos = offCanvas[ id ].element.height() / 1.9;
+					} else if ( offCanvas[ id ].side == 'left' || offCanvas[ id ].side == 'right' ) {
+						shiftPos = offCanvas[ id ].element.width() / 1.9;
+					}
+					offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
 				}
 
 			} else {
