@@ -25,6 +25,35 @@ html.ocs-scroll-lock {
 	overflow-y: hidden;
 }
 
+[canvas-fixed] {
+	-webkit-transform: translate( 0px, 0px );
+	-ms-transform: translate( 0px, 0px );
+	transform: translate( 0px, 0px );
+	-webkit-backface-visibility: hidden;
+}
+
+.ocs-legacy [canvas] {top: 0; right: 0; bottom: 0; left: 0;}
+.ocs-legacy [canvas],
+.ocs-legacy [off-canvas] {
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	transform: none;
+	-webkit-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-moz-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-ms-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-o-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+}
+.ocs-legacy [canvas-fixed] {
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	transform: none;
+}
+
 /**
  * Sidebar Widths (patched from older version of Slidebars)
  */
