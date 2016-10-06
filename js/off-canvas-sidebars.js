@@ -162,6 +162,53 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
 
 		/**
+		 * Fix position issues for fixed elements on slidebar animations
+		 * @since  0.3.2
+ 		 */
+		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
+			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+			var duration = parseFloat( slidebar.element.css( 'transitionDuration' ), 10 ) * 1000;
+			if ( slidebar.side == 'top' || slidebar.side == 'bottom' ) {
+				var elements = $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
+				elements.attr( { 'canvas-fixed': 'fixed' } );
+
+				// Legacy mode (only needed for location: top)
+				if ( ocsOffCanvasSidebars.legacy_css && slidebar.side == 'top' && slidebar.style != 'overlay' ) {
+					var offset;
+					if ( slidebar.style == 'reveal' ) {
+						offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
+					} else {
+						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', '') );
+					}
+					elements.each( function() {
+						// Set animation
+						if ( e.type == 'opening' ) {
+							$(this).css( {
+								'-webkit-transition': 'top ' + duration + 'ms',
+								'-moz-transition': 'top ' + duration + 'ms',
+								'-o-transition': 'top ' + duration + 'ms',
+								'transition': 'top ' + duration + 'ms'
+							} );
+							$(this).css('top', parseInt( $(this).css('top').replace('px', '') ) + offset + 'px' );
+						}
+						// Remove animation
+						else if ( e.type == 'closing') {
+							$(this).css('top', parseInt( $(this).css('top').replace('px', '') ) - offset + 'px' );
+							setTimeout( function() {
+								$(this).css( {
+									'-webkit-transition': '',
+									'-moz-transition': '',
+									'-o-transition': '',
+									'transition': ''
+								} );
+							}, duration );
+						}
+					} );
+				}
+			}
+		} );
+
+		/**
 		 * Function call after initializing
 		 * @since  0.3
 		 */
