@@ -82,13 +82,17 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		 * Internal function, do not overwrite
 
 		 * @since  0.3
+		 * @param  key  the setting key to look for
+		 * @param  sidebarId  bool|null|string  false = check for an active slidebar, null or no value = only the global setting
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
 			var overwrite, setting;
 			var prefix = ocsOffCanvasSidebars.css_prefix;
 
-			if ( ! sidebarId ) {
-				sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
+			if ( typeof sidebarId != 'undefined' ) {
+				if ( ! sidebarId && null !== sidebarId ) {
+					sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
+				}
 			}
 			if ( sidebarId ) {
 
