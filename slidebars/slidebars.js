@@ -15,7 +15,7 @@
 var slidebars;
 
 (function($) {
-	
+
 slidebars = function () {
 
 	/**
@@ -27,6 +27,9 @@ slidebars = function () {
 
 	// Object of Slidebars
 	offCanvas = {},
+
+	// Create reference to this object for use in functions
+	self = this,
 
 	// Variables, permitted sides and styles
 	init = false,
@@ -102,6 +105,8 @@ slidebars = function () {
 	/**
 	 * Initialization
 	 */
+
+	this.legacy = false;
 
 	this.init = function ( callback ) {
 		// Check if Slidebars has been initialized
