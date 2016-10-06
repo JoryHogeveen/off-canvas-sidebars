@@ -205,6 +205,30 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 						}
 					} );
 				}
+				// Normal mode (only sets a transition for use in fixed-scrolltop.js)
+				else {
+					elements.each( function() {
+						//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
+						//console.log( curVal );
+						if ( e.type == 'opening' || e.type == 'closing' ) {
+							$( this ).css( {
+								'-webkit-transition': 'transform ' + duration + 'ms',
+								'-moz-transition': 'transform ' + duration + 'ms',
+								'-o-transition': 'transform ' + duration + 'ms',
+								'transition': 'transform ' + duration + 'ms'
+							} );
+							//$(this).css('transform', 'translate( 0px, ' + curVal + slidebar.element.height() + 'px )' );
+						} else if ( e.type == 'opened' || e.type == 'closed' ) {
+							$(this).css( {
+								'-webkit-transition': '',
+								'-moz-transition': '',
+								'-o-transition': '',
+								'transition': ''
+							} );
+						}
+					} );
+				}
+				$(window).trigger( 'slidebar_event', [ e.type, slidebar ] );
 			}
 		} );
 

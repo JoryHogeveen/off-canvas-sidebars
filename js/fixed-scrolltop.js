@@ -29,6 +29,27 @@
 				curScrollTopElements = curScrollTopElements.add( newScrollTopElements );
 				ocsScrollTopFixed();
 			} );
+			scrollTarget.on('slidebar_event', ocsSlidebarEventFixed );
+		}
+
+		function ocsSlidebarEventFixed( e, eventType, slidebar ) {
+			if ( ( eventType == 'opened' || eventType == 'closed' ) && ( slidebar.side == 'bottom' ) ) { //slidebar.side == 'top' ||
+				curScrollTopElements.each( function() {
+					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
+					var offset = slidebar.element.height();
+					if ( eventType == 'opened' ) {
+						px += offset;
+					} else if ( eventType == 'closed' ) {
+						px -= offset;
+					}
+					$( this ).css( {
+						'-webkit-transform': 'translate( 0px, ' + px + 'px )',
+						'-moz-transform': 'translate( 0px, ' + px + 'px )',
+						'-o-transform': 'translate( 0px, ' + px + 'px )',
+						'transform': 'translate( 0px, ' + px + 'px )'
+					} );
+				} );
+			}
 		}
 
 		function ocsScrollTopFixed() {
