@@ -268,12 +268,31 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		add_settings_field(
 			'compatibility_position_fixed',
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ),
-			array( $this, 'checkbox_option' ),
+			array( $this, 'radio_option' ),
 			$this->settings_tab,
 			'section_general',
 			array(
 				'name' => 'compatibility_position_fixed',
-				'label' => '('.__( 'Experimental', 'off-canvas-sidebars' ).')'
+				'default' => 'none',
+				'options' => array(
+					'none' => array(
+						'name' => 'none',
+						'label' => __( 'No', 'off-canvas-sidebars' ),
+						'value' => 'none'
+					),
+					'legacy-css' => array(
+						'name' => 'legacy-css',
+						'label' => __( 'Legacy CSS solution', 'off-canvas-sidebars' ) . ' (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', 'off-canvas-sidebars' ) . ')',
+						'value' => 'legacy-css',
+						'description' => __( 'This is your best option if your site uses sticky menus and/or other fixed elements within the site container.', 'off-canvas-sidebars' )
+					),
+					'custom-js' => array(
+						'name' => 'custom-js',
+						'label' => __( 'JavaScript solution', 'off-canvas-sidebars' ) . ' ('.__( 'Experimental', 'off-canvas-sidebars' ).')',
+						'value' => 'custom-js',
+						'description' => __( 'While still in development, this could fix compatibility issues with fixed elements.', 'off-canvas-sidebars' )
+					)
+				),
 			)
 		);
 	}
@@ -678,6 +697,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			<?php if ( isset( $option['label'] ) ) { ?><label><?php } ?>
 			<input type="radio" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_'.$args['name'].'_'.$option['name'] ?>" value="<?php echo $option['value'] ?>" <?php checked( $prefixValue[ $args['name'] ], $option['value'] ); ?> />
 			<?php if ( isset( $option['label'] ) ) { echo $option['label'] ?></label><br /><?php } ?>
+			<?php if ( isset( $option['description'] ) ) { ?><span class="description"><?php echo $option['description'] ?></span><br /><?php } ?>
 			<?php } // end foreach ?>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
@@ -868,7 +888,6 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			$output['hide_control_classes']         = $this->validate_checkbox( $output['hide_control_classes'] );
 			$output['scroll_lock']                  = $this->validate_checkbox( $output['scroll_lock'] );
 			$output['use_fastclick']                = $this->validate_checkbox( $output['use_fastclick'] );
-			$output['compatibility_position_fixed'] = $this->validate_checkbox( $output['compatibility_position_fixed'] );
 
 			// Numeric values (not integers!)
 			$output['disable_over'] = $this->validate_numeric( $output['disable_over'] );
@@ -879,6 +898,9 @@ final class OCS_Off_Canvas_Sidebars_Settings
 
 			// Attribute validation
 			$output['css_prefix'] = $this->validate_id( $output['css_prefix'] );
+
+			// Validate radio options
+			$output['compatibility_position_fixed'] = $this->validate_radio( $output['compatibility_position_fixed'], array( 'none', 'custom-js', 'legacy-css' ), 'none' );
 
 			// Set default values if no value is set
 			if ( empty( $output['css_prefix'] ) ) {
@@ -966,6 +988,20 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	 */
 	function validate_checkbox( $value ) {
 		return ( ! empty( $value ) && $value == 1 ) ? (int) strip_tags( $value ) : 0;
+	}
+
+	/**
+	 * Validates radio values against the possible options
+	 *
+	 * @since  0.3.2
+	 *
+	 * @param  string $value
+	 * @param  array  $options
+	 * @param  string $default
+	 * @return int    $value
+	 */
+	function validate_radio( $value, $options, $default ) {
+		return ( ! empty( $value ) && in_array( $value, $options ) ) ? strip_tags( $value ) : $default;
 	}
 
 	/**

@@ -351,11 +351,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			'disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
 			'hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,
 			'scroll_lock'          => ( $this->general_settings['scroll_lock'] ) ? true : false,
+			'legacy_css'           => ( 'legacy-css' == $this->general_settings['compatibility_position_fixed'] ) ? true : false,
 			'css_prefix'           => $this->general_settings['css_prefix'],
 			'sidebars'             => $this->general_settings['sidebars']
 		) );
 
-		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) {
+		if ( 'custom-js' == $this->general_settings['compatibility_position_fixed'] ) {
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $version, true );
 		}
 
