@@ -38,6 +38,16 @@
 				    gblOffset = $('body').offset(),
 				    conOffset = ocs_site.offset(),
 				    conHeight = ocs_site.outerHeight();
+
+				var activeSidebar = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
+				if ( activeSidebar ) {
+					var sidebar =  ocsOffCanvasSidebars.slidebarsController.getSlidebar( activeSidebar );
+					if ( sidebar.side == 'top' ) {
+						gblOffset.top += sidebar.element.height();
+					} else if ( sidebar.side == 'top' ) {
+						gblOffset.top -= sidebar.element.height();
+					}
+				}
 				curScrollTopElements.each( function() {
 					if ( $(this).css('position') == 'fixed' ) {
 						var top = $(this).css('top'),
