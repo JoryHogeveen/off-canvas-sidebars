@@ -10,6 +10,8 @@
 
 /*!
  * Modified by: Jory Hogeveen
+ *
+ * @since  0.3.2  Add score for this reference + Add legacy CSS support (no hardware acceleration)
  */
 
 var slidebars;
@@ -58,14 +60,26 @@ slidebars = function () {
 
 		// Amount to animate
 		if ( offCanvas[ id ].active ) {
-			if ( offCanvas[ id ].side === 'top' ) {
-				amount = '0px, ' + offCanvas[ id ].element.css( 'height' );
-			} else if ( offCanvas[ id ].side === 'right' ) {
-				amount = '-' + offCanvas[ id ].element.css( 'width' ) + ', 0px';
-			} else if ( offCanvas[ id ].side === 'bottom' ) {
-				amount = '0px, -' + offCanvas[ id ].element.css( 'height' );
-			} else if ( offCanvas[ id ].side === 'left' ) {
-				amount = offCanvas[ id ].element.css( 'width' ) + ', 0px';
+			if ( self.legacy ) {
+				if ( offCanvas[ id ].side === 'top' ) {
+					amount = offCanvas[ id ].element.css( 'height' );
+				} else if ( offCanvas[ id ].side === 'right' ) {
+					amount = offCanvas[ id ].element.css( 'width' );
+				} else if ( offCanvas[ id ].side === 'bottom' ) {
+					amount = offCanvas[ id ].element.css( 'height' );
+				} else if ( offCanvas[ id ].side === 'left' ) {
+					amount = offCanvas[ id ].element.css( 'width' );
+				}
+			} else {
+				if ( offCanvas[ id ].side === 'top' ) {
+					amount = '0px, ' + offCanvas[ id ].element.css( 'height' );
+				} else if ( offCanvas[ id ].side === 'right' ) {
+					amount = '-' + offCanvas[ id ].element.css( 'width' ) + ', 0px';
+				} else if ( offCanvas[ id ].side === 'bottom' ) {
+					amount = '0px, -' + offCanvas[ id ].element.css( 'height' );
+				} else if ( offCanvas[ id ].side === 'left' ) {
+					amount = offCanvas[ id ].element.css( 'width' ) + ', 0px';
+				}
 			}
 		}
 
@@ -250,10 +264,33 @@ slidebars = function () {
 			var animationProperties = getAnimationProperties( id );
 
 			// Apply css
-			animationProperties.elements.css( {
-				'transition-duration': animationProperties.duration + 'ms',
-				'transform': 'translate(' + animationProperties.amount + ')'
-			} );
+			var css = { 'transition-duration': animationProperties.duration + 'ms' };
+
+			if ( self.legacy ) {
+				css[ offCanvas[ id ].side ] = animationProperties.amount;
+
+				var canvasSide;
+				if ( offCanvas[ id ].side == 'right' || offCanvas[ id ].side == 'bottom' ) {
+					// Bottom and Right animation for slidebars and the container are not the same
+					if ( offCanvas[ id ].side == 'right' ) {
+						canvasSide = 'left';
+					} else if ( offCanvas[ id ].side == 'bottom' ) {
+						canvasSide = 'top';
+					}
+					// Move container
+					canvas.css( 'transition-duration', animationProperties.duration + 'ms' );
+					canvas.css( canvasSide, '-' + animationProperties.amount );
+					// Open slidebar
+					animationProperties.elements.not( canvas ).css( css );
+				} else {
+					// Top and Left sides can use the same css as all other elements.
+					animationProperties.elements.css( css );
+				}
+
+			} else {
+				css.transform = 'translate(' + animationProperties.amount + ')';
+				animationProperties.elements.css( css );
+			}
 
 			// Transition completed
 			setTimeout( function () {
@@ -309,7 +346,28 @@ slidebars = function () {
 			var animationProperties = getAnimationProperties( id );
 
 			// Apply css
-			animationProperties.elements.css( 'transform', '' );
+			if ( self.legacy ) {
+
+				var canvasSide;
+				if ( offCanvas[ id ].side == 'right' || offCanvas[ id ].side == 'bottom' ) {
+					// Bottom and Right animation for slidebars and the container are not the same
+					if ( offCanvas[ id ].side == 'right' ) {
+						canvasSide = 'left';
+					} else if ( offCanvas[ id ].side == 'bottom' ) {
+						canvasSide = 'top';
+					}
+					// Reset container
+					canvas.css( canvasSide, '' );
+					// Close slidebar
+					animationProperties.elements.not( canvas ).css( offCanvas[ id ].side, '' );
+				} else {
+					// Top and Left sides can use the same css as all other elements.
+					animationProperties.elements.css( offCanvas[ id ].side, '' );
+				}
+
+			} else {
+				animationProperties.elements.css( 'transform', '' );
+			}
 
 			// Transition completetion
 			setTimeout( function () {
