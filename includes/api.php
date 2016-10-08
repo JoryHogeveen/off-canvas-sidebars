@@ -80,6 +80,45 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
 }
 
 /**
+ * Shortcode handler for the_ocs_control_trigger()
+ *
+ * Example 1 (simple shortcode with all options):
+ * [ocs_trigger id="left" action="open" element="a" button="1" text="My trigger button!" attr="href: #; rel: nofollow; alt: Yay!!"]
+ *
+ * Example 2 (nested shortcode with some options:
+ * [ocs_trigger id="right" attr="type:button;alt:Yay!!"]My trigger button text[/ocs_trigger]
+ *
+ * @since 0.3.2
+ * @see the_ocs_control_trigger()
+ */
+function shortcode_ocs_control_trigger( $atts, $content = '' ) {
+	// Shortcodes don't echo
+	$atts[ 'echo' ] = false;
+
+	if ( empty( $atts['attr'] ) && ! empty( $atts['attributes'] ) ) {
+		$atts['attr'] = $atts['attributes'];
+		unset( $atts['attributes'] );
+	}
+
+	// Parse attributes send through the shortcode
+	if ( ! empty( $atts['attr'] ) ) {
+		$attr = explode( ';', $atts['attr'] );
+		$atts['attr'] = array();
+		foreach ( $attr as $key => $value ) {
+			$attr[ $key ] = explode( ':', $value );
+			if ( count( $attr[ $key ] ) > 1 ) {
+				$attribute = trim( $attr[ $key ][0] );
+				unset( $attr[ $key ][0] );
+				$atts['attr'][ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
+			}
+		}
+	}
+
+	return the_ocs_control_trigger( $atts, $content );
+}
+add_shortcode( 'ocs_trigger', 'shortcode_ocs_control_trigger' );
+
+/**
  * Main instance of Off-Canvas Sidebars Frontend.
  *
  * Returns the main instance of OCS_Off_Canvas_Sidebars_Frontend to prevent the need to use globals.
