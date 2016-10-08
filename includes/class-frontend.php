@@ -331,6 +331,84 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	}
 
 	/**
+	 * Generate a trigger element
+	 *
+	 * @param  string $sidebar_id
+	 * @param  array  $args  see API: the_ocs_control_trigger() for info
+	 * @return string
+	 */
+	public function do_control_trigger( $sidebar_id, $args = array() ) {
+
+		$sidebar_id = (string) $sidebar_id;
+
+		$defaults = array(
+			'action'  => 'toggle', // toggle|open|close
+			'element' => 'button', // button|span|i|b|a|etc.
+			'button'  => 0, // 1|0
+			'text'    => '', // Text to show
+			'attr'    => array() // An array of attribute keys and their values
+		);
+		$args = array_merge( $defaults, $args );
+
+		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ) ) ) {
+			return '<span class="error">' . __( 'This element is not supported for use as a button', 'off-canvas-sidebars' ) . '</span>';
+		}
+
+		$singleton = false;
+
+		// Is it a singleton element? Add the text to the attributes
+		if ( in_array( $args['element'], array( 'br', 'hr', 'img', 'input' ) ) ) {
+			$singleton = true;
+			if ( 'img' == $args['element'] && empty( $args['attr']['alt'] ) ) {
+				$args['attr']['alt'] = $args['text'];
+			}
+			if ( 'input' == $args['element'] && empty( $args['attr']['value'] ) ) {
+				$args['attr']['value'] = $args['text'];
+			}
+		}
+
+		$attr = '';
+		if ( empty( $args['attr']['class'] ) ) {
+			$args['attr']['class'] = array();
+		}
+		foreach ( $args['attr'] as $key => $value ) {
+			if ( 'class' == $key ) {
+				// Add our own classes
+				$classes = array(
+					$this->general_settings['css_prefix'] . '-button',
+					$this->general_settings['css_prefix'] . '-' . $args['action'],
+					$this->general_settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id
+				);
+				if ( ! is_array( $value ) ) {
+					$value = explode( ' ', $value );
+				}
+				foreach ( $classes as $class ) {
+					if ( ! in_array( $class, $value ) ) {
+						$value[] = $class;
+					}
+				}
+				// Add a button class
+				if ( (int) $args['button'] && ! in_array( 'button', $value ) ) {
+					$value[] = 'button';
+				}
+			}
+			if ( is_array( $value ) ) {
+				$value = implode( ' ', $value );
+			}
+			$attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( (string) $value ) . '"';
+		}
+
+		$return = '<' . $args['element'] . $attr;
+		if ( $singleton ) {
+			$return .= ' />';
+		} else {
+			$return .= '>' . $args['text'] . '</' . $args['element'] . '>';
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Add necessary scripts and styles
 	 *
 	 * @since   0.1
