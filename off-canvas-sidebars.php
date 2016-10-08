@@ -3,7 +3,7 @@
  * Plugin Name: Off-Canvas Sidebars
  * Description: Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:  https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:     0.3.1.1
+ * Version:     0.3.2-dev
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: off-canvas-sidebars
@@ -190,7 +190,7 @@ final class OCS_Off_Canvas_Sidebars
 			add_action( 'init', array( $this, 'init' ) );
 
 			// Load the OCS API
-			include_once 'includes/off-canvas-sidebars-api.class.php';
+			include_once 'includes/api.php';
 
 			$this->general_settings = ( get_option( $this->general_key ) ) ? get_option( $this->general_key ) : array();
 			$this->maybe_db_update();
@@ -200,13 +200,13 @@ final class OCS_Off_Canvas_Sidebars
 			$this->general_labels = $this->get_general_labels();
 
 			// Register the widget
-			include_once 'widgets/off-canvas-sidebars-widget.php';
+			include_once 'widgets/control-widget.php';
 			add_action( 'widgets_init', function() {
 				register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
 			} );
 
 			// Load menu-meta-box option
-			include_once 'includes/off-canvas-sidebars-menu-meta-box.class.php';
+			include_once 'includes/class-menu-meta-box.php';
 			OCS_Off_Canvas_Sidebars_Menu_Meta_box::get_instance();
 
 		} else {
@@ -236,7 +236,7 @@ final class OCS_Off_Canvas_Sidebars
 		if ( is_admin() ) {
 
 			// Load the admin
-			include_once 'includes/off-canvas-sidebars-settings.class.php';
+			include_once 'includes/class-settings.php';
 			OCS_Off_Canvas_Sidebars_Settings::get_instance();
 
 			// Add settings link to plugins page
@@ -246,7 +246,7 @@ final class OCS_Off_Canvas_Sidebars
 
 			// If a sidebar is enabled, load the front-end
 			if ( $this->is_sidebar_enabled() ) {
-				include_once 'includes/off-canvas-sidebars-frontend.class.php';
+				include_once 'includes/class-frontend.php';
 				OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 			}
 		}
