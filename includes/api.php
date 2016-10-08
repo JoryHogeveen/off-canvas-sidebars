@@ -88,13 +88,13 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
  * Example 2 (nested shortcode with some options:
  * [ocs_trigger id="right" attr="type:button;alt:Yay!!"]My trigger button text[/ocs_trigger]
  *
- * @since 0.3.2
- * @see the_ocs_control_trigger() for detailed info
+ * @since  0.3.2
+ * @see    the_ocs_control_trigger() for detailed info
  * @param  array   $atts
  * @param  string  $content  (Optional) $content
  * @return string
  */
-function shortcode_ocs_control_trigger( $atts, $content = '' ) {
+function shortcode_ocs_trigger( $atts, $content = '' ) {
 	// Shortcodes don't echo
 	$atts[ 'echo' ] = false;
 
@@ -120,7 +120,7 @@ function shortcode_ocs_control_trigger( $atts, $content = '' ) {
 
 	return the_ocs_control_trigger( $atts, $content );
 }
-add_shortcode( 'ocs_trigger', 'shortcode_ocs_control_trigger' );
+add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
 
 /**
  * Main instance of Off-Canvas Sidebars Frontend.
