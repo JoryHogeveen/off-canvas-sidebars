@@ -89,16 +89,20 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
  * [ocs_trigger id="right" attr="type:button;alt:Yay!!"]My trigger button text[/ocs_trigger]
  *
  * @since 0.3.2
- * @see the_ocs_control_trigger()
+ * @see the_ocs_control_trigger() for detailed info
+ * @param  array   $atts
+ * @param  string  $content  (Optional) $content
+ * @return string
  */
 function shortcode_ocs_control_trigger( $atts, $content = '' ) {
 	// Shortcodes don't echo
 	$atts[ 'echo' ] = false;
 
+	// You can also use `attributes` instead of `attr` for readability (if both are used, `attributes` is ignored)
 	if ( empty( $atts['attr'] ) && ! empty( $atts['attributes'] ) ) {
 		$atts['attr'] = $atts['attributes'];
-		unset( $atts['attributes'] );
 	}
+	unset( $atts['attributes'] );
 
 	// Parse attributes send through the shortcode
 	if ( ! empty( $atts['attr'] ) ) {
