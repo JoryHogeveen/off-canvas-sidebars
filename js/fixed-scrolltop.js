@@ -4,35 +4,32 @@
  * Compatibility for fixed elements with Slidebars
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.3.1
+ * @version 0.4
  */
 ( function ( $ ) {
 
 	$(window).on( 'ocs_initialized', function () {
 
-		var prefix = 'ocs';
-		if ( typeof ocsOffCanvasSidebars != 'undefined' ) {
-			prefix = ocsOffCanvasSidebars.css_prefix;
-		}
+		var prefix = ocsOffCanvasSidebars.css_prefix;
 
 		var curScrollTopElements;
-		var scrollTarget = ocs_site = $('#' + prefix + '-site');
+		var scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
 		if ( 'auto' != ocs_site.css('overflow-y') ) {
 			scrollTarget = $( window );
 		}
 
 		if ( ocs_site.css('transform') != 'none' ) {
-			curScrollTopElements = $('#' + prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
-			ocsScrollTopFixed();
-			scrollTarget.on('scroll resize', function() {
-				var newScrollTopElements = $('#' + prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
+			curScrollTopElements = $('#' + prefix + '-site *').filter( function() { return $(this).css('position') === 'fixed'; } );
+			ocsOffCanvasSidebars.scrollTopFixed();
+			scrollTarget.on( 'scroll resize', function() {
+				var newScrollTopElements = $('#' + prefix + '-site *').filter( function() { return $(this).css('position') === 'fixed'; } );
 				curScrollTopElements = curScrollTopElements.add( newScrollTopElements );
-				ocsScrollTopFixed();
+				ocsOffCanvasSidebars.scrollTopFixed();
 			} );
-			scrollTarget.on('slidebar_event', ocsSlidebarEventFixed );
+			scrollTarget.on( 'slidebar_event', ocsOffCanvasSidebars.slidebarEventFixed );
 		}
 
-		function ocsSlidebarEventFixed( e, eventType, slidebar ) {
+		ocsOffCanvasSidebars.slidebarEventFixed = function( e, eventType, slidebar ) {
 			if ( ( eventType == 'opened' || eventType == 'closed' ) && ( slidebar.side == 'bottom' ) ) { //slidebar.side == 'top' ||
 				curScrollTopElements.each( function() {
 					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
@@ -50,9 +47,9 @@
 					} );
 				} );
 			}
-		}
+		};
 
-		function ocsScrollTopFixed() {
+		ocsOffCanvasSidebars.scrollTopFixed = function() {
 			if ( curScrollTopElements.length > 0 ) {
 				var scrollTop = scrollTarget.scrollTop(),
 				    winHeight = $(window).height(),
@@ -62,7 +59,7 @@
 
 				var activeSidebar = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 				if ( activeSidebar ) {
-					var sidebar =  ocsOffCanvasSidebars.slidebarsController.getSlidebar( activeSidebar );
+					var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( activeSidebar );
 					if ( sidebar.side == 'top' ) {
 						gblOffset.top += sidebar.element.height();
 					} else if ( sidebar.side == 'top' ) {
@@ -95,7 +92,7 @@
 					}
 				} );
 			}
-		}
+		};
 
 	});
 
