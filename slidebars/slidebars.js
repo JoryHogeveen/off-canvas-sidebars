@@ -11,7 +11,7 @@
 /*!
  * Modified by: Jory Hogeveen
  *
- * @since  0.3.2  Add score for this reference + Add legacy CSS support (no hardware acceleration)
+ * @since  0.4  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
  */
 
 var slidebars;
@@ -62,13 +62,17 @@ slidebars = function () {
 		if ( offCanvas[ id ].active ) {
 			if ( self.legacy ) {
 				if ( offCanvas[ id ].side === 'top' ) {
-					amount = offCanvas[ id ].element.css( 'height' );
+					//amount = offCanvas[ id ].element.css( 'height' );
+					amount = offCanvas[ id ].element.css( 'margin-top' ).replace('-','');
 				} else if ( offCanvas[ id ].side === 'right' ) {
-					amount = offCanvas[ id ].element.css( 'width' );
+					//amount = offCanvas[ id ].element.css( 'width' );
+					amount = offCanvas[ id ].element.css( 'margin-right' ).replace('-','');
 				} else if ( offCanvas[ id ].side === 'bottom' ) {
-					amount = offCanvas[ id ].element.css( 'height' );
+					//amount = offCanvas[ id ].element.css( 'height' );
+					amount = offCanvas[ id ].element.css( 'margin-bottom' ).replace('-','');
 				} else if ( offCanvas[ id ].side === 'left' ) {
-					amount = offCanvas[ id ].element.css( 'width' );
+					//amount = offCanvas[ id ].element.css( 'width' );
+					amount = offCanvas[ id ].element.css( 'margin-left' ).replace('-','');
 				}
 			} else {
 				if ( offCanvas[ id ].side === 'top' ) {
