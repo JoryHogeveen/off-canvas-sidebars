@@ -8,7 +8,7 @@
  */
 ( function ( $ ) {
 
-	$(window).load(function () {
+	$(window).on( 'ocs_initialized', function () {
 
 		var prefix = 'ocs';
 		if ( typeof ocsOffCanvasSidebars != 'undefined' ) {

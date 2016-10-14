@@ -135,6 +135,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
 
+		$(window).trigger( 'ocs_loaded', this );
+
 		/**
 		 * Function call before initializing
 		 * @since  0.3
@@ -160,6 +162,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		ocsOffCanvasSidebars.slidebarsController.init();
 
 		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
+
+		$(window).trigger( 'ocs_initialized', this );
 
 		/**
 		 * Compatibility with WP Admin Bar
@@ -355,10 +359,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 					return;
 				}
 
-				// Close the slidebar, no need to check the disable_over setting since we're closing the slidebar
-				//if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
-					controller.close( prefix + '-' + id );
-				//}
+				controller.close( prefix + '-' + id );
 			} );
 
 		} );
