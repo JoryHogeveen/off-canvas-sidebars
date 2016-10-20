@@ -380,7 +380,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			if ( 'class' == $key ) {
 				// Add our own classes
 				$classes = array(
-					$this->settings['css_prefix'] . '-button',
+					$this->settings['css_prefix'] . '-trigger',
 					$this->settings['css_prefix'] . '-' . $args['action'],
 					$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id
 				);
@@ -535,7 +535,7 @@ foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 	} // endif
 } //endforeach
 ?>
-	.<?php echo $prefix; ?>-button {cursor: pointer;}
+	.<?php echo $prefix; ?>-trigger {cursor: pointer;}
 </style>
 			<?php
 		}

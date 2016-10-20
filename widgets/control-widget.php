@@ -66,7 +66,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			if ( $sidebar_data['enable'] == 1 && $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] == 1 ) {
 				$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
 				$classes = array(
-					$prefix . '-button',
+					$prefix . '-trigger',
 					$prefix . '-toggle',
 					$prefix . '-toggle-' . $sidebar_id
 				);

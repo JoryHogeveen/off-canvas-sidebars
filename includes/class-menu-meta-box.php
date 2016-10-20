@@ -28,7 +28,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	private $settings = array();
 	private $general_labels = array();
 	private $link_classes = array(
-		'-button',
+		'-trigger',
 		'-toggle',
 		// -toggle-
 	);
