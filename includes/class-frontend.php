@@ -396,8 +396,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 
 				// Optionally add extra classes
 				if ( ! empty( $args['class'] ) ) {
-					$classes_extra = explode( ' ', $args['class'] );
-					foreach ( $classes_extra as $c ) {
+					if ( ! is_array( $args['class'] ) ) {
+						$args['class'] = explode( ' ', $args['class'] );
+					}
+					foreach ( $args['class'] as $c ) {
 						$c = esc_attr( $c );
 						if ( ! in_array( $c, $value ) ) {
 							$value[] = $c;
