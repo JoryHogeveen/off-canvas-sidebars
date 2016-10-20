@@ -26,7 +26,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	private $importexport_tab = 'ocs-importexport';
 	private $plugin_key = '';
 	private $plugin_tabs = array();
-	private $general_settings = array();
+	private $settings = array();
 	private $general_labels = array();
 
 	/**
@@ -49,7 +49,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	 */
 	function load_plugin_data() {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
-		$this->general_settings = $off_canvas_sidebars->get_settings();
+		$this->settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 	}
@@ -540,15 +540,15 @@ final class OCS_Off_Canvas_Sidebars_Settings
 
 	function enabled_sidebars_option() {
 		$prefixName = esc_attr( $this->general_key ).'[sidebars]';
-		$prefixValue = $this->general_settings['sidebars'];
+		$prefixValue = $this->settings['sidebars'];
 		$prefixId = $this->general_key.'_sidebars';
 		//$prefixClasses = array( $prefixId );
-		if ( ! empty( $this->general_settings['sidebars'] ) ) {
+		if ( ! empty( $this->settings['sidebars'] ) ) {
 		?><fieldset><?php
 			foreach ($prefixValue as $sidebar => $sidebar_data) {
 				//$classes = $this->get_option_classes( $prefixClasses, 'enable' );
 			?>
-				<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->general_settings['sidebars'][ $sidebar ]['label']; ?></label><br />
+				<label><input type="checkbox" name="<?php echo $prefixName.'['.$sidebar.'][enable]'; ?>" id="<?php echo $prefixId.'_enable_'.$sidebar; ?>" value="1" <?php checked( $prefixValue[$sidebar]['enable'], 1 ); ?> /> <?php echo $this->settings['sidebars'][ $sidebar ]['label']; ?></label><br />
 			<?php
 			}
 		?>
@@ -759,7 +759,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	function get_option_prefixes( $args ) {
 		if ( isset( $args['sidebar'] ) ) {
 			$prefixName = esc_attr( $this->general_key ) . '[sidebars][' . $args['sidebar'] . ']';
-			$prefixValue = $this->general_settings['sidebars'][ $args['sidebar'] ];
+			$prefixValue = $this->settings['sidebars'][ $args['sidebar'] ];
 			$prefixId = $this->general_key . '_sidebars_' . $args['sidebar'];
 			$prefixClasses = array(
 				$this->general_key . '_sidebars_' . $args['sidebar'],
@@ -767,7 +767,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			);
 		} else {
 			$prefixName = esc_attr( $this->general_key );
-			$prefixValue = $this->general_settings;
+			$prefixValue = $this->settings;
 			$prefixId = $this->general_key;
 			$prefixClasses = array(
 				$this->general_key
@@ -806,7 +806,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	 */
 	function validate_input( $input ) {
 		// First set current values
-		$output = $this->general_settings;
+		$output = $this->settings;
 
 		// Add new sidebar
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
@@ -1169,8 +1169,8 @@ final class OCS_Off_Canvas_Sidebars_Settings
 
 			if ( $page == $this->sidebars_tab ) {
 				echo '<tr class="sidebar_classes" style="display: none;"><th>' . __('ID & Classes', 'off-canvas-sidebars') . '</th><td>';
-				echo  __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#' . $this->general_settings['css_prefix'] . '-<span class="js-dynamic-id"></span></code> &nbsp; '
-					. __('Trigger Classes', 'off-canvas-sidebars') . ': <code>.' . $this->general_settings['css_prefix'] . '-toggle-<span class="js-dynamic-id"></span></code> <code>.' . $this->general_settings['css_prefix'] . '-open-<span class="js-dynamic-id"></span></code> <code>.' . $this->general_settings['css_prefix'] . '-close-<span class="js-dynamic-id"></span></code>';
+				echo  __('Sidebar ID', 'off-canvas-sidebars') . ': <code>#' . $this->settings['css_prefix'] . '-<span class="js-dynamic-id"></span></code> &nbsp; '
+					. __('Trigger Classes', 'off-canvas-sidebars') . ': <code>.' . $this->settings['css_prefix'] . '-toggle-<span class="js-dynamic-id"></span></code> <code>.' . $this->settings['css_prefix'] . '-open-<span class="js-dynamic-id"></span></code> <code>.' . $this->settings['css_prefix'] . '-close-<span class="js-dynamic-id"></span></code>';
 				echo '</td></tr>';
 			}
 			do_settings_fields( $page, $section['id'] );
@@ -1250,7 +1250,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		if ( isset( $_GET[ $this->plugin_key . '-export'] ) ) {
 			header( "Content-Disposition: attachment; filename=" . $this->plugin_key . ".txt" );
 			header( 'Content-Type: text/plain; charset=utf-8' );
-			$general = $this->general_settings;
+			$general = $this->settings;
 
 			echo "[START=OCS SETTINGS]\n";
 			foreach ( $general as $id => $text )

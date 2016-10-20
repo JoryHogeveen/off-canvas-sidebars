@@ -25,7 +25,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	private $general_key = '';
 	private $plugin_key = '';
 	//private $plugin_tabs = array();
-	private $general_settings = array();
+	private $settings = array();
 	private $general_labels = array();
 	private $link_classes = array(
 		'-button',
@@ -51,13 +51,13 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	 */
 	function load_plugin_data() {
 		$off_canvas_sidebars = Off_Canvas_Sidebars();
-		$this->general_settings = $off_canvas_sidebars->get_settings();
+		$this->settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
 		$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
 
 		foreach ( $this->link_classes as $key => $class ) {
-			$this->link_classes[ $key ] = $this->general_settings['css_prefix'] . $class;
+			$this->link_classes[ $key ] = $this->settings['css_prefix'] . $class;
 		}
 	}
 
@@ -74,7 +74,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 			<div id="tabs-panel-off-canvas-control" class="tabs-panel tabs-panel-active">
 				<ul id="off-canvas-control" class="categorychecklist form-no-clear">
 			<?php
-				foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
+				foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
 					if ( 1 == $sidebar_data['enable'] ) {
 			?>
 					<li>
@@ -131,7 +131,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
 		);
 		$data['controls'] = array();
-		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
+		foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
 			if ( $sidebar_data['enable'] == 1 ) {
 				$data['controls'][ $sidebar ] = $sidebar_data['label'];
 			}
@@ -176,7 +176,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 			check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
 
 			$available_controls = array();
-			foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
+			foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
 				$available_controls[ $sidebar ] = $sidebar_data['label'];
 			}
 
@@ -197,12 +197,12 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 
 				$options['off-canvas-control'] = '';
 
-				// Of only one is available, allways select it
+				// If only one is available, allways select it
 				if ( ! empty($_POST['menu-item-off-canvas-control'][ $menu_item_db_id ]) && array_key_exists( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ], $available_controls ) ) {
 					$options['off-canvas-control'] = strip_tags( stripslashes( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] ) );
 				}
 
-				// Of only one sidebar is available, allways select its control
+				// If only one sidebar is available, allways select its control
 				/*if (count($available_controls) == 1) {
 					$options['off-canvas-control'] = $off_canvas_sidebars->get_sidebar_key_by_label( $available_controls[0] );
 				}*/
@@ -230,7 +230,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 		foreach ( $items as $key => $item ) {
 			if ( $options = get_post_meta( $item->ID, '_off_canvas_control_menu_item', true ) ) {
 				$item->url = '';
-				if ( isset( $this->general_settings['sidebars'][ $options['off-canvas-control'] ] ) && 1 == $this->general_settings['sidebars'][ $options['off-canvas-control'] ]['enable'] ) {
+				if ( isset( $this->settings['sidebars'][ $options['off-canvas-control'] ] ) && 1 == $this->settings['sidebars'][ $options['off-canvas-control'] ]['enable'] ) {
 					//$item->title = $options['show_flags'] && $options['show_names'] ? $lang['flag'].'&nbsp;'.esc_html($lang['name']) : ($options['show_flags'] ? $lang['flag'] : esc_html($lang['name']));
 
 					$link_classes = $this->link_classes;
@@ -239,7 +239,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 					}
 
 					if ( ! empty( $options['off-canvas-control'] ) ) {
-						$link_classes[] = $this->general_settings['css_prefix'] . '-toggle-' . $options['off-canvas-control'];
+						$link_classes[] = $this->settings['css_prefix'] . '-toggle-' . $options['off-canvas-control'];
 					}
 
 					if ( ! is_array( $item->classes ) ){
