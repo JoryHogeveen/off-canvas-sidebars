@@ -35,15 +35,15 @@ function the_ocs_off_canvas_sidebar( $sidebars = false ) {
 /**
  * Output a trigger element for off-canvas sidebars
  *
- * @since  0.3.2
+ * @since  0.4
  * @param  array   $atts {
  *     Required array of arguments
- *     @type  string      id       (Required) The off-canvas sidebar ID.
- *     @type  string      action   The trigger action. Default: toggle
- *     @type  string      element  The HTML element. Default: button
- *     @type  int|string  button   Add a button class? 0 = no, 1 = yes. Default: 0
- *     @type  string      text     The text to show. Default: ''
- *     @type  array       attr     Other attributes to add {
+ *     @type  string        id       (Required) The off-canvas sidebar ID.
+ *     @type  string        text     The text to show. Default: ''
+ *     @type  string        action   The trigger action. Default: toggle
+ *     @type  string        element  The HTML element. Default: button
+ *     @type  array|string  class    Add extra classes? Also accepts a string with classes separated with a space
+ *     @type  array         attr     Other attributes to add {
  *          Format: attribute name (array key) => attribute value
  *     }
  * }
@@ -59,10 +59,10 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
 
 		$atts = shortcode_atts( array(
 			'id'      => false,
+			'text'    => '', // Text to show
 			'action'  => 'toggle', // toggle|open|close
 			'element' => 'button', // button|span|i|b|a|etc.
-			'button'  => 0, // 1|0
-			'text'    => '', // Text to show
+			'class'   => array(), // Extra classes, also accepts a string with classes separated with a space
 			'attr'    => array(), // An array of attribute keys and their values
 			'echo'    => true
 		), $atts, 'ocs_trigger' );
@@ -88,7 +88,7 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
  * Example 2 (nested shortcode with some options:
  * [ocs_trigger id="right" attr="type:button;alt:Yay!!"]My trigger button text[/ocs_trigger]
  *
- * @since  0.3.2
+ * @since  0.4
  * @see    the_ocs_control_trigger() for detailed info
  * @param  array   $atts
  * @param  string  $content  (Optional) $content
@@ -103,6 +103,12 @@ function shortcode_ocs_trigger( $atts, $content = '' ) {
 		$atts['attr'] = $atts['attributes'];
 	}
 	unset( $atts['attributes'] );
+
+	// You can also use `classes` instead of `class` for readability (if both are used, `classes` is ignored)
+	if ( empty( $atts['class'] ) && ! empty( $atts['classes'] ) ) {
+		$atts['class'] = $atts['classes'];
+	}
+	unset( $atts['classes'] );
 
 	// Parse attributes send through the shortcode
 	if ( ! empty( $atts['attr'] ) ) {

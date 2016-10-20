@@ -338,6 +338,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	/**
 	 * Generate a trigger element
 	 *
+	 * @since  0.4
 	 * @param  string $sidebar_id
 	 * @param  array  $args  see API: the_ocs_control_trigger() for info
 	 * @return string
@@ -347,10 +348,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		$sidebar_id = (string) $sidebar_id;
 
 		$defaults = array(
+			'text'    => '', // Text to show
 			'action'  => 'toggle', // toggle|open|close
 			'element' => 'button', // button|span|i|b|a|etc.
-			'button'  => 0, // 1|0
-			'text'    => '', // Text to show
+			'class'   => array(), // Extra classes (space separated), also accepts an array of classes
 			'attr'    => array() // An array of attribute keys and their values
 		);
 		$args = array_merge( $defaults, $args );
@@ -379,7 +380,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		foreach ( $args['attr'] as $key => $value ) {
 			if ( 'class' == $key ) {
 				// Add our own classes
-				$classes = array(
+				$ocs_classes = array(
 					$this->settings['css_prefix'] . '-trigger',
 					$this->settings['css_prefix'] . '-' . $args['action'],
 					$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id
@@ -387,14 +388,21 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 				if ( ! is_array( $value ) ) {
 					$value = explode( ' ', $value );
 				}
-				foreach ( $classes as $class ) {
+				foreach ( $ocs_classes as $class ) {
 					if ( ! in_array( $class, $value ) ) {
 						$value[] = $class;
 					}
 				}
-				// Add a button class
-				if ( (int) $args['button'] && ! in_array( 'button', $value ) ) {
-					$value[] = 'button';
+
+				// Optionally add extra classes
+				if ( ! empty( $args['class'] ) ) {
+					$classes_extra = explode( ' ', $args['class'] );
+					foreach ( $classes_extra as $c ) {
+						$c = esc_attr( $c );
+						if ( ! in_array( $c, $value ) ) {
+							$value[] = $c;
+						}
+					}
 				}
 			}
 			if ( is_array( $value ) ) {
