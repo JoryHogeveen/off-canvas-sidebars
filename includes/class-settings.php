@@ -108,15 +108,29 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		add_settings_section(
 			'section_general',
 			esc_attr__( 'Global Settings', 'off-canvas-sidebars' ),
-			array( $this, 'register_general_settings' ),
+			'',
+			$this->settings_tab
+		);
+		add_settings_section(
+			'section_frontend',
+			esc_attr__( 'Frontend Settings', 'off-canvas-sidebars' ),
+			'',
+			$this->settings_tab
+		);
+		add_settings_section(
+			'section_admin',
+			esc_attr__( 'Admin Settings', 'off-canvas-sidebars' ),
+			'',
 			$this->settings_tab
 		);
 
+		$this->register_general_settings();
+
 		// Register sidebar settings
-		foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
+		foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
 			add_settings_section(
 				'section_sidebar_'.$sidebar,
-				__( 'Off-Canvas Sidebar', 'off-canvas-sidebars' ) . ' - <code class="js-dynamic-id">' . $this->general_settings['sidebars'][ $sidebar ]['label'] . '</code>',
+				__( 'Off-Canvas Sidebar', 'off-canvas-sidebars' ) . ' - <code class="js-dynamic-id">' . $this->settings['sidebars'][ $sidebar ]['label'] . '</code>',
 				array( $this, 'register_general_settings' ),
 				$this->sidebars_tab
 			);
@@ -126,13 +140,32 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		do_action( 'off_canvas_sidebar_settings' );
 	}
 
+	/**
+	 * General settings
+	 * @since 0.1
+	 */
 	function register_general_settings() {
+
+		/*
+		 * General
+		 */
+		add_settings_field(
+			'enabled_sidebars',
+			esc_attr__( 'Enable Sidebars', 'off-canvas-sidebars' ),
+			array( $this, 'enabled_sidebars_option' ),
+			$this->settings_tab,
+			'section_general'
+		);
+
+		/*
+		 * Frontend
+		 */
 		add_settings_field(
 			'enable_frontend',
 			esc_attr__( 'Enable front-end', 'off-canvas-sidebars' ),
 			array( $this, 'checkbox_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'enable_frontend',
 				'label' => __( 'Let this plugin add the necessary elements on the front-end.', 'off-canvas-sidebars' ),
@@ -144,14 +177,14 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Front-end type', 'off-canvas-sidebars' ),
 			array( $this, 'frontend_type_option' ),
 			$this->settings_tab,
-			'section_general'
+			'section_frontend'
 		);*/
 		add_settings_field(
 			'css_prefix',
 			esc_attr__( 'CSS Prefix', 'off-canvas-sidebars' ),
 			array( $this, 'text_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'css_prefix',
 				'label' => __( 'Default', 'off-canvas-sidebars' ) . ': <code>ocs</code>',
@@ -159,18 +192,11 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			)
 		);
 		add_settings_field(
-			'enabled_sidebars',
-			esc_attr__( 'Enable Sidebars', 'off-canvas-sidebars' ),
-			array( $this, 'enabled_sidebars_option' ),
-			$this->settings_tab,
-			'section_general'
-		);
-		add_settings_field(
 			'site_close',
 			esc_attr__( 'Close sidebar when clicking on the site', 'off-canvas-sidebars' ),
 			array( $this, 'checkbox_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'site_close',
 				'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site. Default: true.', 'off-canvas-sidebars' )
@@ -181,7 +207,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Disable over', 'off-canvas-sidebars' ),
 			array( $this, 'number_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'disable_over',
 				'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', 'off-canvas-sidebars' ),
@@ -193,7 +219,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Auto-hide control classes', 'off-canvas-sidebars' ),
 			array( $this, 'checkbox_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'hide_control_classes',
 				'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>. Default: false.', 'off-canvas-sidebars' )
@@ -204,7 +230,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Scroll lock', 'off-canvas-sidebars' ),
 			array( $this, 'checkbox_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'scroll_lock',
 				'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open. Default: false.', 'off-canvas-sidebars' )
@@ -215,7 +241,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Background color', 'off-canvas-sidebars' ),
 			array( $this, 'color_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'background_color',
 				'description' => __( 'Choose a background color for the site container. Default: <code>#ffffff</code>.', 'off-canvas-sidebars' )
@@ -227,10 +253,10 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			if ( '' != apply_filters( 'ocs_website_before_hook', '' ) ) {
 				add_settings_field(
 					'website_before_hook',
-					esc_attr__( '<code>website_before</code> hook name', 'off-canvas-sidebars' ),
+					'<code>website_before</code> ' . esc_attr__( 'hook name', 'off-canvas-sidebars' ),
 					array( $this, 'text_option' ),
 					$this->settings_tab,
-					'section_general',
+					'section_frontend',
 					array(
 						'name'        => 'website_before_hook',
 						'placeholder' => 'website_before'
@@ -241,10 +267,10 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			if ( '' != apply_filters( 'ocs_website_after_hook', '' ) ) {
 				add_settings_field(
 					'website_after_hook',
-					esc_attr__( '<code>website_after</code> hook name', 'off-canvas-sidebars' ),
+					'<code>website_after</code> ' . esc_attr__( 'hook name', 'off-canvas-sidebars' ),
 					array( $this, 'text_option' ),
 					$this->settings_tab,
-					'section_general',
+					'section_frontend',
 					array(
 						'name'        => 'website_after_hook',
 						'placeholder' => 'website_after'
@@ -258,7 +284,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Use the FastClick library?', 'off-canvas-sidebars' ),
 			array( $this, 'checkbox_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'use_fastclick',
 				'label' => __( 'Yes. Default: disabled', 'off-canvas-sidebars' ),
@@ -271,7 +297,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			esc_attr__( 'Compatibility for fixed elements', 'off-canvas-sidebars' ),
 			array( $this, 'radio_option' ),
 			$this->settings_tab,
-			'section_general',
+			'section_frontend',
 			array(
 				'name' => 'compatibility_position_fixed',
 				'default' => 'none',
