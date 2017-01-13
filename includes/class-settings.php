@@ -248,9 +248,9 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			)
 		);
 		// Genesis already has before and after hooks set
-		if ( get_template() != 'genesis' ) {
+		if ( get_template() !== 'genesis' ) {
 			// Check if the before hook is filtered. If it is this setting is not needed
-			if ( '' != apply_filters( 'ocs_website_before_hook', '' ) ) {
+			if ( '' == apply_filters( 'ocs_website_before_hook', '' ) ) {
 				add_settings_field(
 					'website_before_hook',
 					'<code>website_before</code> ' . esc_attr__( 'hook name', 'off-canvas-sidebars' ),
@@ -264,7 +264,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 				);
 			}
 			// Check if the after hook is filtered. If it is this setting is not needed
-			if ( '' != apply_filters( 'ocs_website_after_hook', '' ) ) {
+			if ( '' == apply_filters( 'ocs_website_after_hook', '' ) ) {
 				add_settings_field(
 					'website_after_hook',
 					'<code>website_after</code> ' . esc_attr__( 'hook name', 'off-canvas-sidebars' ),
