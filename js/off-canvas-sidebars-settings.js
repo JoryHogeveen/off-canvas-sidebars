@@ -33,6 +33,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 				var sidebar_id = $(this).attr('id').replace('section_sidebar_', '');
 
 				ocs_show_hide_options_radio( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_background_color_type', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_background_color_wrapper', 'color', false );
+				ocs_show_hide_options_radio( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_location', '#off_canvas_sidebars_options_sidebars_' + sidebar_id + '_style_reveal, #off_canvas_sidebars_options_sidebars_' + sidebar_id + '_style_shift', [ 'left', 'right' ], 'label' );
 
 				ocs_show_hide_options( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_overwrite_global_settings', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_site_close', 'tr' );
 				ocs_show_hide_options( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_overwrite_global_settings', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_disable_over', 'tr' );
@@ -45,50 +46,56 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 
 
 		function ocs_show_hide_options( trigger, target, parent ) {
-			if ( ! $(trigger).is(':checked') ) {
+			if ( ! $( trigger ).is(':checked') ) {
 				if ( parent ) {
-					$(target).closest(parent).slideUp('fast');
+					$( target ).closest( parent ).slideUp('fast');
 				} else {
-					$(target).slideUp('fast');
+					$( target ).slideUp('fast');
 				}
 			}
-			$(trigger).change( function() {
+			$( trigger ).change( function() {
 				if ( $(this).is(':checked') ) {
 					if ( parent ) {
-						$(target).closest(parent).slideDown('fast');
+						$( target ).closest( parent ).slideDown('fast');
 					} else {
-						$(target).slideDown('fast');
+						$( target ).slideDown('fast');
 					}
 				} else {
 					if ( parent ) {
-						$(target).closest(parent).slideUp('fast');
+						$( target ).closest( parent ).slideUp('fast');
 					} else {
-						$(target).slideUp('fast');
+						$( target ).slideUp('fast');
 					}
 				}
 			});
 		}
 
 		function ocs_show_hide_options_radio( trigger, target, compare, parent ) {
-			if ( $(trigger).val() != compare ) {
+			if ( ! $.isArray( compare ) ) {
+				compare = [ compare ];
+			}
+			if ( parent ) {
+				parent += ', ' + parent + ' + br';
+			}
+			if ( $.inArray( $( trigger + ':checked' ).val(), compare ) < 0 ) {
 				if ( parent ) {
-					$(target).closest(parent).slideUp('fast');
+					$( target ).closest( parent ).slideUp('fast');
 				} else {
-					$(target).slideUp('fast');
+					$( target ).slideUp('fast');
 				}
 			}
-			$(trigger).change( function() {
-				if ($(this).val() == compare) {
+			$( trigger ).change( function() {
+				if ( $.inArray( $( trigger + ':checked' ).val(), compare ) >= 0 ) {
 					if ( parent ) {
-						$(target).closest(parent).slideDown('fast');
+						$( target ).closest( parent ).slideDown('fast');
 					} else {
-						$(target).slideDown('fast');
+						$( target ).slideDown('fast');
 					}
 				} else {
 					if ( parent ) {
-						$(target).closest(parent).slideUp('fast');
+						$( target ).closest( parent ).slideUp('fast');
 					} else {
-						$(target).slideUp('fast');
+						$( target ).slideUp('fast');
 					}
 				}
 			});

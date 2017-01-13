@@ -17,6 +17,8 @@
 .ocs-credits .inner { padding-left: 10px; padding-right: 10px; }
 .ocs-credits h3 { font-size: 14px; line-height: 1.4; margin: 0;  padding: 8px 12px; border-bottom: 1px solid #eee; }
 
+.off-canvas-sidebars-settings .postbox-container { float: none; }
+
 .postbox.section-sidebar {
 	-webkit-transition: all .1s;
 	-moz-transition: all .1s;
