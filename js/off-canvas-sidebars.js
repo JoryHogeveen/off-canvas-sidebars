@@ -139,14 +139,6 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		$(window).trigger( 'ocs_loaded', this );
 
-		/**
-		 * Function call before initializing
-		 * @since  0.3
-		 */
-		if ( typeof ocsBeforeInitHook == 'function' ) {
-			ocsBeforeInitHook();
-		}
-
 		// Slidebars constructor
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
 
@@ -193,7 +185,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
  		 */
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
 			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
-			var duration = parseFloat( slidebar.element.css( 'transitionDuration' ), 10 ) * 1000;
+			var duration = parseFloat( slidebar.element.css( 'transitionDuration' ) /*, 10*/ ) * 1000;
 			if ( slidebar.side == 'top' || slidebar.side == 'bottom' ) {
 				var elements = $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
 				elements.attr( { 'canvas-fixed': 'fixed' } );
@@ -215,11 +207,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 								'-o-transition': 'top ' + duration + 'ms',
 								'transition': 'top ' + duration + 'ms'
 							} );
-							$(this).css('top', parseInt( $(this).css('top').replace('px', '') ) + offset + 'px' );
+							$(this).css( 'top', parseInt( $(this).css('top').replace('px', '') ) + offset + 'px' );
 						}
 						// Remove animation
-						else if ( e.type == 'closing') {
-							$(this).css('top', parseInt( $(this).css('top').replace('px', '') ) - offset + 'px' );
+						else if ( e.type == 'closing' ) {
+							$(this).css( 'top', parseInt( $(this).css('top').replace('px', '') ) - offset + 'px' );
 							setTimeout( function() {
 								$(this).css( {
 									'-webkit-transition': '',
@@ -257,14 +249,6 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				$(window).trigger( 'slidebar_event', [ e.type, slidebar ] );
 			}
 		} );
-
-		/**
-		 * Function call after initializing
-		 * @since  0.3
-		 */
-		if ( typeof ocsAfterInitHook == 'function' ) {
-			ocsAfterInitHook();
-		}
 
 		// Prevent swipe events to be seen as a click (bug in some browsers)
 		$( document ).on( 'touchmove', function() {

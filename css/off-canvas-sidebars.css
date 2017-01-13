@@ -39,7 +39,6 @@ html.ocs-initialized {
 	transform: none;
 	-webkit-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 	-moz-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
-	-ms-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 	-o-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 }
