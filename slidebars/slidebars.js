@@ -279,7 +279,12 @@ slidebars = function () {
 			var animationProperties = getAnimationProperties( id );
 
 			// Apply css
-			var css = { 'transition-duration': animationProperties.duration + 'ms' };
+			var css = {
+				'-webkit-transition-duration': animationProperties.duration + 'ms',
+				'-moz-transition-duration': animationProperties.duration + 'ms',
+				'-o-transition-duration': animationProperties.duration + 'ms',
+				'transition-duration': animationProperties.duration + 'ms'
+			};
 
 			if ( self.legacy ) {
 				css[ offCanvas[ id ].side ] = animationProperties.amount;
@@ -293,7 +298,12 @@ slidebars = function () {
 						canvasSide = 'top';
 					}
 					// Move container
-					canvas.css( 'transition-duration', animationProperties.duration + 'ms' );
+					canvas.css( {
+						'-webkit-transition-duration': animationProperties.duration + 'ms',
+						'-moz-transition-duration': animationProperties.duration + 'ms',
+						'-o-transition-duration': animationProperties.duration + 'ms',
+						'transition-duration': animationProperties.duration + 'ms',
+					} );
 					canvas.css( canvasSide, '-' + animationProperties.amount );
 					// Open slidebar
 					animationProperties.elements.not( canvas ).css( css );
@@ -398,7 +408,12 @@ slidebars = function () {
 			// Transition completetion
 			setTimeout( function () {
 				// Remove transition duration
-				animationProperties.elements.css( 'transition-duration', '' );
+				animationProperties.elements.css( {
+					'-webkit-transition-duration': '',
+					'-moz-transition-duration': '',
+					'-o-transition-duration': '',
+					'transition-duration': ''
+				} );
 
 				// Hide the Slidebar
 				offCanvas[ id ].element.css( 'display', '' );
