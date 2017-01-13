@@ -58,7 +58,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 * @return  array
 	 */
 	public function filter_body_class( $classes ) {
-		if ( ( 'legacy-css' == $this->settings['compatibility_position_fixed'] ) ) {
+		if ( 'legacy-css' == $this->settings['compatibility_position_fixed'] ) {
 			$classes[] = 'ocs-legacy';
 		}
 		return $classes;
