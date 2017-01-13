@@ -16,7 +16,8 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		"scroll_lock": false,
 		"legacy_css": false,
 		"css_prefix": 'ocs',
-		"sidebars": {}
+		"sidebars": {},
+		"_debug": false
 	};
 }
 
@@ -27,6 +28,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	ocsOffCanvasSidebars.container = false;
 	ocsOffCanvasSidebars._html = $( 'html' );
 	ocsOffCanvasSidebars._touchmove = false;
+	ocsOffCanvasSidebars._toolbar = $('body').hasClass('admin-bar');
 
 	ocsOffCanvasSidebars.init = function() {
 
@@ -169,7 +171,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		 * Compatibility with WP Admin Bar
 		 * @since  0.3.2
  		 */
-		if ( $('body').hasClass('admin-bar') ) {
+		if ( ocsOffCanvasSidebars._toolbar ) {
 			$( window ).on('load resize', function() {
 				var bodyOffset = $( 'body' ).offset();
 				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
@@ -297,10 +299,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	};
 
 	ocsOffCanvasSidebars.setupTriggers = function() {
-		var controller = ocsOffCanvasSidebars.slidebarsController;
-		var prefix = ocsOffCanvasSidebars.css_prefix;
+		var controller = ocsOffCanvasSidebars.slidebarsController,
+			prefix = ocsOffCanvasSidebars.css_prefix,
+			sidebarElements = $( '.' + prefix + '-slidebar' );
 
-		$( '.' + prefix + '-slidebar' ).each( function() {
+		sidebarElements.each( function() {
 			var id = $( this ).attr( 'ocs-sidebar-id' );
 
 			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
@@ -408,7 +411,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		// Disable slidebars when the window is wider than the set width
 		var disableOver = function() {
 			var prefix = ocsOffCanvasSidebars.css_prefix;
-			$( '.' + prefix + '-slidebar' ).each( function() {
+			sidebarElements.each( function() {
 				var id = $( this ).attr( 'ocs-sidebar-id' );
 
 				if ( ! ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
