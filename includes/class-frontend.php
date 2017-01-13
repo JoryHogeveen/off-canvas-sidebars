@@ -448,13 +448,13 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 * @return  void
 	 */
 	function add_styles_scripts() {
-		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min'; // @todo: create minified files
 		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '2.0.2' );
 		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2', true );
 
-		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), $version ); // @todo: '.$suffix.'
-		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars.js', array( 'jquery', 'slidebars' ), $version, true ); // @todo: '.$suffix.'
+		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars'.$suffix.'.css', array(), $version );
+		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars'.$suffix.'.js', array( 'jquery', 'slidebars' ), $version, true );
 
 		$sidebars = array();
 		foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
@@ -469,16 +469,17 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			'scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
 			'legacy_css'           => ( 'legacy-css' == $this->settings['compatibility_position_fixed'] ) ? true : false,
 			'css_prefix'           => $this->settings['css_prefix'],
-			'sidebars'             => $sidebars
+			'sidebars'             => $sidebars,
+			'_debug'               => ( defined('WP_DEBUG') && WP_DEBUG ) ? true : false,
 		) );
 
 		if ( 'custom-js' == $this->settings['compatibility_position_fixed'] ) {
-			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $version, true );
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop'.$suffix.'.js', array( 'jquery' ), $version, true );
 		}
 
 		// FastClick library https://github.com/ftlabs/fastclick
 		if ( true === (bool) $this->settings['use_fastclick'] ) {
-			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick.js', array(), false, true );
+			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick'.$suffix.'.js', array(), false, true );
 		}
 	}
 
