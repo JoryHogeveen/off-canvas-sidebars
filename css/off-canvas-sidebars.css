@@ -21,9 +21,6 @@ html.ocs-initialized {
 	height: auto;
 }
 
-html.ocs-scroll-lock {
-	overflow-y: hidden;
-}
 
 [canvas-fixed] {
 	-webkit-transform: translate( 0px, 0px );

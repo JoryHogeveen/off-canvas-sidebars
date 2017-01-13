@@ -431,13 +431,28 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		disableOver();
 		$( window ).on( 'resize', disableOver );
 
-		// Disable scrolling on active sidebar
-		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel', function( e ) {
+		// Disable scrolling outside of active sidebar
+		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
 			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
 			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
+			}
+		} );
+
+		// Disable scrolling site when scrolling inside active sidebar
+		sidebarElements.on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
+			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
+			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
+				var $this = $(this);
+				if ( e.originalEvent.deltaY < 0 ) {
+					/* scrolling up */
+					return ( $this.scrollTop() > 0 );
+				} else {
+					/* scrolling down */
+					return ( $this.scrollTop() + $this.innerHeight() < $this[0].scrollHeight );
+				}
 			}
 		} );
 
