@@ -140,7 +140,7 @@ slidebars = function () {
 
 				// Make sure a valid id, side and style are specified
 				if ( ! parameters || ! parameters[ 0 ] || sides.indexOf( parameters[ 1 ] ) === -1 || styles.indexOf( parameters[ 2 ] ) === -1 ) {
-					throw "Error registering Slidebar, please specifiy a valid id, side and style'.";
+					throw "Error registering Slidebar, please specify a valid id, side and style'.";
 				}
 
 				// Register Slidebar
