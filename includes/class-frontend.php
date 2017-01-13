@@ -38,6 +38,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		//add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
+
+		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
 
 	/**
@@ -46,6 +48,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 */
 	private function load_plugin_data() {
 		$this->settings = Off_Canvas_Sidebars()->get_settings();
+	}
+
+	/**
+	 * Add classes to the body
+	 *
+	 * @since   1.4
+	 * @param   array  $classes
+	 * @return  array
+	 */
+	public function filter_body_class( $classes ) {
+		if ( ( 'legacy-css' == $this->settings['compatibility_position_fixed'] ) ) {
+			$classes[] = 'ocs-legacy';
+		}
+		return $classes;
 	}
 
 	/**
