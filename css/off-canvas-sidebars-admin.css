@@ -43,6 +43,14 @@
     	margin: 10px -300px 10px 20px;
 	    width: 280px;
 	}
+
+	.off-canvas-sidebars-settings .postbox-container .postbox-third {
+		float: left;
+		width: 33%;
+		margin-left: 0.5%;
+		box-sizing: border-box;
+	}
+	.off-canvas-sidebars-settings .postbox-container .postbox-third.first { margin-left: 0;}
 }
 
 @media only screen and (min-width: 959px) {

@@ -11,6 +11,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 	var OCS_OFF_CANVAS_SIDEBARS_SETTINGS = {
 		'general_key': 'off_canvas_sidebars_options',
 		'plugin_key': 'off-canvas-sidebars-settings',
+		'css_prefix': 'ocs',
 		'__required_fields_not_set': '' //Some required fields are not set!
 	};
 }
@@ -200,6 +201,145 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 				}
 			} );
 
+		}
+
+		if ( tab.val() == 'ocs-shortcode' ) {
+
+			var fields = [ 'sidebar', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
+
+			for ( var i = 0, l = fields.length; i < l; i++ ) {
+				$( '#off_canvas_sidebars_options_' + fields[i] ).on( 'change keyup', function() {
+					create_shortcode();
+				});
+			}
+
+			function create_shortcode() {
+				var field_data = {};
+				for ( var i = 0, l = fields.length; i < l; i++ ) {
+					field_data[ fields[i] ] = $( '#off_canvas_sidebars_options_' + fields[i] );
+				}
+
+				var shortcode = 'ocs_trigger';
+
+				//start the shortcode tag
+				var shortcode_str = '[' + shortcode;
+
+				// Loop through our known fields
+				for ( var field in field_data ) {
+					if ( typeof field_data[ field ] != 'undefined' ) {
+						if ( field != 'text' && field != 'nested' ) {
+							if ( field_data[ field ].is(':checked') ) {
+								shortcode_str += ' ' + field + '="1"';
+							} else if ( field_data[ field ].val().length ) {
+								shortcode_str += ' ' + field + '="' + field_data[ field ].val().replace( /(\r\n|\n|\r)/gm, '' ) + '"';
+							}
+						}
+					}
+				}
+
+				// If the test contains a double quote, force it to be nested for compatibility
+				if ( field_data.text.val().length && field_data.text.val().indexOf( '"' ) !== -1 ) {
+					field_data.nested = true;
+				}
+
+				//add panel text
+				if ( field_data.nested.is(':checked') ) {
+					shortcode_str += ']' + field_data.text.val() + '[/' + shortcode + ']';
+				} else {
+					if ( field_data.text.val().length ) {
+						shortcode_str += ' text="' + field_data.text.val() + '"';
+					}
+					shortcode_str += ']';
+				}
+
+				$('textarea#ocs_shortcode').val( shortcode_str );
+
+				create_shortcode_preview( field_data );
+			}
+
+			function create_shortcode_preview( field_data ) {
+
+				var element = ( field_data.element.val() ) ? field_data.element.val() : 'button',
+					attributes = ( field_data.attr.val() ) ? attrStringToObject( field_data.attr.val() ) : {},
+					prefix = OCS_OFF_CANVAS_SIDEBARS_SETTINGS.css_prefix,
+					action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle';
+
+				var classes = prefix + '-trigger ' + prefix + '-' + action;
+
+				if ( field_data.sidebar.val() ) {
+					classes += ' lekkerdan-' + action + '-' + field_data.sidebar.val();
+				}
+				if ( field_data.class.val() ) {
+					classes += ' ' + field_data.class.val();
+				}
+				if ( attributes.class ) {
+					classes += ' ' + attributes.class;
+				}
+				attributes.class = classes;
+
+				var singleton = false;
+				if ( element == 'input' ) {
+					singleton = true;
+					attributes.value = field_data.text.val();
+				}
+				if ( element == 'img' ) {
+					singleton = true;
+					attributes.value = field_data.text.val();
+				}
+
+				var html = '';
+				if ( singleton ) {
+					html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>';
+				} else {
+					html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>' + field_data.text.val() + '</' + element + '>';
+				}
+
+				$( '#ocs_shortcode_preview' ).html( html );
+
+				$( '#ocs_shortcode_html' ).val( html );
+
+			}
+
+		}
+
+		/**
+		 * Convert OCS formatted attribute string to object
+		 *
+		 * In: key:value;key:value
+		 * Out: { key: value, key: value }
+		 *
+		 * @param attrString
+		 * @returns Object
+		 */
+		function attrStringToObject( attrString ) {
+			var arr = attrString.split( ';' ),
+				atts = {};
+			for ( var key in arr ) {
+				arr[ key ] = arr[ key ].split( ':' );
+				if ( arr[ key ][ 0 ].trim().length ) {
+					var name = arr[ key ][ 0 ].trim();
+					arr[ key ].splice( 0, 1 );
+					atts[ name ] = arr[ key ].join( ':' );
+				}
+			}
+			return atts;
+		}
+
+		/**
+		 * Convert object to OCS formatted attribute string
+		 *
+		 * In: { key: value, key: value }
+		 * Out: key:value;key:value
+		 *
+		 * @param attrObj
+		 * @returns String
+		 */
+		function attrObjectToHTML( attrObj ) {
+			var atts = [];
+			for ( var name in attrObj ) {
+				atts.push( name + '="' + attrObj[ name ] + '"' );
+			}
+			return atts.join( ' ' );
 		}
 
 	};

@@ -23,6 +23,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	private $general_key = '';
 	private $settings_tab = 'ocs-settings';
 	private $sidebars_tab = 'ocs-sidebars';
+	private $shortcode_tab = 'ocs-shortcode';
 	private $importexport_tab = 'ocs-importexport';
 	private $plugin_key = '';
 	private $plugin_tabs = array();
@@ -75,6 +76,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		wp_localize_script( 'off-canvas-sidebars-settings', 'OCS_OFF_CANVAS_SIDEBARS_SETTINGS', array(
 			'general_key' => $this->general_key,
 			'plugin_key' => $this->plugin_key,
+			'css_prefix' => $this->settings['css_prefix'],
 			'__required_fields_not_set' => __( 'Some required fields are not set!', 'off-canvas-sidebars' ),
 		) );
 
@@ -101,6 +103,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	function register_settings() {
 		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Settings', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
+		$this->plugin_tabs[ $this->shortcode_tab ] = esc_attr__( 'Shortcodes', 'off-canvas-sidebars' );
 
 		register_setting( $this->settings_tab, $this->general_key, array( $this, 'validate_input' ) );
 		register_setting( $this->sidebars_tab, $this->general_key, array( $this, 'validate_input' ) );
@@ -672,9 +675,16 @@ final class OCS_Off_Canvas_Sidebars_Settings
 				$prefixValue[ $args['name'] ] = $args['value'];
 			}
 			$classes = $this->get_option_classes( $prefixClasses, $args['name'] );
+			if ( ! empty( $args['class'] ) ) {
+				$classes .= ' ' . $args['class'];
+			}
 		?><fieldset>
 			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
+			<?php if ( ! empty( $args['multiline'] ) ) { ?>
+			<textarea name="<?php echo $prefixName.'['.$args['name'].']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" <?php echo $placeholder ?>><?php echo $prefixValue[ $args['name'] ]; ?></textarea>
+			<?php } else { ?>
 			<input type="text" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_'.$args['name']; ?>" value="<?php echo $prefixValue[ $args['name'] ]; ?>"<?php echo $placeholder ?>/>
+			<?php } ?>
 			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
 			<?php if ( isset( $args['description'] ) ) { ?>
 			<p class="description"><?php echo $args['description'] ?></p>
@@ -720,7 +730,9 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			}
 			$classes = $this->get_option_classes( $prefixClasses, $args['name'] );
 		?><fieldset>
-			<?php foreach ( $args['options'] as $option ) { ?>
+			<?php foreach ( $args['options'] as $option ) {
+				if ( ! isset( $prefixValue[ $args['name'] ] ) ) $prefixValue[ $args['name'] ] = ( isset( $args['value'] ) ) ? $args['value'] : false;
+			?>
 			<?php if ( isset( $option['label'] ) ) { ?><label><?php } ?>
 			<input type="radio" name="<?php echo $prefixName.'['.$args['name'].']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_'.$args['name'].'_'.$option['name'] ?>" value="<?php echo $option['value'] ?>" <?php checked( $prefixValue[ $args['name'] ], $option['value'] ); ?> />
 			<?php if ( isset( $option['label'] ) ) { echo $option['label'] ?></label><br /><?php } ?>
@@ -730,6 +742,37 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			<p class="description"><?php echo $args['description'] ?></p>
 			<?php } ?>
 		</fieldset><?php
+		}
+	}
+
+	function select_option( $args ) {
+		$prefixes = $this->get_option_prefixes( $args );
+		$prefixName = $prefixes['prefixName'];
+		$prefixValue = $prefixes['prefixValue'];
+		$prefixId = $prefixes['prefixId'];
+		$prefixClasses = $prefixes['prefixClasses'];
+		if ( isset( $args['name'] ) && isset( $args['options'] ) ) {
+			if ( isset( $args['value'] ) ) {
+				$prefixValue[ $args['name'] ] = $args['value'];
+			}
+			if ( ! empty( $args['default'] ) && empty( $prefixValue[ $args['name'] ] ) ) {
+				$prefixValue[ $args['name'] ] = $args['default'];
+			}
+			$classes = $this->get_option_classes( $prefixClasses, $args['name'] );
+			?><fieldset>
+			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
+			<select name="<?php echo $prefixName.'['.$args['name'].']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefixId.'_'.$args['name'] ?>">
+			<?php foreach ( $args['options'] as $option ) {
+				if ( ! isset( $prefixValue[ $args['name'] ] ) ) $prefixValue[ $args['name'] ] = ( isset( $args['value'] ) ) ? $args['value'] : false;
+			?>
+				<option value="<?php echo $option['value'] ?>" <?php selected( $prefixValue[ $args['name'] ], $option['value'] ); ?>><?php echo (isset($option['label']))?$option['label']:$option['value']; ?></option>
+			<?php } // end foreach ?>
+			</select>
+			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><br /><?php } ?>
+			<?php if ( isset( $args['description'] ) ) { ?>
+				<p class="description"><?php echo $args['description'] ?></p>
+			<?php } ?>
+			</fieldset><?php
 		}
 	}
 
@@ -815,7 +858,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	function get_option_classes( $classes, $append ) {
 		if ( $append ) {
 			foreach ( $classes as $key => $class ) {
-				if ( ! in_array( $class, array( 'required' ) ) )
+				if ( ! in_array( $class, array( 'required', 'widefat' ) ) )
 				$classes[ $key ] = $class . '_' . $append;
 			}
 		}
@@ -1028,7 +1071,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	/**
 	 * Validates radio values against the possible options
 	 *
-	 * @since  0.3.2
+	 * @since  0.4
 	 *
 	 * @param  string $value
 	 * @param  array  $options
@@ -1086,6 +1129,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	 */
 	function plugin_options_page() {
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
+		$do_submit = ( in_array( $tab, array( $this->settings_tab, $this->sidebars_tab ) ) ) ? true : false;
 		?>
 	<div class="wrap">
 		<h1><?php _e( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) ?></h1>
@@ -1095,7 +1139,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 			<form id="<?php echo $this->general_key ?>" method="post" action="options.php" enctype="multipart/form-data">
 
 				<?php settings_errors(); ?>
-				<?php if ( $tab != $this->importexport_tab ) { ?>
+				<?php if ( $do_submit ) { ?>
 				<p class="alignright"><?php submit_button( null, 'primary', 'submit', false ); ?></p>
 				<?php } ?>
 				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $tab ?>" />
@@ -1115,12 +1159,13 @@ final class OCS_Off_Canvas_Sidebars_Settings
 				<div id="main-sortables" class="meta-box-sortables ui-sortable">
 				<?php settings_fields( $tab ); ?>
 				<?php $this->do_settings_sections( $tab ); ?>
-				</div>
-				</div>
-				</div>
 
-				<?php if ( $tab == $this->importexport_tab ) $this->importexport_fields(); ?>
-				<?php if ( $tab != $this->importexport_tab ) submit_button(); ?>
+				<?php if ( $tab == $this->shortcode_tab ) $this->shortcode_tab(); ?>
+				<?php if ( $tab == $this->importexport_tab ) $this->importexport_tab(); ?>
+				</div>
+				</div>
+				</div>
+				<?php if ( $do_submit ) submit_button(); ?>
 
 			</form>
 
@@ -1228,7 +1273,140 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		echo '</h1>';
 	}
 
-	function importexport_fields() {
+	function shortcode_tab() {
+		?>
+		<div id="section_shortcode" class="stuffbox postbox">
+			<h3 class="hndle"><span><?php _e( 'Shortcode', 'off-canvas-sidebars' ) ?>:</span></h3>
+			<div class="inside">
+			<textarea id="ocs_shortcode" class="widefat">[ocs_trigger sidebar=""]</textarea>
+		</div></div>
+		<?php
+
+		echo '<div id="section_shortcode_options" class="stuffbox postbox postbox postbox-third first">';
+
+		echo '<h3 class="hndle"><span>' . __( 'Options', 'off-canvas-sidebars' ) . ':</span></h3>';
+
+		echo '<div class="inside"><table class="form-table">';
+		echo '<tr><td>';
+
+		$sidebar_select = array();
+		foreach( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+			$sidebar_select[] = array(
+				'value' => $sidebar_id,
+				'label' => $sidebar_data['label']
+			);
+		}
+		$this->select_option( array(
+			'name' => 'sidebar',
+			'label' => __( 'Sidebar ID', 'off-canvas-sidebars' ),
+			'description' => __( '(Required) The off-canvas sidebar ID', 'off-canvas-sidebars' ),
+			'options' => $sidebar_select
+		) );
+
+		echo '</td></tr>';
+		echo '<tr><td>';
+
+		$this->text_option( array(
+			'name' => 'text',
+			'label' => __( 'Text', 'off-canvas-sidebars' ),
+			'value' => '',
+			'class' => 'widefat',
+			'description' => __( 'Limited HTML allowed', 'off-canvas-sidebars' ),
+			'multiline' => true
+		) );
+
+		echo '</td></tr>';
+		echo '</table></div></div>';
+
+		echo '<div id="section_shortcode_optionaloptions" class="stuffbox postbox postbox postbox-third">';
+
+		echo '<h3 class="hndle"><span>' . __( 'Optional options', 'off-canvas-sidebars' ) . ':</span></h3>';
+
+		echo '<div class="inside"><table class="form-table">';
+		echo '<tr><td>';
+
+		$this->select_option( array(
+			'name' => 'action',
+			'label' => __( 'Trigger action', 'off-canvas-sidebars' ),
+			'options' => array(
+				array(
+					'label' => __( 'Toggle', 'off-canvas-sidebars' ) . ' (' . __( 'Default', 'off-canvas-sidebars' ) . ')',
+					'value' => ''
+				),
+				array( 'label' => __( 'Open', 'off-canvas-sidebars' ), 'value' => 'open' ),
+				array( 'label' => __( 'Close', 'off-canvas-sidebars' ), 'value' => 'close' ),
+			),
+			//'tooltip' => __( 'The trigger action. Default: toggle', 'off-canvas-sidebars' ),
+		) );
+
+		echo '</td></tr>';
+		echo '<tr><td>';
+
+		$elements = array( 'button', 'span', 'a', 'b', 'strong', 'i', 'em', 'img', 'div' );
+		$element_values = array();
+		foreach ( $elements as $e ) {
+			$element_values[] = array(
+				'value' => $e,
+				'label' => '' . $e . ''
+			);
+		}
+		$this->select_option( array(
+			'name' => 'element',
+			'label' => __( 'HTML element', 'off-canvas-sidebars' ),
+			'options' => $element_values,
+			'description' => __( 'Choose wisely', 'off-canvas-sidebars' ),
+		) );
+
+		echo '</td></tr>';
+		echo '<tr><td>';
+
+		$this->text_option( array(
+			'name' => 'class',
+			'label' => __( 'Extra classes', 'off-canvas-sidebars' ),
+			'value' => '',
+			'class' => 'widefat',
+			'description' => __( 'Separate multiple classes with a space', 'off-canvas-sidebars' ),
+		) );
+
+		echo '</td></tr>';
+		echo '<tr><td>';
+
+		$this->text_option( array(
+			'name' => 'attr',
+			'label' => __( 'Custom attributes', 'off-canvas-sidebars' ),
+			'value' => '',
+			'class' => 'widefat',
+			'description' => __( 'key : value ; key : value', 'off-canvas-sidebars' ),
+			'multiline' => true
+		) );
+
+		echo '</td></tr>';
+		echo '<tr><td>';
+
+		$this->checkbox_option( array(
+			'name' => 'nested',
+			'label' => __( 'Nested shortcode', 'off-canvas-sidebars' ) . '?',
+			'value' => '',
+			'description' => __( '[ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]', 'off-canvas-sidebars' ),
+		) );
+
+		echo '</td></tr>';
+
+		echo '</table></div></div>';
+		?>
+		<div id="section_shortcode_preview" class="stuffbox postbox postbox-third">
+			<h3 class="hndle"><span><?php _e( 'Preview', 'off-canvas-sidebars' ) ?>:</span></h3>
+			<div class="inside">
+			<div id="ocs_shortcode_preview"></div>
+			</div>
+			<h3 class="hndle"><span>HTML:</span></h3>
+			<div class="inside">
+			<textarea id="ocs_shortcode_html" class="widefat"></textarea>
+		</div></div>
+		<?php
+	}
+
+	function importexport_tab() {
 	?>
 		<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
