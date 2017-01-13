@@ -92,7 +92,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Plugin key
 	 *
-	 * @var    bool
+	 * @var    string
 	 * @since  0.1
 	 */
 	protected $plugin_key = 'off-canvas-sidebars-settings';
@@ -100,7 +100,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Plugin general settings key, also used as option key
 	 *
-	 * @var    bool
+	 * @var    string
 	 * @since  0.1
 	 */
 	protected $general_key = 'off_canvas_sidebars_options';
@@ -108,7 +108,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Plugin settings
 	 *
-	 * @var    bool
+	 * @var    array
 	 * @since  0.1
 	 */
 	protected $settings = array();
@@ -116,7 +116,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Plugin settings
 	 *
-	 * @var    bool
+	 * @var    array
 	 * @since  0.1
 	 */
 	protected $general_labels = array();
@@ -124,51 +124,53 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Default settings
 	 *
-	 * @var    bool
+	 * @var    array
 	 * @since  0.2
 	 */
 	protected $default_settings = array(
-		'db_version' => '0',
-		'enable_frontend' => 1,
-		'frontend_type' => 'action',
-		'site_close' => 1,
-		'disable_over' => '',
-		'hide_control_classes' => 0,
-		'scroll_lock' => 0,
-		'background_color_type' => '',
-		'background_color' => '',
-		'website_before_hook' => 'website_before',
-		'website_after_hook' => 'website_after',
-		'use_fastclick' => 0,
-		'compatibility_position_fixed' => 'none',
-		'css_prefix' => 'ocs',
-		'sidebars' => array(),
+		'db_version'                    => '0',
+		'enable_frontend'               => 1,
+		'frontend_type'                 => 'action',
+		'site_close'                    => 1,
+		'disable_over'                  => '',
+		'hide_control_classes'          => 0,
+		'scroll_lock'                   => 0,
+		'background_color_type'         => '',
+		'background_color'              => '',
+		'website_before_hook'           => 'website_before',
+		'website_after_hook'            => 'website_after',
+		'use_fastclick'                 => 0,
+		'compatibility_position_fixed'  => 'none',
+		'shortcode_rendering_wp_editor' => 0,
+		'css_prefix'                    => 'ocs',
+		'sidebars'                      => array(),
 	);
 
 	/**
 	 * Default sidebar settings
 	 *
-	 * @var    bool
+	 * @var    array
 	 * @since  0.2
 	 */
 	protected $default_sidebar_settings = array(
-		'enable' => 0,
-		'label' => '',
-		'content' => 'sidebar',
-		'location' => 'left',
-		'style' => 'push',
-		'size' => 'default',
-		'size_input' => '',
-		'size_input_type' => '%',
-		'animation_speed' => '',
-		'padding' => '',
-		'background_color' => '',
-		'background_color_type' => '',
+		'enable'                    => 0,
+		'label'                     => '',
+		'content'                   => 'sidebar',
+		'location'                  => 'left',
+		'style'                     => 'push',
+		'size'                      => 'default',
+		'size_input'                => '',
+		'size_input_type'           => '%',
+		'animation_speed'           => '',
+		'padding'                   => '',
+		'background_color'          => '',
+		'background_color_type'     => '',
+		/* Global overwrites */
 		'overwrite_global_settings' => 0,
-			'site_close' => 1,
-			'disable_over' => '',
-			'hide_control_classes' => 0,
-			'scroll_lock' => 0,
+		'site_close'                => 1,
+		'disable_over'              => '',
+		'hide_control_classes'      => 0,
+		'scroll_lock'               => 0,
 	);
 
 	/**
@@ -245,10 +247,8 @@ final class OCS_Off_Canvas_Sidebars
 		} else {
 
 			// If a sidebar is enabled, load the front-end
-			if ( $this->is_sidebar_enabled() ) {
-				include_once 'includes/class-frontend.php';
-				OCS_Off_Canvas_Sidebars_Frontend::get_instance();
-			}
+			include_once 'includes/class-frontend.php';
+			OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 		}
 	}
 
@@ -328,7 +328,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Returns the default settings
 	 *
 	 * @since   0.2
-	 * @return  string
+	 * @return  array
 	 */
 	function get_default_settings() { return $this->default_settings; }
 
@@ -336,7 +336,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Returns the default sidebar_settings
 	 *
 	 * @since   0.2
-	 * @return  string
+	 * @return  array
 	 */
 	function get_default_sidebar_settings() { return $this->default_sidebar_settings; }
 
