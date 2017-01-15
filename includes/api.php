@@ -13,12 +13,13 @@
 /**
  * Echos one, multiple or all OCS sidebars
  *
+ * @api
  * @since  0.3
- * @param  string|array|bool  $sidebars  (Optional) The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
+ * @param  string|array  $sidebars        (Optional) The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
  */
-function the_ocs_off_canvas_sidebar( $sidebars = false ) {
+function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
 	if ( $instance = Off_Canvas_Sidebars_Frontend() ) {
-		if ( false === $sidebars ) {
+		if ( empty( $sidebars ) ) {
 			$instance->do_sidebars();
 		} else {
 			if ( is_array( $sidebars ) ) {
@@ -35,6 +36,7 @@ function the_ocs_off_canvas_sidebar( $sidebars = false ) {
 /**
  * Output a trigger element for off-canvas sidebars
  *
+ * @api
  * @since  0.4
  * @param  array   $atts {
  *     Required array of arguments
@@ -77,6 +79,7 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
 		}
 		return $return;
 	}
+	return '';
 }
 
 /**
@@ -137,7 +140,7 @@ add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
  * @return  OCS_Off_Canvas_Sidebars_Frontend|false
  */
 function Off_Canvas_Sidebars_Frontend() {
-	if ( class_exists( 'OCS_Off_Canvas_Sidebars_Frontend' ) ) {
+	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Frontend', 'get_instance' ) ) ) {
 		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 	}
 	return false;
