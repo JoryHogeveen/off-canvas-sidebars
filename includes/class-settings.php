@@ -29,6 +29,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 	private $plugin_tabs = array();
 	private $settings = array();
 	private $general_labels = array();
+	private $capability = 'edit_theme_options';
 
 	/**
 	 * @since  0.1
@@ -53,6 +54,14 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		$this->settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
+
+		/**
+		 * Change the capability for the OCS settings
+		 * @since  1.4
+		 * @param  string
+		 * @return string
+		 */
+		$this->capability = apply_filters( 'ocs_settings_capability', $this->capability );
 	}
 
 	/**
@@ -90,7 +99,7 @@ final class OCS_Off_Canvas_Sidebars_Settings
 		add_theme_page(
 			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
 			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
-			apply_filters( 'ocs_settings_capability', 'edit_theme_options' ),
+			$this->capability,
 			$this->plugin_key,
 			array( $this, 'plugin_options_page' )
 		);
@@ -1424,6 +1433,13 @@ final class OCS_Off_Canvas_Sidebars_Settings
 
 	function register_importexport_settings() {
 		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
+
+		/**
+		 * Filter documented in $this->load_plugin_data()
+		 */
+		if ( ! current_user_can( $this->capability ) ) {
+			return;
+		}
 
 		if ( isset( $_GET['gocs_message'] ) ) {
 
