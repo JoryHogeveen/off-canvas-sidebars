@@ -1,18 +1,26 @@
 <?php
 /**
- * Plugin Name: Off-Canvas Sidebars
- * Description: Add off-canvas sidebars using the Slidebars jQuery plugin
- * Plugin URI:  https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:     0.3.2-dev
- * Author:      Jory Hogeveen
- * Author URI:  http://www.keraweb.nl
- * Text Domain: off-canvas-sidebars
- * Domain Path: /languages/
- * License:     GPLv2
- */
-
-/*
- * Copyright 2015-2016 Jory Hogeveen
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @since   0.1
+ * @version 0.4-dev
+ * @licence GPL-2.0+
+ * @link    https://github.com/JoryHogeveen/off-canvas-sidebars
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Off-Canvas Sidebars
+ * Description:       Add off-canvas sidebars using the Slidebars jQuery plugin
+ * Plugin URI:        https://wordpress.org/plugins/off-canvas-sidebars/
+ * Version:           0.4-dev
+ * Author:            Jory Hogeveen
+ * Author URI:        http://www.keraweb.nl
+ * Text Domain:       off-canvas-sidebars
+ * Domain Path:       /languages/
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+ * GitHub Plugin URI: https://github.com/JoryHogeveen/off-canvas-sidebars
+ *
+ * @copyright 2015-2017 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
