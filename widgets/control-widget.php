@@ -112,6 +112,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$off_canvas_sidebars = off_canvas_sidebars();
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
+
+		$ocs = $instance[ $this->widget_setting ];
 		$field_id = $this->get_field_id( $this->widget_setting );
 		?>
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
@@ -145,9 +147,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 					continue;
 				}
-				$class = ' ocs-tab';
-				if ( empty( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) ) {
-					$class = ' disabled';
+				$class = 'ocs-tab';
+				if ( empty( $ocs[ $sidebar_id ]['enable'] ) ) {
+					$class .= ' disabled';
 				}
 				?>
 				<div id="<?php echo $field_id . '_' . $sidebar_id . '_tab'; ?>" class="<?php echo $class ?>">
@@ -164,29 +166,30 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				continue;
 			}
 			//$hidden = '';
-			//if ( empty( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) ) {
+			//if ( empty( $ocs[ $sidebar_id ]['enable'] ) ) {
 				$hidden = 'style="display:none;"';
 			//}
 		?>
 		<div id="<?php echo $field_id . '_' . $sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo $hidden ?>>
 			<h4 class=""><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
-				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_label]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['show_label'], 1 ); ?>>
+				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label"><?php _e( 'Show label', 'off-canvas-sidebars' ); ?></label>
 			</p>
-			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ( $instance[ $this->widget_setting ][ $sidebar_id ]['show_label'] ) ? 'style="display: none;"' : ''; ?>>
+			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ( $ocs[ $sidebar_id ]['show_label'] ) ? '' : 'style="display: none;"'; ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_label"><?php _e( 'Label text', 'off-canvas-sidebars' ); ?></label>
-				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][label]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $sidebar_id ]['label']; ?>">
+				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][label]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['label']; ?>">
+			</p>
 			<p>
-				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_icon]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'], 1 ); ?>>
+				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_icon]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_icon'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon"><?php _e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
 			</p>
-			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ( $instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'] ) ? 'style="display: none;"' : ''; ?>>
+			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ( $ocs[ $sidebar_id ]['show_icon'] ) ? '' : 'style="display: none;"'; ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_icon"><?php _e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
-				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][icon]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $sidebar_id ]['icon']; ?>">
+				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
 			<p>
-				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][button_class]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['button_class'], 1 ); ?>>
+				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][button_class]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['button_class'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class"><?php _e( 'Add <code>button</code> class', 'off-canvas-sidebars' ); ?></label>
 			</p>
 			<hr />
@@ -236,7 +239,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		<script type="text/javascript">
 		<!--
 			(function($) {
-				<?php foreach ( $instance[ $this->widget_setting ] as $sidebar_id => $value ) { ?>
+				<?php foreach ( $ocs as $sidebar_id => $value ) { ?>
 				//gocs_show_hide_options('<?php echo $field_id . '_' . $sidebar_id; ?>', '<?php echo $field_id . '_' . $sidebar_id . '_tab'; ?>');
 				/* $field_id . '_' . $sidebar_id . '_pane, '. */
 
@@ -292,7 +295,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * Processing widget options on save
 	 *
 	 * @param  array $new_instance The new options
-	 * @param  array $old_instance The previous options
+	 * @param  array $old_instance The old options
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
@@ -302,45 +305,52 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
 
-		// checkboxes
-		foreach ( $instance[ $this->widget_setting ] as $sidebar_id => $value ) {
-			$instance[ $this->widget_setting ][ $sidebar_id ]['enable']       = ( ! empty( $new_instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) )       ? strip_tags( $new_instance[ $this->widget_setting ][ $sidebar_id ]['enable'] )       : '0';
-			$instance[ $this->widget_setting ][ $sidebar_id ]['show_label']   = ( ! empty( $new_instance[ $this->widget_setting ][ $sidebar_id ]['show_label'] ) )   ? strip_tags( $new_instance[ $this->widget_setting ][ $sidebar_id ]['show_label'] )   : '0';
-			$instance[ $this->widget_setting ][ $sidebar_id ]['show_icon']    = ( ! empty( $new_instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'] ) )    ? strip_tags( $new_instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'] )    : '0';
-			$instance[ $this->widget_setting ][ $sidebar_id ]['button_class'] = ( ! empty( $new_instance[ $this->widget_setting ][ $sidebar_id ]['button_class'] ) ) ? strip_tags( $new_instance[ $this->widget_setting ][ $sidebar_id ]['button_class'] ) : '0';
+		$ocs = $instance[ $this->widget_setting ];
+		$new_ocs = array();
+		if ( ! empty( $new_instance[ $this->widget_setting ] ) ) {
+			$new_ocs = $new_instance[ $this->widget_setting ];
 		}
-		// Allow 3 level arrays
-		foreach ( $new_instance as $key => $value ) {
-			if ( is_array( $value ) ) {
-				foreach ( $new_instance[ $key ] as $key2 => $value2 ) {
-					if ( is_array( $value2 ) ) {
-						foreach ( $new_instance[ $key ][ $key2 ] as $key3 => $value3 ) {
-							$instance[ $key ][ $key2 ][ $key3 ] = strip_tags( stripslashes( $new_instance[ $key ][ $key2 ][ $key3 ] ) );
-						}
-					} else {
-						$instance[ $key ][ $key2 ] = strip_tags( stripslashes( $new_instance[ $key ][ $key2 ] ) );
-					}
+
+		// checkboxes
+		foreach ( $new_ocs as $sidebar_id => $value ) {
+			$new_ocs[ $sidebar_id ]['enable']       = ( ! empty( $new_ocs[ $sidebar_id ]['enable'] ) )       ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['show_label']   = ( ! empty( $new_ocs[ $sidebar_id ]['show_label'] ) )   ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['show_icon']    = ( ! empty( $new_ocs[ $sidebar_id ]['show_icon'] ) )    ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['button_class'] = ( ! empty( $new_ocs[ $sidebar_id ]['button_class'] ) ) ? 1 : 0;
+		}
+
+		$new_ocs = array_map( array( $this, 'sanitize_value' ), $new_ocs );
+
+		foreach ( $new_ocs as $sidebar_id => $sidebar_settings ) {
+			if ( empty( $ocs[ $sidebar_id ] ) ) {
+				$ocs[ $sidebar_id ] = $sidebar_settings;
+				continue;
+			}
+			if ( is_array( $sidebar_settings ) ) {
+				foreach ( $new_ocs[ $sidebar_id ] as $setting => $value ) {
+					$ocs[ $sidebar_id ][ $setting ] = $value;
 				}
 			} else {
-				$instance[ $key ] = strip_tags( stripslashes( $new_instance[ $key ] ) );
+				$ocs[ $sidebar_id ] = $sidebar_settings;
 			}
 		}
+
+		$instance[ $this->widget_setting ] = $ocs;
+
 		return $instance;
 	}
 
 	/**
 	 * Merge instance with defaults
 	 *
-	 * @param   array   $args
-	 * @return  array   $args
+	 * @param   array  $settings
+	 * @return  array  $settings
 	 */
-	function merge_settings( $args ) {
-		$defaults = array(
-			$this->widget_setting => array(),
-		);
+	function merge_settings( $settings ) {
+		$defaults = array();
 
 		foreach ( $this->settings['sidebars'] as $key => $value ) {
-			$defaults[ $this->widget_setting ][ $key ] = array(
+			$defaults[ $key ] = array(
 				'enable'       => 0,
 				'show_label'   => 0,
 				'label'        => 'menu',
@@ -350,18 +360,42 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			);
 		};
 
-		$args = array_merge( $defaults, $args );
+		$ocs = array();
+		if ( ! empty( $settings[ $this->widget_setting ] ) ) {
+			$ocs = $settings[ $this->widget_setting ];
+		}
 
-		foreach ( $defaults[ $this->widget_setting ] as $key => $value ) {
-			if ( empty( $args[ $this->widget_setting ][ $key ] ) ) {
-				$args[ $this->widget_setting ][ $key ] = $defaults[ $this->widget_setting ][ $key ];
+		foreach ( $defaults as $key => $value ) {
+			if ( empty( $ocs[ $key ] ) ) {
+				$ocs[ $key ] = $value;
+				continue;
 			}
-			foreach ( $defaults[ $this->widget_setting ][ $key ] as $key2 => $value2 ) {
-				if ( empty( $args[ $this->widget_setting ][ $key ][ $key2 ] ) ) {
-					$args[ $this->widget_setting ][ $key ][ $key2 ] = $defaults[ $this->widget_setting ][ $key ][ $key2 ];
+			foreach ( $defaults[ $key ] as $key2 => $value2 ) {
+				if ( ! isset( $ocs[ $key ][ $key2 ] ) ) {
+					$ocs[ $key ][ $key2 ] = $value2;
 				}
 			}
 		}
-		return $args;
+
+		$settings[ $this->widget_setting ] = $ocs;
+
+		return $settings;
+	}
+
+	/**
+	 * Sanitize values.
+	 *
+	 * @param mixed $val The value
+	 * @return mixed
+	 */
+	public function sanitize_value( $val ) {
+		if ( is_array( $val ) ) {
+			return array_map( array( $this, 'sanitize_value' ), $val );
+		} elseif ( is_string( $val ) ) {
+			return strip_tags( stripslashes( $val ) );
+		} elseif ( is_object( $val ) ) {
+			return null;
+		}
+		return $val;
 	}
 }
