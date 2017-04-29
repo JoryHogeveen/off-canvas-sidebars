@@ -8,7 +8,9 @@
  * @version 0.3
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
@@ -23,10 +25,10 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		// widget actual processes
 		parent::__construct(
 			'Off-Canvas-Control',
-			__('Off-Canvas Control', 'off-canvas-sidebars'),
+			__( 'Off-Canvas Control', 'off-canvas-sidebars' ),
 			array(
-				'class_name' => 'off_canvas_control',
-				'description' => __('Button to trigger off-canvas sidebars', 'off-canvas-sidebars' ),
+				'classname' => 'off_canvas_control',
+				'description' => __( 'Button to trigger off-canvas sidebars', 'off-canvas-sidebars' ),
 			)
 		);
 
@@ -37,7 +39,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * Get plugin defaults
 	 */
 	function load_plugin_data() {
-		$off_canvas_sidebars = Off_Canvas_Sidebars();
+		$off_canvas_sidebars = off_canvas_sidebars();
 		$this->settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		//$this->general_key = $off_canvas_sidebars->get_general_key();
@@ -64,30 +66,30 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		<div class="off-canvas-triggers">
 		<?php
 		foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
-			if ( $sidebar_data['enable'] == 1 && $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] == 1 ) {
+			if ( $sidebar_data['enable'] && $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) {
 				$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
 				$classes = array(
 					$prefix . '-trigger',
 					$prefix . '-toggle',
-					$prefix . '-toggle-' . $sidebar_id
+					$prefix . '-toggle-' . $sidebar_id,
 				);
-				if ( $widget_data['button_class'] == 1 ) {
+				if ( $widget_data['button_class'] ) {
 					//$classes[] = $prefix . '-button';
 					$classes[] = 'button';
 				}
 		?>
 			<div class="<?php echo implode( ' ', $classes ); ?>">
 				<div class="inner">
-				<?php if ( $widget_data['show_icon'] == 1 ) { ?>
-					<?php if ( $widget_data['icon'] != '' ) { ?>
-					<?php if ( strpos( $widget_data['icon'], 'dashicons' ) !== false ) { wp_enqueue_style('dashicons'); } ?>
+				<?php if ( $widget_data['show_icon'] ) { ?>
+					<?php if ( $widget_data['icon'] ) { ?>
+					<?php if ( strpos( $widget_data['icon'], 'dashicons' ) !== false ) { wp_enqueue_style( 'dashicons' ); } ?>
 					<span class="icon <?php echo $widget_data['icon'] ?>"></span>
 					<?php } else {
-					wp_enqueue_style('dashicons'); ?>
+					wp_enqueue_style( 'dashicons' ); ?>
 					<span class="icon dashicons dashicons-menu"></span>
 					<?php } ?>
 				<?php } ?>
-				<?php if ( $widget_data['show_label'] == 1 ) { ?>
+				<?php if ( $widget_data['show_label'] ) { ?>
 					<span class="label"><?php echo $widget_data['label'] ?></span>
 				<?php } ?>
 				</div>
@@ -107,7 +109,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * @return void
 	 */
 	public function form( $instance ) {
-		$off_canvas_sidebars = Off_Canvas_Sidebars();
+		$off_canvas_sidebars = off_canvas_sidebars();
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
 		$field_id = $this->get_field_id( $this->widget_setting );
@@ -119,9 +121,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 						continue;
 					}
 			?>
-			<span><label for="<?php echo $field_id . '_' . $sidebar_id; ?>"><input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting][ $sidebar_id ]['enable'], 1 ); ?> /><?php echo $this->settings['sidebars'][ $sidebar_id ]['label']; ?></label></span> &nbsp;
+			<span style="display: inline-block;">
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>">
+					<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'], 1 ); ?> />
+					<?php echo $this->settings['sidebars'][ $sidebar_id ]['label']; ?>
+				</label>
+			</span> &nbsp;
 			<?php } ?>
-
 		</p>
 
 		<?php
@@ -168,14 +174,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_label]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['show_label'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label"><?php _e( 'Show label', 'off-canvas-sidebars' ); ?></label>
 			</p>
-			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ($instance[ $this->widget_setting ][ $sidebar_id ]['show_label'] != 1)?'style="display: none;"':''; ?>>
+			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ( $instance[ $this->widget_setting ][ $sidebar_id ]['show_label'] ) ? 'style="display: none;"' : ''; ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_label"><?php _e( 'Label text', 'off-canvas-sidebars' ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][label]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $sidebar_id ]['label']; ?>">
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_icon]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon"><?php _e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
 			</p>
-			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ($instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'] != 1)?'style="display: none;"':''; ?>>
+			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ( $instance[ $this->widget_setting ][ $sidebar_id ]['show_icon'] ) ? 'style="display: none;"' : ''; ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_icon"><?php _e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][icon]'; ?>" value="<?php echo $instance[ $this->widget_setting ][ $sidebar_id ]['icon']; ?>">
 			</p>
@@ -191,7 +197,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		<p>
 			<label>Preview:</label>
 			<div id="<?php echo $this->id ?>-preview" class="<?php echo $this->id_base ?>-preview" style="background: #f5f5f5; border: 1px solid #eee; padding: 10px;">
-				<?php $this->widget( array( 'before_widget'=>'','after_widget'=>'' ), $instance ); ?>
+				<?php $this->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance ); ?>
 			</div>
 		</p>
 
@@ -278,7 +284,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			})( jQuery );
 		-->
 		</script>
-		<?php } // end fields output ?>
+		<?php } // End if(). ?>
 		<?php
 	}
 
@@ -330,17 +336,17 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 */
 	function merge_settings( $args ) {
 		$defaults = array(
-			$this->widget_setting => array()
+			$this->widget_setting => array(),
 		);
 
 		foreach ( $this->settings['sidebars'] as $key => $value ) {
 			$defaults[ $this->widget_setting ][ $key ] = array(
-				'enable' => 0,
-				'show_label' => 0,
-				'label' => 'menu',
-				'show_icon' => 1,
-				'icon' => false,
-				'button_class' => 1
+				'enable'       => 0,
+				'show_label'   => 0,
+				'label'        => 'menu',
+				'show_icon'    => 1,
+				'icon'         => false,
+				'button_class' => 1,
 			);
 		};
 

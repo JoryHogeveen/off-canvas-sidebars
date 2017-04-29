@@ -10,9 +10,11 @@
  * Credits to the Polylang plugin
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
-final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
+final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 {
 	/**
 	 * The single instance of the class.
@@ -50,7 +52,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	 * Get plugin defaults
 	 */
 	function load_plugin_data() {
-		$off_canvas_sidebars = Off_Canvas_Sidebars();
+		$off_canvas_sidebars = off_canvas_sidebars();
 		$this->settings = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key = $off_canvas_sidebars->get_general_key();
@@ -62,12 +64,12 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	}
 
 	function add_meta_box() {
-		add_meta_box( $this->plugin_key.'-meta-box', __('Off-Canvas Control', 'off-canvas-sidebars'), array( $this, 'meta_box' ), 'nav-menus', 'side', 'low' );
+		add_meta_box( $this->plugin_key . '-meta-box', __( 'Off-Canvas Control', 'off-canvas-sidebars' ), array( $this, 'meta_box' ), 'nav-menus', 'side', 'low' );
 	}
 
 	function meta_box() {
-		global $_nav_menu_placeholder;//, $nav_menu_selected_id;
-		$off_canvas_sidebars = Off_Canvas_Sidebars();
+		global $_nav_menu_placeholder; //, $nav_menu_selected_id;
+		$off_canvas_sidebars = off_canvas_sidebars();
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
 		?>
 		<div class="off-canvas-control-meta-box posttypediv" id="off-canvas-control-meta-box">
@@ -75,7 +77,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 				<ul id="off-canvas-control" class="categorychecklist form-no-clear">
 			<?php
 				foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
-					if ( 1 == $sidebar_data['enable'] ) {
+					if ( $sidebar_data['enable'] ) {
 			?>
 					<li>
 						<label class="menu-item-title">
@@ -98,10 +100,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 			<?php if ( $off_canvas_sidebars->is_sidebar_enabled() ) { ?>
 			<p class="button-controls">
 				<span class="list-controls">
-					<a href="/wordpress/wp-admin/nav-menus.php?page-tab=all&amp;selectall=1#off-canvas-control-meta-box" class="select-all"><?php echo __('Select All'); ?></a>
+					<a href="/wordpress/wp-admin/nav-menus.php?page-tab=all&amp;selectall=1#off-canvas-control-meta-box" class="select-all"><?php echo __( 'Select All' ); ?></a>
 				</span>
 				<span class="add-to-menu">
-					<input type="submit" class="button-secondary submit-add-to-menu right" value="<?php echo __('Add to Menu'); ?>" name="add-off-canvas-control-menu-item" id="submit-off-canvas-control-meta-box">
+					<input type="submit" class="button-secondary submit-add-to-menu right" value="<?php echo __( 'Add to Menu' ); ?>" name="add-off-canvas-control-menu-item" id="submit-off-canvas-control-meta-box">
 					<span class="spinner"></span>
 				</span>
 			</p>
@@ -117,12 +119,12 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	 */
 	public function admin_enqueue_scripts() {
 		$screen = get_current_screen();
-		if ( 'nav-menus' != $screen->base )
+		if ( 'nav-menus' !== $screen->base )
 			return;
 
 		$suffix = ''; //defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
-		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array('jquery'), $version );
+		$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
+		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array( 'jquery' ), $version );
 
 		$data['strings'] = array(
 			'show_icon' => __( 'Show icon', 'off-canvas-sidebars' ),
@@ -132,7 +134,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 		);
 		$data['controls'] = array();
 		foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
-			if ( $sidebar_data['enable'] == 1 ) {
+			if ( $sidebar_data['enable'] ) {
 				$data['controls'][ $sidebar ] = $sidebar_data['label'];
 			}
 		}
@@ -143,7 +145,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 			'nopaging'    => true,
 			'post_type'   => 'nav_menu_item',
 			'fields'      => 'ids',
-			'meta_key'    => '_off_canvas_control_menu_item'
+			'meta_key'    => '_off_canvas_control_menu_item',
 		) );
 
 		// the options values for the language switcher
@@ -164,14 +166,14 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	 * @param   int     $menu_item_db_id
 	 */
 	public function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0 ) {
-		$off_canvas_sidebars = Off_Canvas_Sidebars();
+		$off_canvas_sidebars = off_canvas_sidebars();
 
-		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || $_POST['menu-item-url'][ $menu_item_db_id ] != '#off_canvas_control' )
+		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#off_canvas_control' !== $_POST['menu-item-url'][ $menu_item_db_id ] )
 			return;
 
 		// security check
 		// as 'wp_update_nav_menu_item' can be called from outside WP admin
-		if ( current_user_can('edit_theme_options') ) {
+		if ( current_user_can( 'edit_theme_options' ) ) {
 
 			check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
 
@@ -182,13 +184,13 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 
 			// Autoselect control when adding a new item
 			$default_control = '';
-			if ( in_array( $_POST['menu-item-title'][ $menu_item_db_id ], $available_controls ) ) {
+			if ( in_array( $_POST['menu-item-title'][ $menu_item_db_id ], $available_controls, true ) ) {
 				$default_control = $off_canvas_sidebars->get_sidebar_key_by_label( $_POST['menu-item-title'][ $menu_item_db_id ] );
 			}
 			$options = array( 'off-canvas-control' => $default_control ); // default values
 
 			// our jQuery form has not been displayed
-			if ( empty( $_POST['menu-item-off-canvas-control-detect'][ $menu_item_db_id] ) ) {
+			if ( empty( $_POST['menu-item-off-canvas-control-detect'][ $menu_item_db_id ] ) ) {
 
 				if ( ! get_post_meta( $menu_item_db_id, '_off_canvas_control_menu_item', true ) ) // our options were never saved
 					update_post_meta( $menu_item_db_id, '_off_canvas_control_menu_item', $options );
@@ -198,7 +200,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 				$options['off-canvas-control'] = '';
 
 				// If only one is available, allways select it
-				if ( ! empty($_POST['menu-item-off-canvas-control'][ $menu_item_db_id ]) && array_key_exists( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ], $available_controls ) ) {
+				if ( ! empty( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] ) && array_key_exists( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ], $available_controls ) ) {
 					$options['off-canvas-control'] = strip_tags( stripslashes( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] ) );
 				}
 
@@ -208,7 +210,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 				}*/
 				update_post_meta( $menu_item_db_id, '_off_canvas_control_menu_item', $options ); // allow us to easily identify our nav menu item
 			}
-		}
+		} // End if().
 	}
 
 	/*
@@ -220,30 +222,31 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	 * @param   array   $items menu items
 	 * @return  array   modified items
 	 */
-	public function wp_get_nav_menu_items($items) {
+	public function wp_get_nav_menu_items( $items ) {
 
-		if ( function_exists( 'doing_action' ) && doing_action('customize_register') || is_admin() ) {
+		if ( function_exists( 'doing_action' ) && doing_action( 'customize_register' ) || is_admin() ) {
 			// needed since WP 4.3, doing_action available since WP 3.9
 			return $items;
 		}
 
 		foreach ( $items as $key => $item ) {
-			if ( $options = get_post_meta( $item->ID, '_off_canvas_control_menu_item', true ) ) {
+			$options = get_post_meta( $item->ID, '_off_canvas_control_menu_item', true );
+			if ( $options ) {
 				$item->url = '';
-				if ( isset( $this->settings['sidebars'][ $options['off-canvas-control'] ] ) && 1 == $this->settings['sidebars'][ $options['off-canvas-control'] ]['enable'] ) {
+				if ( isset( $this->settings['sidebars'][ $options['off-canvas-control'] ] ) && $this->settings['sidebars'][ $options['off-canvas-control'] ]['enable'] ) {
 					//$item->title = $options['show_flags'] && $options['show_names'] ? $lang['flag'].'&nbsp;'.esc_html($lang['name']) : ($options['show_flags'] ? $lang['flag'] : esc_html($lang['name']));
 
 					$link_classes = $this->link_classes;
-					if ( ! is_array( $link_classes ) ){
-						$link_classes = explode(' ', $link_classes);
+					if ( ! is_array( $link_classes ) ) {
+						$link_classes = explode( ' ', $link_classes );
 					}
 
 					if ( ! empty( $options['off-canvas-control'] ) ) {
 						$link_classes[] = $this->settings['css_prefix'] . '-toggle-' . $options['off-canvas-control'];
 					}
 
-					if ( ! is_array( $item->classes ) ){
-						$item->classes = explode(' ', $item->classes);
+					if ( ! is_array( $item->classes ) ) {
+						$item->classes = explode( ' ', $item->classes );
 					}
 
 					$item->classes = array_merge( $item->classes, $link_classes );

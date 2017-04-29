@@ -8,7 +8,9 @@
  * @version 0.3
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 /**
  * Echos one, multiple or all OCS sidebars
@@ -18,12 +20,13 @@
  * @param  string|array  $sidebars        (Optional) The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
  */
 function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
-	if ( $instance = Off_Canvas_Sidebars_Frontend() ) {
+	$instance = off_canvas_sidebars_frontend();
+	if ( $instance ) {
 		if ( empty( $sidebars ) ) {
 			$instance->do_sidebars();
 		} else {
 			if ( is_array( $sidebars ) ) {
-				foreach( $sidebars as $sidebar ) {
+				foreach ( $sidebars as $sidebar ) {
 					$instance->do_sidebar( (string) $sidebar );
 				}
 			} else {
@@ -53,7 +56,8 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * @return string
  */
 function the_ocs_control_trigger( $atts, $content = '' ) {
-	if ( $instance = Off_Canvas_Sidebars_Frontend() ) {
+	$instance = off_canvas_sidebars_frontend();
+	if ( $instance ) {
 
 		if ( empty( $atts['id'] ) ) {
 			return __( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
@@ -66,14 +70,15 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
 			'element' => 'button', // button|span|i|b|a|etc.
 			'class'   => array(), // Extra classes, also accepts a string with classes separated with a space
 			'attr'    => array(), // An array of attribute keys and their values
-			'echo'    => true
+			'echo'    => true,
 		), $atts, 'ocs_trigger' );
 
+		$return = '';
 		if ( ! empty( $content ) ) {
 			$atts['text'] = $content;
 		}
 
-		$return = $instance->do_control_trigger( $atts[ 'id' ], $atts );
+		$return = $instance->do_control_trigger( $atts['id'], $atts ) . $return;
 		if ( (boolean) $atts['echo'] ) {
 			echo $return;
 		}
@@ -99,7 +104,7 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
  */
 function shortcode_ocs_trigger( $atts, $content = '' ) {
 	// Shortcodes don't echo
-	$atts[ 'echo' ] = false;
+	$atts['echo'] = false;
 
 	// You can also use `attributes` instead of `attr` for readability (if both are used, `attributes` is ignored)
 	if ( empty( $atts['attr'] ) && ! empty( $atts['attributes'] ) ) {
@@ -139,7 +144,7 @@ add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
  * @since   0.3
  * @return  OCS_Off_Canvas_Sidebars_Frontend|false
  */
-function Off_Canvas_Sidebars_Frontend() {
+function off_canvas_sidebars_frontend() {
 	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Frontend', 'get_instance' ) ) ) {
 		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 	}
