@@ -1,0 +1,29 @@
+{
+	"name": "JoryHogeveen/off-canvas-sidebars",
+	"type": "wordpress-plugin",
+	"description": "Add off-canvas sidebars using the Slidebars jQuery plugin",
+	"keywords": [],
+	"homepage": "https://github.com/JoryHogeveen/off-canvas-sidebars/",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "Jory Hogeveen",
+			"email": "info@keraweb.nl",
+			"homepage": "https://www.keraweb.nl/",
+			"role": "Owner"
+		}
+	],
+	"require": {
+		"composer/installers": "1.2.*",
+		"php": ">=5.2.4"
+	},
+	"require-dev": {
+		"phpmd/phpmd": "@stable",
+		"phpunit/phpunit": "4.8.*",
+		"mockery/mockery": "0.9.*",
+		"squizlabs/php_codesniffer": "2.*"
+	},
+	"extra": {
+		"installer-name": "off-canvas-sidebars"
+	}
+}
