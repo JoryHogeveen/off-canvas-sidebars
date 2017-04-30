@@ -247,6 +247,7 @@ final class OCS_Off_Canvas_Sidebars
 		if ( is_admin() ) {
 
 			// Load the settings page
+			include_once( OCS_PLUGIN_DIR . 'includes/class-form.php' );
 			include_once( OCS_PLUGIN_DIR . 'includes/class-settings.php' );
 			OCS_Off_Canvas_Sidebars_Settings::get_instance();
 
