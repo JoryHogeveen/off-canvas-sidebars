@@ -211,14 +211,14 @@ final class OCS_Off_Canvas_Sidebars
 			$this->general_labels = $this->get_general_labels();
 
 			// Register the widget
-			include_once 'widgets/control-widget.php';
+			include_once( OCS_PLUGIN_DIR . 'widgets/control-widget.php' );
 			add_action( 'widgets_init', function() {
 				register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
 			} );
 
 			// Load menu-meta-box option
-			include_once 'includes/class-menu-meta-box.php';
-			OCS_Off_Canvas_Sidebars_Menu_Meta_box::get_instance();
+			include_once( OCS_PLUGIN_DIR . 'includes/class-menu-meta-box.php' );
+			OCS_Off_Canvas_Sidebars_Menu_Meta_Box::get_instance();
 
 		} else {
 
@@ -247,7 +247,7 @@ final class OCS_Off_Canvas_Sidebars
 		if ( is_admin() ) {
 
 			// Load the settings page
-			include_once 'includes/class-settings.php';
+			include_once( OCS_PLUGIN_DIR . 'includes/class-settings.php' );
 			OCS_Off_Canvas_Sidebars_Settings::get_instance();
 
 			// Add settings link to plugins page
@@ -256,7 +256,7 @@ final class OCS_Off_Canvas_Sidebars
 		} else {
 
 			// If a sidebar is enabled, load the front-end
-			include_once 'includes/class-frontend.php';
+			include_once( OCS_PLUGIN_DIR . 'includes/class-frontend.php' );
 			OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 		}
 	}
