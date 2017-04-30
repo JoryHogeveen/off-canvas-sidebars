@@ -526,7 +526,7 @@ final class OCS_Off_Canvas_Sidebars
 		$db_version = strtolower( $settings['db_version'] );
 
 		// Upgrade to 0.2.x
-		if ( version_compare( $db_version, '0.2', '<' ) ) {
+		if ( version_compare( $db_version, '0.2', '<' ) && isset( $settings['sidebars'] ) ) {
 			foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 				if ( empty( $sidebar_data['label'] ) ) {
 					// Label is new
@@ -569,6 +569,10 @@ final class OCS_Off_Canvas_Sidebars
 	 * @return  void
 	 */
 	public function maybe_db_update() {
+		if ( ! isset( $this->settings['db_version'] ) ) {
+			$this->settings['db_version'] = 0;
+			$this->db_update();
+		}
 		$db_version = strtolower( $this->settings['db_version'] );
 		if ( version_compare( $db_version, $this->db_version, '<' ) ) {
 			$this->db_update();
