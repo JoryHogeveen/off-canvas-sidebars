@@ -16,7 +16,7 @@ This plugin will add various options to implement off-canvas sidebars in your Wo
 
 *	Add off-canvas sidebars to the left, right, top and bottom of your website
 *	Use sidebar areas (widget-ready areas), menu locations or [custom hooks](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters) to place content into the off-canvas sidebars
-*	You can add control buttons with a widget, a menu item or with [custom code](https://wordpress.org/plugins/off-canvas-sidebars/installation/)
+*	You can add control buttons with a widget, menu item, [shortcode](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes) or with [custom code](https://wordpress.org/plugins/off-canvas-sidebars/installation/)
 *	Various customisation options and settings available in the Appearances menu
 
 = Compatibility (IMPORTANT!) =
