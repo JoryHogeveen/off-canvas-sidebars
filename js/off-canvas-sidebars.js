@@ -8,7 +8,7 @@
  * @global ocsOffCanvasSidebars
  */
 
-if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
+if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	var ocsOffCanvasSidebars = {
 		"site_close": true,
 		"disable_over": false,
@@ -63,7 +63,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			var overwrite, setting;
 			var prefix = ocsOffCanvasSidebars.css_prefix;
 
-			if ( typeof sidebarId != 'undefined' ) {
+			if ( 'undefined' !== typeof sidebarId ) {
 				if ( ! sidebarId && null !== sidebarId ) {
 					sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 				}
@@ -85,9 +85,9 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				} else {
 					var sidebarElement = $( '#' + sidebarId );
 					overwrite = sidebarElement.attr( 'ocs-overwrite_global_settings' );
-					if ( typeof overwrite !== 'undefined' && overwrite ) {
+					if ( overwrite ) {
 						setting = sidebarElement.attr( 'ocs-' + key );
-						if ( typeof setting != 'undefined' ) {
+						if ( 'undefined' !== typeof setting ) {
 							return setting;
 						} else {
 							return false;
@@ -96,11 +96,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				}
 			}
 
-			if ( typeof ocsOffCanvasSidebars[ key ] != 'undefined' && ! ocsOffCanvasSidebars.useAttributeSettings ) {
+			if ( ocsOffCanvasSidebars.hasOwnProperty( key ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 				return ocsOffCanvasSidebars[ key ];
 			} else {
 				setting = $( '#' + prefix + '-site' ).attr( 'ocs-' + key );
-				if ( typeof setting != 'undefined' ) {
+				if ( 'undefined' !== typeof setting ) {
 					return setting;
 				}
 			}
@@ -187,34 +187,35 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
 			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
 			var duration = parseFloat( slidebar.element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
-			if ( slidebar.side == 'top' || slidebar.side == 'bottom' ) {
+			if ( slidebar.side === 'top' || slidebar.side === 'bottom' ) {
 				var elements = $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
 				elements.attr( { 'canvas-fixed': 'fixed' } );
 
 				// Legacy mode (only needed for location: top)
-				if ( ocsOffCanvasSidebars.legacy_css && slidebar.side == 'top' && slidebar.style != 'overlay' ) {
+				if ( ocsOffCanvasSidebars.legacy_css && slidebar.side === 'top' && slidebar.style !== 'overlay' ) {
 					var offset;
-					if ( slidebar.style == 'reveal' ) {
+					if ( slidebar.style === 'reveal' ) {
 						offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
 					} else {
 						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', '') );
 					}
 					elements.each( function() {
+						var $this = $(this);
 						// Set animation
-						if ( e.type == 'opening' ) {
-							$(this).css( {
+						if ( e.type === 'opening' ) {
+							$this.css( {
 								'-webkit-transition': 'top ' + duration + 'ms',
 								'-moz-transition': 'top ' + duration + 'ms',
 								'-o-transition': 'top ' + duration + 'ms',
 								'transition': 'top ' + duration + 'ms'
 							} );
-							$(this).css( 'top', parseInt( $(this).css('top').replace('px', '') ) + offset + 'px' );
+							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) + offset + 'px' );
 						}
 						// Remove animation
-						else if ( e.type == 'closing' ) {
-							$(this).css( 'top', parseInt( $(this).css('top').replace('px', '') ) - offset + 'px' );
+						else if ( e.type === 'closing' ) {
+							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) - offset + 'px' );
 							setTimeout( function() {
-								$(this).css( {
+								$this.css( {
 									'-webkit-transition': '',
 									'-moz-transition': '',
 									'-o-transition': '',
@@ -230,7 +231,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 						var $this = $(this);
 						//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
 						//console.log( curVal );
-						if ( e.type == 'opening' || e.type == 'closing' ) {
+						if ( e.type === 'opening' || e.type === 'closing' ) {
 							$this.css( {
 								'-webkit-transition': 'transform ' + duration + 'ms',
 								'-moz-transition': 'transform ' + duration + 'ms',
@@ -238,7 +239,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 								'transition': 'transform ' + duration + 'ms'
 							} );
 							//$(this).css('transform', 'translate( 0px, ' + curVal + slidebar.element.height() + 'px )' );
-						} else if ( e.type == 'opened' || e.type == 'closed' ) {
+						} else if ( e.type === 'opened' || e.type === 'closed' ) {
 							$this.css( {
 								'-webkit-transition': '',
 								'-moz-transition': '',
@@ -261,7 +262,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 		} );
 
 		// Validate type, this could be changed with the hooks
-		if ( typeof ocsOffCanvasSidebars.setupTriggers == 'function' ) {
+		if ( 'function' === typeof ocsOffCanvasSidebars.setupTriggers ) {
 			ocsOffCanvasSidebars.setupTriggers();
 		}
 	};
@@ -273,7 +274,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
 
-		if ( typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] == 'undefined' ) {
+		if ( 'undefined' === typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] ) {
 			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
 				'overwrite_global_settings': false,
 				"site_close": ocsOffCanvasSidebars.site_close,
@@ -450,7 +451,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 	};
 
-	if ( $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length && ( typeof slidebars != 'undefined' ) ) {
+	if ( $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length && ( 'undefined' !== typeof slidebars ) ) {
 		ocsOffCanvasSidebars.init();
 	}
 

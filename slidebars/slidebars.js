@@ -48,11 +48,16 @@ slidebars = function () {
 		var elements = $(),
 		amount = '0px, 0px',
 		size = '0px',
-		duration = parseFloat( offCanvas[ id ].element.css( 'transitionDuration' ), 10 ) * 1000;
+		duration = parseFloat( offCanvas[ id ].element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
 
 		// Elements to animate
 		if ( offCanvas[ id ].style === 'reveal' || offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'shift' ) {
 			elements = elements.add( canvas );
+		}
+
+		// @todo, fix reveal support for top and bottom
+		if ( offCanvas[ id ].style === 'reveal' && ( offCanvas[ id ].side === 'top' || offCanvas[ id ].side === 'bottom' ) ) {
+			elements = elements.add( offCanvas[ id ].element );
 		}
 
 		if ( offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'overlay' || offCanvas[ id ].style === 'shift' ) {
@@ -107,11 +112,7 @@ slidebars = function () {
 
 	isRegisteredSlidebar = function ( id ) {
 		// Return if Slidebar is registered
-		if ( offCanvas.hasOwnProperty( id ) ) {
-			return true;
-		} else {
-			return false;
-		}
+		return ( offCanvas.hasOwnProperty( id ) );
 	};
 
 	/**
@@ -201,7 +202,7 @@ slidebars = function () {
 		// Loop through Slidebars to set negative margins
 		for ( var id in offCanvas ) {
 			// Check if Slidebar is registered
-			if ( isRegisteredSlidebar( id ) ) {
+			if ( offCanvas.hasOwnProperty( id ) && isRegisteredSlidebar( id ) ) {
 				// Calculate offset
 				var offset;
 
@@ -212,18 +213,29 @@ slidebars = function () {
 				}
 
 				// Apply negative margins
+				var do_offset = false;
 				if ( offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'overlay' || offCanvas[ id ].style === 'shift' ) {
+					do_offset = true;
+				} else if ( offCanvas[ id ].style === 'reveal' && ( offCanvas[ id ].side === 'top' || offCanvas[ id ].side === 'bottom' ) ) {
+					// temp disabled style condition to enable reveal location as well for top and bottom
+					// @todo, fix reveal support for top and bottom, current result is behaviour similar to push
+					do_offset = true;
+				}
+				if ( do_offset ) {
 					offCanvas[ id ].element.css( 'margin-' + offCanvas[ id ].side, '-' + offset );
 
 					// Fix shift style locations for legacy mode (1.9 to fix minor px rendering issues)
 					if ( self.legacy && offCanvas[ id ].style === 'shift' ) {
 						var shiftPos;
-						if ( offCanvas[ id ].side == 'top' || offCanvas[ id ].side == 'bottom' ) {
+						if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 							shiftPos = offCanvas[ id ].element.height() / 1.9;
-						} else if ( offCanvas[ id ].side == 'left' || offCanvas[ id ].side == 'right' ) {
+						} else if ( 'left' === offCanvas[ id ].side || 'right' === offCanvas[ id ].side ) {
 							shiftPos = offCanvas[ id ].element.width() / 1.9;
 						}
-						offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
+						// @todo, fix shift support for top and bottom
+						if ( 'left' === offCanvas[ id ].side || 'right' === offCanvas[ id ].side ) {
+							offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
+						}
 					}
 				}
 			}
@@ -284,21 +296,22 @@ slidebars = function () {
 				css[ offCanvas[ id ].side ] = animationProperties.amount;
 
 				var canvasSide;
-				if ( offCanvas[ id ].side == 'right' || offCanvas[ id ].side == 'bottom' ) {
+				if ( 'right' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 					// Bottom and Right animation for slidebars and the container are not the same
-					if ( offCanvas[ id ].side == 'right' ) {
+					if ( 'right' === offCanvas[ id ].side ) {
 						canvasSide = 'left';
-					} else if ( offCanvas[ id ].side == 'bottom' ) {
+					} else if ( 'bottom' === offCanvas[ id ].side ) {
 						canvasSide = 'top';
 					}
-					// Move container
-					canvas.css( {
+					var canvasCss = {
 						'-webkit-transition-duration': animationProperties.duration + 'ms',
 						'-moz-transition-duration': animationProperties.duration + 'ms',
 						'-o-transition-duration': animationProperties.duration + 'ms',
-						'transition-duration': animationProperties.duration + 'ms',
-					} );
-					canvas.css( canvasSide, '-' + animationProperties.amount );
+						'transition-duration': animationProperties.duration + 'ms'
+					};
+					canvasCss[ canvasSide ] = '-' + animationProperties.amount;
+					// Move container
+					canvas.css( canvasCss );
 					// Open slidebar
 					animationProperties.elements.not( canvas ).css( css );
 				} else {
@@ -366,17 +379,19 @@ slidebars = function () {
 
 			// Apply css
 			if ( self.legacy ) {
+				var css = {};
 
 				var canvasSide;
-				if ( offCanvas[ id ].side == 'right' || offCanvas[ id ].side == 'bottom' ) {
+				if ( 'right' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 					// Bottom and Right animation for slidebars and the container are not the same
-					if ( offCanvas[ id ].side == 'right' ) {
+					if ( 'right' === offCanvas[ id ].side ) {
 						canvasSide = 'left';
-					} else if ( offCanvas[ id ].side == 'bottom' ) {
+					} else if ( 'bottom' === offCanvas[ id ].side ) {
 						canvasSide = 'top';
 					}
 					// Reset container
 					canvas.css( canvasSide, '' );
+
 					// Close slidebar
 					animationProperties.elements.not( canvas ).css( offCanvas[ id ].side, '' );
 				} else {
@@ -385,14 +400,17 @@ slidebars = function () {
 				}
 
 				// Fix shift style for legacy mode (1.9 to fix minor px rendering issues)
-				if ( offCanvas[ id ].style == 'shift' ) {
+				if ( 'shift' === offCanvas[ id ].style ) {
 					var shiftPos;
-					if ( offCanvas[ id ].side == 'top' || offCanvas[ id ].side == 'bottom' ) {
+					if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 						shiftPos = offCanvas[ id ].element.height() / 1.9;
-					} else if ( offCanvas[ id ].side == 'left' || offCanvas[ id ].side == 'right' ) {
+					} else if ( 'left' === offCanvas[ id ].side || 'right' === offCanvas[ id ].side ) {
 						shiftPos = offCanvas[ id ].element.width() / 1.9;
 					}
-					offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
+					// @todo, fix shift support for top and bottom
+					if ( 'left' === offCanvas[ id ].side || 'right' === offCanvas[ id ].side ) {
+						offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
+					}
 				}
 
 			} else {
@@ -411,7 +429,6 @@ slidebars = function () {
 
 				// Hide the Slidebar
 				offCanvas[ id ].element.css( 'display', '' );
-
 				// Trigger event
 				$( events ).trigger( 'closed', [ offCanvas[ id ].id ] );
 
