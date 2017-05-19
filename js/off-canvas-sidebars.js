@@ -199,6 +199,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					} else {
 						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', '') );
 					}
+
+					//Compatibility with WP Admin Bar
+					// @todo, condition for setting
+					if ( ocsOffCanvasSidebars._toolbar ) {
+						var bodyOffset = $( 'body' ).offset();
+						offset += bodyOffset.top;
+					}
+
 					elements.each( function() {
 						var $this = $(this);
 						// Set animation
