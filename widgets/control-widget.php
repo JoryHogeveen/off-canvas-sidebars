@@ -143,25 +143,35 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		<div id="<?php echo $field_id ?>_tabs" style="display: none;">
 		<?php
+			$counter = 0;
 			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
 				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 					continue;
 				}
+				$disabled = false;
 				$class = 'ocs-tab';
 				if ( empty( $ocs[ $sidebar_id ]['enable'] ) ) {
 					$class .= ' disabled';
+					$disabled = true;
+				} elseif ( ! $counter ) {
+					$class .= ' active';
 				}
 				?>
 				<div id="<?php echo $field_id . '_' . $sidebar_id . '_tab'; ?>" class="<?php echo $class ?>">
 					<?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?>
 				</div>
 				<?php
+				if ( ! $disabled ) {
+					$counter++;
+				}
 			}
 		?>
 		</div>
 
 		<div id="<?php echo $field_id ?>_panes">
-		<?php foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
+		<?php
+		$counter = 0;
+		foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
 			if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 				continue;
 			}
@@ -170,13 +180,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				$hidden = 'style="display:none;"';
 			//}
 		?>
-		<div id="<?php echo $field_id . '_' . $sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo $hidden ?>>
+		<div id="<?php echo $field_id . '_' . $sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo ( $counter ) ? $hidden : '' ?>>
 			<h4 class=""><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label"><?php _e( 'Show label', 'off-canvas-sidebars' ); ?></label>
 			</p>
-			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ( $ocs[ $sidebar_id ]['show_label'] ) ? '' : 'style="display: none;"'; ?>>
+			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ( ! $ocs[ $sidebar_id ]['show_label'] ) ? $hidden : ''; ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_label"><?php _e( 'Label text', 'off-canvas-sidebars' ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][label]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['label']; ?>">
 			</p>
@@ -184,7 +194,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_icon]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_icon'], 1 ); ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon"><?php _e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
 			</p>
-			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ( $ocs[ $sidebar_id ]['show_icon'] ) ? '' : 'style="display: none;"'; ?>>
+			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_icon"><?php _e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
@@ -194,7 +204,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			</p>
 			<hr />
 		</div>
-		<?php } ?>
+		<?php
+			$counter++;
+		} ?>
 		</div>
 
 		<p>
