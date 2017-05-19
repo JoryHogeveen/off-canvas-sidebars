@@ -4,7 +4,7 @@
  * ocsOffCanvasSidebars
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3.2
+ * @version 0.4
  * @global ocsOffCanvasSidebars
  */
 
@@ -161,17 +161,18 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		/**
 		 * Compatibility with WP Admin Bar
-		 * @since  0.3.2
+		 * @since  0.4
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
 			$( window ).on('load resize', function() {
+				// Offset top = admin bar height
 				var bodyOffset = $( 'body' ).offset();
 				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
 					// Top slidebars
 					if ( $(this).hasClass( 'ocs-location-top' ) ) {
 						$(this).css( 'margin-top', parseInt( $(this).css('margin-top').replace( 'px', '' ) ) + bodyOffset.top + 'px' );
 					}
-					// Bottom slidebars
+					// Left/Right slidebars
 					else if ( $(this).hasClass( 'ocs-location-left' ) || $(this).hasClass( 'ocs-location-right' ) ) {
 						$(this).css( 'margin-top', bodyOffset.top + 'px' );
 					}
@@ -181,11 +182,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 
 		/**
 		 * Fix position issues for fixed elements on slidebar animations
-		 * @since  0.3.2
+		 * @since  0.4
  		 */
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
 			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
-			var duration = parseFloat( slidebar.element.css( 'transitionDuration' ) /*, 10*/ ) * 1000;
+			var duration = parseFloat( slidebar.element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
 			if ( slidebar.side == 'top' || slidebar.side == 'bottom' ) {
 				var elements = $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
 				elements.attr( { 'canvas-fixed': 'fixed' } );
@@ -226,10 +227,11 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 				// Normal mode (only sets a transition for use in fixed-scrolltop.js)
 				else {
 					elements.each( function() {
+						var $this = $(this);
 						//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
 						//console.log( curVal );
 						if ( e.type == 'opening' || e.type == 'closing' ) {
-							$( this ).css( {
+							$this.css( {
 								'-webkit-transition': 'transform ' + duration + 'ms',
 								'-moz-transition': 'transform ' + duration + 'ms',
 								'-o-transition': 'transform ' + duration + 'ms',
@@ -237,7 +239,7 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 							} );
 							//$(this).css('transform', 'translate( 0px, ' + curVal + slidebar.element.height() + 'px )' );
 						} else if ( e.type == 'opened' || e.type == 'closed' ) {
-							$(this).css( {
+							$this.css( {
 								'-webkit-transition': '',
 								'-moz-transition': '',
 								'-o-transition': '',
