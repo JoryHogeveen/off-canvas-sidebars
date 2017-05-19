@@ -22,16 +22,18 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 */
 	protected static $_instance = null;
 
-	protected $general_key = '';
-	protected $settings_tab = 'ocs-settings';
-	protected $sidebars_tab = 'ocs-sidebars';
-	protected $shortcode_tab = 'ocs-shortcode';
+	protected $general_key      = '';
+	protected $settings_tab     = 'ocs-settings';
+	protected $sidebars_tab     = 'ocs-sidebars';
+	protected $shortcode_tab    = 'ocs-shortcode';
 	protected $importexport_tab = 'ocs-importexport';
-	protected $plugin_key = '';
-	protected $plugin_tabs = array();
-	protected $settings = array();
-	protected $general_labels = array();
-	protected $capability = 'edit_theme_options';
+	protected $plugin_key       = '';
+	protected $plugin_tabs      = array();
+	protected $settings         = array();
+	protected $general_labels   = array();
+	protected $capability       = 'edit_theme_options';
+	protected $post_tab         = '';
+	protected $tab              = '';
 
 	/**
 	 * @since  0.1
@@ -39,6 +41,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @access private
 	 */
 	private function __construct() {
+		// @codingStandardsIgnoreStart
+		$this->post_tab   = ( isset( $_POST['ocs_tab'] ) ) ? $_POST['ocs_tab'] : '';
+		$this->tab        = ( isset( $_GET['tab'] ) ) ? $_GET['tab'] : $this->settings_tab;
+		// @codingStandardsIgnoreEnd
 		$this->plugin_key = off_canvas_sidebars()->get_plugin_key();
 		add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
@@ -59,7 +65,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 		/**
 		 * Change the capability for the OCS settings
-		 * @since  1.4
+		 * @since  0.4
 		 * @param  string
 		 * @return string
 		 */
@@ -571,103 +577,130 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	}
 
 	/**
-	 * Validates post values
-	 *
-	 * @since  0.1
-	 *
+	 * Parses post values
+	 * @since  0.4
 	 * @param  array  $input
 	 * @return array  $output
 	 */
-	function validate_input( $input ) {
+	private function parse_input( $input ) {
 		// First set current values
-		$output = $this->settings;
-		$tab = $_POST['ocs_tab'];
+		$defaults = $this->settings;
 
 		// Add new sidebar
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
 			$new_sidebar_id = $this->validate_id( $input['sidebars']['ocs_add_new'] );
-			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $output['sidebars'][ $new_sidebar_id ] ) ) {
+			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $defaults['sidebars'][ $new_sidebar_id ] ) ) {
 				$input['sidebars'][ $new_sidebar_id ] = array(
 					'enable' => 1,
 					'label' => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
 				);
 			} else {
-				// Translators: %s stands for a sidebar ID.
-				add_settings_error( $new_sidebar_id . '_duplicate_id', esc_attr( 'ocs_duplicate_id' ), sprintf( __( 'The ID %s already exists! Sidebar not added.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' ) );
+				add_settings_error(
+					$new_sidebar_id . '_duplicate_id',
+					esc_attr( 'ocs_duplicate_id' ),
+					// Translators: %s stands for a sidebar ID.
+					sprintf( __( 'The ID %s already exists! Sidebar not added.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' )
+				);
 			}
 		}
 		unset( $input['sidebars']['ocs_add_new'] );
 
-		if ( $tab === $this->settings_tab ) {
-			$input['enable_frontend']      = ( ! empty( $input['enable_frontend'] ) ) ? 1 : 0;
-			$input['site_close']           = ( ! empty( $input['site_close'] ) ) ? 1 : 0;
-			$input['hide_control_classes'] = ( ! empty( $input['hide_control_classes'] ) ) ? 1 : 0;
-			$input['scroll_lock']          = ( ! empty( $input['scroll_lock'] ) ) ? 1 : 0;
-			$input['use_fastclick']        = ( ! empty( $input['use_fastclick'] ) ) ? 1 : 0;
+		if ( $this->post_tab === $this->settings_tab ) {
+			$input['enable_frontend']      = $this->validate_numeric_boolean( $input, 'enable_frontend' );
+			$input['site_close']           = $this->validate_numeric_boolean( $input, 'site_close' );
+			$input['hide_control_classes'] = $this->validate_numeric_boolean( $input, 'hide_control_classes' );
+			$input['scroll_lock']          = $this->validate_numeric_boolean( $input, 'scroll_lock' );
+			$input['use_fastclick']        = $this->validate_numeric_boolean( $input, 'use_fastclick' );
+			$input['shortcode_rendering_wp_editor'] = $this->validate_numeric_boolean( $input, 'shortcode_rendering_wp_editor' );
 		}
 
 		// Handle existing sidebars
-		if ( isset( $input['sidebars'] ) ) {
-
-			// Update trigger, always remove
-			if ( isset( $input['sidebars']['ocs_update'] ) ) {
-				unset( $input['sidebars']['ocs_update'] );
-			}
-
-			foreach ( $output['sidebars'] as $sidebar_id => $sidebar_data ) {
-
-				if ( ! isset( $input['sidebars'][ $sidebar_id ] ) ) {
-					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
-					// Sidebars are set but this sidebar isn't checked as active
-					$input['sidebars'][ $sidebar_id ]['enable'] = 0;
-				}
-
-				// Global settings page
-				if ( count( $input['sidebars'][ $sidebar_id ] ) < 2 ) {
-					$output['sidebars'][ $sidebar_id ]['enable'] = $this->validate_checkbox( $input['sidebars'][ $sidebar_id ]['enable'] );
-					$input['sidebars'][ $sidebar_id ] = $output['sidebars'][ $sidebar_id ];
-				}
-
-				// Default label is sidebar ID
-				if ( empty( $input['sidebars'][ $sidebar_id ]['label'] ) ) {
-					$input['sidebars'][ $sidebar_id ]['label'] = $sidebar_id;
-				}
-
-				// Change sidebar ID
-				if ( ! empty( $input['sidebars'][ $sidebar_id ]['id'] ) && $sidebar_id !== $input['sidebars'][ $sidebar_id ]['id'] ) {
-
-					$new_sidebar_id = $this->validate_id( $input['sidebars'][ $sidebar_id ]['id'] );
-
-					if ( $sidebar_id !== $new_sidebar_id ) {
-
-						if ( empty( $input['sidebars'][ $new_sidebar_id ] ) ) {
-
-							$input['sidebars'][ $new_sidebar_id ] = $input['sidebars'][ $sidebar_id ];
-							$input['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
-
-							unset( $input['sidebars'][ $sidebar_id ] );
-
-							$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
-						} else {
-							// Translators: %s stands for a sidebar ID.
-							add_settings_error( $sidebar_id . '_duplicate_id', esc_attr( 'ocs_duplicate_id' ), sprintf( __( 'The ID %s already exists! The ID is not changed.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' ) );
-						}
-					}
-				}
-			} // End foreach().
-		} // End if().
+		$input = $this->parse_sidebars_input( $input, $defaults );
 
 		// Overwrite non existing values with current values
-		foreach ( $output as $key => $value ) {
+		foreach ( $defaults as $key => $value ) {
 			if ( ! isset( $input[ $key ] ) ) {
 				$input[ $key ] = $value;
 			}
 		}
 
-		// Overwrite the old settings
-		$output = $input;
+		return $input;
+	}
 
-		if ( $tab === $this->settings_tab ) {
+	/**
+	 * Parses sidebar post values
+	 * @since  0.4
+	 * @param  array $input
+	 * @param  array $defaults
+	 * @return array
+	 */
+	private function parse_sidebars_input( $input, $defaults ) {
+		if ( empty( $defaults['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
+			return $input;
+		}
+
+		unset( $input['sidebars']['ocs_update'] );
+
+		$defaults = (array) $defaults['sidebars'];
+		$sidebars = (array) $input['sidebars'];
+
+		foreach ( $defaults as $sidebar_id => $sidebar_data ) {
+
+			if ( ! isset( $sidebars[ $sidebar_id ] ) ) {
+				$sidebars[ $sidebar_id ] = $defaults[ $sidebar_id ];
+				// Sidebars are set but this sidebar isn't checked as active
+				$sidebars[ $sidebar_id ]['enable'] = 0;
+			}
+
+			// Global settings page
+			if ( count( $sidebars[ $sidebar_id ] ) < 2 ) {
+				$defaults[ $sidebar_id ]['enable'] = $this->validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
+				$sidebars[ $sidebar_id ] = $defaults[ $sidebar_id ];
+			}
+
+			// Default label is sidebar ID
+			if ( empty( $sidebars[ $sidebar_id ]['label'] ) ) {
+				$sidebars[ $sidebar_id ]['label'] = $sidebar_id;
+			}
+
+			// Change sidebar ID
+			if ( ! empty( $sidebars[ $sidebar_id ]['id'] ) && $sidebar_id !== $sidebars[ $sidebar_id ]['id'] ) {
+
+				$new_sidebar_id = $this->validate_id( $sidebars[ $sidebar_id ]['id'] );
+
+				if ( $sidebar_id !== $new_sidebar_id ) {
+
+					if ( empty( $sidebars[ $new_sidebar_id ] ) ) {
+
+						$sidebars[ $new_sidebar_id ] = $sidebars[ $sidebar_id ];
+						$sidebars[ $new_sidebar_id ]['id'] = $new_sidebar_id;
+
+						unset( $sidebars[ $sidebar_id ] );
+
+						$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
+					} else {
+						// Translators: %s stands for a sidebar ID.
+						add_settings_error( $sidebar_id . '_duplicate_id', esc_attr( 'ocs_duplicate_id' ), sprintf( __( 'The ID %s already exists! The ID is not changed.', 'off-canvas-sidebars' ), '<code>' . $new_sidebar_id . '</code>' ) );
+					}
+				}
+			}
+		} // End foreach().
+
+		$input['sidebars'] = $sidebars;
+		return $input;
+	}
+
+	/**
+	 * Validates post values
+	 * @since  0.1
+	 * @param  array  $input
+	 * @return array  $output
+	 */
+	function validate_input( $input ) {
+		// Overwrite the old settings
+		$output = $this->parse_input( $input );
+
+		if ( $this->post_tab === $this->settings_tab ) {
 			// Make sure unchecked checkboxes are 0 on save
 			$output['enable_frontend']               = $this->validate_checkbox( $output['enable_frontend'] );
 			$output['site_close']                    = $this->validate_checkbox( $output['site_close'] );
@@ -702,20 +735,24 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				unset( $output['sidebars'][ $sidebar_id ] );
 			} else {
 
+				$sidebar = $output['sidebars'][ $sidebar_id ];
+
 				// Make sure unchecked checkboxes are 0 on save
-				$output['sidebars'][ $sidebar_id ]['enable']                    = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['enable'] );
-				$output['sidebars'][ $sidebar_id ]['overwrite_global_settings'] = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['overwrite_global_settings'] );
-				$output['sidebars'][ $sidebar_id ]['site_close']                = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['site_close'] );
-				$output['sidebars'][ $sidebar_id ]['hide_control_classes']      = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['hide_control_classes'] );
-				$output['sidebars'][ $sidebar_id ]['scroll_lock']               = $this->validate_checkbox( $output['sidebars'][ $sidebar_id ]['scroll_lock'] );
+				$sidebar['enable']                    = $this->validate_checkbox( $sidebar['enable'] );
+				$sidebar['overwrite_global_settings'] = $this->validate_checkbox( $sidebar['overwrite_global_settings'] );
+				$sidebar['site_close']                = $this->validate_checkbox( $sidebar['site_close'] );
+				$sidebar['hide_control_classes']      = $this->validate_checkbox( $sidebar['hide_control_classes'] );
+				$sidebar['scroll_lock']               = $this->validate_checkbox( $sidebar['scroll_lock'] );
 
 				// Numeric values (not integers!)
-				$output['sidebars'][ $sidebar_id ]['padding']         = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['padding'] );
-				$output['sidebars'][ $sidebar_id ]['disable_over']    = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['disable_over'] );
-				$output['sidebars'][ $sidebar_id ]['animation_speed'] = $this->validate_numeric( $output['sidebars'][ $sidebar_id ]['animation_speed'] );
+				$sidebar['padding']         = $this->validate_numeric( $sidebar['padding'] );
+				$sidebar['disable_over']    = $this->validate_numeric( $sidebar['disable_over'] );
+				$sidebar['animation_speed'] = $this->validate_numeric( $sidebar['animation_speed'] );
 
 				// Validate radio options
-				$output['sidebars'][ $sidebar_id ]['content'] = $this->validate_radio( $output['sidebars'][ $sidebar_id ]['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
+				$sidebar['content'] = $this->validate_radio( $sidebar['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
+
+				$output['sidebars'][ $sidebar_id ] = $sidebar;
 
 				$new_sidebar_id = $this->validate_id( $sidebar_id );
 				if ( $sidebar_id !== $new_sidebar_id ) {
@@ -727,7 +764,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 					$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
 				}
 			}
-		}
+		} // End foreach().
 
 		// Validate global settings with defaults
 		$output = off_canvas_sidebars()->validate_settings( $output, off_canvas_sidebars()->get_default_settings() );
@@ -736,11 +773,25 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			$output['sidebars'][ $sidebar_id ] = off_canvas_sidebars()->validate_settings( $sidebar_settings, off_canvas_sidebars()->get_default_sidebar_settings() );
 		}
 
-		if ( isset( $output['ocs_tab'] ) ) {
-			unset( $output['ocs_tab'] );
-		}
+		unset( $output['ocs_tab'] );
 
 		return $output;
+	}
+
+	/**
+	 * Validates checkbox boolean values, used by validate_input
+	 *
+	 * @since  0.4
+	 *
+	 * @param  mixed   $value
+	 * @param  string  $key
+	 * @return bool
+	 */
+	function validate_numeric_boolean( $value, $key = '' ) {
+		if ( $key ) {
+			return (int) ( ! empty( $value[ $key ] ) );
+		}
+		return (int) ( ! empty( $value ) );
 	}
 
 	/**
@@ -749,7 +800,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.1.2
 	 *
 	 * @param  mixed  $value
-	 * @return int    $value
+	 * @return int
 	 */
 	function validate_checkbox( $value ) {
 		return ( ! empty( $value ) ) ? (int) strip_tags( $value ) : 0;
@@ -763,7 +814,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @param  string $value
 	 * @param  array  $options
 	 * @param  string $default
-	 * @return int    $value
+	 * @return int
 	 */
 	function validate_radio( $value, $options, $default ) {
 		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? strip_tags( $value ) : $default;
@@ -776,7 +827,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.3  Convert to lowercase and convert spaces to dashes before preg_replace
 	 *
 	 * @param  string $value
-	 * @return string $value
+	 * @return string
 	 */
 	function validate_id( $value ) {
 		return preg_replace( '/[^a-z0-9_-]+/i', '', str_replace( ' ', '-', strtolower( $value ) ) );
@@ -788,7 +839,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.2.2
 	 *
 	 * @param  mixed $value
-	 * @return string $value
+	 * @return string
 	 */
 	function validate_numeric( $value ) {
 		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
@@ -800,7 +851,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.3
 	 *
 	 * @param  mixed $value
-	 * @return string $value
+	 * @return string
 	 */
 	function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
@@ -836,8 +887,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.1
 	 */
 	function plugin_options_page() {
-		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
-		$do_submit = ( in_array( $tab, array( $this->settings_tab, $this->sidebars_tab ), true ) ) ? true : false;
+		$do_submit = ( in_array( $this->tab, array( $this->settings_tab, $this->sidebars_tab ), true ) ) ? true : false;
 		?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) ?></h1>
@@ -850,13 +900,13 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				<?php if ( $do_submit ) { ?>
 				<p class="alignright"><?php submit_button( null, 'primary', 'submit', false ); ?></p>
 				<?php } ?>
-				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $tab ?>" />
+				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $this->tab ?>" />
 
-				<?php if ( $tab === $this->settings_tab ) { ?>
+				<?php if ( $this->tab === $this->settings_tab ) { ?>
 				<p><?php // Translators: %s stands for a URL.
 					echo sprintf( __( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/' ); ?></p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
-				<?php } elseif ( $tab === $this->sidebars_tab ) { ?>
+				<?php } elseif ( $this->tab === $this->sidebars_tab ) { ?>
 				<p>
 					<?php esc_html_e( 'Add a new sidebar', 'off-canvas-sidebars' ) ?> <input name="<?php echo esc_attr( $this->general_key ) . '[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e( 'Name', 'off-canvas-sidebars' ) ?>" />
 					<?php submit_button( __( 'Add sidebar', 'off-canvas-sidebars' ), 'primary', 'submit', false ); ?>
@@ -866,11 +916,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				<div class="metabox-holder">
 				<div class="postbox-container">
 				<div id="main-sortables" class="meta-box-sortables ui-sortable">
-				<?php settings_fields( $tab ); ?>
-				<?php $this->do_settings_sections( $tab ); ?>
+				<?php settings_fields( $this->tab ); ?>
+				<?php $this->do_settings_sections( $this->tab ); ?>
 
-				<?php if ( $tab === $this->shortcode_tab ) $this->shortcode_tab(); ?>
-				<?php if ( $tab === $this->importexport_tab ) $this->importexport_tab(); ?>
+				<?php if ( $this->tab === $this->shortcode_tab ) $this->shortcode_tab(); ?>
+				<?php if ( $this->tab === $this->importexport_tab ) $this->importexport_tab(); ?>
 				</div>
 				</div>
 				</div>
@@ -973,11 +1023,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.1
 	 */
 	function plugin_options_tabs() {
-		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->settings_tab;
-
 		echo '<h1 class="nav-tab-wrapper">';
 		foreach ( $this->plugin_tabs as $tab_key => $tab_caption ) {
-			$active = $current_tab === $tab_key ? 'nav-tab-active' : '';
+			$active = $this->tab === $tab_key ? 'nav-tab-active' : '';
 			echo '<a class="nav-tab ' . esc_attr( $active ) . '" href="?page=' . esc_attr( $this->plugin_key ) . '&amp;tab=' . esc_attr( $tab_key ) . '">' . esc_html( $tab_caption ) . '</a>';
 		}
 		echo '</h1>';
@@ -1183,7 +1231,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			}
 		}
 
-		// export settings
+		// @codingStandardsIgnoreLine - export settings
 		if ( isset( $_GET[ $this->plugin_key . '-export' ] ) ) {
 			header( "Content-Disposition: attachment; filename=" . $this->plugin_key . ".txt" );
 			header( 'Content-Type: text/plain; charset=utf-8' );
@@ -1196,11 +1244,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			exit;
 		}
 
-		// import settings
+		// @codingStandardsIgnoreLine - import settings
 		if ( isset( $_POST[ $this->plugin_key . '-import' ] ) ) {
 
 			if ( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) {
 
+				// @codingStandardsIgnoreLine
 				$import = explode( "\n", file_get_contents( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) );
 				if ( "[START=OCS SETTINGS]" === array_shift( $import ) && "[STOP=OCS SETTINGS]" === array_pop( $import ) ) {
 

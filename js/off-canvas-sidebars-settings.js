@@ -7,7 +7,7 @@
  * @version 0.3
  */
 
-if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
+if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 	var OCS_OFF_CANVAS_SIDEBARS_SETTINGS = {
 		'general_key': 'off_canvas_sidebars_options',
 		'plugin_key': 'off-canvas-sidebars-settings',
@@ -29,7 +29,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		postboxes.add_postbox_toggles( OCS_OFF_CANVAS_SIDEBARS_SETTINGS.plugin_key );
 
 
-		if ( tab.val() == 'ocs-sidebars' ) {
+		if ( 'ocs-sidebars' === tab.val() ) {
 			postbox.each( function() {
 				var sidebar_id = $(this).attr('id').replace('section_sidebar_', '');
 
@@ -108,7 +108,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		// Validate required fields
 		$('input.required').each(function(){
 			$(this).on('change', function() {
-				if ( $(this).val() == '' ) {
+				if ( ! $(this).val() ) {
 					$(this).parents('tr').addClass('form-invalid');
 				} else {
 					$(this).parents('tr').removeClass('form-invalid');
@@ -121,7 +121,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			var valid = true;
 			//var errors = {};
 			$('input.required', this).each(function(){
-				if ( $(this).val() == '' ) {
+				if ( ! $(this).val() ) {
 					$(this).trigger('change');
 					valid = false;
 				}
@@ -132,7 +132,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			}
 		} );
 
-		if ( tab.val() == 'ocs-sidebars' ) {
+		if ( 'ocs-sidebars' === tab.val() ) {
 
 			// Dynamic sidebar ID
 			if ( $('.js-dynamic-id').length ) {
@@ -203,7 +203,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 
 		}
 
-		if ( tab.val() == 'ocs-shortcode' ) {
+		if ( 'ocs-shortcode' === tab.val() ) {
 
 			var fields = [ 'sidebar', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
 
@@ -226,8 +226,8 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 
 				// Loop through our known fields
 				for ( var field in field_data ) {
-					if ( typeof field_data[ field ] != 'undefined' ) {
-						if ( field != 'text' && field != 'nested' ) {
+					if ( 'undefined' !== typeof field_data[ field ] ) {
+						if ( 'text' !== field && 'nested' !== field ) {
 							if ( field_data[ field ].is(':checked') ) {
 								shortcode_str += ' ' + field + '="1"';
 							} else if ( field_data[ field ].val().length ) {
@@ -267,6 +267,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 				var classes = prefix + '-trigger ' + prefix + '-' + action;
 
 				if ( field_data.sidebar.val() ) {
+					// @todo prefix
 					classes += ' lekkerdan-' + action + '-' + field_data.sidebar.val();
 				}
 				if ( field_data.class.val() ) {
@@ -278,11 +279,11 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 				attributes.class = classes;
 
 				var singleton = false;
-				if ( element == 'input' ) {
+				if ( 'input' === element ) {
 					singleton = true;
 					attributes.value = field_data.text.val();
 				}
-				if ( element == 'img' ) {
+				if ( 'img' === element ) {
 					singleton = true;
 					attributes.value = field_data.text.val();
 				}
@@ -314,9 +315,11 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			var arr = attrString.trim().split( '" ' ),
 				atts = {};
 			for ( var key in arr ) {
-				arr[ key ] = arr[ key ].split( '="' );
-				if ( arr[ key ][ 0 ].trim().length ) {
-					atts[ arr[ key ][ 0 ].trim() ] = getAttr( attrString, arr[ key ][ 0 ] );
+				if ( arr.hasOwnProperty( key ) ) {
+					arr[ key ] = arr[ key ].split( '="' );
+					if ( arr[ key ][ 0 ].trim().length ) {
+						atts[ arr[ key ][ 0 ].trim() ] = getAttr( attrString, arr[ key ][ 0 ] );
+					}
 				}
 			}
 			return atts;
@@ -335,11 +338,13 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 			var arr = attrString.split( ';' ),
 				atts = {};
 			for ( var key in arr ) {
-				arr[ key ] = arr[ key ].split( ':' );
-				if ( arr[ key ][ 0 ].trim().length ) {
-					var name = arr[ key ][ 0 ].trim();
-					arr[ key ].splice( 0, 1 );
-					atts[ name ] = arr[ key ].join( ':' );
+				if ( arr.hasOwnProperty( key ) ) {
+					arr[ key ] = arr[ key ].split( ':' );
+					if ( arr[ key ][ 0 ].trim().length ) {
+						var name = arr[ key ][ 0 ].trim();
+						arr[ key ].splice( 0, 1 );
+						atts[ name ] = arr[ key ].join( ':' );
+					}
 				}
 			}
 			return atts;
@@ -357,7 +362,9 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		function attrObjectToHTML( attrObj ) {
 			var atts = [];
 			for ( var name in attrObj ) {
-				atts.push( name + '="' + attrObj[ name ] + '"' );
+				if ( attrObj.hasOwnProperty( name ) ) {
+					atts.push( name + '="' + attrObj[ name ] + '"' );
+				}
 			}
 			return atts.join( ' ' );
 		}
@@ -374,9 +381,26 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		function attrObjectToString( attrObj ) {
 			var atts = [];
 			for ( var name in attrObj ) {
-				atts.push( name + ':' + attrObj[ name ] );
+				if ( attrObj.hasOwnProperty( name ) ) {
+					atts.push( name + ':' + attrObj[ name ] );
+				}
 			}
 			return atts.join( ';' );
+		}
+
+		/**
+		 * @param s
+		 * @param a
+		 * @param f
+		 * @returns {*}
+		 */
+		function getAttr( s, a, f ) {
+			var n = new RegExp( a + '=\"([^\"]+)\"', 'g' ).exec( s );
+			if ( true === f && !n && -1 === s.indexOf( a + '="' ) ) {
+				// Attribute does not exist
+				return false;
+			}
+			return n ? window.decodeURIComponent( n[ 1 ] ).trim() : '';
 		}
 
 	};
