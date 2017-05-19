@@ -363,6 +363,12 @@ if ( typeof ocsOffCanvasSidebars == 'undefined' ) {
 			}
 		} );
 
+		// Close the slidebar after clicking a link
+		$( 'a' ).not( '.' + prefix + '-trigger' ).on( 'touchend click', function() {
+			if ( ! $(this).parents( '.' + prefix + '-trigger' ).length ) {
+				controller.close();
+			}
+		} );
 
 		// Close Slidebars when clicking on a link within a slidebar
 		/*$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
