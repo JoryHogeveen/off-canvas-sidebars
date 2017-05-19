@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-class OCS_Off_Canvas_Sidebars_Form
+abstract class OCS_Off_Canvas_Sidebars_Form
 {
 	protected $general_key = '';
 	protected $settings = array();
@@ -46,13 +46,14 @@ class OCS_Off_Canvas_Sidebars_Form
 			<input type="text" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_' . $args['name']; ?>" value="<?php echo $prefix_value[ $args['name'] ]; ?>"<?php echo $placeholder ?>/>
 			<?php } ?>
 			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
+			<?php $this->do_description( $args ); ?>
 		</fieldset><?php
 		}
 	}
 
+	/**
+	 * @param array $args
+	 */
 	function checkbox_option( $args ) {
 		$prefixes = $this->get_option_prefixes( $args );
 		$prefix_name = $prefixes['prefixName'];
@@ -68,13 +69,14 @@ class OCS_Off_Canvas_Sidebars_Form
 			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
 			<input type="checkbox" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_' . $args['name']; ?>" value="1" <?php checked( $prefix_value[ $args['name'] ], 1 ); ?> />
 			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
+			<?php $this->do_description( $args ); ?>
 		</fieldset><?php
 		}
 	}
 
+	/**
+	 * @param array $args
+	 */
 	function radio_option( $args ) {
 		$prefixes = $this->get_option_prefixes( $args );
 		$prefix_name = $prefixes['prefixName'];
@@ -97,16 +99,19 @@ class OCS_Off_Canvas_Sidebars_Form
 			?>
 			<?php if ( isset( $option['label'] ) ) { ?><label><?php } ?>
 			<input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_' . $args['name'] . '_' . $option['name'] ?>" value="<?php echo $option['value'] ?>" <?php checked( $prefix_value[ $args['name'] ], $option['value'] ); ?> />
-			<?php if ( isset( $option['label'] ) ) { echo $option['label'] ?></label><?php } ?>
-			<?php if ( isset( $option['description'] ) ) { ?><span class="description"><?php echo $option['description'] ?></span><br /><?php } ?>
-			<?php } // End foreach(). ?>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
+			<?php if ( isset( $option['label'] ) ) { echo $option['label'] ?></label><?php
+				}
+				$this->do_description( $args , 'span' );
+				echo '<br />';
+			} // End foreach(). ?>
+			<?php $this->do_description( $args ); ?>
 		</fieldset><?php
 		}
 	}
 
+	/**
+	 * @param array $args
+	 */
 	function select_option( $args ) {
 		$prefixes = $this->get_option_prefixes( $args );
 		$prefix_name = $prefixes['prefixName'];
@@ -133,13 +138,14 @@ class OCS_Off_Canvas_Sidebars_Form
 			<?php } // End foreach(). ?>
 			</select>
 			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><br /><?php } ?>
-			<?php if ( isset( $args['description'] ) ) { ?>
-				<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
+			<?php $this->do_description( $args ); ?>
 			</fieldset><?php
 		}
 	}
 
+	/**
+	 * @param array $args
+	 */
 	function number_option( $args ) {
 		$prefixes = $this->get_option_prefixes( $args );
 		$prefix_name = $prefixes['prefixName'];
@@ -152,13 +158,14 @@ class OCS_Off_Canvas_Sidebars_Form
 			<?php if ( isset( $args['label'] ) ) { ?><label><?php } ?>
 			<input type="number" id="<?php echo $prefix_id . '_' . $args['name']; ?>" class="<?php echo $classes; ?>" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" value="<?php echo $prefix_value[ $args['name'] ] ?>" min="1" max="" step="1" /> <?php echo ( ! empty( $args['input_after'] ) ) ? $args['input_after'] : ''; ?>
 			<?php if ( isset( $args['label'] ) ) { echo $args['label'] ?></label><?php } ?>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
+			<?php $this->do_description( $args ); ?>
 		</fieldset><?php
 		}
 	}
 
+	/**
+	 * @param array $args
+	 */
 	function color_option( $args ) {
 		$prefixes = $this->get_option_prefixes( $args );
 		$prefix_name = $prefixes['prefixName'];
@@ -174,10 +181,19 @@ class OCS_Off_Canvas_Sidebars_Form
 			<div class="<?php echo $prefix_id . '_' . $args['name'] . '_wrapper'; ?>">
 				<input type="text" class="color-picker <?php echo $this->get_option_classes( $prefix_classes, $args['name'] ) ?>" id="<?php echo $prefix_id . '_' . $args['name']; ?>" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" value="<?php echo $prefix_value[ $args['name'] ] ?>" />
 			</div>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
+			<?php $this->do_description( $args ); ?>
 		</fieldset><?php
+		}
+	}
+
+	/**
+	 * @since  0.4
+	 * @param  array   $args
+	 * @param  string  $elem
+	 */
+	function do_description( $args, $elem = 'p' ) {
+		if ( isset( $args['description'] ) ) {
+			echo '<' . $elem . ' class="description">' . $args['description'] . '</' . $elem . '>';
 		}
 	}
 
