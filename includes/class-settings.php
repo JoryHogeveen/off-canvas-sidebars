@@ -5,7 +5,7 @@
  * Settings
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3.1
+ * @version 0.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -561,115 +561,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 	}
 
-	/*
-	 * Specific fields
-	 */
-	function frontend_type_option( $args ) {
-		$prefixes     = $this->get_option_prefixes( $args );
-		$prefix_name  = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id    = $prefixes['prefixId'];
-		?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[frontend_type]'; ?>" id="<?php echo $prefix_id . '_style_action'; ?>" value="action" <?php checked( $prefix_value['frontend_type'], 'action' ); ?> /> <?php _e( 'Actions', 'off-canvas-sidebars' ); echo ' (' . __( 'Default', 'off-canvas-sidebars' ) . ')' ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[frontend_type]'; ?>" id="<?php echo $prefix_id . '_style_jquery'; ?>" value="jquery" <?php checked( $prefix_value['frontend_type'], 'jquery' ); ?> /> <?php _e( 'jQuery', 'off-canvas-sidebars' ); echo ' (' . __( 'Experimental', 'off-canvas-sidebars' ) . ')' ?></label>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
-		</fieldset><?php
-	}
-
-	function enabled_sidebars_option() {
-		$prefix_name  = esc_attr( $this->general_key ) . '[sidebars]';
-		$prefix_value = $this->settings['sidebars'];
-		$prefix_id    = $this->general_key . '_sidebars';
-		//$prefix_classes = array( $prefix_id );
-		if ( ! empty( $this->settings['sidebars'] ) ) {
-		?><fieldset class="checkbox"><?php
-			foreach ( $prefix_value as $sidebar => $sidebar_data ) {
-				//$classes = $this->get_option_classes( $prefix_classes, 'enable' );
-			?>
-				<label><input type="checkbox" name="<?php echo $prefix_name . '[' . $sidebar . '][enable]'; ?>" id="<?php echo $prefix_id . '_enable_' . $sidebar; ?>" value="1" <?php checked( $prefix_value[ $sidebar ]['enable'], 1 ); ?> /> <?php echo $this->settings['sidebars'][ $sidebar ]['label']; ?></label>
-			<?php
-			}
-		?>
-		<input type="hidden" name="<?php echo $prefix_name . '[ocs_update]'; ?>" value="1" />
-		</fieldset>
-		<?php
-		} else {
-			echo '<a href="?page=' . esc_attr( $this->plugin_key ) . '&tab=' . esc_attr( $this->sidebars_tab ) . '">'
-			     . __( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
-		}
-	}
-
-	function sidebar_location( $args ) {
-		$prefixes       = $this->get_option_prefixes( $args );
-		$prefix_name    = $prefixes['prefixName'];
-		$prefix_value   = $prefixes['prefixValue'];
-		$prefix_id      = $prefixes['prefixId'];
-		$prefix_classes = $prefixes['prefixClasses'];
-		if ( isset( $args['sidebar'] ) ) {
-			$classes = $this->get_option_classes( $prefix_classes, 'location' );
-		?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_left'; ?>" value="left" <?php checked( $prefix_value['location'], 'left' ); ?> /> <?php _e( 'Left', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_right'; ?>" value="right" <?php checked( $prefix_value['location'], 'right' ); ?> /> <?php _e( 'Right', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_top'; ?>" value="top" <?php checked( $prefix_value['location'], 'top' ); ?> /> <?php _e( 'Top', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_bottom'; ?>" value="bottom" <?php checked( $prefix_value['location'], 'bottom' ); ?> /> <?php _e( 'Bottom', 'off-canvas-sidebars' ); ?></label>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
-		</fieldset><?php
-		}
-	}
-
-	function sidebar_size( $args ) {
-		$prefixes       = $this->get_option_prefixes( $args );
-		$prefix_name    = $prefixes['prefixName'];
-		$prefix_value   = $prefixes['prefixValue'];
-		$prefix_id      = $prefixes['prefixId'];
-		$prefix_classes = $prefixes['prefixClasses'];
-		if ( isset( $args['sidebar'] ) ) {
-			$classes = $this->get_option_classes( $prefix_classes, 'size' );
-		?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_default'; ?>" value="default" <?php checked( $prefix_value['size'], 'default' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_small'; ?>" value="small" <?php checked( $prefix_value['size'], 'small' ); ?> /> <?php _e( 'Small', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_large'; ?>" value="large" <?php checked( $prefix_value['size'], 'large' ); ?> /> <?php _e( 'Large', 'off-canvas-sidebars' ); ?></label>
-			<div class="custom-input">
-				<label style="display: inline-block">
-					<input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_custom'; ?>" value="custom" <?php checked( $prefix_value['size'], 'custom' ); ?> /> <?php _e( 'Custom', 'off-canvas-sidebars' ); ?>
-				</label>:
-				<input type="number" name="<?php echo $prefix_name . '[size_input]'; ?>" class="<?php echo $this->get_option_classes( $prefix_classes, 'size_input' ); ?>" min="1" max="" step="1" value="<?php echo $prefix_value['size_input'] ?>" />
-				<select name="<?php echo $prefix_name . '[size_input_type]'; ?>" class="<?php echo $this->get_option_classes( $prefix_classes, 'size_input_type' ); ?>">
-					<option value="%" <?php selected( $prefix_value['size_input_type'], '%' ); ?>>%</option>
-					<option value="px" <?php selected( $prefix_value['size_input_type'], 'px' ); ?>>px</option>
-				</select>
-			</div>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
-		</fieldset><?php
-		}
-	}
-
-	function sidebar_style( $args ) {
-		$prefixes = $this->get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
-		$prefix_classes = $prefixes['prefixClasses'];
-		if ( isset( $args['sidebar'] ) ) {
-			$classes = $this->get_option_classes( $prefix_classes, 'style' );
-		?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_push'; ?>" value="push" <?php checked( $prefix_value['style'], 'push' ); ?> /> <?php _e( 'Sidebar slides and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_reveal'; ?>" value="reveal" <?php checked( $prefix_value['style'], 'reveal' ); ?> /> <?php _e( 'Sidebar reveals and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_shift'; ?>" value="shift" <?php checked( $prefix_value['style'], 'shift' ); ?> /> <?php _e( 'Sidebar shifts and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_overlay'; ?>" value="overlay" <?php checked( $prefix_value['style'], 'overlay' ); ?> /> <?php _e( 'Sidebar overlays the site when opened.', 'off-canvas-sidebars' ); ?></label>
-			<?php if ( isset( $args['description'] ) ) { ?>
-			<p class="description"><?php echo $args['description'] ?></p>
-			<?php } ?>
-		</fieldset><?php
-		}
-	}
-
 	/**
 	 * Validates post values
 	 *
@@ -844,27 +735,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	}
 
 	/**
-	 * Updates the existing widgets when a sidebar ID changes
-	 *
-	 * @since  0.3
-	 *
-	 * @param  string  $old_id
-	 * @param  string  $new_id
-	 */
-	function migrate_sidebars_widgets( $old_id, $new_id ) {
-		$old_id = 'off-canvas-' . $old_id;
-		$new_id = 'off-canvas-' . $new_id;
-		$sidebars_widgets = wp_get_sidebars_widgets();
-
-		if ( ! empty( $sidebars_widgets[ $old_id ] ) ) {
-			$sidebars_widgets[ $new_id ] = $sidebars_widgets[ $old_id ];
-			unset( $sidebars_widgets[ $old_id ] );
-		}
-
-		wp_set_sidebars_widgets( $sidebars_widgets );
-	}
-
-	/**
 	 * Validates checkbox values, used by validate_input
 	 *
 	 * @since  0.1.2
@@ -925,6 +795,27 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 */
 	function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
+	}
+
+	/**
+	 * Updates the existing widgets when a sidebar ID changes
+	 *
+	 * @since  0.3
+	 *
+	 * @param  string  $old_id
+	 * @param  string  $new_id
+	 */
+	function migrate_sidebars_widgets( $old_id, $new_id ) {
+		$old_id = 'off-canvas-' . $old_id;
+		$new_id = 'off-canvas-' . $new_id;
+		$sidebars_widgets = wp_get_sidebars_widgets();
+
+		if ( ! empty( $sidebars_widgets[ $old_id ] ) ) {
+			$sidebars_widgets[ $new_id ] = $sidebars_widgets[ $old_id ];
+			unset( $sidebars_widgets[ $old_id ] );
+		}
+
+		wp_set_sidebars_widgets( $sidebars_widgets );
 	}
 
 	/*
@@ -1064,7 +955,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		}
 	}
 
-	/*
+	/**
 	 * Renders our tabs in the plugin options page,
 	 * walks through the object's tabs array and prints
 	 * them one by one. Provides the heading for the
@@ -1083,6 +974,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		echo '</h1>';
 	}
 
+	/**
+	 * Shortcode tab.
+	 * @since 0.4
+	 */
 	function shortcode_tab() {
 		?>
 		<div id="section_shortcode" class="stuffbox postbox">
@@ -1220,6 +1115,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		<?php
 	}
 
+	/**
+	 * Import/Export tab.
+	 * @since 0.1
+	 */
 	function importexport_tab() {
 	?>
 		<h3><?php _e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
@@ -1234,6 +1133,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	<?php
 	}
 
+	/**
+	 * Import/Export handler.
+	 * @since 0.1
+	 */
 	function register_importexport_settings() {
 		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
 
