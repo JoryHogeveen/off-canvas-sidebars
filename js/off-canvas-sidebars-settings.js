@@ -303,6 +303,26 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		}
 
 		/**
+		 * Convert HTML formatted attribute string to object
+		 * In: key="value" key="value"
+		 * Out: { key: value, key: value }
+		 *
+		 * @param attrString
+		 * @returns Object
+		 */
+		function attrHTMLToObject( attrString ) {
+			var arr = attrString.trim().split( '" ' ),
+				atts = {};
+			for ( var key in arr ) {
+				arr[ key ] = arr[ key ].split( '="' );
+				if ( arr[ key ][ 0 ].trim().length ) {
+					atts[ arr[ key ][ 0 ].trim() ] = getAttr( attrString, arr[ key ][ 0 ] );
+				}
+			}
+			return atts;
+		}
+
+		/**
 		 * Convert OCS formatted attribute string to object
 		 *
 		 * In: key:value;key:value
@@ -329,7 +349,7 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 		 * Convert object to OCS formatted attribute string
 		 *
 		 * In: { key: value, key: value }
-		 * Out: key:value;key:value
+		 * Out: key="value" key="value"
 		 *
 		 * @param attrObj
 		 * @returns String
@@ -340,6 +360,23 @@ if ( typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS == 'undefined' ) {
 				atts.push( name + '="' + attrObj[ name ] + '"' );
 			}
 			return atts.join( ' ' );
+		}
+
+		/**
+		 * Convert object to HTML formatted attribute string
+		 *
+		 * In: { key: value, key: value }
+		 * Out: key:value;key:value
+		 *
+		 * @param attrObj
+		 * @returns String
+		 */
+		function attrObjectToString( attrObj ) {
+			var atts = [];
+			for ( var name in attrObj ) {
+				atts.push( name + ':' + attrObj[ name ] );
+			}
+			return atts.join( ';' );
 		}
 
 	};
