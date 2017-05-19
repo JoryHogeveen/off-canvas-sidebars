@@ -29,8 +29,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		$prefix_value = $prefixes['prefixValue'];
 		$prefix_id    = $prefixes['prefixId'];
 		?><fieldset class="radio">
-		<label><input type="radio" name="<?php echo $prefix_name . '[frontend_type]'; ?>" id="<?php echo $prefix_id . '_style_action'; ?>" value="action" <?php checked( $prefix_value['frontend_type'], 'action' ); ?> /> <?php _e( 'Actions', 'off-canvas-sidebars' ); echo ' (' . __( 'Default', 'off-canvas-sidebars' ) . ')' ?></label>
-		<label><input type="radio" name="<?php echo $prefix_name . '[frontend_type]'; ?>" id="<?php echo $prefix_id . '_style_jquery'; ?>" value="jquery" <?php checked( $prefix_value['frontend_type'], 'jquery' ); ?> /> <?php _e( 'jQuery', 'off-canvas-sidebars' ); echo ' (' . __( 'Experimental', 'off-canvas-sidebars' ) . ')' ?></label>
+		<label><input type="radio" name="<?php echo $prefix_name . '[frontend_type]'; ?>" id="<?php echo $prefix_id . '_style_action'; ?>" value="action" <?php checked( $prefix_value['frontend_type'], 'action' ); ?> /> <?php esc_html_e( 'Actions', 'off-canvas-sidebars' ); echo ' (' . esc_html__( 'Default', 'off-canvas-sidebars' ) . ')' ?></label>
+		<label><input type="radio" name="<?php echo $prefix_name . '[frontend_type]'; ?>" id="<?php echo $prefix_id . '_style_jquery'; ?>" value="jquery" <?php checked( $prefix_value['frontend_type'], 'jquery' ); ?> /> <?php esc_html_e( 'jQuery', 'off-canvas-sidebars' ); echo ' (' . esc_html__( 'Experimental', 'off-canvas-sidebars' ) . ')' ?></label>
 		<?php $this->do_description( $args ); ?>
 		</fieldset><?php
 	}
@@ -58,7 +58,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		} else {
 			$tab = ( isset( $this->sidebars_tab ) ) ? '&tab=' . $this->sidebars_tab : '';
 			echo '<a href="?page=' . esc_attr( $this->plugin_key ) . $tab . '">'
-			     . __( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
+			     . esc_html__( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
 		}
 	}
 
@@ -75,10 +75,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		if ( isset( $args['sidebar'] ) ) {
 			$classes = $this->get_option_classes( $prefix_classes, 'location' );
 			?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_left'; ?>" value="left" <?php checked( $prefix_value['location'], 'left' ); ?> /> <?php _e( 'Left', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_right'; ?>" value="right" <?php checked( $prefix_value['location'], 'right' ); ?> /> <?php _e( 'Right', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_top'; ?>" value="top" <?php checked( $prefix_value['location'], 'top' ); ?> /> <?php _e( 'Top', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_bottom'; ?>" value="bottom" <?php checked( $prefix_value['location'], 'bottom' ); ?> /> <?php _e( 'Bottom', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_left'; ?>" value="left" <?php checked( $prefix_value['location'], 'left' ); ?> /> <?php esc_html_e( 'Left', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_right'; ?>" value="right" <?php checked( $prefix_value['location'], 'right' ); ?> /> <?php esc_html_e( 'Right', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_top'; ?>" value="top" <?php checked( $prefix_value['location'], 'top' ); ?> /> <?php esc_html_e( 'Top', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[location]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_location_bottom'; ?>" value="bottom" <?php checked( $prefix_value['location'], 'bottom' ); ?> /> <?php esc_html_e( 'Bottom', 'off-canvas-sidebars' ); ?></label>
 			<?php $this->do_description( $args ); ?>
 			</fieldset><?php
 		}
@@ -97,12 +97,12 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		if ( isset( $args['sidebar'] ) ) {
 			$classes = $this->get_option_classes( $prefix_classes, 'size' );
 			?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_default'; ?>" value="default" <?php checked( $prefix_value['size'], 'default' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_small'; ?>" value="small" <?php checked( $prefix_value['size'], 'small' ); ?> /> <?php _e( 'Small', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_large'; ?>" value="large" <?php checked( $prefix_value['size'], 'large' ); ?> /> <?php _e( 'Large', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_default'; ?>" value="default" <?php checked( $prefix_value['size'], 'default' ); ?> /> <?php esc_html_e( 'Default', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_small'; ?>" value="small" <?php checked( $prefix_value['size'], 'small' ); ?> /> <?php esc_html_e( 'Small', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_large'; ?>" value="large" <?php checked( $prefix_value['size'], 'large' ); ?> /> <?php esc_html_e( 'Large', 'off-canvas-sidebars' ); ?></label>
 			<div class="custom-input">
 				<label style="display: inline-block">
-					<input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_custom'; ?>" value="custom" <?php checked( $prefix_value['size'], 'custom' ); ?> /> <?php _e( 'Custom', 'off-canvas-sidebars' ); ?>
+					<input type="radio" name="<?php echo $prefix_name . '[size]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_size_custom'; ?>" value="custom" <?php checked( $prefix_value['size'], 'custom' ); ?> /> <?php esc_html_e( 'Custom', 'off-canvas-sidebars' ); ?>
 				</label>:
 				<input type="number" name="<?php echo $prefix_name . '[size_input]'; ?>" class="<?php echo $this->get_option_classes( $prefix_classes, 'size_input' ); ?>" min="1" max="" step="1" value="<?php echo $prefix_value['size_input'] ?>" />
 				<select name="<?php echo $prefix_name . '[size_input_type]'; ?>" class="<?php echo $this->get_option_classes( $prefix_classes, 'size_input_type' ); ?>">
@@ -128,10 +128,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		if ( isset( $args['sidebar'] ) ) {
 			$classes = $this->get_option_classes( $prefix_classes, 'style' );
 			?><fieldset class="radio">
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_push'; ?>" value="push" <?php checked( $prefix_value['style'], 'push' ); ?> /> <?php _e( 'Sidebar slides and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_reveal'; ?>" value="reveal" <?php checked( $prefix_value['style'], 'reveal' ); ?> /> <?php _e( 'Sidebar reveals and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_shift'; ?>" value="shift" <?php checked( $prefix_value['style'], 'shift' ); ?> /> <?php _e( 'Sidebar shifts and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
-			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_overlay'; ?>" value="overlay" <?php checked( $prefix_value['style'], 'overlay' ); ?> /> <?php _e( 'Sidebar overlays the site when opened.', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_push'; ?>" value="push" <?php checked( $prefix_value['style'], 'push' ); ?> /> <?php esc_html_e( 'Sidebar slides and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_reveal'; ?>" value="reveal" <?php checked( $prefix_value['style'], 'reveal' ); ?> /> <?php esc_html_e( 'Sidebar reveals and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_shift'; ?>" value="shift" <?php checked( $prefix_value['style'], 'shift' ); ?> /> <?php esc_html_e( 'Sidebar shifts and pushes the site across when opened.', 'off-canvas-sidebars' ); ?></label>
+			<label><input type="radio" name="<?php echo $prefix_name . '[style]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_style_overlay'; ?>" value="overlay" <?php checked( $prefix_value['style'], 'overlay' ); ?> /> <?php esc_html_e( 'Sidebar overlays the site when opened.', 'off-canvas-sidebars' ); ?></label>
 			<?php $this->do_description( $args ); ?>
 			</fieldset><?php
 		}

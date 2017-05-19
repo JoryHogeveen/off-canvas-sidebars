@@ -8,7 +8,9 @@
  * @version 0.4
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 final class OCS_Off_Canvas_Sidebars_Frontend
 {

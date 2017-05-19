@@ -184,33 +184,33 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			<h4 class=""><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
-				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label"><?php _e( 'Show label', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label"><?php esc_html_e( 'Show label', 'off-canvas-sidebars' ); ?></label>
 			</p>
 			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_label" <?php echo ( ! $ocs[ $sidebar_id ]['show_label'] ) ? $hidden : ''; ?>>
-				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_label"><?php _e( 'Label text', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_label"><?php esc_html_e( 'Label text', 'off-canvas-sidebars' ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][label]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['label']; ?>">
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_icon]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_icon'], 1 ); ?>>
-				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon"><?php _e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon"><?php esc_html_e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
 			</p>
 			<p class="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
-				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_icon"><?php _e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_id . '_' . $sidebar_id; ?>_icon" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][button_class]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['button_class'], 1 ); ?>>
-				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class"><?php _e( 'Add <code>button</code> class', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class"><?php esc_html_e( 'Add <code>button</code> class', 'off-canvas-sidebars' ); ?></label>
 			</p>
 			<hr />
 		</div>
 		<?php
 			$counter++;
-		} ?>
+		} // End foreach(). ?>
 		</div>
 
 		<p>
-			<label>Preview:</label>
+			<label><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ) ?>:</label>
 			<div id="<?php echo $this->id ?>-preview" class="<?php echo $this->id_base ?>-preview" style="background: #f5f5f5; border: 1px solid #eee; padding: 10px;">
 				<?php $this->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance ); ?>
 			</div>
