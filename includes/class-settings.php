@@ -52,10 +52,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.1
 	 */
 	function load_plugin_data() {
-		$off_canvas_sidebars = off_canvas_sidebars();
-		$this->settings = $off_canvas_sidebars->get_settings();
+		$off_canvas_sidebars  = off_canvas_sidebars();
+		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		$this->general_key = $off_canvas_sidebars->get_general_key();
+		$this->general_key    = $off_canvas_sidebars->get_general_key();
 
 		/**
 		 * Change the capability for the OCS settings
@@ -156,6 +156,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 	/**
 	 * General settings
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 * @todo Refactor to enable above checks?
 	 * @since 0.1
 	 */
 	function register_general_settings() {
@@ -339,6 +341,13 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		);
 	}
 
+	/**
+	 * Sidebar settings
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 * @todo Refactor to enable above checks?
+	 * @param string $sidebar_id
+	 * @since 0.1
+	 */
 	function register_sidebar_settings( $sidebar_id ) {
 
 		add_settings_field(

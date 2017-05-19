@@ -356,6 +356,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	/**
 	 * Generate a trigger element
 	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @since  0.4
 	 * @param  string $sidebar_id
 	 * @param  array  $args  see API: the_ocs_control_trigger() for info
@@ -452,7 +456,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	function add_styles_scripts() {
 		// @todo: create minified files
 		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-		$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
+		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.css', array(), '2.0.2' );
 		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.js', array( 'jquery' ), '2.0.2', true );
 
@@ -466,14 +470,15 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			}
 		}
 		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
-			'site_close'           => ( $this->settings['site_close'] ) ? true : false,
+			'site_close'           => (bool) $this->settings['site_close'],
 			'disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
-			'hide_control_classes' => ( $this->settings['hide_control_classes'] ) ? true : false,
-			'scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
-			'legacy_css'           => ( 'legacy-css' === $this->settings['compatibility_position_fixed'] ) ? true : false,
+			'hide_control_classes' => (bool) $this->settings['hide_control_classes'],
+			'scroll_lock'          => (bool) $this->settings['scroll_lock'],
+			'legacy_css'           => (bool) ( 'legacy-css' === $this->settings['compatibility_position_fixed'] ),
+			'fixed_elements'       => $this->settings['fixed_elements'],
 			'css_prefix'           => $this->settings['css_prefix'],
 			'sidebars'             => $sidebars,
-			'_debug'               => ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? true : false,
+			'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 		) );
 
 		if ( 'custom-js' === $this->settings['compatibility_position_fixed'] ) {
@@ -481,7 +486,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		}
 
 		// FastClick library https://github.com/ftlabs/fastclick
-		if ( true === (bool) $this->settings['use_fastclick'] ) {
+		if ( $this->settings['use_fastclick'] ) {
 			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick' . $suffix . '.js', array(), false, true );
 		}
 	}
@@ -504,6 +509,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 
 	/**
 	 * Add inline styles
+	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
 	 *
 	 * @since   0.1
 	 * @return  void
