@@ -267,8 +267,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 				var classes = prefix + '-trigger ' + prefix + '-' + action;
 
 				if ( field_data.sidebar.val() ) {
-					// @todo prefix
-					classes += ' lekkerdan-' + action + '-' + field_data.sidebar.val();
+					classes += ' ' + prefix + '-' + action + '-' + field_data.sidebar.val();
 				}
 				if ( field_data.class.val() ) {
 					classes += ' ' + field_data.class.val();
