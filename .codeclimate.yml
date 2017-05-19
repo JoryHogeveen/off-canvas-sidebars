@@ -122,5 +122,7 @@ ratings:
 exclude_paths:
 - tests/*
 - bin/*
+# Libraries
+- js/fastclick.js
 # Local
 - vendor/*
