@@ -204,7 +204,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		$prefix_value = $prefixes['prefixValue'];
 		$prefix_id = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
-		if ( isset( $args['name'] ) && isset( $args['options'] ) ) {
+		if ( ! empty( $args['name'] ) && ! empty( $args['options'] ) ) {
 			if ( isset( $args['value'] ) ) {
 				$prefix_value[ $args['name'] ] = $args['value'];
 			}
@@ -239,7 +239,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		$prefix_value = $prefixes['prefixValue'];
 		$prefix_id = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
-		if ( isset( $args['name'] ) && isset( $args['options'] ) ) {
+		if ( ! empty( $args['name'] ) && ! empty( $args['options'] ) ) {
 			if ( isset( $args['value'] ) ) {
 				$prefix_value[ $args['name'] ] = $args['value'];
 			}
@@ -296,9 +296,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		if ( isset( $args['name'] ) ) {
 			$classes = $this->get_option_classes( $prefix_classes, $args['name'] . '_type' );
 		?><fieldset>
-			<label><input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . '_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_background_color_type_theme'; ?>" value="" <?php checked( $prefix_value[ $args['name'] . '_type' ], '' ); ?> /> <?php _e( 'Default', 'off-canvas-sidebars' ); ?></label> <span class="description">(<?php _e( 'Overwritable with CSS', 'off-canvas-sidebars' ); ?>)</span><br />
-			<label><input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . '_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_background_color_type_transparent'; ?>" value="transparent" <?php checked( $prefix_value[ $args['name'] . '_type' ], 'transparent' ); ?> /> <?php _e( 'Transparent', 'off-canvas-sidebars' ); ?></label><br />
-			<label><input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . '_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_background_color_type_color'; ?>" value="color" <?php checked( $prefix_value[ $args['name'] . '_type' ], 'color' ); ?> /> <?php _e( 'Color', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . '_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_background_color_type_theme'; ?>" value="" <?php checked( $prefix_value[ $args['name'] . '_type' ], '' ); ?> /> <?php esc_html_e( 'Default', 'off-canvas-sidebars' ); ?></label> <span class="description">(<?php esc_html_e( 'Overwritable with CSS', 'off-canvas-sidebars' ); ?>)</span><br />
+			<label><input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . '_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_background_color_type_transparent'; ?>" value="transparent" <?php checked( $prefix_value[ $args['name'] . '_type' ], 'transparent' ); ?> /> <?php esc_html_e( 'Transparent', 'off-canvas-sidebars' ); ?></label><br />
+			<label><input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . '_type]'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_background_color_type_color'; ?>" value="color" <?php checked( $prefix_value[ $args['name'] . '_type' ], 'color' ); ?> /> <?php esc_html_e( 'Color', 'off-canvas-sidebars' ); ?></label><br />
 			<div class="<?php echo $prefix_id . '_' . $args['name'] . '_wrapper'; ?>">
 				<input type="text" class="color-picker <?php echo $this->get_option_classes( $prefix_classes, $args['name'] ) ?>" id="<?php echo $prefix_id . '_' . $args['name']; ?>" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" value="<?php echo $prefix_value[ $args['name'] ] ?>" />
 			</div>

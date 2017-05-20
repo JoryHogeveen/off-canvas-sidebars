@@ -57,7 +57,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Get plugin defaults
 	 * @since  0.1
 	 */
-	function load_plugin_data() {
+	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
 		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
@@ -77,7 +77,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.1
 	 * @param  $hook
 	 */
-	function enqueue_styles_scripts( $hook ) {
+	public function enqueue_styles_scripts( $hook ) {
 		if ( 'appearance_page_' . $this->plugin_key !== $hook ) {
 			return;
 		}
@@ -103,7 +103,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Create admin page under the appearance menu
 	 * @since  0.1
 	 */
-	function add_admin_menus() {
+	public function add_admin_menus() {
 		add_theme_page(
 			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
 			esc_attr__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ),
@@ -117,7 +117,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Register our settings
 	 * @since 0.1
 	 */
-	function register_settings() {
+	public function register_settings() {
 		$this->plugin_tabs[ $this->settings_tab ] = esc_attr__( 'Settings', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->sidebars_tab ] = esc_attr__( 'Sidebars', 'off-canvas-sidebars' );
 		$this->plugin_tabs[ $this->shortcode_tab ] = esc_attr__( 'Shortcodes', 'off-canvas-sidebars' );
@@ -166,7 +166,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @todo Refactor to enable above checks?
 	 * @since 0.1
 	 */
-	function register_general_settings() {
+	private function register_general_settings() {
 
 		/*
 		 * General
@@ -354,7 +354,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @param string $sidebar_id
 	 * @since 0.1
 	 */
-	function register_sidebar_settings( $sidebar_id ) {
+	private function register_sidebar_settings( $sidebar_id ) {
 
 		add_settings_field(
 			'sidebar_enable',
@@ -577,19 +577,19 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	}
 
 	/**
-	 * Parses post values
+	 * Parses post values, checks all values with the current existing data.
 	 * @since  0.4
 	 * @param  array  $input
 	 * @return array  $output
 	 */
-	private function parse_input( $input ) {
+	protected function parse_input( $input ) {
 		// First set current values
-		$defaults = $this->settings;
+		$current = $this->settings;
 
 		// Add new sidebar
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
 			$new_sidebar_id = $this->validate_id( $input['sidebars']['ocs_add_new'] );
-			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $defaults['sidebars'][ $new_sidebar_id ] ) ) {
+			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
 				$input['sidebars'][ $new_sidebar_id ] = array(
 					'enable' => 1,
 					'label' => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
@@ -611,14 +611,13 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			$input['hide_control_classes'] = $this->validate_numeric_boolean( $input, 'hide_control_classes' );
 			$input['scroll_lock']          = $this->validate_numeric_boolean( $input, 'scroll_lock' );
 			$input['use_fastclick']        = $this->validate_numeric_boolean( $input, 'use_fastclick' );
-			$input['shortcode_rendering_wp_editor'] = $this->validate_numeric_boolean( $input, 'shortcode_rendering_wp_editor' );
 		}
 
 		// Handle existing sidebars
-		$input = $this->parse_sidebars_input( $input, $defaults );
+		$input = $this->parse_sidebars_input( $input, $current );
 
 		// Overwrite non existing values with current values
-		foreach ( $defaults as $key => $value ) {
+		foreach ( $current as $key => $value ) {
 			if ( ! isset( $input[ $key ] ) ) {
 				$input[ $key ] = $value;
 			}
@@ -628,34 +627,36 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	}
 
 	/**
-	 * Parses sidebar post values
+	 * Parses sidebar post values, checks all values with the current existing data.
 	 * @since  0.4
 	 * @param  array $input
-	 * @param  array $defaults
+	 * @param  array $current
 	 * @return array
 	 */
-	private function parse_sidebars_input( $input, $defaults ) {
-		if ( empty( $defaults['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
+	private function parse_sidebars_input( $input, $current ) {
+		if ( empty( $current['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
 			return $input;
 		}
 
 		unset( $input['sidebars']['ocs_update'] );
 
-		$defaults = (array) $defaults['sidebars'];
+		$current  = (array) $current['sidebars'];
 		$sidebars = (array) $input['sidebars'];
 
-		foreach ( $defaults as $sidebar_id => $sidebar_data ) {
+		foreach ( $current as $sidebar_id => $sidebar_data ) {
 
 			if ( ! isset( $sidebars[ $sidebar_id ] ) ) {
-				$sidebars[ $sidebar_id ] = $defaults[ $sidebar_id ];
+				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
 				// Sidebars are set but this sidebar isn't checked as active
 				$sidebars[ $sidebar_id ]['enable'] = 0;
+				continue;
 			}
 
 			// Global settings page
 			if ( count( $sidebars[ $sidebar_id ] ) < 2 ) {
-				$defaults[ $sidebar_id ]['enable'] = $this->validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
-				$sidebars[ $sidebar_id ] = $defaults[ $sidebar_id ];
+				$current[ $sidebar_id ]['enable'] = $this->validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
+				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
+				continue;
 			}
 
 			// Default label is sidebar ID
@@ -696,7 +697,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @param  array  $input
 	 * @return array  $output
 	 */
-	function validate_input( $input ) {
+	public function validate_input( $input ) {
 		// Overwrite the old settings
 		$output = $this->parse_input( $input );
 
@@ -780,14 +781,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 	/**
 	 * Validates checkbox boolean values, used by validate_input
-	 *
 	 * @since  0.4
-	 *
 	 * @param  mixed   $value
 	 * @param  string  $key
 	 * @return bool
 	 */
-	function validate_numeric_boolean( $value, $key = '' ) {
+	public function validate_numeric_boolean( $value, $key = '' ) {
 		if ( $key ) {
 			return (int) ( ! empty( $value[ $key ] ) );
 		}
@@ -796,64 +795,54 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 	/**
 	 * Validates checkbox values, used by validate_input
-	 *
 	 * @since  0.1.2
-	 *
 	 * @param  mixed  $value
 	 * @return int
 	 */
-	function validate_checkbox( $value ) {
+	public function validate_checkbox( $value ) {
 		return ( ! empty( $value ) ) ? (int) strip_tags( $value ) : 0;
 	}
 
 	/**
 	 * Validates radio values against the possible options
-	 *
 	 * @since  0.4
-	 *
 	 * @param  string $value
 	 * @param  array  $options
 	 * @param  string $default
 	 * @return int
 	 */
-	function validate_radio( $value, $options, $default ) {
+	public function validate_radio( $value, $options, $default ) {
 		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? strip_tags( $value ) : $default;
 	}
 
 	/**
 	 * Validates id values, used by validate_input
-	 *
 	 * @since  0.2
 	 * @since  0.3  Convert to lowercase and convert spaces to dashes before preg_replace
-	 *
 	 * @param  string $value
 	 * @return string
 	 */
-	function validate_id( $value ) {
+	public function validate_id( $value ) {
 		return preg_replace( '/[^a-z0-9_-]+/i', '', str_replace( ' ', '-', strtolower( $value ) ) );
 	}
 
 	/**
 	 * Validates numeric values, used by validate_input
-	 *
 	 * @since  0.2.2
-	 *
 	 * @param  mixed $value
 	 * @return string
 	 */
-	function validate_numeric( $value ) {
+	public function validate_numeric( $value ) {
 		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
 	}
 
 	/**
 	 * Remove whitespace
-	 *
 	 * @since  0.3
-	 *
 	 * @param  mixed $value
 	 * @return string
 	 */
-	function remove_whitespace( $value ) {
+	public function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
 	}
 
@@ -865,7 +854,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @param  string  $old_id
 	 * @param  string  $new_id
 	 */
-	function migrate_sidebars_widgets( $old_id, $new_id ) {
+	public function migrate_sidebars_widgets( $old_id, $new_id ) {
 		$old_id = 'off-canvas-' . $old_id;
 		$new_id = 'off-canvas-' . $new_id;
 		$sidebars_widgets = wp_get_sidebars_widgets();
@@ -886,7 +875,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 *
 	 * @since  0.1
 	 */
-	function plugin_options_page() {
+	public function plugin_options_page() {
 		$do_submit = ( in_array( $this->tab, array( $this->settings_tab, $this->sidebars_tab ), true ) ) ? true : false;
 		?>
 	<div class="wrap">
@@ -908,7 +897,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 				<?php } elseif ( $this->tab === $this->sidebars_tab ) { ?>
 				<p>
-					<?php esc_html_e( 'Add a new sidebar', 'off-canvas-sidebars' ) ?> <input name="<?php echo esc_attr( $this->general_key ) . '[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php _e( 'Name', 'off-canvas-sidebars' ) ?>" />
+					<?php esc_html_e( 'Add a new sidebar', 'off-canvas-sidebars' ) ?> <input name="<?php echo esc_attr( $this->general_key ) . '[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php esc_html_e( 'Name', 'off-canvas-sidebars' ) ?>" />
 					<?php submit_button( __( 'Add sidebar', 'off-canvas-sidebars' ), 'primary', 'submit', false ); ?>
 				</p>
 				<?php } ?>
@@ -975,11 +964,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @param  string  $page     Slug title of the admin page who's settings fields you want to show.
 	 * param  string  $section  Slug title of the settings section who's fields you want to show.
 	 */
-	function do_settings_sections( $page ) {
+	protected function do_settings_sections( $page ) {
 		global $wp_settings_sections, $wp_settings_fields;
 
-		if ( ! isset( $wp_settings_sections[ $page ] ) )
+		if ( ! isset( $wp_settings_sections[ $page ] ) ) {
 			return;
+		}
 
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 			$box_classes = 'stuffbox postbox ' . $section['id'] . '';
@@ -1035,7 +1025,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Shortcode tab.
 	 * @since 0.4
 	 */
-	function shortcode_tab() {
+	private function shortcode_tab() {
 		?>
 		<div id="section_shortcode" class="stuffbox postbox">
 			<h3 class="hndle"><span><?php esc_html_e( 'Shortcode', 'off-canvas-sidebars' ) ?>:</span></h3>
@@ -1176,7 +1166,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Import/Export tab.
 	 * @since 0.1
 	 */
-	function importexport_tab() {
+	private function importexport_tab() {
 	?>
 		<h3><?php esc_html_e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
@@ -1194,21 +1184,23 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Import/Export handler.
 	 * @since 0.1
 	 */
-	function register_importexport_settings() {
+	public function register_importexport_settings() {
 		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
 
 		/**
 		 * Filter documented in $this->load_plugin_data()
 		 */
-		if ( ! current_user_can( $this->capability ) ) {
+		if ( ! current_user_can( $this->capability ) || $this->tab !== $this->importexport_tab ) {
 			return;
 		}
 
+		// @codingStandardsIgnoreLine
 		if ( isset( $_GET['gocs_message'] ) ) {
 
 			$gocs_message_class = '';
 			$gocs_message = '';
 
+			// @codingStandardsIgnoreLine
 			switch ( $_GET['gocs_message'] ) {
 				case 1:
 					$gocs_message_class = 'updated';
@@ -1221,8 +1213,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				case 3:
 					$gocs_message_class = 'error';
 					$gocs_message = esc_attr__( 'No Settings File Selected', 'off-canvas-sidebars' );
-					break;
-				default:
 					break;
 			}
 
@@ -1280,7 +1270,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 			wp_redirect( admin_url( '/themes.php?page=' . $this->plugin_key . '&tab=' . $this->importexport_tab . '&gocs_message=' . esc_attr( $gocs_message ) ) );
 			exit;
-		}
+		} // End if().
 	}
 
 	/**

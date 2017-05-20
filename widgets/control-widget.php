@@ -27,7 +27,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			'Off-Canvas-Control',
 			__( 'Off-Canvas Control', 'off-canvas-sidebars' ),
 			array(
-				'classname' => 'off_canvas_control',
+				'classname'   => 'off_canvas_control',
 				'description' => __( 'Button to trigger off-canvas sidebars', 'off-canvas-sidebars' ),
 			)
 		);
@@ -39,11 +39,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * Get plugin defaults
 	 */
 	function load_plugin_data() {
-		$off_canvas_sidebars = off_canvas_sidebars();
-		$this->settings = $off_canvas_sidebars->get_settings();
+		$off_canvas_sidebars  = off_canvas_sidebars();
+		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		//$this->general_key = $off_canvas_sidebars->get_general_key();
-		//$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
+		//$this->general_key  = $off_canvas_sidebars->get_general_key();
+		//$this->plugin_key   = $off_canvas_sidebars->get_plugin_key();
 	}
 
 	/**
@@ -56,7 +56,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
-		$prefix = $this->settings['css_prefix'];
+		$prefix   = $this->settings['css_prefix'];
 
 		// outputs the content of the widget
 		echo $args['before_widget'];
