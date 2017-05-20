@@ -105,6 +105,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	/**
 	 * Outputs the options form on admin
 	 *
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @param array $instance The widget options
 	 * @return void
 	 */
@@ -117,7 +122,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$field_id = $this->get_field_id( $this->widget_setting );
 		?>
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
-			<label for="<?php echo $field_id; ?>"><?php _e( 'Controls', 'off-canvas-sidebars' ); ?>:</label>&nbsp;
+			<label for="<?php echo $field_id; ?>"><?php esc_html_e( 'Controls', 'off-canvas-sidebars' ); ?>:</label>&nbsp;
 			<?php foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
 					if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 						continue;
@@ -211,12 +216,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		<p>
 			<label><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ) ?>:</label>
-			<div id="<?php echo $this->id ?>-preview" class="<?php echo $this->id_base ?>-preview" style="background: #f5f5f5; border: 1px solid #eee; padding: 10px;">
+			<div id="<?php echo $this->id ?>-preview" class="<?php echo $this->id_base ?>-preview">
 				<?php $this->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance ); ?>
 			</div>
 		</p>
 
-		<style>
+		<style type="text/css">
 			#<?php echo $field_id ?>_tabs {
 				clear: both;
 				width: 100%;
@@ -246,6 +251,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				padding: 10px;
 				border: 1px solid #ccc;
 				background: #fafafa;
+			}
+			#<?php echo $this->id ?>-preview {
+				background: #f5f5f5;
+				border: 1px solid #eee;
+				padding: 10px;
 			}
 		</style>
 		<script type="text/javascript">
@@ -305,6 +315,10 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 	/**
 	 * Processing widget options on save
+	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
 	 *
 	 * @param  array $new_instance The new options
 	 * @param  array $old_instance The old options
