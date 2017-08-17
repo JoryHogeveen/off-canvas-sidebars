@@ -212,9 +212,7 @@ final class OCS_Off_Canvas_Sidebars
 
 			// Register the widget
 			include_once( OCS_PLUGIN_DIR . 'widgets/control-widget.php' );
-			add_action( 'widgets_init', function() {
-				register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
-			} );
+			add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 
 			// Load menu-meta-box option
 			include_once( OCS_PLUGIN_DIR . 'includes/class-menu-meta-box.php' );
@@ -260,6 +258,14 @@ final class OCS_Off_Canvas_Sidebars
 			include_once( OCS_PLUGIN_DIR . 'includes/class-frontend.php' );
 			OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 		}
+	}
+
+	/**
+	 * Register widgets
+	 * @since  0.4
+	 */
+	function widgets_init() {
+		register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
 	}
 
 	/**
