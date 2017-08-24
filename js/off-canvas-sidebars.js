@@ -6,6 +6,7 @@
  * @package off-canvas-sidebars
  * @version 0.4
  * @global ocsOffCanvasSidebars
+ * @preserve
  */
 
 if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
@@ -23,12 +24,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 (function($) {
 
+	var $document = $(document);
+	var $window = $(window);
+	var $body = $('body');
+
 	ocsOffCanvasSidebars.slidebarsController = false;
 	ocsOffCanvasSidebars.useAttributeSettings = false;
 	ocsOffCanvasSidebars.container = false;
 	ocsOffCanvasSidebars._html = $( 'html' );
 	ocsOffCanvasSidebars._touchmove = false;
-	ocsOffCanvasSidebars._toolbar = $('body').hasClass('admin-bar');
+	ocsOffCanvasSidebars._toolbar = $body.hasClass('admin-bar');
 
 	ocsOffCanvasSidebars.init = function() {
 
@@ -43,7 +48,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			var check = true;
 			var disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ) );
 			if ( disableOver && ! isNaN( disableOver ) ) {
-				if ( $( window ).width() > disableOver ) {
+				if ( $window.width() > disableOver ) {
 		  			check = false;
 		  		}
 			}
@@ -137,7 +142,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
 
-		$(window).trigger( 'ocs_loaded', this );
+		$window.trigger( 'ocs_loaded', this );
 
 		// Slidebars constructor
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
@@ -157,16 +162,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
 
-		$(window).trigger( 'ocs_initialized', this );
+		$window.trigger( 'ocs_initialized', this );
 
 		/**
 		 * Compatibility with WP Admin Bar
 		 * @since  0.4
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
-			$( window ).on('load resize', function() {
+			$window.on('load resize', function() {
 				// Offset top = admin bar height
-				var bodyOffset = $( 'body' ).offset();
+				var bodyOffset = $body.offset();
 				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
 					// Top slidebars
 					if ( $(this).hasClass( 'ocs-location-top' ) ) {
@@ -188,7 +193,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
 			var duration = parseFloat( slidebar.element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
 			if ( 'top' === slidebar.side || 'bottom' === slidebar.side ) {
-				var elements = $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
+				var elements = ocsOffCanvasSidebars.getFixedElements();
 				elements.attr( { 'canvas-fixed': 'fixed' } );
 
 				// Legacy mode (only needed for location: top)
@@ -203,7 +208,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					//Compatibility with WP Admin Bar
 					// @todo, condition for setting
 					if ( ocsOffCanvasSidebars._toolbar ) {
-						var bodyOffset = $( 'body' ).offset();
+						var bodyOffset = $body.offset();
 						offset += bodyOffset.top;
 					}
 
@@ -211,24 +216,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						var $this = $(this);
 						// Set animation
 						if ( 'opening' === e.type ) {
-							$this.css( {
-								'-webkit-transition': 'top ' + duration + 'ms',
-								'-moz-transition': 'top ' + duration + 'ms',
-								'-o-transition': 'top ' + duration + 'ms',
-								'transition': 'top ' + duration + 'ms'
-							} );
+							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
 							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) + offset + 'px' );
 						}
 						// Remove animation
 						else if ( 'closing' === e.type ) {
 							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) - offset + 'px' );
 							setTimeout( function() {
-								$this.css( {
-									'-webkit-transition': '',
-									'-moz-transition': '',
-									'-o-transition': '',
-									'transition': ''
-								} );
+								ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
 							}, duration );
 						}
 					} );
@@ -240,32 +235,22 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
 						//console.log( curVal );
 						if ( 'opening' === e.type || 'closing' === e.type ) {
-							$this.css( {
-								'-webkit-transition': 'transform ' + duration + 'ms',
-								'-moz-transition': 'transform ' + duration + 'ms',
-								'-o-transition': 'transform ' + duration + 'ms',
-								'transition': 'transform ' + duration + 'ms'
-							} );
+							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'transform ' + duration + 'ms' );
 							//$(this).css('transform', 'translate( 0px, ' + curVal + slidebar.element.height() + 'px )' );
 						} else if ( 'opened' === e.type || 'closed' === e.type ) {
-							$this.css( {
-								'-webkit-transition': '',
-								'-moz-transition': '',
-								'-o-transition': '',
-								'transition': ''
-							} );
+							ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
 						}
 					} );
 				}
-				$(window).trigger( 'slidebar_event', [ e.type, slidebar ] );
+				$window.trigger( 'slidebar_event', [ e.type, slidebar ] );
 			}
 		} );
 
 		// Prevent swipe events to be seen as a click (bug in some browsers)
-		$( document ).on( 'touchmove', function() {
+		$document.on( 'touchmove', function() {
 			ocsOffCanvasSidebars._touchmove = true;
 		} );
-		$( document ).on( 'touchstart', function() {
+		$document.on( 'touchstart', function() {
 			ocsOffCanvasSidebars._touchmove = false;
 		} );
 
@@ -307,7 +292,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			 * Toggle the sidebar
 			 * @since  0.1
 			 */
-			$( document ).on( 'touchend click', '.' + prefix + '-toggle-' + id, function( e ) {
+			$document.on( 'touchend click', '.' + prefix + '-toggle-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -327,7 +312,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			 * Open the sidebar
 			 * @since  0.3
 			 */
-			$( document ).on( 'touchend click', '.' + prefix + '-open-' + id, function( e ) {
+			$document.on( 'touchend click', '.' + prefix + '-open-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -347,7 +332,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			 * Close the sidebar
 			 * @since  0.3
 			 */
-			$( document ).on( 'touchend click', '.' + prefix + '-close-' + id, function( e ) {
+			$document.on( 'touchend click', '.' + prefix + '-close-' + id, function( e ) {
 				// Stop default action and bubbling
 				e.stopPropagation();
 				e.preventDefault();
@@ -362,9 +347,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		} );
 
-
 		// Close any
-		$( document ).on( 'touchend click', '.' + prefix + '-close-any', function( e ) {
+		$document.on( 'touchend click', '.' + prefix + '-close-any', function( e ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -392,7 +376,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			} );
 		} );*/
 
-
 		// Add close class to canvas container when Slidebar is opened
 		$( controller.events ).on( 'opening', function () {
 			$( '[canvas]' ).addClass( prefix + '-close-any' );
@@ -407,7 +390,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
 			ocsOffCanvasSidebars._html.removeClass( 'ocs-sidebar-active ocs-scroll-lock' );
 		} );
-
 
 		// Disable slidebars when the window is wider than the set width
 		var disableOver = function() {
@@ -430,7 +412,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			} );
 		};
 		disableOver();
-		$( window ).on( 'resize', disableOver );
+		$window.on( 'resize', disableOver );
 
 		// Disable scrolling outside of active sidebar
 		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
@@ -457,6 +439,32 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
+	};
+
+	/**
+	 * Get all fixed elements within the canvas container.
+	 * @since  0.4
+	 */
+	ocsOffCanvasSidebars.getFixedElements = function() {
+		return $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function() {
+			return $(this).css('position') === 'fixed';
+		} );
+	};
+
+	/**
+	 * Automatically apply browser prefixes before setting CSS values.
+	 * @param  {object}         elem
+	 * @param  {string}         prop
+	 * @param  {string|number}  value
+	 * @since  0.4
+	 */
+	ocsOffCanvasSidebars.cssCompat = function( elem, prop, value ) {
+		var data = {};
+		data[ '-webkit-' + prop ] = value;
+		data[ '-moz-' + prop ] = value;
+		data[ '-o-' + prop ] = value;
+		data[ prop ] = value;
+		$( elem ).css( data );
 	};
 
 	if ( $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length && ( 'undefined' !== typeof slidebars ) ) {
