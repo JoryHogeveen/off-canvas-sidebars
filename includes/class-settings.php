@@ -327,8 +327,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				'options' => array(
 					'none' => array(
 						'name' => 'none',
-						'label' => __( 'No', 'off-canvas-sidebars' ),
+						'label' => __( 'No', 'off-canvas-sidebars' ) . ' (' . __( 'Use CSS3 transform with hardware acceleration', 'off-canvas-sidebars' ) . ')',
 						'value' => 'none',
+						'description' => __( 'This is the default Slidebars behaviour.', 'off-canvas-sidebars' ),
 					),
 					'legacy-css' => array(
 						'name' => 'legacy-css',
