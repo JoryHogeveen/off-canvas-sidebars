@@ -222,7 +222,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 			<input type="radio" name="<?php echo $prefix_name . '[' . $args['name'] . ']'; ?>" class="<?php echo $classes; ?>" id="<?php echo $prefix_id . '_' . $args['name'] . '_' . $option['name'] ?>" value="<?php echo $option['value'] ?>" <?php checked( $prefix_value[ $args['name'] ], $option['value'] ); ?> />
 			<?php if ( isset( $option['label'] ) ) { echo $option['label'] ?></label><?php
 				}
-				$this->do_description( $args , 'span' );
+				$this->do_description( $option , 'span' );
 				echo '<br />';
 			} // End foreach(). ?>
 			<?php $this->do_description( $args ); ?>
