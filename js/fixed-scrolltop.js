@@ -8,38 +8,48 @@
  */
 ( function ( $ ) {
 
-	$(window).on( 'ocs_initialized', function () {
+	var $window = $(window);
+	var $body = $('body');
+
+	$window.on( 'ocs_initialized', function () {
 
 		var prefix = ocsOffCanvasSidebars.css_prefix;
 
-		var curScrollTopElements;
-		var scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
-		if ( 'auto' != ocs_site.css('overflow-y') ) {
-			scrollTarget = $( window );
+		if ( ocsOffCanvasSidebars._debug ) {
+			console.log('start fixed-scrolltop.js');
 		}
 
-		if ( ocs_site.css('transform') != 'none' ) {
-			curScrollTopElements = $('#' + prefix + '-site *').filter( function() { return $(this).css('position') === 'fixed'; } );
-			ocsOffCanvasSidebars.scrollTopFixed();
-			scrollTarget.on( 'scroll resize', function() {
-				var newScrollTopElements = $('#' + prefix + '-site *').filter( function() { return $(this).css('position') === 'fixed'; } );
-				curScrollTopElements = curScrollTopElements.add( newScrollTopElements );
+		var curScrollTopElements;
+		var scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
+		if ( 'auto' !== ocs_site.css('overflow-y') ) {
+			scrollTarget = $window;
+		}
+
+		function run() {
+			if ( 'none' !== ocs_site.css('transform') ) {
+				curScrollTopElements = ocsOffCanvasSidebars.getFixedElements();
 				ocsOffCanvasSidebars.scrollTopFixed();
-			} );
-			scrollTarget.on( 'slidebar_event', ocsOffCanvasSidebars.slidebarEventFixed );
+				scrollTarget.on( 'scroll resize', function() {
+					var newScrollTopElements = ocsOffCanvasSidebars.getFixedElements();
+					curScrollTopElements = curScrollTopElements.add( newScrollTopElements );
+					ocsOffCanvasSidebars.scrollTopFixed();
+				} );
+				scrollTarget.on( 'slidebar_event', ocsOffCanvasSidebars.slidebarEventFixed );
+			}
 		}
 
 		ocsOffCanvasSidebars.slidebarEventFixed = function( e, eventType, slidebar ) {
-			if ( ( eventType == 'opened' || eventType == 'closed' ) && ( slidebar.side == 'bottom' ) ) { //slidebar.side == 'top' ||
+			// Bottom slidebars.
+			if ( ( 'bottom' === slidebar.side ) && ( 'opening' === eventType || 'closing' === eventType ) ) {
 				curScrollTopElements.each( function() {
 					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
 					var offset = slidebar.element.height();
-					if ( eventType == 'opened' ) {
+					if ( 'opening' === eventType ) {
 						px += offset;
-					} else if ( eventType == 'closed' ) {
+					} else if ( 'closing' === eventType ) {
 						px -= offset;
 					}
-					$( this ).css( {
+					$(this).css( {
 						'-webkit-transform': 'translate( 0px, ' + px + 'px )',
 						'-moz-transform': 'translate( 0px, ' + px + 'px )',
 						'-o-transform': 'translate( 0px, ' + px + 'px )',
@@ -52,47 +62,40 @@
 		ocsOffCanvasSidebars.scrollTopFixed = function() {
 			if ( curScrollTopElements.length > 0 ) {
 				var scrollTop = scrollTarget.scrollTop(),
-				    winHeight = $(window).height(),
-				    gblOffset = $('body').offset(),
+				    winHeight = $window.height(),
+				    gblOffset = $body.offset(),
 				    conOffset = ocs_site.offset(),
 				    conHeight = ocs_site.outerHeight();
 
 				var activeSidebar = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 				if ( activeSidebar ) {
 					var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( activeSidebar );
-					if ( sidebar.side == 'top' ) {
+					if ( 'top' === sidebar.side ) { //|| 'bottom' === sidebar.side
 						gblOffset.top += sidebar.element.height();
-					} else if ( sidebar.side == 'top' ) {
+					}/* else if ( 'bottom' === sidebar.side ) {
 						gblOffset.top -= sidebar.element.height();
-					}
+					}*/
 				}
 				curScrollTopElements.each( function() {
-					if ( $(this).css('position') == 'fixed' ) {
-						var top = $(this).css('top'),
-						    bottom = $(this).css('bottom'),
+					var $this = $(this);
+					if ( 'fixed' === $this.css('position') ) {
+						var top = $this.css('top'),
+						    bottom = $this.css('bottom'),
 							px;
-						if ( top == 'auto' && bottom != 'auto' ) {
+						if ( 'auto' === top && 'auto' !== bottom ) {
 							px = ( scrollTop + winHeight ) - ( conOffset.top + conHeight ) + gblOffset.top;
 						} else {
 							px = scrollTop - conOffset.top + gblOffset.top;
 						}
-						$(this).css({
-							'-webkit-transform': 'translate( 0px, ' + px + 'px )',
-							'-moz-transform': 'translate( 0px, ' + px + 'px )',
-							'-o-transform': 'translate( 0px, ' + px + 'px )',
-							'transform': 'translate( 0px, ' + px + 'px )'
-						});
+						ocsOffCanvasSidebars.cssCompat( $this, 'transform', 'translate( 0px, ' + px + 'px )' );
 					} else {
-						$(this).css({
-							'-webkit-transform' : '',
-							'-moz-transform' : '',
-							'-o-transform' : '',
-							'transform' : ''
-						});
+						ocsOffCanvasSidebars.cssCompat( $this, 'transform', '' );
 					}
 				} );
 			}
 		};
+
+		run();
 
 	});
 
