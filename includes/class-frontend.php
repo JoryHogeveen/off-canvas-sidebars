@@ -457,6 +457,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		// @todo: create minified files
 		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
+
+		// FastClick library https://github.com/ftlabs/fastclick
+		if ( $this->settings['use_fastclick'] ) {
+			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick' . $suffix . '.js', array(), false, true );
+		}
+
+		if ( 'custom-js' === $this->settings['compatibility_position_fixed'] ) {
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop' . $suffix . '.js', array( 'jquery' ), $version, true );
+		}
+
 		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.css', array(), '2.0.2' );
 		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.js', array( 'jquery' ), '2.0.2', true );
 
@@ -480,15 +490,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			'sidebars'             => $sidebars,
 			'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 		) );
-
-		if ( 'custom-js' === $this->settings['compatibility_position_fixed'] ) {
-			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop' . $suffix . '.js', array( 'jquery' ), $version, true );
-		}
-
-		// FastClick library https://github.com/ftlabs/fastclick
-		if ( $this->settings['use_fastclick'] ) {
-			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick' . $suffix . '.js', array(), false, true );
-		}
 	}
 
 	/**
