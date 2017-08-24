@@ -1,9 +1,10 @@
-/**
+/*!
  * Off-Canvas Sidebars plugin
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @version 0.4
+ * @preserve
  */
 
 /**
@@ -22,12 +23,14 @@ html.ocs-initialized {
 }
 
 
-[canvas-fixed] {
+/*[canvas-fixed] {
 	-webkit-transform: translate( 0px, 0px );
+	-moz-transform: translate( 0px, 0px );
 	-ms-transform: translate( 0px, 0px );
+	-o-transform: translate( 0px, 0px );
 	transform: translate( 0px, 0px );
 	-webkit-backface-visibility: hidden;
-}
+}*/
 
 .ocs-legacy [canvas] {top: 0; right: 0; bottom: 0; left: 0;}
 .ocs-legacy [canvas],
@@ -37,17 +40,18 @@ html.ocs-initialized {
 	-ms-transform: none;
 	-o-transform: none;
 	transform: none;
-	-webkit-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
-	-moz-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
-	-o-transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-webkit-transition: -webkit-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-moz-transition: -moz-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-o-transition: -o-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 }
-.ocs-legacy [canvas-fixed] {
-	-webkit-transform: none;
-	-moz-transform: none;
-	-ms-transform: none;
-	-o-transform: none;
-	transform: none;
+
+/* @todo fix support for top and bottom */
+[off-canvas*=" top"][off-canvas*=" reveal"],
+[off-canvas*=" top"][off-canvas*=" shift"],
+[off-canvas*=" bottom"][off-canvas*=" reveal"],
+[off-canvas*=" bottom"][off-canvas*=" shift"] {
+	z-index: 1;
 }
 
 /**
