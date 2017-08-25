@@ -5,7 +5,7 @@
  * Control Widget
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.3
+ * @version 0.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -61,43 +61,43 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		// outputs the content of the widget
 		echo $args['before_widget'];
 
-		?>
-		<div class="off-canvas-control-wrapper">
-		<div class="off-canvas-triggers">
-		<?php
+		echo '<div class="off-canvas-control-wrapper"><div class="off-canvas-triggers">';
+
 		foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
-			if ( $sidebar_data['enable'] && $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) {
-				$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
-				$classes = array(
-					$prefix . '-trigger',
-					$prefix . '-toggle',
-					$prefix . '-toggle-' . $sidebar_id,
-				);
-				if ( $widget_data['button_class'] ) {
-					//$classes[] = $prefix . '-button';
-					$classes[] = 'button';
+			if ( ! $sidebar_data['enable'] || ! $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) {
+				continue;
+			}
+			$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
+			$classes = array(
+				$prefix . '-trigger',
+				$prefix . '-toggle',
+				$prefix . '-toggle-' . $sidebar_id,
+			);
+			if ( $widget_data['button_class'] ) {
+				//$classes[] = $prefix . '-button';
+				$classes[] = 'button';
+			}
+
+			echo '<div class="' . implode( ' ', $classes ) . '">';
+			echo '<div class="inner">';
+			if ( $widget_data['show_icon'] ) {
+				if ( $widget_data['icon'] ) {
+					if ( strpos( $widget_data['icon'], 'dashicons' ) !== false ) {
+						wp_enqueue_style( 'dashicons' );
+					}
+					echo '<span class="icon ' . $widget_data['icon'] . '"></span>';
+				} else {
+					wp_enqueue_style( 'dashicons' );
+					echo '<span class="icon dashicons dashicons-menu"></span>';
 				}
-		?>
-			<div class="<?php echo implode( ' ', $classes ); ?>">
-				<div class="inner">
-				<?php if ( $widget_data['show_icon'] ) { ?>
-					<?php if ( $widget_data['icon'] ) { ?>
-					<?php if ( strpos( $widget_data['icon'], 'dashicons' ) !== false ) { wp_enqueue_style( 'dashicons' ); } ?>
-					<span class="icon <?php echo $widget_data['icon'] ?>"></span>
-					<?php } else {
-					wp_enqueue_style( 'dashicons' ); ?>
-					<span class="icon dashicons dashicons-menu"></span>
-					<?php } ?>
-				<?php } ?>
-				<?php if ( $widget_data['show_label'] ) { ?>
-					<span class="label"><?php echo $widget_data['label'] ?></span>
-				<?php } ?>
-				</div>
-			</div>
-		<?php } } ?>
-		</div>
-		</div>
-		<?php
+			}
+			if ( $widget_data['show_label'] ) {
+				echo '<span class="label">' . $widget_data['label'] . '</span>';
+			}
+			echo '</div></div>';
+		};
+
+		echo '</div></div>';
 
 		echo $args['after_widget'];
 	}
@@ -123,10 +123,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		?>
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
 			<label for="<?php echo $field_id; ?>"><?php esc_html_e( 'Controls', 'off-canvas-sidebars' ); ?>:</label>&nbsp;
-			<?php foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
-					if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
-						continue;
-					}
+			<?php
+			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
+				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
+					continue;
+				}
 			?>
 			<span style="display: inline-block;">
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>">
@@ -146,7 +147,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		<hr />
 
-		<div id="<?php echo $field_id ?>_tabs" style="display: none;">
+		<div id="<?php echo $field_id; ?>_tabs" style="display: none;">
 		<?php
 			$counter = 0;
 			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
@@ -162,7 +163,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 					$class .= ' active';
 				}
 				?>
-				<div id="<?php echo $field_id . '_' . $sidebar_id . '_tab'; ?>" class="<?php echo $class ?>">
+				<div id="<?php echo $field_id . '_' . $sidebar_id . '_tab'; ?>" class="<?php echo $class; ?>">
 					<?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?>
 				</div>
 				<?php
@@ -173,7 +174,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		?>
 		</div>
 
-		<div id="<?php echo $field_id ?>_panes">
+		<div id="<?php echo $field_id; ?>_panes">
 		<?php
 		$counter = 0;
 		foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
@@ -185,7 +186,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				$hidden = 'style="display:none;"';
 			//}
 		?>
-		<div id="<?php echo $field_id . '_' . $sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo ( $counter ) ? $hidden : '' ?>>
+		<div id="<?php echo $field_id . '_' . $sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo ( $counter ) ? $hidden : ''; ?>>
 			<h4 class=""><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_show_label" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
@@ -211,48 +212,49 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		</div>
 		<?php
 			$counter++;
-		} // End foreach(). ?>
+		} // End foreach().
+		?>
 		</div>
 
 		<p>
-			<label><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ) ?>:</label>
-			<div id="<?php echo $this->id ?>-preview" class="<?php echo $this->id_base ?>-preview">
+			<label><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ); ?>:</label>
+			<div id="<?php echo $this->id; ?>-preview" class="<?php echo $this->id_base; ?>-preview">
 				<?php $this->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance ); ?>
 			</div>
 		</p>
 
 		<style type="text/css">
-			#<?php echo $field_id ?>_tabs {
+			#<?php echo $field_id; ?>_tabs {
 				clear: both;
 				width: 100%;
 				overflow: hidden;
 			}
-			#<?php echo $field_id ?>_tabs .ocs-tab {
+			#<?php echo $field_id; ?>_tabs .ocs-tab {
 				cursor: pointer;
 				float: left;
 				padding: 5px 8px;
 				border: solid 1px #aaa;
 				background: #e8e8e8;
 			}
-			#<?php echo $field_id ?>_tabs .ocs-tab:hover {
+			#<?php echo $field_id; ?>_tabs .ocs-tab:hover {
 				background: #f5f5f5;
 			}
-			#<?php echo $field_id ?>_tabs .ocs-tab.active {
+			#<?php echo $field_id; ?>_tabs .ocs-tab.active {
 				background: #fafafa;
 				border-bottom-color: #fafafa;
 			}
-			#<?php echo $field_id ?>_tabs .ocs-tab.disabled {
+			#<?php echo $field_id; ?>_tabs .ocs-tab.disabled {
 				display: none;
 				color: #aaa;
 				cursor: default;
 				background: #ddd;
 			}
-			#<?php echo $field_id ?>_panes {
+			#<?php echo $field_id; ?>_panes {
 				padding: 10px;
 				border: 1px solid #ccc;
 				background: #fafafa;
 			}
-			#<?php echo $this->id ?>-preview {
+			#<?php echo $this->id; ?>-preview {
 				background: #f5f5f5;
 				border: 1px solid #eee;
 				padding: 10px;
@@ -269,15 +271,15 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				gocs_show_hide_options('<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon', '<?php echo $field_id . '_' . $sidebar_id; ?>_icon');
 				<?php } ?>
 
-				$('#<?php echo $field_id ?>_tabs').show();
-				$('#<?php echo $field_id ?>_tabs .ocs-tab').each( function() {
+				$('#<?php echo $field_id; ?>_tabs').show();
+				$('#<?php echo $field_id; ?>_tabs .ocs-tab').each( function() {
 					var $this = $(this);
 					$this.on( 'click', function() {
 						if ( ! $this.hasClass('disabled') ) {
 							var target = $( '#' + $this.attr('id').replace('_tab','_pane') );
-							$( '#<?php echo $field_id ?>_panes .ocs-pane' ).not( target ).slideUp('fast');
+							$( '#<?php echo $field_id; ?>_panes .ocs-pane' ).not( target ).slideUp('fast');
 							target.slideDown('fast');
-							$( '#<?php echo $field_id ?>_tabs .ocs-tab').not( $this ).removeClass('active');
+							$( '#<?php echo $field_id; ?>_tabs .ocs-tab').not( $this ).removeClass('active');
 							$this.addClass('active');
 						}
 					} );
@@ -309,8 +311,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			})( jQuery );
 		-->
 		</script>
-		<?php } // End if(). ?>
-		<?php
+		<?php } // End if().
 	}
 
 	/**
