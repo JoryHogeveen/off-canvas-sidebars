@@ -880,25 +880,29 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		$do_submit = ( in_array( $this->tab, array( $this->settings_tab, $this->sidebars_tab ), true ) ) ? true : false;
 		?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) ?></h1>
+		<h1><?php esc_html_e( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ); ?></h1>
 		<?php $this->plugin_options_tabs(); ?>
-		<div class="<?php echo $this->plugin_key ?> container">
+		<div class="<?php echo $this->plugin_key; ?> container">
 
-			<form id="<?php echo $this->general_key ?>" method="post" action="options.php" enctype="multipart/form-data">
+			<form id="<?php echo $this->general_key; ?>" method="post" action="options.php" enctype="multipart/form-data">
 
 				<?php settings_errors(); ?>
 				<?php if ( $do_submit ) { ?>
 				<p class="alignright"><?php submit_button( null, 'primary', 'submit', false ); ?></p>
 				<?php } ?>
-				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $this->tab ?>" />
+				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $this->tab; ?>" />
 
 				<?php if ( $this->tab === $this->settings_tab ) { ?>
-				<p><?php // Translators: %s stands for a URL.
-					echo sprintf( __( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/' ); ?></p>
+				<p>
+				<?php
+					// Translators: %s stands for a URL.
+					echo sprintf( __( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/' );
+				?>
+				</p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
 				<?php } elseif ( $this->tab === $this->sidebars_tab ) { ?>
 				<p>
-					<?php esc_html_e( 'Add a new sidebar', 'off-canvas-sidebars' ) ?> <input name="<?php echo esc_attr( $this->general_key ) . '[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php esc_html_e( 'Name', 'off-canvas-sidebars' ) ?>" />
+					<?php esc_html_e( 'Add a new sidebar', 'off-canvas-sidebars' ); ?> <input name="<?php echo esc_attr( $this->general_key ) . '[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php esc_html_e( 'Name', 'off-canvas-sidebars' ); ?>" />
 					<?php submit_button( __( 'Add sidebar', 'off-canvas-sidebars' ), 'primary', 'submit', false ); ?>
 				</p>
 				<?php } ?>
@@ -920,30 +924,32 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 
 			<div class="ocs-sidebar">
 				<div class="ocs-credits">
-					<h3 class="hndle"><?php echo esc_html__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION ?></h3>
+					<h3 class="hndle"><?php echo esc_html__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ' ' . OCS_PLUGIN_VERSION; ?></h3>
 					<div class="inside">
-						<h4 class="inner"><?php esc_html_e( 'Need support?', 'off-canvas-sidebars' ) ?></h4>
+						<h4 class="inner"><?php esc_html_e( 'Need support?', 'off-canvas-sidebars' ); ?></h4>
 						<p class="inner">
-							<?php // Translators: %1$s and %2$s stands for a URL.
-							echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank">Documentation</a> or talk about them in the <a href="%2$s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/', 'https://wordpress.org/support/plugin/off-canvas-sidebars' ) ?>
+						<?php
+							// Translators: %1$s and %2$s stands for a URL.
+							echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank">Documentation</a> or talk about them in the <a href="%2$s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/', 'https://wordpress.org/support/plugin/off-canvas-sidebars' );
+						?>
 						</p>
 						<hr />
-						<h4 class="inner"><?php esc_html_e( 'Do you like this plugin?', 'off-canvas-sidebars' ) ?></h4>
+						<h4 class="inner"><?php esc_html_e( 'Do you like this plugin?', 'off-canvas-sidebars' ); ?></h4>
 						<a class="inner" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
 							<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
 						</a>
 						<p class="inner">
-						<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><?php esc_html_e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ) ?></a><br />
-						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><?php esc_html_e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ) ?></a><br />
-						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"><?php esc_html_e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ) ?></a><br />
+						<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><?php esc_html_e( 'Rate it 5 on WordPress.org', 'off-canvas-sidebars' ); ?></a><br />
+						<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><?php esc_html_e( 'Blog about it & link to the plugin page', 'off-canvas-sidebars' ); ?></a><br />
+						<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"><?php esc_html_e( 'Check out my other WordPress plugins', 'off-canvas-sidebars' ); ?></a><br />
 						</p>
 						<hr />
-						<h4 class="inner"><?php esc_html_e( 'Want to help?', 'off-canvas-sidebars' ) ?></h4>
+						<h4 class="inner"><?php esc_html_e( 'Want to help?', 'off-canvas-sidebars' ); ?></h4>
 						<p class="inner">
-						<a href="https://github.com/JoryHogeveen/off-canvas-sidebars" target="_blank"><?php esc_html_e( 'Follow and/or contribute on GitHub', 'off-canvas-sidebars' ) ?></a>
+						<a href="https://github.com/JoryHogeveen/off-canvas-sidebars" target="_blank"><?php esc_html_e( 'Follow and/or contribute on GitHub', 'off-canvas-sidebars' ); ?></a>
 						</p>
 						<hr />
-						<p class="ocs-link inner"><?php esc_html_e( 'Created by', 'off-canvas-sidebars' ) ?>: <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
+						<p class="ocs-link inner"><?php esc_html_e( 'Created by', 'off-canvas-sidebars' ); ?>: <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
 					</div>
 				</div>
 			</div>
@@ -1029,7 +1035,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	private function shortcode_tab() {
 		?>
 		<div id="section_shortcode" class="stuffbox postbox">
-			<h3 class="hndle"><span><?php esc_html_e( 'Shortcode', 'off-canvas-sidebars' ) ?>:</span></h3>
+			<h3 class="hndle"><span><?php esc_html_e( 'Shortcode', 'off-canvas-sidebars' ); ?>:</span></h3>
 			<div class="inside">
 			<textarea id="ocs_shortcode" class="widefat">[ocs_trigger sidebar=""]</textarea>
 		</div></div>
@@ -1152,7 +1158,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		echo '</table></div></div>';
 		?>
 		<div id="section_shortcode_preview" class="stuffbox postbox postbox-third">
-			<h3 class="hndle"><span><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ) ?>:</span></h3>
+			<h3 class="hndle"><span><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ); ?>:</span></h3>
 			<div class="inside">
 			<div id="ocs_shortcode_preview"></div>
 			</div>
@@ -1171,12 +1177,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	?>
 		<h3><?php esc_html_e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
-		<p><a class="submit button" href="?<?php echo $this->plugin_key ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
+		<p><a class="submit button" href="?<?php echo $this->plugin_key; ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
 
 		<p>
-			<input type="hidden" name="<?php echo $this->plugin_key ?>-import" id="<?php echo $this->plugin_key ?>-import" value="true" />
+			<input type="hidden" name="<?php echo $this->plugin_key; ?>-import" id="<?php echo $this->plugin_key; ?>-import" value="true" />
 			<?php submit_button( esc_attr__( 'Import Settings', 'off-canvas-sidebars' ), 'button', $this->plugin_key . '-submit', false ); ?>
-			<input type="file" name="<?php echo $this->plugin_key ?>-import-file" id="<?php echo $this->plugin_key ?>-import-file" />
+			<input type="file" name="<?php echo $this->plugin_key; ?>-import-file" id="<?php echo $this->plugin_key; ?>-import-file" />
 		</p>
 	<?php
 	}

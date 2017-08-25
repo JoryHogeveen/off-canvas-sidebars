@@ -311,7 +311,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			})( jQuery );
 		-->
 		</script>
-		<?php } // End if().
+		<?php
+		} // End if().
 	}
 
 	/**
