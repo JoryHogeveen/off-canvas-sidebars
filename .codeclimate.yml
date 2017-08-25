@@ -36,6 +36,9 @@ engines:
       # Disable: "The universal selector (*) is known to be slow". This is only for ancient browsers..
       universal-selector:
         enabled: false
+      # Disable: Attribute selectors with *= are slow!
+      regex-selectors:
+        enabled: false
   eslint:
     enabled: true
     config:
