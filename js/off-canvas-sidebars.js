@@ -39,10 +39,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		/**
 		 * Validate the disable_over setting ( using _getSetting() )
-
 		 * Internal function, do not overwrite
-
 		 * @since  0.3
+		 * @param  {string}  sidebarId
+		 * @return {bool}  disableOver status.
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check = true;
@@ -63,6 +63,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @since  0.3
 		 * @param  key  the setting key to look for
 		 * @param  sidebarId  bool|null|string  false = check for an active slidebar, null or no value = only the global setting
+		 * @return {string|bool}  The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
 			var overwrite, setting;
@@ -113,6 +114,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			return false;
 		};
 
+		/**
+		 * Get the value from the transform axis of an element.
+		 * @param  {string|object}  obj   The element.
+		 * @param  {string}         axis  The axis to get.
+		 * @returns {number|float|null}  The axis value or null.
+		 */
 		ocsOffCanvasSidebars._getTranslateAxis = function( obj, axis ) {
 			obj = $( obj );
 			var transformMatrix = obj.css("-webkit-transform") ||
@@ -261,9 +268,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	};
 
 	/**
-	 * Set the default settings for sidebars if they are not found
-
+	 * Set the default settings for sidebars if they are not found.
 	 * @since  0.3
+	 * @return {null}  Nothing.
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
 
@@ -278,6 +285,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		}
 	};
 
+	/**
+	 * Setup automatic trigger handling.
+	 * @since  0.3
+	 * @return {null}  Nothing.
+	 */
 	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller = ocsOffCanvasSidebars.slidebarsController,
 			prefix = ocsOffCanvasSidebars.css_prefix,
@@ -444,6 +456,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Get all fixed elements within the canvas container.
 	 * @since  0.4
+	 * @return {object}  A jQuery selection of fixed elements.
 	 */
 	ocsOffCanvasSidebars.getFixedElements = function() {
 		return $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function() {
@@ -453,10 +466,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	/**
 	 * Automatically apply browser prefixes before setting CSS values.
+	 * @since  0.4
 	 * @param  {object}         elem
 	 * @param  {string}         prop
 	 * @param  {string|number}  value
-	 * @since  0.4
+	 * @return {null}  Nothing.
 	 */
 	ocsOffCanvasSidebars.cssCompat = function( elem, prop, value ) {
 		var data = {};
