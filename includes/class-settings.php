@@ -896,7 +896,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				<p>
 				<?php
 					// Translators: %s stands for a URL.
-					echo sprintf( __( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/' );
+					echo sprintf( __( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', 'off-canvas-sidebars' ), 'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup' );
 				?>
 				</p>
 				<p><?php echo $this->general_labels['compatibility_notice_theme']; ?></p>
@@ -930,7 +930,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 						<p class="inner">
 						<?php
 							// Translators: %1$s and %2$s stands for a URL.
-							echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank">Documentation</a> or talk about them in the <a href="%2$s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://wordpress.org/plugins/off-canvas-sidebars/installation/', 'https://wordpress.org/support/plugin/off-canvas-sidebars' );
+							echo sprintf( __( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank">Documentation</a> or talk about them in the <a href="%2$s" target="_blank">Support forum</a>', 'off-canvas-sidebars' ), 'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/', 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues' );
 						?>
 						</p>
 						<hr />
