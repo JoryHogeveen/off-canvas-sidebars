@@ -76,11 +76,11 @@ slidebars = function () {
 			} else {
 				if ( 'top' === offCanvas[ id ].side ) {
 					amount = '0px, ' + size;
-				} else if ( offCanvas[ id ].side === 'right' ) {
+				} else if ( 'right' === offCanvas[ id ].side ) {
 					amount = '-' + size + ', 0px';
-				} else if ( offCanvas[ id ].side === 'bottom' ) {
+				} else if ( 'bottom' === offCanvas[ id ].side ) {
 					amount = '0px, -' + size;
-				} else if ( offCanvas[ id ].side === 'left' ) {
+				} else if ( 'left' === offCanvas[ id ].side ) {
 					amount = size + ', 0px';
 				}
 			}

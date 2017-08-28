@@ -91,10 +91,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			<?php
 					}
 				}
+				if ( ! $off_canvas_sidebars->is_sidebar_enabled() ) {
+					echo '<li>' . $this->general_labels['no_sidebars_available'] . '</li>';
+				}
 			?>
-			<?php if ( ! $off_canvas_sidebars->is_sidebar_enabled() ) { ?>
-					<li><?php echo $this->general_labels['no_sidebars_available']; ?></li>
-			<?php }	?>
 				</ul>
 			</div>
 			<?php if ( $off_canvas_sidebars->is_sidebar_enabled() ) { ?>
@@ -148,7 +148,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			'meta_key'    => '_off_canvas_control_menu_item',
 		) );
 
-		// the options values for the language switcher
+		// the options values for the triggers.
 		$data['val'] = array();
 		foreach ( $items as $item )
 			$data['val'][ $item ] = get_post_meta( $item, '_off_canvas_control_menu_item', true );

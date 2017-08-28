@@ -58,7 +58,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		} else {
 			$tab = ( isset( $this->sidebars_tab ) ) ? '&tab=' . $this->sidebars_tab : '';
 			echo '<a href="?page=' . esc_attr( $this->plugin_key ) . $tab . '">'
-			     . esc_html__( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
+				. esc_html__( 'Click here to add off-canvas sidebars', 'off-canvas-sidebars' ) . '</a>';
 		}
 	}
 
