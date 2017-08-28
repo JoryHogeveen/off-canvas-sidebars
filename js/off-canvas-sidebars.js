@@ -41,7 +41,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Validate the disable_over setting ( using _getSetting() )
 		 * Internal function, do not overwrite
 		 * @since  0.3
-		 * @param  {string}  sidebarId
+		 * @param  {string}  sidebarId  The sidebar ID.
 		 * @return {bool}  disableOver status.
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
@@ -61,8 +61,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Internal function, do not overwrite
 
 		 * @since  0.3
-		 * @param  key  the setting key to look for
-		 * @param  sidebarId  bool|null|string  false = check for an active slidebar, null or no value = only the global setting
+		 * @param  {string}            key        The setting key to look for
+		 * @param  {string|bool|null}  sidebarId  The sidebar ID.
+		 *                                        Pass `false` to check for an active slidebar.
+		 *                                        Pass `null` or no value for only the global setting.
 		 * @return {string|bool}  The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
@@ -270,6 +272,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Set the default settings for sidebars if they are not found.
 	 * @since  0.3
+	 * @param  {string}  sidebarId  The sidebar ID.
 	 * @return {null}  Nothing.
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
@@ -441,9 +444,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
 				var $this = $(this);
-				if ( e.originalEvent.deltaY < 0 ) {
+				if ( 0 > e.originalEvent.deltaY ) {
 					/* scrolling up */
-					return ( $this.scrollTop() > 0 );
+					return ( 0 < $this.scrollTop() );
 				} else {
 					/* scrolling down */
 					return ( $this.scrollTop() + $this.innerHeight() < $this[0].scrollHeight );
@@ -460,16 +463,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 */
 	ocsOffCanvasSidebars.getFixedElements = function() {
 		return $('#' + ocsOffCanvasSidebars.css_prefix + '-site *').filter( function() {
-			return $(this).css('position') === 'fixed';
+			return ( 'fixed' === $(this).css('position') );
 		} );
 	};
 
 	/**
 	 * Automatically apply browser prefixes before setting CSS values.
 	 * @since  0.4
-	 * @param  {object}         elem
-	 * @param  {string}         prop
-	 * @param  {string|number}  value
+	 * @param  {object}         elem   The element.
+	 * @param  {string}         prop   The CSS property.
+	 * @param  {string|number}  value  The CSS property value.
 	 * @return {null}  Nothing.
 	 */
 	ocsOffCanvasSidebars.cssCompat = function( elem, prop, value ) {

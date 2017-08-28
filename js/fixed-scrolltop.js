@@ -60,7 +60,7 @@
 		};
 
 		ocsOffCanvasSidebars.scrollTopFixed = function() {
-			if ( curScrollTopElements.length > 0 ) {
+			if ( curScrollTopElements.length ) {
 				var scrollTop = scrollTarget.scrollTop(),
 				    winHeight = $window.height(),
 				    gblOffset = $body.offset(),

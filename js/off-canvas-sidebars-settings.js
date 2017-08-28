@@ -262,7 +262,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 			}
 
 			// If the test contains a double quote, force it to be nested for compatibility
-			if ( field_data.text.val().length && field_data.text.val().indexOf( '"' ) !== -1 ) {
+			if ( field_data.text.val().length && -1 < field_data.text.val().indexOf( '"' ) ) {
 				field_data.nested = true;
 			}
 
@@ -284,7 +284,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		/**
 		 * Parses the shortcode data for a HTML preview.
 		 * @since  0.4
-		 * @param  {object}  field_data
+		 * @param  {object}  field_data  The shortcode data.
 		 * @return {null}  Nothing.
 		 */
 		function create_shortcode_preview( field_data ) {
@@ -336,8 +336,8 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		 * Out: { key: value, key: value }
 		 *
 		 * @since  0.4
-		 * @param  {string}  attrString
-		 * @return {object}
+		 * @param  {string}  attrString  The attribute string.
+		 * @return {object}  The attribute object.
 		 */
 		function attrHTMLToObject( attrString ) {
 			var arr = attrString.trim().split( '" ' ),
@@ -360,8 +360,8 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		 * Out: { key: value, key: value }
 		 *
 		 * @since  0.4
-		 * @param  {string}  attrString
-		 * @return {object}
+		 * @param  {string}  attrString  The attribute string.
+		 * @return {object}  The attribute object.
 		 */
 		function attrStringToObject( attrString ) {
 			var arr = attrString.split( ';' ),
@@ -386,8 +386,8 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		 * Out: key="value" key="value"
 		 *
 		 * @since  0.4
-		 * @param  {object}  attrObj
-		 * @return {string}
+		 * @param  {object}  attrObj  The attribute object.
+		 * @return {string}  The attribute string.
 		 */
 		function attrObjectToHTML( attrObj ) {
 			var atts = [];
@@ -406,8 +406,8 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		 * Out: key:value;key:value
 		 *
 		 * @since  0.4
-		 * @param  {object}  attrObj
-		 * @return {string}
+		 * @param  {object}  attrObj  The attribute object.
+		 * @return {string}  The attribute string.
 		 */
 		function attrObjectToString( attrObj ) {
 			var atts = [];
@@ -424,7 +424,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		 * @param  {string}  s  The string.
 		 * @param  {string}  a  The attribute to find.
 		 * @param  {bool}    f  @todo
-		 * @return {string|bool}
+		 * @return {string|bool}  The attribute value or false.
 		 */
 		function getAttr( s, a, f ) {
 			var n = new RegExp( a + '=\"([^\"]+)\"', 'g' ).exec( s );

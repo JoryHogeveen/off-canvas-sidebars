@@ -51,22 +51,22 @@ slidebars = function () {
 		duration = parseFloat( offCanvas[ id ].element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
 
 		// Elements to animate
-		if ( offCanvas[ id ].style === 'reveal' || offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'shift' ) {
+		if ( 'reveal' === offCanvas[ id ].style || 'push' === offCanvas[ id ].style || 'shift' === offCanvas[ id ].style ) {
 			elements = elements.add( canvas );
 		}
 
 		// @todo, fix reveal support for top and bottom
-		if ( offCanvas[ id ].style === 'reveal' && ( offCanvas[ id ].side === 'top' || offCanvas[ id ].side === 'bottom' ) ) {
+		if ( 'reveal' === offCanvas[ id ].style && ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) ) {
 			elements = elements.add( offCanvas[ id ].element );
 		}
 
-		if ( offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'overlay' || offCanvas[ id ].style === 'shift' ) {
+		if ( 'push' === offCanvas[ id ].style || 'overlay' === offCanvas[ id ].style || 'shift' === offCanvas[ id ].style ) {
 			elements = elements.add( offCanvas[ id ].element );
 		}
 
 		// Amount to animate
 		if ( offCanvas[ id ].active || self.legacy ) {
-			if ( offCanvas[ id ].side === 'top' ||  offCanvas[ id ].side === 'bottom'  ) {
+			if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 				size = offCanvas[ id ].element.css( 'height' );
 			} else {
 				size = offCanvas[ id ].element.css( 'width' );
@@ -74,7 +74,7 @@ slidebars = function () {
 			if ( self.legacy ) {
 				amount = size;
 			} else {
-				if ( offCanvas[ id ].side === 'top' ) {
+				if ( 'top' === offCanvas[ id ].side ) {
 					amount = '0px, ' + size;
 				} else if ( offCanvas[ id ].side === 'right' ) {
 					amount = '-' + size + ', 0px';
@@ -134,7 +134,7 @@ slidebars = function () {
 				var parameters = $( this ).attr( 'off-canvas' ).split( ' ', 3 );
 
 				// Make sure a valid id, side and style are specified
-				if ( ! parameters || ! parameters[ 0 ] || sides.indexOf( parameters[ 1 ] ) === -1 || styles.indexOf( parameters[ 2 ] ) === -1 ) {
+				if ( ! parameters || ! parameters[ 0 ] || -1 === sides.indexOf( parameters[ 1 ] ) || -1 === styles.indexOf( parameters[ 2 ] ) ) {
 					throw "Error registering Slidebar, please specify a valid id, side and style'.";
 				}
 
@@ -156,7 +156,7 @@ slidebars = function () {
 		$( events ).trigger( 'init' );
 
 		// Run callback
-		if ( typeof callback === 'function' ) {
+		if ( 'function' === typeof callback ) {
 			callback();
 		}
 	};
@@ -176,7 +176,7 @@ slidebars = function () {
 			$( events ).trigger( 'exit' );
 
 			// Run callback
-			if ( typeof callback === 'function' ) {
+			if ( 'function' === typeof callback ) {
 				callback();
 			}
 		};
@@ -206,7 +206,7 @@ slidebars = function () {
 				// Calculate offset
 				var offset;
 
-				if ( offCanvas[ id ].side === 'top' || offCanvas[ id ].side === 'bottom' ) {
+				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 					offset = offCanvas[ id ].element.css( 'height' );
 				} else {
 					offset = offCanvas[ id ].element.css( 'width' );
@@ -214,9 +214,9 @@ slidebars = function () {
 
 				// Apply negative margins
 				var do_offset = false;
-				if ( offCanvas[ id ].style === 'push' || offCanvas[ id ].style === 'overlay' || offCanvas[ id ].style === 'shift' ) {
+				if ( 'push' === offCanvas[ id ].style || 'overlay' === offCanvas[ id ].style || 'shift' === offCanvas[ id ].style ) {
 					do_offset = true;
-				} else if ( offCanvas[ id ].style === 'reveal' && ( offCanvas[ id ].side === 'top' || offCanvas[ id ].side === 'bottom' ) ) {
+				} else if ( 'reveal' === offCanvas[ id ].style && ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) ) {
 					// temp disabled style condition to enable reveal location as well for top and bottom
 					// @todo, fix reveal support for top and bottom, current result is behaviour similar to push
 					do_offset = true;
@@ -225,7 +225,7 @@ slidebars = function () {
 					offCanvas[ id ].element.css( 'margin-' + offCanvas[ id ].side, '-' + offset );
 
 					// Fix shift style locations for legacy mode (1.9 to fix minor px rendering issues)
-					if ( self.legacy && offCanvas[ id ].style === 'shift' ) {
+					if ( self.legacy && 'shift' === offCanvas[ id ].style ) {
 						var shiftPos;
 						if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 							shiftPos = offCanvas[ id ].element.height() / 1.9;
@@ -250,7 +250,7 @@ slidebars = function () {
 		$( events ).trigger( 'css' );
 
 		// Run callback
-		if ( typeof callback === 'function' ) {
+		if ( 'function' === typeof callback ) {
 			callback();
 		}
 	};
@@ -330,7 +330,7 @@ slidebars = function () {
 				$( events ).trigger( 'opened', [ offCanvas[ id ].id ] );
 
 				// Run callback
-				if ( typeof callback === 'function' ) {
+				if ( 'function' === typeof callback ) {
 					callback();
 				}
 			}, animationProperties.duration );
@@ -346,7 +346,7 @@ slidebars = function () {
 
 	this.close = function ( id, callback ) {
 		// Shift callback arguments
-		if ( typeof id === 'function' ) {
+		if ( 'function' === typeof id ) {
 			callback = id;
 			id = null;
 		}
@@ -433,7 +433,7 @@ slidebars = function () {
 				$( events ).trigger( 'closed', [ offCanvas[ id ].id ] );
 
 				// Run callback
-				if ( typeof callback === 'function' ) {
+				if ( 'function' === typeof callback ) {
 					callback();
 				}
 			}, animationProperties.duration );
@@ -456,7 +456,7 @@ slidebars = function () {
 			// It's open, close it
 			this.close( id, function () {
 				// Run callback
-				if ( typeof callback === 'function' ) {
+				if ( 'function' === typeof callback ) {
 					callback();
 				}
 			} );
@@ -464,7 +464,7 @@ slidebars = function () {
 			// It's closed, open it
 			this.open( id, function () {
 				// Run callback
-				if ( typeof callback === 'function' ) {
+				if ( 'function' === typeof callback ) {
 					callback();
 				}
 			} );
