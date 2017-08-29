@@ -150,7 +150,7 @@ final class OCS_Off_Canvas_Sidebars
 		'website_after_hook'            => 'website_after',
 		'use_fastclick'                 => 0,
 		'compatibility_position_fixed'  => 'none',
-		'shortcode_rendering_wp_editor' => 0,
+		'wp_editor_shortcode_rendering' => 0,
 		'css_prefix'                    => 'ocs',
 		'sidebars'                      => array(),
 	);
@@ -248,6 +248,10 @@ final class OCS_Off_Canvas_Sidebars
 			include_once( OCS_PLUGIN_DIR . 'includes/class-form.php' );
 			include_once( OCS_PLUGIN_DIR . 'includes/class-settings.php' );
 			OCS_Off_Canvas_Sidebars_Settings::get_instance();
+
+			// Load the WP Editor shortcode generator.
+			include_once( OCS_PLUGIN_DIR . 'includes/class-editor-shortcode-generator.php' );
+			OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator::get_instance();
 
 			// Add settings link to plugins page.
 			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );

@@ -348,6 +348,19 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 				),
 			)
 		);
+
+		add_settings_field(
+			'wp_editor_shortcode_rendering',
+			esc_attr__( 'Enable shortcode UI for the WordPress Editor?', 'off-canvas-sidebars' ),
+			array( $this, 'checkbox_option' ),
+			$this->settings_tab,
+			'section_admin',
+			array(
+				'name' => 'wp_editor_shortcode_rendering',
+				'label' => __( 'Yes', 'off-canvas-sidebars' ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank">' . __( 'Experimental', 'off-canvas-sidebars' ) . '</a>)',
+				'description' => __( 'This will render the shortcodes to actual HTML elements in the WP Editor.', 'off-canvas-sidebars' ),
+			)
+		);
 	}
 
 	/**
@@ -614,11 +627,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		unset( $input['sidebars']['ocs_add_new'] );
 
 		if ( $this->post_tab === $this->settings_tab ) {
-			$input['enable_frontend']      = $this->validate_numeric_boolean( $input, 'enable_frontend' );
-			$input['site_close']           = $this->validate_numeric_boolean( $input, 'site_close' );
-			$input['hide_control_classes'] = $this->validate_numeric_boolean( $input, 'hide_control_classes' );
-			$input['scroll_lock']          = $this->validate_numeric_boolean( $input, 'scroll_lock' );
-			$input['use_fastclick']        = $this->validate_numeric_boolean( $input, 'use_fastclick' );
+			$input['enable_frontend']               = $this->validate_numeric_boolean( $input, 'enable_frontend' );
+			$input['site_close']                    = $this->validate_numeric_boolean( $input, 'site_close' );
+			$input['hide_control_classes']          = $this->validate_numeric_boolean( $input, 'hide_control_classes' );
+			$input['scroll_lock']                   = $this->validate_numeric_boolean( $input, 'scroll_lock' );
+			$input['use_fastclick']                 = $this->validate_numeric_boolean( $input, 'use_fastclick' );
+			$input['wp_editor_shortcode_rendering'] = $this->validate_numeric_boolean( $input, 'wp_editor_shortcode_rendering' );
 		}
 
 		// Handle existing sidebars.
@@ -722,6 +736,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			$output['hide_control_classes']          = $this->validate_checkbox( $output['hide_control_classes'] );
 			$output['scroll_lock']                   = $this->validate_checkbox( $output['scroll_lock'] );
 			$output['use_fastclick']                 = $this->validate_checkbox( $output['use_fastclick'] );
+			$output['wp_editor_shortcode_rendering'] = $this->validate_checkbox( $output['wp_editor_shortcode_rendering'] );
 
 			// Numeric values, not integers!
 			$output['disable_over'] = $this->validate_numeric( $output['disable_over'] );
