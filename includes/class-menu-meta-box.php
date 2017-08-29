@@ -154,7 +154,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			$data['val'][ $item ] = get_post_meta( $item, '_off_canvas_control_menu_item', true );
 
 		// send all these data to javascript
-		wp_localize_script( 'off_canvas_control_nav_menu', 'off_canvas_control_data', $data );
+		wp_localize_script( 'off_canvas_control_nav_menu', 'ocsNavControl', $data );
 	}
 
 	/*

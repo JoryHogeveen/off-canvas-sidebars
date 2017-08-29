@@ -5,12 +5,14 @@
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
  * @version 0.4
+ * @global ocsNavControl
+ * @preserve
  *
  * Credits to the Polylang plugin for inspiration
  */
 
-if ( 'undefined' === typeof off_canvas_control_data ) {
-	var off_canvas_control_data = {};
+if ( 'undefined' === typeof ocsNavControl ) {
+	var ocsNavControl = {};
 }
 
 jQuery( document ).ready( function( $ ) {
@@ -22,40 +24,34 @@ jQuery( document ).ready( function( $ ) {
 		$this.addClass('off-canvas-control');
 
 		/* If control selected, then show it */
-		if ( off_canvas_control_data.val[ db_id ]['off-canvas-control']) {
-			var key = off_canvas_control_data.val[ db_id ]['off-canvas-control'];
-			control_type = ' <i class="item-type-off-canvas-control">(' + off_canvas_control_data.controls[ key ] + ')</i>';
+		if ( ocsNavControl.val[ db_id ]['off-canvas-control']) {
+			var key = ocsNavControl.val[ db_id ]['off-canvas-control'];
+			control_type = ' <i class="item-type-off-canvas-control">(' + ocsNavControl.controls[ key ] + ')</i>';
 		}
-		$this.find('.menu-item-bar .item-type').html( off_canvas_control_data.strings.menu_item_type + control_type );
+		$this.find('.menu-item-bar .item-type').html( ocsNavControl.strings.menu_item_type + control_type );
 	});
 
-	/* change menu type label on selecting a controller */
+	/* Change menu type label on selecting a controller */
 	$(document).on( 'change', '.field-off-canvas-control input', function() {
 		var key = $(this).val();
-		var control_type = ' <i class="item-type-off-canvas-control">(' + off_canvas_control_data.controls[ key ] + ')</i>';
-		$(this).parents('.menu-item').find('.menu-item-bar .item-type').html( off_canvas_control_data.strings.menu_item_type + control_type );
+		var control_type = ' <i class="item-type-off-canvas-control">(' + ocsNavControl.controls[ key ] + ')</i>';
+		$(this).parents('.menu-item').find('.menu-item-bar .item-type').html( ocsNavControl.strings.menu_item_type + control_type );
 	} );
 
-	/* init/change menu item options */
+	/* Init/change menu item options */
 	$('#update-nav-menu').bind( 'click load', function(e) {
 		if ( e.target && e.target.className && -1 < e.target.className.indexOf('item-edit')) {
 			$('input[value="#off_canvas_control"][type=text]').parent().parent().parent().each( function() {
 				var $this = $(this),
 					item = $this.attr('id').substring(19),
-					strings = off_canvas_control_data.strings,
-					controls = off_canvas_control_data.controls,
+					strings = ocsNavControl.strings,
+					controls = ocsNavControl.controls,
 					option;
 
-				$this.children('p.field-url, p.field-link-target, .field-xfn, .field-description').remove(); // remove default fields we don't need
+				// Remove default fields we don't need
+				$this.children('p.field-url, p.field-link-target, .field-xfn, .field-description').remove();
+				// Change description width.
 				$this.children('p.field-css-classes').removeClass('description-thin').addClass('description-wide');
-
-				/*option = $('<input>').attr({
-						type: 'hidden',
-						id: 'edit-menu-item-title-'+item,
-						name: 'menu-item-title['+item+']',
-						value: off_canvas_control_data.title
-				});
-				$this.append(option);*/
 
 				option = $('<input>').attr( {
 					type: 'hidden',
@@ -81,7 +77,7 @@ jQuery( document ).ready( function( $ ) {
 						continue;
 					}
 					var checked = '';
-					if (( 'undefined' !== typeof off_canvas_control_data.val[ item ] && key === off_canvas_control_data.val[ item ]['off-canvas-control'] ) ) {
+					if (( 'undefined' !== typeof ocsNavControl.val[ item ] && key === ocsNavControl.val[ item ]['off-canvas-control'] ) ) {
 						checked = ' checked="checked"';
 					}
 					o += '<input type="radio" id="edit-menu-item-off-canvas-control-' + key + '-item-' + item + '" name="menu-item-off-canvas-control[' + item + ']" value="' + key + '" ' + checked + ' /> ';
@@ -95,25 +91,7 @@ jQuery( document ).ready( function( $ ) {
 				if ( 1 === $field_control_options.length ) {
 					$field_control_options.prop('checked', true);
 				}
-				/*
-				ids = Array('menu_item_type'); // reverse order
-				// add the fields
-				for(var i = 0; i < ids.length; i++) {
-					p = $('<p>').attr('class', 'description');
-					$(this).prepend(p);
-					label = $('<label>').attr('for', 'menu-item-'+ids[i]+'-'+item).text(' '+off_canvas_control_data.strings[i]);
-					p.append(label);
-					cb = $('<input>').attr({
-						type: 'checkbox',
-						id: 'edit-menu-item-'+ids[i]+'-'+item,
-						name: 'menu-item-'+ids[i]+'['+item+']',
-						value: 1
-					});
-					if ((typeof(off_canvas_control_data.val[item]) != 'undefined' && off_canvas_control_data.val[item][ids[i]] == 1) || (typeof(off_canvas_control_data.val[item]) == 'undefined' && ids[i] == 'show_names')) // show_names as default value
-						cb.prop('checked', true);
-					label.prepend(cb);
-				}
-				*/
+
 			} );
 		}
 	} );

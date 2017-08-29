@@ -1,4 +1,4 @@
-;/*!
+;/**
  * Slidebars - A jQuery Framework for Off-Canvas Menus and Sidebars
  * Version: 2.0.2
  * Url: http://www.adchsm.com/slidebars/
@@ -8,9 +8,15 @@
  * License url: http://www.adchsm.com/slidebars/license/
  *
  * Modified by: Jory Hogeveen
- * Version numbers below are related to Off-Canvas Sidebars, not Slidebars.
+ * Version numbers and info below is related to Off-Canvas Sidebars, not Slidebars.
  *
- * @since  0.4  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @package off-canvas-slidebars
+ * @author Jory Hogeveen <info@keraweb.nl>
+ *
+ * @version 0.4
+ * @since 0.4  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @global slidebars
+ * @preserve
  */
 
 var slidebars;
