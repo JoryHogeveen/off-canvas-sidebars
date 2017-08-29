@@ -37,8 +37,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	ocsOffCanvasSidebars.init = function() {
 
 		/**
-		 * Validate the disable_over setting ( using _getSetting() )
-		 * Internal function, do not overwrite
+		 * Validate the disable_over setting ( using _getSetting() ).
+		 * Internal function, do not overwrite.
 		 * @since  0.3
 		 * @param  {string}  sidebarId  The sidebar ID.
 		 * @return {bool}  disableOver status.
@@ -55,12 +55,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		};
 
 		/**
-		 * Get the global setting or the sidebar setting (if set to overwrite)
-
-		 * Internal function, do not overwrite
-
+		 * Get the global setting or the sidebar setting (if set to overwrite).
+		 *
+		 * Internal function, do not overwrite.
+		 *
 		 * @since  0.3
-		 * @param  {string}            key        The setting key to look for
+		 * @param  {string}            key        The setting key to look for.
 		 * @param  {string|bool|null}  sidebarId  The sidebar ID.
 		 *                                        Pass `false` to check for an active slidebar.
 		 *                                        Pass `null` or no value for only the global setting.
@@ -88,7 +88,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						}
 					}
 
-				// Fallback/Overwrite to enable sidebar settings from available attributes
+				// Fallback/Overwrite to enable sidebar settings from available attributes.
 				} else {
 					var sidebarElement = $( '#' + sidebarId );
 					overwrite = sidebarElement.attr( 'ocs-overwrite_global_settings' );
@@ -133,13 +133,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				var val = false;
 				switch ( axis ) {
 					case 'x':
-						val = matrix[12] || matrix[4]; //translate x
+						val = matrix[12] || matrix[4]; //translate x.
 						break;
 					case 'y':
-						val = matrix[13] || matrix[5]; //translate y
+						val = matrix[13] || matrix[5]; //translate y.
 						break;
 					case 'z':
-						val = matrix[14] || matrix[6]; //translate z
+						val = matrix[14] || matrix[6]; //translate z.
 						break;
 				}
 				return parseFloat( val );
@@ -152,7 +152,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		$window.trigger( 'ocs_loaded', this );
 
-		// Slidebars constructor
+		// Slidebars constructor.
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
 
 		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
@@ -165,7 +165,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			ocsOffCanvasSidebars._html.addClass('ocs-legacy');
 		}
 
-		// Initialize slidebars
+		// Initialize slidebars.
 		ocsOffCanvasSidebars.slidebarsController.init();
 
 		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
@@ -173,7 +173,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		$window.trigger( 'ocs_initialized', this );
 
 		/**
-		 * Compatibility with WP Admin Bar
+		 * Compatibility with WP Admin Bar.
 		 * @since  0.4
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
@@ -194,7 +194,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		}
 
 		/**
-		 * Fix position issues for fixed elements on slidebar animations
+		 * Fix position issues for fixed elements on slidebar animations.
 		 * @since  0.4
  		 */
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
@@ -204,7 +204,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				var elements = ocsOffCanvasSidebars.getFixedElements();
 				elements.attr( { 'canvas-fixed': 'fixed' } );
 
-				// Legacy mode (only needed for location: top)
+				// Legacy mode (only needed for location: top).
 				// @todo, temp apply for reveal aswell
 				if ( ocsOffCanvasSidebars.legacy_css && 'top' === slidebar.side && ( 'overlay' !== slidebar.style && 'reveal' !== slidebar.style  ) ) {
 					var offset;
@@ -215,7 +215,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', '') );
 					//}
 
-					//Compatibility with WP Admin Bar
+					//Compatibility with WP Admin Bar.
 					// @todo, condition for setting
 					if ( ocsOffCanvasSidebars._toolbar ) {
 						var bodyOffset = $body.offset();
@@ -224,12 +224,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 					elements.each( function() {
 						var $this = $(this);
-						// Set animation
+						// Set animation.
 						if ( 'opening' === e.type ) {
 							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
 							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) + offset + 'px' );
 						}
-						// Remove animation
+						// Remove animation.
 						else if ( 'closing' === e.type ) {
 							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) - offset + 'px' );
 							setTimeout( function() {
@@ -238,7 +238,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						}
 					} );
 				}
-				// Normal mode (only sets a transition for use in fixed-scrolltop.js)
+				// Normal mode (only sets a transition for use in fixed-scrolltop.js).
 				else {
 					elements.each( function() {
 						var $this = $(this);
@@ -256,7 +256,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
-		// Prevent swipe events to be seen as a click (bug in some browsers)
+		// Prevent swipe events to be seen as a click (bug in some browsers).
 		$document.on( 'touchmove', function() {
 			ocsOffCanvasSidebars._touchmove = true;
 		} );
@@ -264,7 +264,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			ocsOffCanvasSidebars._touchmove = false;
 		} );
 
-		// Validate type, this could be changed with the hooks
+		// Validate type, this could be changed with the hooks.
 		if ( 'function' === typeof ocsOffCanvasSidebars.setupTriggers ) {
 			ocsOffCanvasSidebars.setupTriggers();
 		}
@@ -305,55 +305,55 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
 
 			/**
-			 * Toggle the sidebar
+			 * Toggle the sidebar.
 			 * @since  0.1
 			 */
 			$document.on( 'touchend click', '.' + prefix + '-toggle-' + id, function( e ) {
-				// Stop default action and bubbling
+				// Stop default action and bubbling.
 				e.stopPropagation();
 				e.preventDefault();
 
-				// Prevent touch+swipe
+				// Prevent touch+swipe.
 				if ( true === ocsOffCanvasSidebars._touchmove ) {
 					return;
 				}
 
-				// Toggle the slidebar with respect for the disable_over setting
+				// Toggle the slidebar with respect for the disable_over setting.
 				if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
 					controller.toggle( prefix + '-' + id );
 				}
 			} );
 
 			/**
-			 * Open the sidebar
+			 * Open the sidebar.
 			 * @since  0.3
 			 */
 			$document.on( 'touchend click', '.' + prefix + '-open-' + id, function( e ) {
-				// Stop default action and bubbling
+				// Stop default action and bubbling.
 				e.stopPropagation();
 				e.preventDefault();
 
-				// Prevent touch+swipe
+				// Prevent touch+swipe.
 				if ( true === ocsOffCanvasSidebars._touchmove ) {
 					return;
 				}
 
-				// Open the slidebar with respect for the disable_over setting
+				// Open the slidebar with respect for the disable_over setting.
 				if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
 					controller.open( prefix + '-' + id );
 				}
 			} );
 
 			/**
-			 * Close the sidebar
+			 * Close the sidebar.
 			 * @since  0.3
 			 */
 			$document.on( 'touchend click', '.' + prefix + '-close-' + id, function( e ) {
-				// Stop default action and bubbling
+				// Stop default action and bubbling.
 				e.stopPropagation();
 				e.preventDefault();
 
-				// Prevent touch+swipe
+				// Prevent touch+swipe.
 				if ( true === ocsOffCanvasSidebars._touchmove ) {
 					return;
 				}
@@ -363,7 +363,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		} );
 
-		// Close any
+		// Close any.
 		$document.on( 'touchend click', '.' + prefix + '-close-any', function( e ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
 				e.preventDefault();
@@ -372,14 +372,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
-		// Close the slidebar after clicking a link
+		// Close the slidebar after clicking a link.
 		$( 'a' ).not( '.' + prefix + '-trigger' ).on( 'touchend click', function() {
 			if ( ! $(this).parents( '.' + prefix + '-trigger' ).length ) {
 				controller.close();
 			}
 		} );
 
-		// Close Slidebars when clicking on a link within a slidebar
+		// Close Slidebars when clicking on a link within a slidebar.
 		/*$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -392,7 +392,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			} );
 		} );*/
 
-		// Add close class to canvas container when Slidebar is opened
+		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'opening', function () {
 			$( '[canvas]' ).addClass( prefix + '-close-any' );
 			ocsOffCanvasSidebars._html.addClass( 'ocs-sidebar-active' );
@@ -401,13 +401,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
-		// Add close class to canvas container when Slidebar is opened
+		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closing', function () {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
 			ocsOffCanvasSidebars._html.removeClass( 'ocs-sidebar-active ocs-scroll-lock' );
 		} );
 
-		// Disable slidebars when the window is wider than the set width
+		// Disable slidebars when the window is wider than the set width.
 		var disableOver = function() {
 			var prefix = ocsOffCanvasSidebars.css_prefix;
 			sidebarElements.each( function() {
@@ -417,7 +417,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					if ( controller.isActiveSlidebar( prefix + '-' + id ) ) {
 						controller.close();
 					}
-					// Hide control classes
+					// Hide control classes.
 					if ( ocsOffCanvasSidebars._getSetting( 'hide_control_classes', prefix + '-' + id ) ) {
 						$( '.' + prefix + '-toggle-' + id ).hide();
 					}
@@ -430,7 +430,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		disableOver();
 		$window.on( 'resize', disableOver );
 
-		// Disable scrolling outside of active sidebar
+		// Disable scrolling outside of active sidebar.
 		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
 			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
 			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
@@ -440,16 +440,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
-		// Disable scrolling site when scrolling inside active sidebar
+		// Disable scrolling site when scrolling inside active sidebar.
 		sidebarElements.on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
 			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
 				var $this = $(this);
 				if ( 0 > e.originalEvent.deltaY ) {
-					/* scrolling up */
+					// scrolling up.
 					return ( 0 < $this.scrollTop() );
 				} else {
-					/* scrolling down */
+					// scrolling down.
 					return ( $this.scrollTop() + $this.innerHeight() < $this[0].scrollHeight );
 				}
 			}

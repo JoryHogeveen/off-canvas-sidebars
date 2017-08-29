@@ -6,10 +6,9 @@
  * Author url: http://www.adchsm.com/
  * License: MIT
  * License url: http://www.adchsm.com/slidebars/license/
- */
-
-/*!
+ *
  * Modified by: Jory Hogeveen
+ * Version numbers below are related to Off-Canvas Sidebars, not Slidebars.
  *
  * @since  0.4  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
  */
@@ -431,6 +430,7 @@ slidebars = function () {
 
 				// Hide the Slidebar
 				offCanvas[ id ].element.css( 'display', '' );
+
 				// Trigger event
 				$( events ).trigger( 'closed', [ offCanvas[ id ].id ] );
 
