@@ -454,7 +454,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 * @return  void
 	 */
 	function add_styles_scripts() {
-		// @todo: create minified files
+		// @todo Validate and use minified files
 		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
 
