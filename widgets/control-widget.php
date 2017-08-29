@@ -122,19 +122,19 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$field_id = $this->get_field_id( $this->widget_setting );
 		?>
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
-			<label for="<?php echo $field_id; ?>"><?php esc_html_e( 'Controls', 'off-canvas-sidebars' ); ?>:</label>&nbsp;
+			<b><?php esc_html_e( 'Controls', 'off-canvas-sidebars' ); ?>:</b><br />
 			<?php
 			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
 				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 					continue;
 				}
 			?>
-			<span style="display: inline-block;">
+			<span style="display: inline-block; margin-right: 10px;">
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>">
 					<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'], 1 ); ?> />
 					<?php echo $this->settings['sidebars'][ $sidebar_id ]['label']; ?>
 				</label>
-			</span> &nbsp;
+			</span>
 			<?php } ?>
 		</p>
 
@@ -206,7 +206,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class" name="<?php echo $this->get_field_name( $this->widget_setting ) . '[' . $sidebar_id . '][button_class]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['button_class'], 1 ); ?>>
-				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class"><?php esc_html_e( 'Add <code>button</code> class', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>_button_class">
+				<?php
+					// Translators: %s stands for `button` wrapped in a <code> html tag.
+					echo sprintf( esc_html__( 'Add class: %s', 'off-canvas-sidebars' ), '<code>button</code>' );
+				?>
+				</label>
 			</p>
 			<hr />
 		</div>
