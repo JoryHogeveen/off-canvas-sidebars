@@ -78,11 +78,17 @@
 	<rule ref="rulesets/naming.xml">
 		<!-- Defined below for custom config -->
 		<exclude name="ShortVariable"/>
+		<exclude name="LongVariable"/>
 	</rule>
 	<rule ref="rulesets/naming.xml/ShortVariable">
 		<properties>
 			<!-- common in WP and VAA -->
 			<property name="exceptions" value="id,wp,ui" />
+		</properties>
+	</rule>
+	<rule ref="rulesets/naming.xml/LongVariable">
+		<properties>
+			<property name="maximum" value="25" />
 		</properties>
 	</rule>
 
