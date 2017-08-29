@@ -2,7 +2,6 @@
 /**
  * Off-Canvas Sidebars plugin API
  *
- * API
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @version 0.4

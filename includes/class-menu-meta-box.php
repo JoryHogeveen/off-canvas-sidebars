@@ -2,7 +2,6 @@
 /**
  * Off-Canvas Sidebars menu meta box
  *
- * Menu Meta Box
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @version 0.4
@@ -23,6 +22,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	 * @since  0.3
 	 */
 	protected static $_instance = null;
+
+	protected $meta_key = '_off_canvas_control_menu_item';
 
 	private $general_key = '';
 	private $plugin_key = '';
@@ -52,11 +53,11 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	 * Get plugin defaults
 	 */
 	function load_plugin_data() {
-		$off_canvas_sidebars = off_canvas_sidebars();
-		$this->settings = $off_canvas_sidebars->get_settings();
+		$off_canvas_sidebars  = off_canvas_sidebars();
+		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		$this->general_key = $off_canvas_sidebars->get_general_key();
-		$this->plugin_key = $off_canvas_sidebars->get_plugin_key();
+		$this->general_key    = $off_canvas_sidebars->get_general_key();
+		$this->plugin_key     = $off_canvas_sidebars->get_plugin_key();
 
 		foreach ( $this->link_classes as $key => $class ) {
 			$this->link_classes[ $key ] = $this->settings['css_prefix'] . $class;
@@ -64,7 +65,14 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	}
 
 	function add_meta_box() {
-		add_meta_box( $this->plugin_key . '-meta-box', __( 'Off-Canvas Control', 'off-canvas-sidebars' ), array( $this, 'meta_box' ), 'nav-menus', 'side', 'low' );
+		add_meta_box(
+			$this->plugin_key . '-meta-box',
+			esc_html__( 'Off-Canvas Control', 'off-canvas-sidebars' ),
+			array( $this, 'meta_box' ),
+			'nav-menus',
+			'side',
+			'low'
+		);
 	}
 
 	function meta_box() {
@@ -145,13 +153,13 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			'nopaging'    => true,
 			'post_type'   => 'nav_menu_item',
 			'fields'      => 'ids',
-			'meta_key'    => '_off_canvas_control_menu_item',
+			'meta_key'    => $this->meta_key,
 		) );
 
 		// the options values for the triggers.
 		$data['val'] = array();
 		foreach ( $items as $item )
-			$data['val'][ $item ] = get_post_meta( $item, '_off_canvas_control_menu_item', true );
+			$data['val'][ $item ] = get_post_meta( $item, $this->meta_key, true );
 
 		// send all these data to javascript
 		wp_localize_script( 'off_canvas_control_nav_menu', 'ocsNavControl', $data );
@@ -196,8 +204,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		if ( empty( $_POST['menu-item-off-canvas-control-detect'][ $menu_item_db_id ] ) ) {
 
 			// Our options were never saved.
-			if ( ! get_post_meta( $menu_item_db_id, '_off_canvas_control_menu_item', true ) ) {
-				update_post_meta( $menu_item_db_id, '_off_canvas_control_menu_item', $options );
+			if ( ! get_post_meta( $menu_item_db_id, $this->meta_key, true ) ) {
+				update_post_meta( $menu_item_db_id, $this->meta_key, $options );
 			}
 
 		} else {
@@ -212,7 +220,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			}
 
 			// Allow us to easily identify our nav menu item.
-			update_post_meta( $menu_item_db_id, '_off_canvas_control_menu_item', $options );
+			update_post_meta( $menu_item_db_id, $this->meta_key, $options );
 		}
 	}
 
@@ -233,7 +241,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		}
 
 		foreach ( $items as $key => $item ) {
-			$options = get_post_meta( $item->ID, '_off_canvas_control_menu_item', true );
+			$options = get_post_meta( $item->ID, $this->meta_key, true );
 			if ( ! $options ) {
 				continue;
 			}
@@ -244,7 +252,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 
 				$link_classes = $this->link_classes;
 				if ( ! is_array( $link_classes ) ) {
-					$link_classes = explode( ' ', $link_classes );
+					$link_classes = explode( ' ', (string) $link_classes );
 				}
 
 				if ( ! empty( $options['off-canvas-control'] ) ) {
