@@ -595,9 +595,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
 			$new_sidebar_id = $this->validate_id( $input['sidebars']['ocs_add_new'] );
 			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
-				$input['sidebars'][ $new_sidebar_id ] = array(
-					'enable' => 1,
-					'label'  => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
+				$input['sidebars'][ $new_sidebar_id ] = array_merge(
+					off_canvas_sidebars()->get_default_sidebar_settings(),
+					array(
+						'enable' => 1,
+						'label'  => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
+					)
 				);
 			} else {
 				add_settings_error(
