@@ -1,12 +1,14 @@
 ;/**
  * Off-Canvas Sidebars plugin fixed-scrolltop.js
  *
- * Compatibility for fixed elements with Slidebars
+ * Compatibility for fixed elements with Slidebars.
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
  * @version 0.4
+ * @global ocsOffCanvasSidebars
+ * @preserve
  */
-( function ( $ ) {
+( function( $ ) {
 
 	var $window = $(window);
 	var $body = $('body');

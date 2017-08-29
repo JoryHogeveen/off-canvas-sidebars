@@ -1,7 +1,6 @@
 ;/**
  * Off-Canvas Sidebars plugin
  *
- * ocsOffCanvasSidebars
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @version 0.4
@@ -22,7 +21,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	};
 }
 
-(function($) {
+( function( $ ) {
 
 	var $document = $(document);
 	var $window = $(window);
@@ -488,4 +487,4 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		ocsOffCanvasSidebars.init();
 	}
 
-}) (jQuery);
+} ) ( jQuery );

@@ -1,89 +1,99 @@
 ;/**
- * Off-Canvas Sidebars plugin
+ * Off-Canvas Sidebars plugin settings
  *
- * OCS_OFF_CANVAS_SIDEBARS_SETTINGS
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3
+ * @version 0.4
+ * @global ocsOffCanvasSidebarsSettings
+ * @preserve
  */
 
-if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
-	var OCS_OFF_CANVAS_SIDEBARS_SETTINGS = {
-		'general_key': 'off_canvas_sidebars_options',
-		'plugin_key': 'off-canvas-sidebars-settings',
-		'css_prefix': 'ocs',
-		'__required_fields_not_set': '' //Some required fields are not set!
+if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
+	var ocsOffCanvasSidebarsSettings = {
+		general_key: 'off_canvas_sidebars_options',
+		plugin_key: 'off-canvas-sidebars-settings',
+		css_prefix: 'ocs',
+		__required_fields_not_set: 'Some required fields are not set!'
 	};
 }
 
-(function($) {
+( function( $ ) {
 
-	OCS_OFF_CANVAS_SIDEBARS_SETTINGS.init = function() {
+	var $document = $(document);
+	ocsOffCanvasSidebarsSettings.init = function() {
 
 		var tab = $('#ocs_tab');
 		var postbox = $('.postbox');
 
-		// close postboxes that should be closed
+		// Close postboxes that should be closed.
 		$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-		// postboxes setup
-		postboxes.add_postbox_toggles( OCS_OFF_CANVAS_SIDEBARS_SETTINGS.plugin_key );
+		// Postboxes setup.
+		postboxes.add_postbox_toggles( ocsOffCanvasSidebarsSettings.plugin_key );
 
 
 		if ( 'ocs-sidebars' === tab.val() ) {
 			postbox.each( function() {
-				var sidebar_id = $(this).attr('id').replace('section_sidebar_', '');
+				var prefix = 'off_canvas_sidebars_options_sidebars_',
+					sidebar_id = $(this).attr('id').replace('section_sidebar_', ''),
+					sidebar_prefix = prefix + sidebar_id;
 
-				ocs_show_hide_options_radio( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_background_color_type', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_background_color_wrapper', 'color', false );
-				ocs_show_hide_options_radio( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_location', '#off_canvas_sidebars_options_sidebars_' + sidebar_id + '_style_reveal, #off_canvas_sidebars_options_sidebars_' + sidebar_id + '_style_shift', [ 'left', 'right' ], 'label' );
+				ocs_show_hide_options_radio(
+					'.' + sidebar_prefix + '_background_color_type',
+					'.' + sidebar_prefix + '_background_color_wrapper',
+					'color',
+					false
+				);
+				ocs_show_hide_options_radio(
+					'.' + sidebar_prefix + '_location',
+					'#' + sidebar_prefix + '_style_reveal, #' + sidebar_prefix + '_style_shift',
+					[ 'left', 'right' ],
+					'label'
+				);
 
-				ocs_show_hide_options( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_overwrite_global_settings', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_site_close', 'tr' );
-				ocs_show_hide_options( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_overwrite_global_settings', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_disable_over', 'tr' );
-				ocs_show_hide_options( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_overwrite_global_settings', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_hide_control_classes', 'tr' );
-				ocs_show_hide_options( '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_overwrite_global_settings', '.off_canvas_sidebars_options_sidebars_' + sidebar_id + '_scroll_lock', 'tr' );
+				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_site_close', 'tr' );
+				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_disable_over', 'tr' );
+				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_hide_control_classes', 'tr' );
+				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_scroll_lock', 'tr' );
 			} );
 		} else {
-			ocs_show_hide_options_radio( '.off_canvas_sidebars_options_background_color_type', '.off_canvas_sidebars_options_background_color_wrapper', 'color' );
+			ocs_show_hide_options_radio(
+				'.off_canvas_sidebars_options_background_color_type',
+				'.off_canvas_sidebars_options_background_color_wrapper',
+				'color',
+				false
+			);
 		}
 
 		/**
 		 * Auto show/hide handler for checkbox elements.
 		 * @todo Rename?
-		 * @param  {string}  trigger  The trigger element selector.
-		 * @param  {string}  target   The target element selector.
-		 * @param  {string}  parent   The parent element selector.
+		 * @param  {string}               trigger  The trigger element selector.
+		 * @param  {string}               target   The target element selector.
+		 * @param  {string|boolean|null}  parent   The parent element selector.
 		 * @return {null}  Nothing.
 		 */
 		function ocs_show_hide_options( trigger, target, parent ) {
+			if ( parent ) {
+				target = $( target ).closest( parent );
+			}
 			if ( ! $( trigger ).is(':checked') ) {
-				if ( parent ) {
-					$( target ).closest( parent ).slideUp('fast');
-				} else {
-					$( target ).slideUp('fast');
-				}
+				$( target ).slideUp('fast');
 			}
 			$( trigger ).change( function() {
 				if ( $(this).is(':checked') ) {
-					if ( parent ) {
-						$( target ).closest( parent ).slideDown('fast');
-					} else {
-						$( target ).slideDown('fast');
-					}
+					$( target ).slideDown('fast');
 				} else {
-					if ( parent ) {
-						$( target ).closest( parent ).slideUp('fast');
-					} else {
-						$( target ).slideUp('fast');
-					}
+					$( target ).slideUp('fast');
 				}
-			});
+			} );
 		}
 
 		/**
 		 * Auto show/hide handler for radio elements.
-		 * @param  {string}  trigger  The trigger element selector.
-		 * @param  {string}  target   The target element selector.
-		 * @param  {string}  compare  The compare value.
-		 * @param  {string}  parent   The parent element selector.
+		 * @param  {string}               trigger  The trigger element selector.
+		 * @param  {string}               target   The target element selector.
+		 * @param  {string|object}        compare  The compare value.
+		 * @param  {string|boolean|null}  parent   The parent element selector.
 		 * @return {null}  Nothing.
 		 */
 		function ocs_show_hide_options_radio( trigger, target, compare, parent ) {
@@ -92,80 +102,68 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 			}
 			if ( parent ) {
 				parent += ', ' + parent + ' + br';
-			}
-			if ( 0 > $.inArray( $( trigger + ':checked' ).val(), compare ) ) {
-				if ( parent ) {
-					$( target ).closest( parent ).slideUp('fast');
-				} else {
-					$( target ).slideUp('fast');
-				}
+				target = $( target ).closest( parent );
 			}
 			$( trigger ).change( function() {
 				if ( 0 <= $.inArray( $( trigger + ':checked' ).val(), compare ) ) {
-					if ( parent ) {
-						$( target ).closest( parent ).slideDown('fast');
-					} else {
-						$( target ).slideDown('fast');
-					}
+					$( target ).slideDown('fast');
 				} else {
-					if ( parent ) {
-						$( target ).closest( parent ).slideUp('fast');
-					} else {
-						$( target ).slideUp('fast');
-					}
+					$( target ).slideUp('fast');
 				}
-			});
+			} ).trigger( 'change' );
 		}
 
-		// Enable the WP Color Picker
+		// Enable the WP Color Picker.
 		$('input.color-picker').wpColorPicker();
 
-		// Validate required fields
-		$('input.required').each(function(){
+		// Validate required fields.
+		$('input.required').each( function() {
 			var $this = $(this);
-			$this.on('change', function() {
+			$this.on( 'change', function() {
 				if ( ! $this.val() ) {
 					$this.parents('tr').addClass('form-invalid');
 				} else {
 					$this.parents('tr').removeClass('form-invalid');
 				}
-			});
-		});
+			} );
+		} );
 
-		// Validate form submit
-		$( '#' + OCS_OFF_CANVAS_SIDEBARS_SETTINGS.general_key ).submit( function(e) {
+		// Validate form submit.
+		$( '#' + ocsOffCanvasSidebarsSettings.general_key ).submit( function( e ) {
 			var valid = true;
 			//var errors = {};
-			$('input.required', this).each(function(){
+			$( 'input.required', this ).each( function() {
 				if ( ! $(this).val() ) {
 					$(this).trigger('change');
 					valid = false;
 				}
-			});
+			} );
 			if ( ! valid ) {
 				e.preventDefault();
-				alert( OCS_OFF_CANVAS_SIDEBARS_SETTINGS.__required_fields_not_set );
+				alert( ocsOffCanvasSidebarsSettings.__required_fields_not_set );
 			}
 		} );
 
 		if ( 'ocs-sidebars' === tab.val() ) {
 
-			// Dynamic sidebar ID
+			// Dynamic sidebar ID.
 			if ( $('.js-dynamic-id').length ) {
 				postbox.each( function() {
 					var sidebar = this;
 					$( '.js-dynamic-id', sidebar ).text( $( 'input.off_canvas_sidebars_options_sidebars_id', sidebar ).val() );
 					$('.sidebar_classes').show();
 					$( 'input.off_canvas_sidebars_options_sidebars_id', this ).on('keyup', function() {
-						$('.js-dynamic-id', sidebar).text( $(this).val() );
+						$( '.js-dynamic-id', sidebar ).text( $(this).val() );
 					} );
 				} );
 			}
 
-			// Half opacity for closed disabled sidebars
+			// Half opacity for closed disabled sidebars.
+			// @todo Use classes instead of CSS.
 			postbox.each( function() {
 				var sidebar = this,
 					$sidebar = $( sidebar );
+
 				$sidebar.css({'border-left':'5px solid #eee'});
 				if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is(':checked') ) {
 					if ( $sidebar.hasClass('closed') ) {
@@ -197,11 +195,14 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 				} );
 			} );
 
-			// Hide options when set to delete
-			$(document).on( 'change', '.off_canvas_sidebars_options_sidebars_delete', function() {
-				var sidebar = $(this).parents('.postbox');
-				if ( $(this).is(':checked') ) {
-					var parent_row = $(this).parents('tr');
+			// Hide options when set to delete.
+			$document.on( 'change', '.off_canvas_sidebars_options_sidebars_delete', function() {
+				var $this = $(this),
+					sidebar = $this.parents('.postbox'),
+					$sidebar = $( sidebar );
+
+				if ( $this.is(':checked') ) {
+					var parent_row = $this.parents('tr');
 					$( 'tr', sidebar ).hide( 'fast', function() {
 						$( 'tr', sidebar ).each(function(){
 							if ( $(this).is( parent_row ) ) {
@@ -209,10 +210,10 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 							}
 						});
 					} );
-					$(sidebar).css('opacity', '0.5');
-					$(sidebar).css('border-left-color','#dc3232');
+					$sidebar.css('opacity', '0.5');
+					$sidebar.css('border-left-color','#dc3232');
 				} else {
-					$(sidebar).css('opacity', '');
+					$sidebar.css('opacity', '');
 					$( 'tr', sidebar ).show( 'fast' );
 					$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).trigger('change');
 				}
@@ -225,7 +226,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 			var fields = [ 'sidebar', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
 
 			for ( var i = 0, l = fields.length; i < l; i++ ) {
-				$( '#off_canvas_sidebars_options_' + fields[i] ).on( 'change keyup', function() {
+				$( '#off_canvas_sidebars_options_' + fields[ i ] ).on( 'change keyup', function() {
 					create_shortcode();
 				});
 			}
@@ -240,15 +241,15 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		function create_shortcode() {
 			var field_data = {};
 			for ( var i = 0, l = fields.length; i < l; i++ ) {
-				field_data[ fields[i] ] = $( '#off_canvas_sidebars_options_' + fields[i] );
+				field_data[ fields[ i ] ] = $( '#off_canvas_sidebars_options_' + fields[ i ] );
 			}
 
 			var shortcode = 'ocs_trigger';
 
-			//start the shortcode tag
+			// Start the shortcode tag.
 			var shortcode_str = '[' + shortcode;
 
-			// Loop through our known fields
+			// Loop through our known fields.
 			for ( var field in field_data ) {
 				if ( 'undefined' !== typeof field_data[ field ] ) {
 					if ( 'text' !== field && 'nested' !== field ) {
@@ -261,12 +262,12 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 				}
 			}
 
-			// If the test contains a double quote, force it to be nested for compatibility
+			// If the test contains a double quote, force it to be nested for compatibility.
 			if ( field_data.text.val().length && -1 < field_data.text.val().indexOf( '"' ) ) {
 				field_data.nested = true;
 			}
 
-			//add panel text
+			// Add panel text.
 			if ( field_data.nested.is(':checked') ) {
 				shortcode_str += ']' + field_data.text.val() + '[/' + shortcode + ']';
 			} else {
@@ -291,10 +292,11 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 
 			var element = ( field_data.element.val() ) ? field_data.element.val() : 'button',
 				attributes = ( field_data.attr.val() ) ? attrStringToObject( field_data.attr.val() ) : {},
-				prefix = OCS_OFF_CANVAS_SIDEBARS_SETTINGS.css_prefix,
-				action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle';
-
-			var classes = prefix + '-trigger ' + prefix + '-' + action;
+				prefix = ocsOffCanvasSidebarsSettings.css_prefix,
+				action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle',
+				classes = prefix + '-trigger ' + prefix + '-' + action,
+				singleton = false,
+				html = '';
 
 			if ( field_data.sidebar.val() ) {
 				classes += ' ' + prefix + '-' + action + '-' + field_data.sidebar.val();
@@ -307,17 +309,11 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 			}
 			attributes.class = classes;
 
-			var singleton = false;
-			if ( 'input' === element ) {
-				singleton = true;
-				attributes.value = field_data.text.val();
-			}
-			if ( 'img' === element ) {
+			if ( 'input' === element || 'img' === element ) {
 				singleton = true;
 				attributes.value = field_data.text.val();
 			}
 
-			var html = '';
 			if ( singleton ) {
 				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>';
 			} else {
@@ -331,7 +327,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		}
 
 		/**
-		 * Convert HTML formatted attribute string to object
+		 * Convert HTML formatted attribute string to object.
 		 * In: key="value" key="value"
 		 * Out: { key: value, key: value }
 		 *
@@ -354,7 +350,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		}
 
 		/**
-		 * Convert OCS formatted attribute string to object
+		 * Convert OCS formatted attribute string to object.
 		 *
 		 * In: key:value;key:value
 		 * Out: { key: value, key: value }
@@ -380,7 +376,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		}
 
 		/**
-		 * Convert object to OCS formatted attribute string
+		 * Convert object to OCS formatted attribute string.
 		 *
 		 * In: { key: value, key: value }
 		 * Out: key="value" key="value"
@@ -400,7 +396,7 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 		}
 
 		/**
-		 * Convert object to HTML formatted attribute string
+		 * Convert object to HTML formatted attribute string.
 		 *
 		 * In: { key: value, key: value }
 		 * Out: key:value;key:value
@@ -437,6 +433,6 @@ if ( 'undefined' === typeof OCS_OFF_CANVAS_SIDEBARS_SETTINGS ) {
 
 	};
 
-	OCS_OFF_CANVAS_SIDEBARS_SETTINGS.init();
+	ocsOffCanvasSidebarsSettings.init();
 
-})(jQuery);
+} ) ( jQuery );
