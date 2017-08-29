@@ -66,13 +66,13 @@
 			return false;
 		} );
 
-		//add popup
+		// Add popup.
 		editor.addCommand( 'ocs_trigger_popup', function ( ui, v ) {
 
 			var fields = [];
-			// Used $.extent() to remove the original object reference
+			// Used $.extent() to remove the original object reference.
 			var defaults = $.extend( true, {}, ocsMceSettings.fields );
-			//setup defaults
+			// Setup defaults.
 			for ( var field in defaults ) {
 				if ( ! defaults.hasOwnProperty( field ) ) {
 					continue;
@@ -93,16 +93,16 @@
 				fields.push( fieldData );
 			}
 
-			//open the popup
+			// Open the popup.
 			var popup = editor.windowManager.open( {
 				title: ocsMceSettings.title,
 				body: fields,
-				//when the ok button is clicked
+				// When the ok button is clicked.
 				onsubmit: function ( e ) {
-					//start the shortcode tag
+					// Start the shortcode tag.
 					var shortcode_str = '[' + shortcode;
 
-					// Loop through our known fields
+					// Loop through our known fields.
 					for ( var field in ocsMceSettings.fields ) {
 						if ( ! ocsMceSettings.fields.hasOwnProperty( field ) ) {
 							continue;
@@ -121,12 +121,12 @@
 						}
 					}
 
-					// If the test contains a double quote, force it to be nested for compatibility
-					if ( e.data.text.length && e.data.text.indexOf( '"' ) !== -1 ) {
+					// If the test contains a double quote, force it to be nested for compatibility.
+					if ( e.data.text.length && -1 !== e.data.text.indexOf( '"' ) ) {
 						e.data.nested = true;
 					}
 
-					//add panel text
+					// Add panel text.
 					if ( 'undefined' !== typeof e.data.nested && e.data.nested ) {
 						shortcode_str += ']' + e.data.text + '[/' + shortcode + ']';
 					} else {
@@ -136,7 +136,7 @@
 						shortcode_str += ']';
 					}
 
-					//insert shortcode to TinyMCE
+					// Insert shortcode to TinyMCE.
 					editor.insertContent( shortcode_str );
 				}
 			} );
@@ -156,7 +156,7 @@
 			}
 		} );
 
-		// Add toolbar remove button
+		// Add toolbar remove button.
 		editor.addButton( 'ocs_trigger_unlink', {
 			tooltip: 'Remove Off-Canvas trigger',
 			icon: 'dashicon dashicons-editor-unlink',
@@ -170,7 +170,7 @@
 			}
 		} );
 
-		// Add toolbar remove button
+		// Add toolbar remove button.
 		editor.addButton( 'ocs_trigger_remove', {
 			tooltip: 'Remove',
 			icon: 'dashicon dashicons-no',
@@ -183,7 +183,7 @@
 			}
 		} );
 
-		// Create toolbar
+		// Create toolbar.
 		editor.on( 'preinit', function () {
 			if ( editor.wp && editor.wp._createToolbar ) {
 				toolbar = editor.wp._createToolbar( [
@@ -213,9 +213,9 @@
 			}
 		} );
 
-		// Show toolbar
+		// Show toolbar.
 		editor.on( 'wptoolbar', function ( e ) {
-			if ( e.element.className.indexOf( 'ocsTrigger' ) > -1 ) {
+			if ( -1 < e.element.className.indexOf( 'ocsTrigger' ) ) {
 				toolbarElement = e.element;
 				if ( $( e.element ).is( 'img' ) ) {
 					e.toolbar = toolbarImg;
@@ -228,16 +228,16 @@
 			}
 		} );
 
-		// Disable our button if the selected text is already a OCS shortcode
+		// Disable our button if the selected text is already a OCS shortcode.
 		editor.on( 'NodeChange', function ( e ) {
-			if ( e.element.className.indexOf( 'ocsTrigger' ) > -1 ) {
+			if ( -1 < e.element.className.indexOf( 'ocsTrigger' ) ) {
 				$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', true );
 			} else {
 				$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', false );
 			}
 		} );
 
-		// Always enable the button again when the editor gets blurred (out of focus)
+		// Always enable the button again when the editor gets blurred (out of focus).
 		editor.on( 'Blur', function ( e ) {
 			$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', false );
 		} );
@@ -253,7 +253,7 @@
 		} );
 
 		editor.on( 'DblClick', function ( e ) {
-			if ( e.target.className.indexOf( 'ocsTrigger' ) > -1 ) {
+			if ( -1 < e.target.className.indexOf( 'ocsTrigger' ) ) {
 				doTriggerPopup( e.target, this );
 			}
 		} );
@@ -261,8 +261,9 @@
 		/**
 		 * Sets the selected element and the element data before triggering the popup
 		 *
-		 * @param el
-		 * @param curEditor
+		 * @param  {string}  el         The element HTML.
+		 * @param  {object}  curEditor  The current editor.
+		 * @return {null} Nothing.
 		 */
 		function doTriggerPopup( el, curEditor ) {
 			curEditor.selection.select( el );
@@ -270,7 +271,7 @@
 				attr = parseHTMLToData( el ),
 				data = {};
 
-			// Loop through our known fields
+			// Loop through our known fields.
 			for ( var field in ocsMceSettings.fields ) {
 				if ( ! ocsMceSettings.fields.hasOwnProperty( field ) ) {
 					continue;
@@ -287,13 +288,18 @@
 
 			data = objectRemoveEmpty( data );
 
-			// overwrites
+			// overwrites.
 			data.nested = ( 'true' === $el.attr( 'data-ocs-nested' ) );
 			data.text = parseElementText( el );
 
 			curEditor.execCommand( 'ocs_trigger_popup', '', data );
 		}
 
+		/**
+		 * Find the OCS shortcode in a block of text and parse them to actual HTML.
+		 * @param  {string}  content  The content.
+		 * @return {string}  The new HTML.
+		 */
 		function replaceShortcodes( content ) {
 
 			//match [ocs_trigger(attr)](con)[/ocs_trigger]
@@ -309,6 +315,11 @@
 			return content;
 		}
 
+		/**
+		 * Convert Trigger HTML into shortcodes.
+		 * @param  {string}  content  The content.
+		 * @return {string}  The new HTML.
+		 */
 		function restoreShortcodes( content ) {
 
 			var html = $( '<div/>' ).html( content );
@@ -334,32 +345,32 @@
 		}
 
 		/**
-		 *
-		 * @param cls
-		 * @param data
-		 * @param con
-		 * @param nested
-		 * @returns {string}
+		 * Convert data to HTML.
+		 * @param  {string}   cls     Class.
+		 * @param  {string}   data    Attribute data.
+		 * @param  {string}   con     Content.
+		 * @param  {boolean}  nested  Is it a nested shortcode?
+		 * @return {string} The HTML.
 		 */
 		function parseDataToHTML( cls, data, con, nested ) {
 			var attrData = {
 				//id: getAttr( data, 'id' ),
 				//action: getAttr( data, 'action' ),
-				element: getAttr( data, 'element' ),
-				class: getAttr( data, 'class' ),
-				attributes: getAttr( data, 'attr' )
+				element: getAttr( data, 'element', false ),
+				class: getAttr( data, 'class', false ),
+				attributes: getAttr( data, 'attr', false )
 			};
 
 			if ( ! nested ) {
-				con = getAttr( data, 'text' );
+				con = getAttr( data, 'text', false );
 			}
 
 			if ( ! attrData.attributes.length ) {
-				attrData.attributes = getAttr( data, 'attributes' );
+				attrData.attributes = getAttr( data, 'attributes', false );
 			}
 
 			if ( ! attrData.class.length ) {
-				attrData.class = getAttr( data, 'classes' );
+				attrData.class = getAttr( data, 'classes', false );
 			}
 
 			if ( ! attrData.element.length ) {
@@ -384,41 +395,44 @@
 
 			data = attrHTMLToObject( data );
 			for ( var key in attrData ) {
-				data[ key ] = attrData[ key ];
+				if ( attrData.hasOwnProperty( key ) ) {
+					data[ key ] = attrData[ key ];
+				}
 			}
-			// Remove duplicates and empty values
+			// Remove duplicates and empty values.
 			data = objectRemoveEmpty( data );
 			data = attrObjectToHTML( data );
 
 			data = window.encodeURIComponent( data );
 
 			var content = window.encodeURIComponent( con );
-			// Some text is required for the editor to work properly
+			// Some text is required for the editor to work properly.
 			if ( ! content.length && 'img' !== attrData.element ) {
 				content = con = '&nbsp;';
 			}
 
-			if ( 'img' === attrData.element ) { // && typeof elAttributes.alt != 'string'
+			if ( 'img' === attrData.element ) { // && 'string' !== typeof elAttributes.alt
 				attributes.alt = content;
 			}
 
+			attributes['data-ocs-nested'] = nested;
+			attributes['data-ocs-attr'] = data;
+			attributes['data-ocs-text'] = content;
+
 			var elAttributes = attrObjectToHTML( attributes );
 
-			if ( $.inArray( attrData.element, singletons ) > -1 ) {
-				// singleton element
-				//nested = false;
-
-				return '<' + attrData.element + ' ' + elAttributes + ' ' + 'data-ocs-nested="' + nested + '" ' + 'data-ocs-attr="' + data + '" data-ocs-text="' + content + '" />';
+			if ( -1 < $.inArray( attrData.element, singletons ) ) {
+				return '<' + attrData.element + ' ' + elAttributes + ' />';
 			} else {
-				return '<' + attrData.element + ' ' + elAttributes + ' ' + 'data-ocs-nested="' + nested + '" ' + 'data-ocs-attr="' + data + '" data-ocs-text="' + content + '">' + con + '</' + attrData.element + '>';
+				return '<' + attrData.element + ' ' + elAttributes + '>' + con + '</' + attrData.element + '>';
 			}
 			// data-mce-resize="false" data-mce-placeholder="1"
 		}
 
 		/**
-		 *
-		 * @param el
-		 * @returns {Object}
+		 * Convert attribute string to attribute object.
+		 * @param  {string|object} el The element.
+		 * @return {Object}
 		 */
 		function parseHTMLToData( el ) {
 			var attr = window.decodeURIComponent( $( el ).attr( 'data-ocs-attr' ) );
@@ -426,7 +440,7 @@
 			var attributes = attrHTMLToObject( attr );
 			var elAttributes = attrElementToObject( el );
 
-			// Overwrites
+			// Overwrites.
 			if ( 'undefined' !== typeof attributes.attributes ) {
 				if ( 'string' !== typeof attributes.attr ) {
 					attributes.attr = attributes.attributes;
@@ -440,7 +454,7 @@
 				delete attributes.classes;
 			}
 
-			// Converting
+			// Converting.
 			if ( 'string' === typeof attributes.attr ) {
 				attributes.attr = attrStringToObject( attributes.attr );
 			} else {
@@ -455,8 +469,8 @@
 					} else {
 						attributes.class = elAttributes.class;
 					}
-				} else if ( key.indexOf( 'data-' ) === -1 && 'string' === typeof elAttributes[ key ] ) {
-					// overwrite, check for alt tag for images
+				} else if ( -1 === key.indexOf( 'data-' ) && 'string' === typeof elAttributes[ key ] ) {
+					// overwrite, check for alt tag for images.
 					if ( 'alt' === key && $( el ).is( 'img' ) ) {
 						delete attributes.attr[ key ];
 					} else {
@@ -466,11 +480,11 @@
 			}
 
 			if ( 'string' === typeof attributes.class && attributes.class.trim().length ) {
-				// Convert classes to an array
+				// Convert classes to an array.
 				attributes.class = attributes.class.split( ' ' );
-				// Remove MCE plugin defined classes
+				// Remove MCE plugin defined classes.
 				attributes.class = arrayFilterUnique( attributes.class, true, true );
-				// Rejoin the classes
+				// Rejoin the classes.
 				attributes.class = attributes.class.join( ' ' );
 			}
 
@@ -478,16 +492,16 @@
 				attributes.attr = attrObjectToString( attributes.attr );
 			}
 
-			// Remove duplicate and empty attributes
+			// Remove duplicate and empty attributes.
 			attributes = objectRemoveEmpty( attributes );
 
 			return attributes;
 		}
 
 		/**
-		 *
-		 * @param el
-		 * @returns {string}
+		 * Get the element text, also checks for nested element attributes.
+		 * @param  {string|object}  el  The element.
+		 * @return {string} The text.
 		 */
 		function parseElementText( el ) {
 			var $el = $( el ),
@@ -496,7 +510,7 @@
 				text = $el.html();
 			}
 
-			// Images have the alt tag for text
+			// Images have the alt tag for text.
 			if ( $el.is('img') ) {
 				if ( $el.attr('alt') ) {
 					text = $el.attr('alt');
@@ -508,9 +522,9 @@
 		}
 
 		/**
-		 *
-		 * @param el
-		 * @param editor
+		 * Remove OCS classes & attributes.
+		 * @param {string|object}  el     The element.
+		 * @param {object}         editor The editor.
 		 */
 		function removeTriggerData( el, editor ) {
 			var $el = $( el );
@@ -523,10 +537,10 @@
 		}
 
 		/**
-		 * @param s
-		 * @param a
-		 * @param f
-		 * @returns {*}
+		 * @param  {string}   s  The string.
+		 * @param  {string}   a  The attribute to find.
+		 * @param  {boolean}  f  @todo
+		 * @return {string|boolean}  The attribute value or false.
 		 */
 		function getAttr( s, a, f ) {
 			var n = new RegExp( a + '=\"([^\"]+)\"', 'g' ).exec( s );
@@ -544,8 +558,9 @@
 		 * In: element
 		 * Out: { key: value, key: value }
 		 *
-		 * @param el
-		 * @returns Object
+		 * @since  0.4
+		 * @param  {string|object} el The element.
+		 * @return {object} The attribute object.
 		 */
 		function attrElementToObject( el ) {
 			var $el = $( el ),
@@ -559,89 +574,101 @@
 		}
 
 		/**
-		 * Convert HTML formatted attribute string to object
+		 * Convert HTML formatted attribute string to object.
 		 * In: key="value" key="value"
 		 * Out: { key: value, key: value }
 		 *
-		 * @param attrString
-		 * @returns Object
+		 * @since  0.4
+		 * @param  {string}  attrString  The attribute string.
+		 * @return {object}  The attribute object.
 		 */
 		function attrHTMLToObject( attrString ) {
 			var arr = attrString.trim().split( '" ' ),
 				atts = {};
 			for ( var key in arr ) {
-				arr[ key ] = arr[ key ].split( '="' );
-				if ( arr[ key ][ 0 ].trim().length ) {
-					atts[ arr[ key ][ 0 ].trim() ] = getAttr( attrString, arr[ key ][ 0 ] );
+				if ( arr.hasOwnProperty( key ) ) {
+					arr[ key ] = arr[ key ].split( '="' );
+					if ( arr[ key ][ 0 ].trim().length ) {
+						atts[ arr[ key ][ 0 ].trim() ] = getAttr( attrString, arr[ key ][ 0 ], false );
+					}
 				}
 			}
 			return atts;
 		}
 
 		/**
-		 * Convert OCS formatted attribute string to object
+		 * Convert OCS formatted attribute string to object.
 		 *
 		 * In: key:value;key:value
 		 * Out: { key: value, key: value }
 		 *
-		 * @param attrString
-		 * @returns Object
+		 * @since  0.4
+		 * @param  {string}  attrString  The attribute string.
+		 * @return {object}  The attribute object.
 		 */
 		function attrStringToObject( attrString ) {
 			var arr = attrString.split( ';' ),
 				atts = {};
 			for ( var key in arr ) {
-				arr[ key ] = arr[ key ].split( ':' );
-				if ( arr[ key ][ 0 ].trim().length ) {
-					var name = arr[ key ][ 0 ].trim();
-					arr[ key ].splice( 0, 1 );
-					atts[ name ] = arr[ key ].join( ':' );
+				if ( arr.hasOwnProperty( key ) ) {
+					arr[ key ] = arr[ key ].split( ':' );
+					if ( arr[ key ][ 0 ].trim().length ) {
+						var name = arr[ key ][ 0 ].trim();
+						arr[ key ].splice( 0, 1 );
+						atts[ name ] = arr[ key ].join( ':' );
+					}
 				}
 			}
 			return atts;
 		}
 
 		/**
-		 * Convert object to OCS formatted attribute string
+		 * Convert object to OCS formatted attribute string.
 		 *
 		 * In: { key: value, key: value }
 		 * Out: key="value" key="value"
 		 *
-		 * @param attrObj
-		 * @returns String
+		 * @since  0.4
+		 * @param  {object}  attrObj  The attribute object.
+		 * @return {string}  The attribute string.
 		 */
 		function attrObjectToHTML( attrObj ) {
 			var atts = [];
 			for ( var name in attrObj ) {
-				atts.push( name + '="' + attrObj[ name ] + '"' );
+				if ( attrObj.hasOwnProperty( name ) ) {
+					atts.push( name + '="' + attrObj[ name ] + '"' );
+				}
 			}
 			return atts.join( ' ' );
 		}
 
 		/**
-		 * Convert object to HTML formatted attribute string
+		 * Convert object to HTML formatted attribute string.
 		 *
 		 * In: { key: value, key: value }
 		 * Out: key:value;key:value
 		 *
-		 * @param attrObj
-		 * @returns String
+		 * @since  0.4
+		 * @param  {object}  attrObj  The attribute object.
+		 * @return {string}  The attribute string.
 		 */
 		function attrObjectToString( attrObj ) {
 			var atts = [];
 			for ( var name in attrObj ) {
-				atts.push( name + ':' + attrObj[ name ] );
+				if ( attrObj.hasOwnProperty( name ) ) {
+					atts.push( name + ':' + attrObj[ name ] );
+				}
 			}
 			return atts.join( ';' );
 		}
 
 		/**
-		 * Return unique values only
+		 * Return unique values only.
 		 *
-		 * @param array Array
-		 * @param empty bool Remove empty keys?
-		 * @param ocs bool Check this plugin's defines classes
-		 * @returns Array
+		 * @param  {object}   array  The array to filter.
+		 * @param  {boolean}  empty  Remove empty keys?
+		 * @param  {boolean}  ocs    Check this plugin's defines classes.
+		 * @return {object} The filtered array.
 		 */
 		function arrayFilterUnique( array, empty, ocs ) {
 			if ( ! array.length ) {
@@ -651,7 +678,7 @@
 				if ( empty && !el.length ) {
 					return false;
 				}
-				if ( ocs && $.inArray( el, mceClasses ) > -1 ) {
+				if ( ocs && -1 < $.inArray( el, mceClasses ) ) {
 					return false;
 				}
 				return index === $.inArray( el, array );
@@ -659,18 +686,21 @@
 		}
 
 		/**
-		 * Remove empty properties from object
-		 * Only objects with strings as parameters allowed!
+		 * Remove empty properties from object.
+		 * Only objects with strings as values allowed!
 		 *
-		 * @param obj Object
-		 * @returns Object
+		 * @param  {object}  obj  The object to filter.
+		 * @return {object} The object without empty keys.
 		 */
 		function objectRemoveEmpty( obj ) {
 			for ( var name in obj ) {
+				if ( ! obj.hasOwnProperty( name ) ) {
+					continue;
+				}
 				if ( 'string' === typeof obj[ name ] ) {
 					obj[ name ] = obj[ name ].trim();
 				}
-				if ( obj[ name ] === null || obj[ name ] === undefined || ! obj[ name ].length ) {
+				if ( null === obj[ name ] || undefined === obj[ name ] || ! obj[ name ].length ) {
 					delete obj[ name ];
 				}
 			}
@@ -679,5 +709,4 @@
 
 	} );
 
-//} )();
-} )( window.tinymce, jQuery );
+} ) ( window.tinymce, jQuery );

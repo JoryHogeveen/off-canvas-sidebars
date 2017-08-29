@@ -417,10 +417,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		/**
 		 * @since  0.4
-		 * @param  {string}  s  The string.
-		 * @param  {string}  a  The attribute to find.
-		 * @param  {bool}    f  @todo
-		 * @return {string|bool}  The attribute value or false.
+		 * @param  {string}   s  The string.
+		 * @param  {string}   a  The attribute to find.
+		 * @param  {boolean}  f  @todo
+		 * @return {string|boolean}  The attribute value or false.
 		 */
 		function getAttr( s, a, f ) {
 			var n = new RegExp( a + '=\"([^\"]+)\"', 'g' ).exec( s );
