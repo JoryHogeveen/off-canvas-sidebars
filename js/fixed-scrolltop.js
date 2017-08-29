@@ -51,12 +51,7 @@
 					} else if ( 'closing' === eventType ) {
 						px -= offset;
 					}
-					$(this).css( {
-						'-webkit-transform': 'translate( 0px, ' + px + 'px )',
-						'-moz-transform': 'translate( 0px, ' + px + 'px )',
-						'-o-transform': 'translate( 0px, ' + px + 'px )',
-						'transform': 'translate( 0px, ' + px + 'px )'
-					} );
+					ocsOffCanvasSidebars.cssCompat( $(this), 'transform', 'translate( 0px, ' + px + 'px )' );
 				} );
 			}
 		};
