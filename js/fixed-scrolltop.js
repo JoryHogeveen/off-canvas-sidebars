@@ -42,7 +42,7 @@
 
 		ocsOffCanvasSidebars.slidebarEventFixed = function( e, eventType, slidebar ) {
 			// Bottom slidebars.
-			if ( ( 'bottom' === slidebar.side ) && ( 'opening' === eventType || 'closing' === eventType ) ) {
+			if ( ( 'bottom' === slidebar.side && 'overlay' !== slidebar.style ) && ( 'opening' === eventType || 'closing' === eventType ) ) {
 				curScrollTopElements.each( function() {
 					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
 					var offset = slidebar.element.height();

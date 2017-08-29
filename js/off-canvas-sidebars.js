@@ -205,13 +205,15 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				elements.attr( { 'canvas-fixed': 'fixed' } );
 
 				// Legacy mode (only needed for location: top)
-				if ( ocsOffCanvasSidebars.legacy_css && 'top' === slidebar.side && 'overlay' !== slidebar.style ) {
+				// @todo, temp apply for reveal aswell
+				if ( ocsOffCanvasSidebars.legacy_css && 'top' === slidebar.side && ( 'overlay' !== slidebar.style && 'reveal' !== slidebar.style  ) ) {
 					var offset;
-					if ( 'reveal' === slidebar.style ) {
-						offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
-					} else {
+					// @todo, temp apply for reveal, should be 0
+					//if ( 'reveal' === slidebar.style ) {
+						//offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
+					//} else {
 						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', '') );
-					}
+					//}
 
 					//Compatibility with WP Admin Bar
 					// @todo, condition for setting

@@ -311,7 +311,9 @@ slidebars = function () {
 					};
 					canvasCss[ canvasSide ] = '-' + animationProperties.amount;
 					// Move container
-					canvas.css( canvasCss );
+					if ( 'overlay' !== offCanvas[ id ].style ) {
+						canvas.css( canvasCss );
+					}
 					// Open slidebar
 					animationProperties.elements.not( canvas ).css( css );
 				} else {
