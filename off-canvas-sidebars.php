@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1
- * @version 0.4-dev
+ * @version 0.4-rc1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/off-canvas-sidebars
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Off-Canvas Sidebars
  * Description:       Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:        https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:           0.4-dev
+ * Version:           0.4-rc1
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       off-canvas-sidebars
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-define( 'OCS_PLUGIN_VERSION', '0.4-dev' );
+define( 'OCS_PLUGIN_VERSION', '0.4-rc1' );
 define( 'OCS_FILE', __FILE__ );
 define( 'OCS_BASENAME', plugin_basename( OCS_FILE ) );
 define( 'OCS_PLUGIN_DIR', plugin_dir_path( OCS_FILE ) );
