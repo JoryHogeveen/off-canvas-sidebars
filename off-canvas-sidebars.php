@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1
- * @version 0.4-rc1
+ * @version 0.4-rc2
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/off-canvas-sidebars
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Off-Canvas Sidebars
  * Description:       Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:        https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:           0.4-rc1
+ * Version:           0.4-rc2
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       off-canvas-sidebars
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-define( 'OCS_PLUGIN_VERSION', '0.4-rc1' );
+define( 'OCS_PLUGIN_VERSION', '0.4-rc2' );
 define( 'OCS_FILE', __FILE__ );
 define( 'OCS_BASENAME', plugin_basename( OCS_FILE ) );
 define( 'OCS_PLUGIN_DIR', plugin_dir_path( OCS_FILE ) );
@@ -293,7 +293,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * AJAX handler.
 	 * Stores plugin version.
 	 *
-	 * Store format: boolean
+	 * Store format: `boolean`
 	 *
 	 * @since   0.1
 	 */
@@ -311,9 +311,9 @@ final class OCS_Off_Canvas_Sidebars
 	function get_settings() {
 		$settings = $this->settings;
 
-		// Validate global settings
+		// Validate global settings.
 		$settings = $this->validate_settings( $settings, $this->get_default_settings() );
-		// Validate sidebar settings
+		// Validate sidebar settings.
 		foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_settings ) {
 			$settings['sidebars'][ $sidebar_id ] = $this->validate_settings( $sidebar_settings, $this->get_default_sidebar_settings() );
 		}
@@ -662,8 +662,8 @@ final class OCS_Off_Canvas_Sidebars
 	 *
 	 * @since   0.3
 	 * @access  public
-	 * @param   string
-	 * @param   array
+	 * @param   string  $method
+	 * @param   array   $args
 	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
@@ -676,7 +676,7 @@ final class OCS_Off_Canvas_Sidebars
 		return null;
 	}
 
-} // end class
+} // End class().
 
 /**
  * Main instance of Off-Canvas Sidebars.
