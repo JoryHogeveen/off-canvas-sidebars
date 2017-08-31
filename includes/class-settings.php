@@ -47,7 +47,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		$this->plugin_key = off_canvas_sidebars()->get_plugin_key();
 		add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_init', array( $this, 'register_importexport_settings' ) );
+		add_action( 'admin_init', array( $this, 'maybe_importexport_settings' ) );
 		add_action( 'admin_menu', array( $this, 'add_admin_menus' ), 15 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles_scripts' ) );
 	}
@@ -908,7 +908,15 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		<?php $this->plugin_options_tabs(); ?>
 		<div class="<?php echo $this->plugin_key; ?> container">
 
-			<form id="<?php echo $this->general_key; ?>" method="post" action="options.php" enctype="multipart/form-data">
+			<?php
+				$form_action = 'options.php';
+				// @todo Refactor this when using separate classes for tabs.
+				if ( $this->tab === $this->importexport_tab ) {
+					$form_action = 'themes.php?page=' . $this->plugin_key . '&tab=' . $this->importexport_tab;
+				}
+			?>
+
+			<form id="<?php echo $this->general_key; ?>" method="post" action="<?php echo $form_action; ?>" enctype="multipart/form-data">
 
 				<?php settings_errors(); ?>
 				<?php if ( $do_submit ) { ?>
@@ -1195,10 +1203,15 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * @since  0.1
 	 */
 	private function importexport_tab() {
+		$export_link = add_query_arg( 'action', 'export' );
 	?>
 		<h3><?php esc_html_e( 'Import/Export Settings', 'off-canvas-sidebars' ); ?></h3>
 
-		<p><a class="submit button" href="?<?php echo $this->plugin_key; ?>-export"><?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?></a></p>
+		<p>
+			<a class="submit button" href="<?php echo $export_link; ?>">
+				<?php esc_attr_e( 'Export Settings', 'off-canvas-sidebars' ); ?>
+			</a>
+		</p>
 
 		<p>
 			<input type="hidden" name="<?php echo $this->plugin_key; ?>-import" id="<?php echo $this->plugin_key; ?>-import" value="true" />
@@ -1212,45 +1225,57 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 	 * Import/Export handler.
 	 * @since  0.1
 	 */
-	public function register_importexport_settings() {
+	public function maybe_importexport_settings() {
+		static $done;
+		if ( $done ) {
+			return;
+		}
+		$done = true;
+
+		// @codingStandardsIgnoreLine
+		$get = $_GET; $post = $_POST;
+
 		$this->plugin_tabs[ $this->importexport_tab ] = esc_attr__( 'Import/Export', 'off-canvas-sidebars' );
 
 		/**
-		 * Filter documented in $this->load_plugin_data().
+		 * Check if it is the correct page.
+		 * Capability filter documented in $this->load_plugin_data().
 		 */
-		if ( ! current_user_can( $this->capability ) || $this->tab !== $this->importexport_tab ) {
+		if ( ! current_user_can( $this->capability ) ||
+			 ! isset( $get['page'] ) || $this->plugin_key !== $get['page'] ||
+			 $this->tab !== $this->importexport_tab ) {
 			return;
 		}
 
-		// @codingStandardsIgnoreLine
-		if ( isset( $_GET['gocs_message'] ) ) {
+		if ( isset( $get['ocs_import_result'] ) ) {
 
-			$gocs_message_class = '';
-			$gocs_message = '';
+			$result_class = '';
+			$ocs_import_result = '';
 
-			// @codingStandardsIgnoreLine
-			switch ( $_GET['gocs_message'] ) {
+			switch ( $get['ocs_import_result'] ) {
 				case 1:
-					$gocs_message_class = 'updated';
-					$gocs_message = esc_attr__( 'Settings Imported', 'off-canvas-sidebars' );
+					$result_class = 'updated';
+					$ocs_import_result = esc_attr__( 'Settings Imported', 'off-canvas-sidebars' );
 					break;
 				case 2:
-					$gocs_message_class = 'error';
-					$gocs_message = esc_attr__( 'Invalid Settings File', 'off-canvas-sidebars' );
+					$result_class = 'error';
+					$ocs_import_result = esc_attr__( 'Invalid Settings File', 'off-canvas-sidebars' );
 					break;
 				case 3:
-					$gocs_message_class = 'error';
-					$gocs_message = esc_attr__( 'No Settings File Selected', 'off-canvas-sidebars' );
+					$result_class = 'error';
+					$ocs_import_result = esc_attr__( 'No Settings File Selected', 'off-canvas-sidebars' );
 					break;
 			}
 
-			if ( ! empty( $gocs_message ) ) {
-				echo '<div class="' . $gocs_message_class . '"><p>' . esc_html( $gocs_message ) . '</p></div>';
+			if ( ! empty( $ocs_import_result ) ) {
+				echo '<div class="' . $result_class . '"><p>' . esc_html( $ocs_import_result ) . '</p></div>';
 			}
+
+			return;
 		}
 
-		// @codingStandardsIgnoreLine - export settings.
-		if ( isset( $_GET[ $this->plugin_key . '-export' ] ) ) {
+		// Export settings.
+		if ( ! empty( $get['action'] ) && 'export' === $get['action'] ) {
 			header( "Content-Disposition: attachment; filename=" . $this->plugin_key . ".txt" );
 			header( 'Content-Type: text/plain; charset=utf-8' );
 			$general = $this->settings;
@@ -1259,11 +1284,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			foreach ( $general as $id => $text )
 				echo "$id\t" . wp_json_encode( $text ) . "\n";
 			echo "[STOP=OCS SETTINGS]";
-			exit;
+			die();
 		}
 
-		// @codingStandardsIgnoreLine - import settings.
-		if ( isset( $_POST[ $this->plugin_key . '-import' ] ) ) {
+		// Import settings.
+		if ( ! empty( $post[ $this->plugin_key . '-import' ] ) && ! empty( $_FILES[ $this->plugin_key . '-import-file' ] ) ) {
 
 			if ( $_FILES[ $this->plugin_key . '-import-file' ]['tmp_name'] ) {
 
@@ -1274,7 +1299,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 					$settings = array();
 					foreach ( $import as $import_option ) {
 						list( $key, $value ) = explode( "\t", $import_option );
-						$settings[ $key ] = json_decode( sanitize_text_field( $value ), true );
+						$settings[ $key ] = json_decode( $value, true );
 					}
 
 					// Validate global settings.
@@ -1287,18 +1312,21 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 						}
 					}
 
+					$settings = array_merge( off_canvas_sidebars()->get_settings(), $settings );
+
 					update_option( $this->general_key, $settings );
-					$gocs_message = 1;
+					$ocs_import_result = 1;
 				} else {
-					$gocs_message = 2;
+					$ocs_import_result = 2;
 				}
 			} else {
-				$gocs_message = 3;
+				$ocs_import_result = 3;
 			}
 
-			wp_redirect( admin_url( '/themes.php?page=' . $this->plugin_key . '&tab=' . $this->importexport_tab . '&gocs_message=' . esc_attr( $gocs_message ) ) );
-			exit;
+			wp_redirect( admin_url( '/themes.php?page=' . $this->plugin_key . '&tab=' . $this->importexport_tab . '&ocs_import_result=' . esc_attr( $ocs_import_result ) ) );
+			die();
 		} // End if().
+
 	}
 
 	/**
