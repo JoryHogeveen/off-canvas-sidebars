@@ -4,6 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 4.1
 Tested up to: 4.8
+Requires PHP: 5.2.4
 Stable tag: 0.4
 
 Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
