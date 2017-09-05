@@ -11,6 +11,7 @@
  * Slidebar CSS overwrites
  */
 
+/* @fixme Fix overlay issues with shift and reveal on pages not that don't have full height, currently done in JS window resize. */
 html,
 html.ocs-initialized {
 	overflow-y: auto;

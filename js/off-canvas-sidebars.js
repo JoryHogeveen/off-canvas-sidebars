@@ -25,12 +25,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	var $document = $(document);
 	var $window = $(window);
+	var $html = $('html');
 	var $body = $('body');
 
 	ocsOffCanvasSidebars.slidebarsController = false;
 	ocsOffCanvasSidebars.useAttributeSettings = false;
 	ocsOffCanvasSidebars.container = false;
-	ocsOffCanvasSidebars._html = $( 'html' );
 	ocsOffCanvasSidebars._touchmove = false;
 	ocsOffCanvasSidebars._toolbar = $body.hasClass('admin-bar');
 
@@ -162,13 +162,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		// Legacy CSS mode?
 		if ( ocsOffCanvasSidebars.legacy_css ) {
 			ocsOffCanvasSidebars.slidebarsController.legacy = true;
-			ocsOffCanvasSidebars._html.addClass('ocs-legacy');
+			$html.addClass('ocs-legacy');
 		}
 
 		// Initialize slidebars.
 		ocsOffCanvasSidebars.slidebarsController.init();
 
-		ocsOffCanvasSidebars._html.addClass('ocs-initialized');
+		$html.addClass('ocs-initialized');
 
 		$window.trigger( 'ocs_initialized', this );
 
@@ -395,16 +395,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'opening', function () {
 			$( '[canvas]' ).addClass( prefix + '-close-any' );
-			ocsOffCanvasSidebars._html.addClass( 'ocs-sidebar-active' );
+			$html.addClass( 'ocs-sidebar-active' );
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
-				ocsOffCanvasSidebars._html.addClass( 'ocs-scroll-lock' );
+				$html.addClass( 'ocs-scroll-lock' );
 			}
 		} );
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closing', function () {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
-			ocsOffCanvasSidebars._html.removeClass( 'ocs-sidebar-active ocs-scroll-lock' );
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock' );
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
@@ -433,7 +433,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		// Disable scrolling outside of active sidebar.
 		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
 			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
-			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
+			if ( $html.hasClass( 'ocs-scroll-lock' ) ) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
@@ -443,7 +443,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		// Disable scrolling site when scrolling inside active sidebar.
 		sidebarElements.on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
 			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
-			if ( ocsOffCanvasSidebars._html.hasClass( 'ocs-scroll-lock' ) ) {
+			if ( $html.hasClass( 'ocs-scroll-lock' ) ) {
 				var $this = $(this);
 				if ( 0 > e.originalEvent.deltaY ) {
 					// scrolling up.
@@ -454,6 +454,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 			}
 		} );
+
+		/**
+		 * @fixme Fix for reveal and shift styles when page does not have enough height.
+		 * @since 0.4
+ 		 */
+		$window.on( 'resize', function() {
+			ocsOffCanvasSidebars.container.css( 'min-height', $window.innerHeight() - parseInt( $html.css('margin-top'), 10 ) );
+		} ).trigger( 'resize' );
 
 	};
 
