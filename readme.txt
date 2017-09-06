@@ -59,16 +59,16 @@ Off-Canvas Sidebars won't work "out of the box" with most themes, please read th
 
 == Frequently Asked Questions ==
 
-1. Will this plugin work with any theme?
+= 1. Will this plugin work with any theme? =
 
 No, due to the difference in structure not all theme's are compatible.
 Though most themes can be *made* compatible with some modifications!
 
-2. Can I add as many sidebars as I like?
+= 2. Can I add as many sidebars as I like? =
 
 Yes you can, keep in mind that the more sidebars you add the heaver the load is on the server (PHP) and browser (JS).
 
-3. How do I change the CSS for the sidebars?
+= 3. How do I change the CSS for the sidebars? =
 
 This plugin only provides the framework that handles the off-canvas part.
 There are some settings that slightly change the display but this is very limited.
