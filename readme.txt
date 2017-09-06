@@ -81,11 +81,12 @@ For more advanced customisations either:
 1. Settings page
 2. Sidebars settings page (sidebars closed)
 3. Sidebars settings page (sidebar opened)
-4. Control Widget
-5. Menu item
-6. Sidebar left (Push effect) -> image from Slidebars website
-7. Sidebar left (Overlay effect) -> image from Slidebars website
-8. Sidebar top (Push effect) -> image from Slidebars website
+4. Shortcode generator page
+5. Control Widget
+6. Menu item
+7. Sidebar left (Push effect) -> image from Slidebars website
+8. Sidebar left (Overlay effect) -> image from Slidebars website
+9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
 
