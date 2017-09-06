@@ -10,14 +10,14 @@
 
 if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	var ocsOffCanvasSidebars = {
-		"site_close": true,
-		"disable_over": false,
-		"hide_control_classes": false,
-		"scroll_lock": false,
-		"legacy_css": false,
-		"css_prefix": 'ocs',
-		"sidebars": {},
-		"_debug": false
+		site_close: true,
+		disable_over: false,
+		hide_control_classes: false,
+		scroll_lock: false,
+		legacy_css: false,
+		css_prefix: 'ocs',
+		sidebars: {},
+		_debug: false
 	};
 }
 
@@ -40,8 +40,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Validate the disable_over setting ( using _getSetting() ).
 		 * Internal function, do not overwrite.
 		 * @since  0.3
-		 * @param  {string}  sidebarId  The sidebar ID.
-		 * @return {bool}  disableOver status.
+		 * @param  {string}   sidebarId  The sidebar ID.
+		 * @return {boolean}  disableOver status.
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check = true;
@@ -60,11 +60,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Internal function, do not overwrite.
 		 *
 		 * @since  0.3
-		 * @param  {string}            key        The setting key to look for.
-		 * @param  {string|bool|null}  sidebarId  The sidebar ID.
-		 *                                        Pass `false` to check for an active slidebar.
-		 *                                        Pass `null` or no value for only the global setting.
-		 * @return {string|bool}  The setting or false.
+		 * @param  {string}               key        The setting key to look for.
+		 * @param  {string|boolean|null}  sidebarId  The sidebar ID.
+		 *                                           Pass `false` to check for an active slidebar.
+		 *                                           Pass `null` or no value for only the global setting.
+		 * @return {string|boolean}  The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
 			var overwrite, setting;
@@ -150,7 +150,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
 
-		$window.trigger( 'ocs_loaded', this );
+		$window.trigger( 'ocs_before', this );
 
 		// Slidebars constructor.
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
@@ -164,6 +164,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			ocsOffCanvasSidebars.slidebarsController.legacy = true;
 			$html.addClass('ocs-legacy');
 		}
+
+		$window.trigger( 'ocs_loaded', this );
 
 		// Initialize slidebars.
 		ocsOffCanvasSidebars.slidebarsController.init();
@@ -268,6 +270,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		if ( 'function' === typeof ocsOffCanvasSidebars.setupTriggers ) {
 			ocsOffCanvasSidebars.setupTriggers();
 		}
+
+		$window.trigger( 'ocs_after', this );
 	};
 
 	/**
@@ -459,9 +463,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @fixme Fix for reveal and shift styles when page does not have enough height.
 		 * @since 0.4
  		 */
-		$window.on( 'resize', function() {
+		$window.on( 'load resize', function() {
 			ocsOffCanvasSidebars.container.css( 'min-height', $window.innerHeight() - parseInt( $html.css('margin-top'), 10 ) );
-		} ).trigger( 'resize' );
+		} );
 
 	};
 
