@@ -223,7 +223,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		if ( 'ocs-shortcode' === tab.val() ) {
 
-			var fields = [ 'sidebar', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
+			var fields = [ 'id', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
 
 			for ( var i = 0, l = fields.length; i < l; i++ ) {
 				$( '#off_canvas_sidebars_options_' + fields[ i ] ).on( 'change keyup', function() {
@@ -298,8 +298,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				singleton = false,
 				html = '';
 
-			if ( field_data.sidebar.val() ) {
-				classes += ' ' + prefix + '-' + action + '-' + field_data.sidebar.val();
+			if ( field_data.id.val() ) {
+				classes += ' ' + prefix + '-' + action + '-' + field_data.id.val();
 			}
 			if ( field_data.class.val() ) {
 				classes += ' ' + field_data.class.val();

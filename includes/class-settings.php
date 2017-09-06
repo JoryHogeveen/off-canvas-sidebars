@@ -1066,7 +1066,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 		<div id="section_shortcode" class="stuffbox postbox">
 			<h3 class="hndle"><span><?php esc_html_e( 'Shortcode', 'off-canvas-sidebars' ); ?>:</span></h3>
 			<div class="inside">
-			<textarea id="ocs_shortcode" class="widefat">[ocs_trigger sidebar=""]</textarea>
+			<textarea id="ocs_shortcode" class="widefat">[ocs_trigger id=""]</textarea>
 		</div></div>
 		<?php
 
@@ -1085,7 +1085,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_For
 			);
 		}
 		$this->select_option( array(
-			'name' => 'sidebar',
+			'name' => 'id',
 			'label' => __( 'Sidebar ID', 'off-canvas-sidebars' ),
 			'description' => __( '(Required) The off-canvas sidebar ID', 'off-canvas-sidebars' ),
 			'options' => $sidebar_select,
