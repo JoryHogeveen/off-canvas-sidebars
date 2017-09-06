@@ -1,10 +1,59 @@
-/**
+/*!
  * Off-Canvas Sidebars plugin
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3
+ * @version 0.4
+ * @preserve
  */
+
+/**
+ * Slidebar CSS overwrites
+ */
+
+/* @fixme Fix overlay issues with shift and reveal on pages not that don't have full height, currently done in JS window resize. */
+html,
+html.ocs-initialized {
+	overflow-y: auto;
+	height: auto;
+}
+[canvas=container],
+.ocs-initialized [canvas=container] {
+	overflow-y: hidden;
+	height: auto;
+}
+
+
+/*[canvas-fixed] {
+	-webkit-transform: translate( 0px, 0px );
+	-moz-transform: translate( 0px, 0px );
+	-ms-transform: translate( 0px, 0px );
+	-o-transform: translate( 0px, 0px );
+	transform: translate( 0px, 0px );
+	-webkit-backface-visibility: hidden;
+}*/
+
+.ocs-legacy [canvas] {top: 0; right: 0; bottom: 0; left: 0;}
+.ocs-legacy [canvas],
+.ocs-legacy [off-canvas] {
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	transform: none;
+	-webkit-transition: -webkit-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-moz-transition: -moz-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-o-transition: -o-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+}
+
+/* @todo fix support for top and bottom */
+[off-canvas*=" top"][off-canvas*=" reveal"],
+[off-canvas*=" top"][off-canvas*=" shift"],
+[off-canvas*=" bottom"][off-canvas*=" reveal"],
+[off-canvas*=" bottom"][off-canvas*=" shift"] {
+	z-index: 1;
+}
 
 /**
  * Sidebar Widths (patched from older version of Slidebars)

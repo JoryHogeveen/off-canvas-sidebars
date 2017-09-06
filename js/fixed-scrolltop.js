@@ -1,64 +1,98 @@
 ;/**
  * Off-Canvas Sidebars plugin fixed-scrolltop.js
  *
- * Compatibility for fixed elements with Slidebars
+ * Compatibility for fixed elements with Slidebars.
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.3.1
+ * @version 0.4
+ * @global ocsOffCanvasSidebars
+ * @preserve
  */
-( function ( $ ) {
+( function( $ ) {
 
-	$(window).load(function () {
+	var $window = $(window);
+	var $body = $('body');
 
-		var prefix = 'ocs';
-		if ( typeof ocsOffCanvasSidebars != 'undefined' ) {
-			prefix = ocsOffCanvasSidebars.css_prefix;
+	$window.on( 'ocs_initialized', function () {
+
+		var prefix = ocsOffCanvasSidebars.css_prefix;
+
+		if ( ocsOffCanvasSidebars._debug ) {
+			console.log('start fixed-scrolltop.js');
 		}
 
 		var curScrollTopElements;
-		var ocs_site = $('#' + prefix + '-site');
-
-		if ( ocs_site.css('transform') != 'none' ) {
-			curScrollTopElements = $('#' + prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
-			ocsScrollTopFixed();
-			ocs_site.on('scroll resize', function() {
-				var newScrollTopElements = $('#' + prefix + '-site *').filter( function(){ return $(this).css('position') === 'fixed'; } );
-				curScrollTopElements = curScrollTopElements.add(newScrollTopElements);
-				ocsScrollTopFixed();
-			});
+		var scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
+		if ( 'auto' !== ocs_site.css('overflow-y') ) {
+			scrollTarget = $window;
 		}
 
-		function ocsScrollTopFixed() {
-			if ( curScrollTopElements.length > 0 ) {
-				var scrollTop = ocs_site.scrollTop();
-				var winHeight = $(window).height();
-				var conOffset = ocs_site.offset();
-				var conHeight = ocs_site.outerHeight();
+		function run() {
+			if ( 'none' !== ocs_site.css('transform') ) {
+				curScrollTopElements = ocsOffCanvasSidebars.getFixedElements();
+				ocsOffCanvasSidebars.scrollTopFixed();
+				scrollTarget.on( 'scroll resize', function() {
+					var newScrollTopElements = ocsOffCanvasSidebars.getFixedElements();
+					curScrollTopElements = curScrollTopElements.add( newScrollTopElements );
+					ocsOffCanvasSidebars.scrollTopFixed();
+				} );
+				scrollTarget.on( 'slidebar_event', ocsOffCanvasSidebars.slidebarEventFixed );
+			}
+		}
+
+		ocsOffCanvasSidebars.slidebarEventFixed = function( e, eventType, slidebar ) {
+			// Bottom slidebars.
+			if ( ( 'bottom' === slidebar.side && 'overlay' !== slidebar.style ) && ( 'opening' === eventType || 'closing' === eventType ) ) {
 				curScrollTopElements.each( function() {
-					if ( $(this).css('position') == 'fixed' ) {
-						var top = $(this).css('top');
-						var bottom = $(this).css('bottom');
-						var px;
-						if ( top == 'auto' && bottom != 'auto' ) {
-							px = ( scrollTop + winHeight ) - ( conOffset.top + conHeight );
+					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
+					var offset = slidebar.element.height();
+					if ( 'opening' === eventType ) {
+						px += offset;
+					} else if ( 'closing' === eventType ) {
+						px -= offset;
+					}
+					ocsOffCanvasSidebars.cssCompat( $(this), 'transform', 'translate( 0px, ' + px + 'px )' );
+				} );
+			}
+		};
+
+		ocsOffCanvasSidebars.scrollTopFixed = function() {
+			if ( curScrollTopElements.length ) {
+				var scrollTop = scrollTarget.scrollTop(),
+				    winHeight = $window.height(),
+				    gblOffset = $body.offset(),
+				    conOffset = ocs_site.offset(),
+				    conHeight = ocs_site.outerHeight();
+
+				var activeSidebar = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
+				if ( activeSidebar ) {
+					var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( activeSidebar );
+					if ( 'top' === sidebar.side ) { //|| 'bottom' === sidebar.side
+						gblOffset.top += sidebar.element.height();
+					}/* else if ( 'bottom' === sidebar.side ) {
+						gblOffset.top -= sidebar.element.height();
+					}*/
+				}
+				curScrollTopElements.each( function() {
+					var $this = $(this);
+					if ( 'fixed' === $this.css('position') ) {
+						var top = $this.css('top'),
+						    bottom = $this.css('bottom'),
+							px;
+						if ( 'auto' === top && 'auto' !== bottom ) {
+							px = ( scrollTop + winHeight ) - ( conOffset.top + conHeight ) + gblOffset.top;
 						} else {
-							px = scrollTop - conOffset.top;
+							px = scrollTop - conOffset.top + gblOffset.top;
 						}
-						$(this).css({
-							'-webkit-transform': 'translateY(' + px + 'px)',
-							'-moz-transform': 'translateY(' + px + 'px)',
-							'transform': 'translateY(' + px + 'px)'
-						});
+						ocsOffCanvasSidebars.cssCompat( $this, 'transform', 'translate( 0px, ' + px + 'px )' );
 					} else {
-						$(this).css({
-							'-webkit-transform' : '',
-							'-moz-transform' : '',
-							'transform' : ''
-						});
+						ocsOffCanvasSidebars.cssCompat( $this, 'transform', '' );
 					}
 				} );
 			}
-		}
+		};
+
+		run();
 
 	});
 

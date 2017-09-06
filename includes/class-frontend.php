@@ -2,13 +2,14 @@
 /**
  * Off-Canvas Sidebars plugin front-end
  *
- * Front-end
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.3.1
+ * @version 0.4
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 final class OCS_Off_Canvas_Sidebars_Frontend
 {
@@ -20,7 +21,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 */
 	protected static $_instance = null;
 
-	private $general_settings = array();
+	private $settings = array();
 
 	/**
 	 * @since  0.3  private constructor
@@ -29,7 +30,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	private function __construct() {
 		$this->load_plugin_data();
 
-		if ( $this->general_settings['enable_frontend'] == true ) {
+		if ( $this->settings['enable_frontend'] ) {
 			$this->default_actions();
 		}
 
@@ -38,14 +39,30 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		//add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
+
+		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
 
 	/**
 	 * Get plugin defaults
+	 * @since   0.1
 	 */
 	private function load_plugin_data() {
-		$off_canvas_sidebars = Off_Canvas_Sidebars();
-		$this->general_settings = $off_canvas_sidebars->get_settings();
+		$this->settings = off_canvas_sidebars()->get_settings();
+	}
+
+	/**
+	 * Add classes to the body
+	 *
+	 * @since   1.4
+	 * @param   array  $classes
+	 * @return  array
+	 */
+	public function filter_body_class( $classes ) {
+		if ( 'legacy-css' === $this->settings['compatibility_position_fixed'] ) {
+			$classes[] = 'ocs-legacy';
+		}
+		return $classes;
 	}
 
 	/**
@@ -56,10 +73,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 */
 	private function default_actions() {
 
-		$before_hook = trim( $this->general_settings['website_before_hook'] );
-		$after_hook  = trim( $this->general_settings['website_after_hook'] );
+		$before_hook = trim( $this->settings['website_before_hook'] );
+		$after_hook  = trim( $this->settings['website_after_hook'] );
 
-		if ( get_template() == 'genesis' ) {
+		if ( 'genesis' === get_template() ) {
 			$before_hook = 'genesis_before';
 			$after_hook  = 'genesis_after';
 		}
@@ -96,10 +113,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		do_action( 'ocs_container_before' );
 
 		$atts = array(
-			'ocs-site_close'           => ( $this->general_settings['site_close'] ) ? true : false,
-			'ocs-disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
-			'ocs-hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,
-			'ocs-scroll_lock'          => ( $this->general_settings['scroll_lock'] ) ? true : false,
+			'ocs-site_close'           => ( $this->settings['site_close'] ) ? true : false,
+			'ocs-disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
+			'ocs-hide_control_classes' => ( $this->settings['hide_control_classes'] ) ? true : false,
+			'ocs-scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
 		);
 
 		foreach ( $atts as $name => $value ) {
@@ -109,7 +126,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			$atts[ $name ] = $name . '="' . $value . '"';
 		}
 
-		echo '<div id="' . $this->general_settings['css_prefix'] . '-site" canvas="container" ' . implode( ' ', $atts ) . '>';
+		echo '<div id="' . $this->settings['css_prefix'] . '-site" canvas="container" ' . implode( ' ', $atts ) . '>';
 
 		// Add content before other content in the site container
 		do_action( 'ocs_container_inner_before' );
@@ -127,7 +144,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		// Add content after other content in the site container
 		do_action( 'ocs_container_inner_after' );
 
-		if ( $this->general_settings['frontend_type'] != 'jquery' ) {
+		if ( 'jquery' !== $this->settings['frontend_type'] ) {
 			echo '</div>'; // close #ocs-site
 		}
 		// Add content after the site container
@@ -147,7 +164,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			?>
 <script type="text/javascript">
 	(function($) {
-		$('div.<?php echo $this->general_settings['css_prefix']; ?>-slidebar:first').prevAll().wrapAll('<div id="<?php echo $this->general_settings['css_prefix']; ?> -site" canvas="container"></div>');
+		$('div.<?php echo $this->settings['css_prefix']; ?>-slidebar:first').prevAll().wrapAll('<div id="<?php echo $this->settings['css_prefix']; ?> -site" canvas="container"></div>');
 	}) (jQuery);
 </script>
 			<?php
@@ -162,11 +179,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 * @access  public
 	 */
 	function do_sidebars() {
-		if ( ! empty( $this->general_settings['sidebars'] ) ) {
-			foreach ( $this->general_settings['sidebars'] as $sidebar => $sidebar_data ) {
-				if ( ! empty( $sidebar_data['enable'] ) ) {
-					$this->do_sidebar( $sidebar );
-				}
+		if ( ! empty( $this->settings['sidebars'] ) ) {
+			foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+				$this->do_sidebar( $sidebar_id );
 			}
 		}
 	}
@@ -175,15 +190,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 * Echos a sidebar
 	 *
 	 * @since   0.1
+	 * @param   string  $sidebar_id
 	 * @return  void
 	 * @access  public
 	 */
 	function do_sidebar( $sidebar_id ) {
-		if ( ! empty( $this->general_settings['sidebars'][ $sidebar_id ] ) ) {
+		if ( ! empty( $this->settings['sidebars'][ $sidebar_id ] ) ) {
 
-			$sidebar_data = $this->general_settings['sidebars'][ $sidebar_id ];
+			$sidebar_data = $this->settings['sidebars'][ $sidebar_id ];
 
-			echo '<div id="' . $this->general_settings['css_prefix'] . '-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+			if ( empty( $sidebar_data['enable'] ) ) {
+				return;
+			}
+
+			echo '<div id="' . $this->settings['css_prefix'] . '-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
 
 			/**
 			 * Action to add content before the default sidebar content
@@ -197,20 +217,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			 */
 			do_action( 'ocs_custom_content_sidebar_before', $sidebar_id, $sidebar_data );
 
-			if ( 'sidebar' == $sidebar_data['content'] ) {
+			if ( 'sidebar' === $sidebar_data['content'] ) {
 
-				if ( get_template() == 'genesis' ) {
+				if ( 'genesis' === get_template() ) {
 					genesis_widget_area( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 				} else {
 					dynamic_sidebar( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
 				}
 			}
 
-			elseif( 'menu' == $sidebar_data['content'] ) {
+			elseif ( 'menu' === $sidebar_data['content'] ) {
 
 				$args = array(
 					'fallback_cb' => false,
-					'container' => 'nav' // HTML5 FTW!
+					'container' => 'nav', // HTML5 FTW!
 				);
 
 				/**
@@ -237,7 +257,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 				wp_nav_menu( $args );
 			}
 
-			elseif( 'action' == $sidebar_data['content'] ) {
+			elseif ( 'action' === $sidebar_data['content'] ) {
 
 				/**
 				 * Action to hook into the sidebar content
@@ -250,7 +270,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 				 * @param  array  $sidebar_data  The sidebar settings
 				 */
 				do_action( 'ocs_custom_content_sidebar_' . $sidebar_id, $sidebar_id, $sidebar_data );
-			}
+			} // End if().
 
 			/**
 			 * Action to add content after the default sidebar content
@@ -265,7 +285,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			do_action( 'ocs_custom_content_sidebar_after', $sidebar_id, $sidebar_data );
 
 			echo '</div>';
-		}
+		} // End if().
 	}
 
 	/**
@@ -273,17 +293,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 *
 	 * @since   0.1
 	 * @since   0.3  Overwrite global setting attributes
+	 * @param   string  $sidebar_id
+	 * @param   array   $data
 	 * @return  string
 	 */
-	function get_sidebar_attributes( $sidebar, $data ) {
-		$prefix = $this->general_settings['css_prefix'];
+	function get_sidebar_attributes( $sidebar_id, $data ) {
+		$prefix = $this->settings['css_prefix'];
 		$atts = array();
 
 		$atts['class'] = array();
 		$atts['class'][] = $prefix . '-slidebar';
-		$atts['class'][] = $prefix . '-' . esc_attr( $sidebar );
+		$atts['class'][] = $prefix . '-' . esc_attr( $sidebar_id );
 		$atts['class'][] = 'ocs-slidebar';
-		$atts['class'][] = 'ocs-' . esc_attr( $sidebar );
+		$atts['class'][] = 'ocs-' . esc_attr( $sidebar_id );
 		$atts['class'][] = 'ocs-size-' . esc_attr( $data['size'] );
 		$atts['class'][] = 'ocs-location-' . esc_attr( $data['location'] );
 		$atts['class'][] = 'ocs-style-' . esc_attr( $data['style'] );
@@ -299,15 +321,15 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
 		 * @param  array  $sidebar_data  The sidebar settings
 		 */
-		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar, $data );
+		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar_id, $data );
 
 		// Slidebars 2.0
 		$atts['off-canvas'] = array(
-			$prefix . '-' . esc_attr( $sidebar ), // ID
+			$prefix . '-' . esc_attr( $sidebar_id ), // ID
 			esc_attr( $data['location'] ), // Location
-			esc_attr( $data['style'] )     // Animation style
+			esc_attr( $data['style'] ), // Animation style
 		);
-		$atts['ocs-sidebar-id'] = esc_attr( $sidebar );
+		$atts['ocs-sidebar-id'] = esc_attr( $sidebar_id );
 
 		// Overwrite global settings
 		if ( true === (bool) $data['overwrite_global_settings'] ) {
@@ -331,6 +353,98 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	}
 
 	/**
+	 * Generate a trigger element
+	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
+	 * @since  0.4
+	 * @param  string $sidebar_id
+	 * @param  array  $args  see API: the_ocs_control_trigger() for info
+	 * @return string
+	 */
+	public function do_control_trigger( $sidebar_id, $args = array() ) {
+
+		$sidebar_id = (string) $sidebar_id;
+
+		$defaults = array(
+			'text'    => '', // Text to show
+			'action'  => 'toggle', // toggle|open|close
+			'element' => 'button', // button|span|i|b|a|etc.
+			'class'   => array(), // Extra classes (space separated), also accepts an array of classes
+			'attr'    => array(), // An array of attribute keys and their values
+		);
+		$args = array_merge( $defaults, $args );
+
+		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
+			return '<span class="error">' . __( 'This element is not supported for use as a button', 'off-canvas-sidebars' ) . '</span>';
+		}
+
+		$singleton = false;
+
+		// Is it a singleton element? Add the text to the attributes
+		if ( in_array( $args['element'], array( 'br', 'hr', 'img', 'input' ), true ) ) {
+			$singleton = true;
+			if ( 'img' === $args['element'] && empty( $args['attr']['alt'] ) ) {
+				$args['attr']['alt'] = $args['text'];
+			}
+			if ( 'input' === $args['element'] && empty( $args['attr']['value'] ) ) {
+				$args['attr']['value'] = $args['text'];
+			}
+		}
+
+		$attr = '';
+		if ( empty( $args['attr']['class'] ) ) {
+			$args['attr']['class'] = array();
+		}
+		foreach ( $args['attr'] as $key => $value ) {
+			if ( 'class' === $key ) {
+				// Add our own classes
+				$ocs_classes = array(
+					$this->settings['css_prefix'] . '-trigger',
+					$this->settings['css_prefix'] . '-' . $args['action'],
+					$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id,
+				);
+				if ( ! is_array( $value ) ) {
+					$value = explode( ' ', $value );
+				}
+				foreach ( $ocs_classes as $class ) {
+					if ( ! in_array( $class, $value, true ) ) {
+						$value[] = $class;
+					}
+				}
+
+				// Optionally add extra classes
+				if ( ! empty( $args['class'] ) ) {
+					if ( ! is_array( $args['class'] ) ) {
+						$args['class'] = explode( ' ', $args['class'] );
+					}
+					foreach ( $args['class'] as $c ) {
+						$c = esc_attr( $c );
+						if ( ! in_array( $c, $value, true ) ) {
+							$value[] = $c;
+						}
+					}
+				}
+			}
+			if ( is_array( $value ) ) {
+				$value = implode( ' ', $value );
+			}
+			$attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( (string) $value ) . '"';
+		}
+
+		$return = '<' . $args['element'] . $attr;
+		if ( $singleton ) {
+			$return .= ' />';
+		} else {
+			$return .= '>' . $args['text'] . '</' . $args['element'] . '>';
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Add necessary scripts and styles
 	 *
 	 * @since   0.1
@@ -339,30 +453,42 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	 * @return  void
 	 */
 	function add_styles_scripts() {
-		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
-		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.css', array(), '2.0.2' );
-		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars'.$suffix.'.js', array( 'jquery' ), '2.0.2', true );
-
-		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars.css', array(), $version ); // @todo: '.$suffix.'
-		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars.js', array( 'jquery', 'slidebars' ), $version, true ); // @todo: '.$suffix.'
-		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
-			'site_close'           => ( $this->general_settings['site_close'] ) ? true : false,
-			'disable_over'         => ( $this->general_settings['disable_over'] ) ? (int) $this->general_settings['disable_over'] : false,
-			'hide_control_classes' => ( $this->general_settings['hide_control_classes'] ) ? true : false,
-			'scroll_lock'          => ( $this->general_settings['scroll_lock'] ) ? true : false,
-			'css_prefix'           => $this->general_settings['css_prefix'],
-			'sidebars'             => $this->general_settings['sidebars']
-		) );
-
-		if ( true === (bool) $this->general_settings['compatibility_position_fixed'] ) {
-			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop.js', array( 'jquery' ), $version, true );
-		}
+		// @todo Validate and use minified files
+		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
 
 		// FastClick library https://github.com/ftlabs/fastclick
-		if ( true === (bool) $this->general_settings['use_fastclick'] ) {
-			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick.js', array(), false, true );
+		if ( $this->settings['use_fastclick'] ) {
+			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick' . $suffix . '.js', array(), false, true );
 		}
+
+		if ( 'custom-js' === $this->settings['compatibility_position_fixed'] ) {
+			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop' . $suffix . '.js', array( 'jquery' ), $version, true );
+		}
+
+		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.css', array(), '2.0.2' );
+		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.js', array( 'jquery' ), '2.0.2', true );
+
+		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars' . $suffix . '.css', array(), $version );
+		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars' . $suffix . '.js', array( 'jquery', 'slidebars' ), $version, true );
+
+		$sidebars = array();
+		foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+			if ( ! empty( $sidebar_data['enable'] ) ) {
+				$sidebars[ $sidebar_id ] = $sidebar_data;
+			}
+		}
+		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
+			'site_close'           => (bool) $this->settings['site_close'],
+			'disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
+			'hide_control_classes' => (bool) $this->settings['hide_control_classes'],
+			'scroll_lock'          => (bool) $this->settings['scroll_lock'],
+			'legacy_css'           => (bool) ( 'legacy-css' === $this->settings['compatibility_position_fixed'] ),
+			'fixed_elements'       => $this->settings['fixed_elements'],
+			'css_prefix'           => $this->settings['css_prefix'],
+			'sidebars'             => $sidebars,
+			'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+		) );
 	}
 
 	/**
@@ -384,43 +510,47 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 	/**
 	 * Add inline styles
 	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @since   0.1
 	 * @return  void
 	 */
 	function add_inline_styles() {
 		if ( ! is_admin() ) {
-			$prefix = $this->general_settings['css_prefix'];
+			$prefix = $this->settings['css_prefix'];
 			?>
 <style type="text/css">
 <?php
-if ( $this->general_settings['background_color_type'] != '' ) {
+if ( '' !== $this->settings['background_color_type'] ) {
 	$bgcolor = '';
-	if ( $this->general_settings['background_color_type'] == 'transparent' ) {
+	if ( 'transparent' === $this->settings['background_color_type'] ) {
 		$bgcolor = 'transparent';
 	}
-	elseif ( $this->general_settings['background_color_type'] == 'color' && $this->general_settings['background_color'] != '' ) {
-		$bgcolor = $this->general_settings['background_color'];
+	elseif ( 'color' === $this->settings['background_color_type'] && '' !== $this->settings['background_color'] ) {
+		$bgcolor = $this->settings['background_color'];
 	}
 ?>
 	#<?php echo $prefix; ?>-site {background-color: <?php echo $bgcolor; ?>;}
 <?php
-} // endif
-foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+} // End if().
+foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 	if ( true === (bool) $sidebar_data['enable'] ) {
 		$prop = array();
 		if ( ! empty( $sidebar_data['background_color_type'] ) ) {
-			if ( $sidebar_data['background_color_type'] == 'transparent' ) {
+			if ( 'transparent' === $sidebar_data['background_color_type'] ) {
 				$prop[] = 'background-color: transparent;';
 			}
-			elseif ( $sidebar_data['background_color_type'] == 'color' && $sidebar_data['background_color'] != '' ) {
+			elseif ( 'color' === $sidebar_data['background_color_type'] && '' !== $sidebar_data['background_color'] ) {
 				$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
 			}
 		}
-		if ( $sidebar_data['size'] == 'custom' && ! empty( $sidebar_data['size_input'] ) ) {
-			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ) ) ) {
+		if ( 'custom' === $sidebar_data['size'] && ! empty( $sidebar_data['size_input'] ) ) {
+			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ), true ) ) {
 				$prop[] = 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
-			elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ) ) ) {
+			elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ), true ) ) {
 				$prop[] = 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
 			}
 		}
@@ -440,14 +570,14 @@ foreach ( $this->general_settings['sidebars'] as $sidebar_id => $sidebar_data ) 
 ?>
 	.ocs-slidebar.ocs-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
 <?php
-		} //endif
-	} // endif
-} //endforeach
+		} // End if().
+	} // End if().
+} // End foreach().
 ?>
-	.<?php echo $prefix; ?>-button {cursor: pointer;}
+	.<?php echo $prefix; ?>-trigger {cursor: pointer;}
 </style>
 			<?php
-		}
+		} // End if().
 	}
 
 	/**

@@ -1,0 +1,9 @@
+/*!
+ * Off-Canvas Sidebars plugin
+ *
+ * @author Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @version 0.4
+ * @preserve
+ */
+.ocs-credits{overflow:hidden;background:#fff;position:relative;margin:0;box-shadow:0 0 0 1px rgba(0,0,0,0.05)}.ocs-credits .inner{padding-left:10px;padding-right:10px}.ocs-credits h3{font-size:14px;line-height:1.4;margin:0;padding:8px 12px;border-bottom:1px solid #eee}.off-canvas-sidebars-settings .postbox-container{float:none}.postbox.section-sidebar{-webkit-transition:all .1s;-moz-transition:all .1s;-o-transition:all .1s;transition:all .1s}.postbox.section-sidebar:hover{opacity:1 !important}.off-canvas-sidebars-settings .form-table tbody>tr:not(:last-child){border-bottom:1px solid #eee}.off-canvas-sidebars-settings .form-table:not(:last-child){margin-bottom:1em;border-bottom:1px solid #eee}.off-canvas-sidebars-settings fieldset.radio label,.off-canvas-sidebars-settings fieldset.checkbox label{display:block}.off-canvas-sidebars-settings fieldset.radio label+br{display:none}.off-canvas-sidebars-settings fieldset.radio label+.description{margin-bottom:.5em;display:inline-block}.off-canvas-sidebars-settings input+select{vertical-align:top}@media only screen and (min-width:850px){.off-canvas-sidebars-settings{margin-right:300px}.off-canvas-sidebars-settings form{float:left;min-width:100%;width:auto}.ocs-credits{float:right;margin:10px -300px 10px 20px;width:280px}.off-canvas-sidebars-settings .postbox-container .postbox-third{float:left;width:33%;margin-left:.5%;box-sizing:border-box}.off-canvas-sidebars-settings .postbox-container .postbox-third.first{margin-left:0}}@media only screen and (min-width:959px){.ocs-credits{position:fixed;right:0;margin:10px 20px}}
