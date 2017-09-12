@@ -23,10 +23,10 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	public function __construct() {
 		parent::__construct(
 			'Off-Canvas-Control',
-			__( 'Off-Canvas Control', 'off-canvas-sidebars' ),
+			__( 'Off-Canvas Control', OCS_DOMAIN ),
 			array(
 				'classname'   => 'off_canvas_control',
-				'description' => __( 'Button to trigger off-canvas sidebars', 'off-canvas-sidebars' ),
+				'description' => __( 'Button to trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
 		);
 		$this->load_plugin_data();
@@ -119,7 +119,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$field_name = $this->get_field_name( $this->widget_setting );
 		?>
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
-			<b><?php esc_html_e( 'Controls', 'off-canvas-sidebars' ); ?>:</b><br />
+			<b><?php esc_html_e( 'Controls', OCS_DOMAIN ); ?>:</b><br />
 			<?php
 			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
 				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
@@ -186,18 +186,18 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			<h4 class=""><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_show_label" name="<?php echo $field_sidebar_name . '[show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
-				<label for="<?php echo $field_sidebar_id; ?>_show_label"><?php esc_html_e( 'Show label', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_show_label"><?php esc_html_e( 'Show label', OCS_DOMAIN ); ?></label>
 			</p>
 			<p class="<?php echo $field_sidebar_id; ?>_label" <?php echo ( ! $ocs[ $sidebar_id ]['show_label'] ) ? $hidden : ''; ?>>
-				<label for="<?php echo $field_sidebar_id; ?>_label"><?php esc_html_e( 'Label text', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_label"><?php esc_html_e( 'Label text', OCS_DOMAIN ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_label" name="<?php echo $field_sidebar_name . '[label]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['label']; ?>">
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_show_icon" name="<?php echo $field_sidebar_name . '[show_icon]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_icon'], 1 ); ?>>
-				<label for="<?php echo $field_sidebar_id; ?>_show_icon"><?php esc_html_e( 'Show icon', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_show_icon"><?php esc_html_e( 'Show icon', OCS_DOMAIN ); ?></label>
 			</p>
 			<p class="<?php echo $field_sidebar_id; ?>_icon" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
-				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', 'off-canvas-sidebars' ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', OCS_DOMAIN ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_icon" name="<?php echo $field_sidebar_name . '[icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
 			<p>
@@ -205,7 +205,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<label for="<?php echo $field_sidebar_id; ?>_button_class">
 				<?php
 					// Translators: %s stands for `button` wrapped in a <code> html tag.
-					echo sprintf( esc_html__( 'Add class: %s', 'off-canvas-sidebars' ), '<code>button</code>' );
+					echo sprintf( esc_html__( 'Add class: %s', OCS_DOMAIN ), '<code>button</code>' );
 				?>
 				</label>
 			</p>
@@ -218,7 +218,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		</div>
 
 		<p>
-			<label><?php esc_html_e( 'Preview', 'off-canvas-sidebars' ); ?>:</label>
+			<label><?php esc_html_e( 'Preview', OCS_DOMAIN ); ?>:</label>
 			<div id="<?php echo $this->id; ?>-preview" class="<?php echo $this->id_base; ?>-preview">
 				<?php $this->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance ); ?>
 			</div>

@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-final class OCS_Off_Canvas_Sidebars_Frontend
+final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
@@ -378,7 +378,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 		$args = array_merge( $defaults, $args );
 
 		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
-			return '<span class="error">' . __( 'This element is not supported for use as a button', 'off-canvas-sidebars' ) . '</span>';
+			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
 		}
 
 		$singleton = false;

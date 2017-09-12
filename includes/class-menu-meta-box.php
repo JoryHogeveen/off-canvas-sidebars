@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
+final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
@@ -67,7 +67,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	function add_meta_box() {
 		add_meta_box(
 			$this->plugin_key . '-meta-box',
-			esc_html__( 'Off-Canvas Control', 'off-canvas-sidebars' ),
+			esc_html__( 'Off-Canvas Control', OCS_DOMAIN ),
 			array( $this, 'meta_box' ),
 			'nav-menus',
 			'side',
@@ -135,9 +135,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array( 'jquery' ), $version );
 
 		$data['strings'] = array(
-			'show_icon'             => __( 'Show icon', 'off-canvas-sidebars' ),
-			'icon'                  => __( 'Icon classes', 'off-canvas-sidebars' ),
-			'menu_item_type'        => __( 'Off-Canvas Control', 'off-canvas-sidebars' ),
+			'show_icon'             => __( 'Show icon', OCS_DOMAIN ),
+			'icon'                  => __( 'Icon classes', OCS_DOMAIN ),
+			'menu_item_type'        => __( 'Off-Canvas Control', OCS_DOMAIN ),
 			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
 		);
 		$data['controls'] = array();
