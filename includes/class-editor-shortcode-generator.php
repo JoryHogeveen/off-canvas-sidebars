@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
+final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
@@ -64,7 +64,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
 ?>
 <button type="button" class="ocs-shortcode-generator button hidden" data-editor="<?php echo esc_attr( $editor_id ); ?>">
 	<span class="dashicons dashicons-editor-contract" style="vertical-align: text-top; margin: -1px 0 -1px -2px; color: #82878c;"></span>
-	<?php esc_html_e( 'Off-Canvas trigger', 'off-canvas-sidebars' ); ?>
+	<?php esc_html_e( 'Off-Canvas trigger', OCS_DOMAIN ); ?>
 </button>
 <?php
 
@@ -144,80 +144,80 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
 			'id' => array(
 				'type'    => 'listbox',
 				'name'    => 'id',
-				'label'   => __( 'Sidebar ID', 'off-canvas-sidebars' ),
+				'label'   => __( 'Sidebar ID', OCS_DOMAIN ),
 				'value'   => '',
 				'values'  => $sidebars,
-				'tooltip' => __( '(Required) The off-canvas sidebar ID', 'off-canvas-sidebars' ),
+				'tooltip' => __( '(Required) The off-canvas sidebar ID', OCS_DOMAIN ),
 			),
 			'text' => array(
 				'type'      => 'textbox',
 				'name'      => 'text',
-				'label'     => __( 'Text', 'off-canvas-sidebars' ),
+				'label'     => __( 'Text', OCS_DOMAIN ),
 				'value'     => '',
-				'tooltip'   => __( 'Limited HTML allowed', 'off-canvas-sidebars' ),
+				'tooltip'   => __( 'Limited HTML allowed', OCS_DOMAIN ),
 				'multiline' => true,
 			),
 			'optional_container' => array(
 				'type' => 'container',
-				'html' => '<b style="font-weight: 600 !important;">' . __( 'Optional options', 'off-canvas-sidebars' ) . ':</b>',
+				'html' => '<b style="font-weight: 600 !important;">' . __( 'Optional options', OCS_DOMAIN ) . ':</b>',
 			),
 			'action' => array(
 				'type'   => 'listbox',
 				'name'   => 'action',
-				'label'  => __( 'Trigger action', 'off-canvas-sidebars' ),
+				'label'  => __( 'Trigger action', OCS_DOMAIN ),
 				'value'  => '',
 				'values' => array(
 					array(
-						'text'  => __( 'Toggle', 'off-canvas-sidebars' ) . ' (' . __( 'Default', 'off-canvas-sidebars' ) . ')',
+						'text'  => __( 'Toggle', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
 						'value' => '',
 					),
 					array(
-						'text' => __( 'Open', 'off-canvas-sidebars' ),
+						'text' => __( 'Open', OCS_DOMAIN ),
 						'value' => 'open',
 					),
 					array(
-						'text' => __( 'Close', 'off-canvas-sidebars' ),
+						'text' => __( 'Close', OCS_DOMAIN ),
 						'value' => 'close',
 					),
 				),
-				//'tooltip' => __( 'The trigger action. Default: toggle', 'off-canvas-sidebars' ),
+				//'tooltip' => __( 'The trigger action. Default: toggle', OCS_DOMAIN ),
 			),
 			'element' => array(
 				'type'    => 'listbox',
 				'name'    => 'element',
-				'label'   => __( 'HTML element', 'off-canvas-sidebars' ),
+				'label'   => __( 'HTML element', OCS_DOMAIN ),
 				'value'   => '',
 				'values'  => $element_values,
-				'tooltip' => __( 'Choose wisely', 'off-canvas-sidebars' ),
+				'tooltip' => __( 'Choose wisely', OCS_DOMAIN ),
 			),
 			'class' => array(
 				'type'    => 'textbox',
 				'name'    => 'class',
-				'label'   => __( 'Extra classes', 'off-canvas-sidebars' ),
+				'label'   => __( 'Extra classes', OCS_DOMAIN ),
 				'value'   => '',
-				'tooltip' => __( 'Separate multiple classes with a space', 'off-canvas-sidebars' ),
+				'tooltip' => __( 'Separate multiple classes with a space', OCS_DOMAIN ),
 			),
 			'attr' => array(
 				'type'      => 'textbox',
 				'name'      => 'attr',
-				'label'     => __( 'Custom attributes', 'off-canvas-sidebars' ),
+				'label'     => __( 'Custom attributes', OCS_DOMAIN ),
 				'value'     => '',
-				'tooltip'   => __( 'key : value ; key : value', 'off-canvas-sidebars' ),
+				'tooltip'   => __( 'key : value ; key : value', OCS_DOMAIN ),
 				'multiline' => true,
 			),
 			'nested' => array(
 				'type'    => 'checkbox',
 				'name'    => 'nested',
-				'label'   => __( 'Nested shortcode', 'off-canvas-sidebars' ) . '?',
+				'label'   => __( 'Nested shortcode', OCS_DOMAIN ) . '?',
 				'value'   => '',
-				'tooltip' => __( '[ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]', 'off-canvas-sidebars' ),
+				'tooltip' => __( '[ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]', OCS_DOMAIN ),
 			),
 		);
 ?>
 <script type="text/javascript" id="ocs-mce-settings">
 	var ocsMceSettings = {
 		prefix: '<?php echo $this->settings['css_prefix']; ?>',
-		title: '<?php esc_html_e( 'Off-Canvas Sidebars - Trigger Control Shortcode', 'off-canvas-sidebars' ); ?>',
+		title: '<?php esc_html_e( 'Off-Canvas Sidebars - Trigger Control Shortcode', OCS_DOMAIN ); ?>',
 		fields: <?php echo wp_json_encode( $fields ); ?>,
 		elements: <?php echo wp_json_encode( $elements ); ?>,
 		render: <?php echo ( $this->settings['wp_editor_shortcode_rendering'] ) ? 'true' : 'false'; ?>
