@@ -41,7 +41,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
-		add_action( 'ocs_page_form_section_before', array( $this, 'ocs_page_form_section_before' ) );
+		add_action( 'ocs_page_form_section_table_before', array( $this, 'ocs_page_form_section_table_before' ) );
 		add_action( 'ocs_page_form_section_after', array( $this, 'ocs_page_form_section_after' ) );
 		add_filter( 'ocs_page_form_section_box_classes', array( $this, 'ocs_page_form_section_box_classes' ) );
 	}
@@ -63,7 +63,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * Before sections (in table).
 	 * @since   0.5
 	 */
-	public function ocs_page_form_section_before() {
+	public function ocs_page_form_section_table_before() {
 		$css_prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
 		echo '<tr class="sidebar_classes" style="display: none;"><th>' . esc_html__( 'ID & Classes', OCS_DOMAIN ) . '</th><td>';
 		echo  esc_html__( 'Sidebar ID', OCS_DOMAIN ) . ': <code>#' . $css_prefix . '-<span class="js-dynamic-id"></span></code> &nbsp; '

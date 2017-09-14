@@ -41,8 +41,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );
-		add_filter( 'ocs_page_form_settings_fields', '__return_false' );
-		add_filter( 'ocs_page_form_sections', '__return_false' );
+		add_filter( 'ocs_page_form_do_settings_fields', '__return_false' );
+		add_filter( 'ocs_page_form_do_sections', '__return_false' );
 		add_action( 'ocs_page_form', array( $this, 'tab_content' ) );
 	}
 

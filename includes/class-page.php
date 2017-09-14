@@ -190,10 +190,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				<div id="main-sortables" class="meta-box-sortables ui-sortable">
 
 				<?php
-				if ( apply_filters( 'ocs_page_form_settings_fields', true ) ) {
+				if ( apply_filters( 'ocs_page_form_do_settings_fields', true ) ) {
 					settings_fields( $this->tab );
 				}
-				if ( apply_filters( 'ocs_page_form_sections', true ) ) {
+				if ( apply_filters( 'ocs_page_form_do_sections', true ) ) {
 					$this->do_settings_sections( $this->tab );
 				}
 				do_action( 'ocs_page_form' );
@@ -284,26 +284,32 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'stuffbox postbox ' . $section['id'], $section, $page );
 
 			echo '<div id="' . $section['id'] . '" class="' . $box_classes . '">';
-			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">' . esc_html__( 'Toggle panel', OCS_DOMAIN ) . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
-			if ( $section['title'] )
-				echo "<h3 class=\"hndle\"><span>{$section['title']}</span></h3>\n";
+			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">'
+				 . esc_html__( 'Toggle panel', OCS_DOMAIN ) . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
 
-			if ( $section['callback'] )
+			if ( $section['title'] ) {
+				echo '<h3 class="hndle"><span>' . $section['title'] . '</span></h3>';
+			}
+
+			if ( $section['callback'] ) {
 				call_user_func( $section['callback'], $section );
+			}
 
-			if ( ! isset( $wp_settings_fields ) || ! isset( $wp_settings_fields[ $page ] ) || ! isset( $wp_settings_fields[ $page ][ $section['id'] ] ) )
-				continue;
-			echo '<div class="inside"><table class="form-table">';
+			echo '<div class="inside">';
 
-			do_action( 'ocs_page_form_section_before' );
+			do_action( 'ocs_page_form_section_before', $section, $page );
 
-			do_settings_fields( $page, $section['id'] );
-			echo '</table>';
+			if ( isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
+				echo '<table class="form-table">';
+				do_action( 'ocs_page_form_section_table_before', $section, $page );
+				do_settings_fields( $page, $section['id'] );
+				do_action( 'ocs_page_form_section_table_after', $section, $page );
+				echo '</table>';
+			}
 
-			do_action( 'ocs_page_form_section_after' );
+			do_action( 'ocs_page_form_section_after', $section, $page );
 
-			echo '</div>';
-			echo '</div>';
+			echo '</div></div>';
 		}
 	}
 
