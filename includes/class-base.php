@@ -15,6 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
 	/**
+	 * Get the plugin settings.
+	 *
+	 * @since   0.5
+	 * @param   string  $key
+	 * @return  mixed
+	 */
+	public function get_settings( $key ) {
+		return OCS_Off_Canvas_Sidebars_Settings::get_instance()->get_settings( $key );
+	}
+
+	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
 	 * @since   0.5

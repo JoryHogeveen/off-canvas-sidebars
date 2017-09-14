@@ -93,6 +93,51 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Get the plugin settings.
+	 *
+	 * @since   0.5
+	 * @param   string  $key
+	 * @return  array|null
+	 */
+	function get_settings( $key = null ) {
+		if ( $key ) {
+			return ( isset( $this->settings[ $key ] ) ) ? $this->settings[ $key ] : null;
+		}
+		return $this->settings;
+	}
+
+	/**
+	 * Returns the default settings.
+	 *
+	 * @since   0.2
+	 * @return  array
+	 */
+	function get_default_settings() {
+		return $this->default_settings;
+	}
+
+	/**
+	 * Returns the default sidebar_settings.
+	 *
+	 * @since   0.2
+	 * @return  array
+	 */
+	function get_default_sidebar_settings() {
+		return $this->default_sidebar_settings;
+	}
+
+	/**
+	 * Store the settings in the database.
+	 *
+	 * @since   0.5
+	 * @param   array  $settings
+	 */
+	public function update_settings( $settings ) {
+		$this->set_settings( $settings );
+		update_option( off_canvas_sidebars()->get_general_key(), $this->get_settings() );
+	}
+
+	/**
 	 * Merge database plugin settings with default settings.
 	 *
 	 * @since   0.1
@@ -133,38 +178,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 		return $settings;
-	}
-
-	/**
-	 * Get the plugin settings.
-	 * @param   string  $key
-	 * @return  array|null
-	 */
-	function get_settings( $key = null ) {
-		if ( $key ) {
-			return ( isset( $this->settings[ $key ] ) ) ? $this->settings[ $key ] : null;
-		}
-		return $this->settings;
-	}
-
-	/**
-	 * Returns the default settings.
-	 *
-	 * @since   0.2
-	 * @return  array
-	 */
-	function get_default_settings() {
-		return $this->default_settings;
-	}
-
-	/**
-	 * Returns the default sidebar_settings.
-	 *
-	 * @since   0.2
-	 * @return  array
-	 */
-	function get_default_sidebar_settings() {
-		return $this->default_sidebar_settings;
 	}
 
 	/**
