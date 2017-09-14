@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin front-end
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4
+ * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,11 +24,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	private $settings = array();
 
 	/**
+	 * Class constructor.
 	 * @since  0.3  private constructor
 	 * @access private
 	 */
 	private function __construct() {
-		$this->load_plugin_data();
+		$this->settings = off_canvas_sidebars()->get_settings();
 
 		if ( $this->settings['enable_frontend'] ) {
 			$this->default_actions();
@@ -41,14 +42,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 
 		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
-	}
-
-	/**
-	 * Get plugin defaults
-	 * @since   0.1
-	 */
-	private function load_plugin_data() {
-		$this->settings = off_canvas_sidebars()->get_settings();
 	}
 
 	/**
@@ -107,7 +100,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2.1  Add actions
 	 * @return  void
 	 */
-	function before_site() {
+	public function before_site() {
 
 		// Add content before the site container
 		do_action( 'ocs_container_before' );
@@ -139,7 +132,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2.1  Add actions
 	 * @return  void
 	 */
-	function after_site() {
+	public function after_site() {
 
 		// Add content after other content in the site container
 		do_action( 'ocs_container_inner_after' );
@@ -159,7 +152,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.1
 	 * @return  void
 	 */
-	function after_site_script() {
+	public function after_site_script() {
 		if ( ! is_admin() ) {
 			?>
 <script type="text/javascript">
@@ -178,7 +171,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  void
 	 * @access  public
 	 */
-	function do_sidebars() {
+	public function do_sidebars() {
 		if ( ! empty( $this->settings['sidebars'] ) ) {
 			foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 				$this->do_sidebar( $sidebar_id );
@@ -194,7 +187,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  void
 	 * @access  public
 	 */
-	function do_sidebar( $sidebar_id ) {
+	public function do_sidebar( $sidebar_id ) {
 		if ( ! empty( $this->settings['sidebars'][ $sidebar_id ] ) ) {
 
 			$sidebar_data = $this->settings['sidebars'][ $sidebar_id ];
@@ -297,7 +290,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   array   $data
 	 * @return  string
 	 */
-	function get_sidebar_attributes( $sidebar_id, $data ) {
+	public function get_sidebar_attributes( $sidebar_id, $data ) {
 		$prefix = $this->settings['css_prefix'];
 		$atts = array();
 
@@ -359,10 +352,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since  0.4
-	 * @param  string $sidebar_id
-	 * @param  array  $args  see API: the_ocs_control_trigger() for info
-	 * @return string
+	 * @since   0.4
+	 * @param   string  $sidebar_id
+	 * @param   array   $args  see API: the_ocs_control_trigger() for info
+	 * @return  string
 	 */
 	public function do_control_trigger( $sidebar_id, $args = array() ) {
 
@@ -452,7 +445,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2.2  Add FastClick library
 	 * @return  void
 	 */
-	function add_styles_scripts() {
+	public function add_styles_scripts() {
 		// @todo Validate and use minified files
 		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
@@ -497,7 +490,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.1
 	 * @return  void
 	 */
-	function add_inline_scripts() {
+	public function add_inline_scripts() {
 		if ( ! is_admin() ) {
 			?>
 <script type="text/javascript">
@@ -517,7 +510,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.1
 	 * @return  void
 	 */
-	function add_inline_styles() {
+	public function add_inline_styles() {
 		if ( ! is_admin() ) {
 			$prefix = $this->settings['css_prefix'];
 			?>
@@ -581,8 +574,7 @@ foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Frontend Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3

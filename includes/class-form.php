@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin form
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4
+ * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,6 +16,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	/**
 	 * Frontend type selection
 	 * @deprecated
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
 	 * @param array $args
 	 */
 	public static function frontend_type_option( $args ) {
@@ -34,6 +37,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Echo checkboxes to enable/disable sidebars outside the sidebars tab.
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
 	 */
 	public static function enabled_sidebars_option() {
 		$sidebars = off_canvas_sidebars()->get_sidebars();
@@ -61,7 +67,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * The sidebars location option.
-	 * @param array $args
+	 * @since   0.3
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function sidebar_location( $args ) {
 		if ( ! isset( $args['sidebar'] ) ) {
@@ -87,7 +96,11 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * The sidebars size option.
-	 * @param array $args
+	 * @since   0.1
+	 * @since   0.2  Renamed from sidebar_width()
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function sidebar_size( $args ) {
 		if ( ! isset( $args['sidebar'] ) ) {
@@ -134,7 +147,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * The sidebars style option.
-	 * @param array $args
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function sidebar_style( $args ) {
 		if ( ! isset( $args['sidebar'] ) ) {
@@ -160,7 +176,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * General input fields.
-	 * @param array $args
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function text_option( $args ) {
 		if ( ! isset( $args['name'] ) ) {
@@ -210,7 +229,11 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * @param array $args
+	 * Render checkbox option.
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function checkbox_option( $args ) {
 		if ( ! isset( $args['name'] ) ) {
@@ -250,7 +273,11 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * @param array $args
+	 * Render radio option.
+	 * @since   0.3
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function radio_option( $args ) {
 		if ( empty( $args['name'] ) || empty( $args['options'] ) ) {
@@ -305,7 +332,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * @param array $args
+	 * Render select option.
+	 * @since   0.4
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function select_option( $args ) {
 		if ( empty( $args['name'] ) || empty( $args['options'] ) ) {
@@ -356,7 +386,11 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * @param array $args
+	 * Render number option.
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function number_option( $args ) {
 		if ( ! isset( $args['name'] ) ) {
@@ -397,7 +431,11 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * @param array $args
+	 * Render color option.
+	 * @since   0.1
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   array  $args
 	 */
 	public static function color_option( $args ) {
 		if ( ! isset( $args['name'] ) ) {
@@ -434,10 +472,12 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * @since  0.4
-	 * @param  array   $args
-	 * @param  string  $elem
-	 * @return string
+	 * Render description.
+	 * @since   0.4
+	 * @static
+	 * @param   array   $args
+	 * @param   string  $elem
+	 * @return  string
 	 */
 	public static function do_description( $args, $elem = 'p' ) {
 		if ( isset( $args['description'] ) ) {
@@ -449,10 +489,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	/**
 	 * Returns attribute prefixes for general settings and sidebar settings.
 	 *
-	 * @since  0.1
-	 *
-	 * @param  array  $args      Arguments from the settings field.
-	 * @return array  $prefixes  Prefixes for name, value and id attributes.
+	 * @since   0.1
+	 * @static
+	 * @param   array  $args      Arguments from the settings field.
+	 * @return  array  $prefixes  Prefixes for name, value and id attributes.
 	 */
 	public static function get_option_prefixes( $args ) {
 		$settings = off_canvas_sidebars()->get_settings();
@@ -486,10 +526,12 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Combine classes prefixed with the field name.
-	 * @since  0.2
-	 * @param  $classes
-	 * @param  $append
-	 * @return string
+	 * @since   0.2
+	 * @since   0.4  Moved to this class.
+	 * @static
+	 * @param   $classes
+	 * @param   $append
+	 * @return  string
 	 */
 	public static function get_option_classes( $classes, $append ) {
 		if ( $append ) {
@@ -507,7 +549,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	 *
 	 * @since   0.4
 	 * @static
-	 *
 	 * @param   array  $attr  The current attributes.
 	 * @param   array  $new   The new attributes. Attribute names as key.
 	 * @return  array
@@ -535,7 +576,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	 *
 	 * @since   0.4
 	 * @static
-	 *
 	 * @param   array   $array  Array to parse. (attribute => value pairs)
 	 * @return  string
 	 */

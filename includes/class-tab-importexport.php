@@ -1,9 +1,10 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin tab general
+ * Off-Canvas Sidebars plugin tab import/export
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
+ * @since   0.5
  * @version 0.5
  */
 
@@ -22,10 +23,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	protected static $_instance = null;
 
 	/**
-	 * @since  0.1
-	 * @since  0.3  Private constructor.
-	 * @since  0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access private
+	 * @since   0.1
+	 * @since   0.3  Private constructor.
+	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  private
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-importexport';
@@ -47,8 +48,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Register settings.
-	 * @since  0.1
-	 * @since  0.5  Refactor into separate tab classes and methods
+	 * @since   0.1
+	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_settings() {
 		//parent::register_settings();
@@ -57,8 +58,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	}
 
 	/**
-	 * @since  0.5
-	 * @return string
+	 * @since   0.5
+	 * @return  string
 	 */
 	public function ocs_page_form_action() {
 		return 'themes.php?page=' . off_canvas_sidebars()->get_plugin_key() . '&tab=' . $this->tab;
@@ -66,7 +67,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Tab content.
-	 * @since  0.5
+	 * @since   0.5
 	 */
 	public function tab_content() {
 		$export_link = add_query_arg( 'action', 'export' );
@@ -90,7 +91,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Import/Export handler.
-	 * @since  0.1
+	 * @since   0.1
 	 */
 	public function maybe_importexport_settings() {
 		static $done;
@@ -197,8 +198,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Settings Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3

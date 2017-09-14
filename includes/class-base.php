@@ -2,7 +2,7 @@
 /**
  * Off-Canvas Sidebars plugin base class
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @since   0.5
  * @version 0.5

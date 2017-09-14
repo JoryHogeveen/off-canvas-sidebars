@@ -1,9 +1,10 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin tab general
+ * Off-Canvas Sidebars plugin tab sidebars
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
+ * @since   0.5
  * @version 0.5
  */
 
@@ -22,10 +23,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	protected static $_instance = null;
 
 	/**
-	 * @since  0.1
-	 * @since  0.3  Private constructor.
-	 * @since  0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access private
+	 * Class constructor.
+	 * @since   0.1
+	 * @since   0.3  Private constructor.
+	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  private
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-sidebars';
@@ -35,7 +37,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Initialize this tab.
-	 * @since  1.5
+	 * @since   0.5
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
@@ -46,7 +48,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Before form fields.
-	 * @since  1.5
+	 * @since   0.5
 	 */
 	public function ocs_page_form_before() {
 		?>
@@ -58,8 +60,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	}
 
 	/**
-	 * Before sections.
-	 * @since  1.5
+	 * Before sections (in table).
+	 * @since   0.5
 	 */
 	public function ocs_page_form_section_before() {
 		$css_prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
@@ -71,7 +73,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * After sections.
-	 * @since  1.5
+	 * @since   0.5
 	 */
 	public function ocs_page_form_section_after() {
 		submit_button( null, 'primary', 'submit', false );
@@ -79,7 +81,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Section postbox classes.
-	 * @since  1.5
+	 * @since   0.5
 	 */
 	public function ocs_page_form_section_box_classes( $classes ) {
 		$classes .= ' section-sidebar if-js-closed';
@@ -88,8 +90,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Register settings.
-	 * @since 0.1
-	 * @since 0.5 Refactor into separate tab classes and methods
+	 * @since   0.1
+	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_settings() {
 		parent::register_settings();
@@ -108,6 +110,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		do_action( 'off_canvas_sidebar_settings_sidebars' );
 	}
 
+	/**
+	 * Callback function to create sidebar sections.
+	 * @since   0.5
+	 * @param   array  $args  Callback params.
+	 */
 	public function section_callback( $args ) {
 		$sidebar_id = str_replace( 'section_sidebar_', '', $args['id'] );
 		$this->register_sidebar_settings( $sidebar_id );
@@ -119,8 +126,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @param string $sidebar_id
-	 * @since 0.1
+	 * @since   0.1
+	 * @param   string  $sidebar_id
 	 */
 	public function register_sidebar_settings( $sidebar_id ) {
 
@@ -345,8 +352,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Settings Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3

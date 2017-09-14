@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin shortcode generator
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4
+ * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,9 +25,8 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 
 	/**
 	 * This class gets called in the init hook.
-	 *
-	 * @since  0.4
-	 * @access private
+	 * @since   0.4
+	 * @access  private
 	 */
 	private function __construct() {
 		// Check user permissions.
@@ -37,7 +36,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 
 		if ( 'true' === get_user_option( 'rich_editing' ) ) {
 			//add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
-			$this->load_plugin_data();
+			$this->settings = off_canvas_sidebars()->get_settings();
 			add_action( 'media_buttons', array( $this, 'media_buttons' ), 20 );
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
 			add_filter( 'tiny_mce_before_init', array( $this, 'mce_inline_css' ) );
@@ -46,20 +45,12 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	}
 
 	/**
-	 * Get plugin defaults.
-	 * @since  0.4
-	 */
-	function load_plugin_data() {
-		$this->settings = off_canvas_sidebars()->get_settings();
-	}
-
-	/**
 	 * Show our own button.
 	 *
-	 * @since  0.4
-	 * @param  string  $editor_id  The Editor ID.
+	 * @since   0.4
+	 * @param   string  $editor_id  The Editor ID.
 	 */
-	function media_buttons( $editor_id ) {
+	public function media_buttons( $editor_id ) {
 		//dashicons-move dashicons-editor-code
 ?>
 <button type="button" class="ocs-shortcode-generator button hidden" data-editor="<?php echo esc_attr( $editor_id ); ?>">
@@ -73,11 +64,11 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Add our tinyMCE plugin to the list.
 	 *
-	 * @since  0.4
-	 * @param  array  $plugin_array
-	 * @return array
+	 * @since   0.4
+	 * @param   array  $plugin_array
+	 * @return  array
 	 */
-	function mce_external_plugins( $plugin_array ) {
+	public function mce_external_plugins( $plugin_array ) {
 		$plugin_array['off_canvas_sidebars'] = OCS_PLUGIN_URL . 'js/mce-plugin-shortcode.js';
 		return $plugin_array;
 	}
@@ -85,11 +76,11 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Add our tinyMCE styles.
 	 *
-	 * @since  0.4
-	 * @param  $init_array
-	 * @return array
+	 * @since   0.4
+	 * @param   $init_array
+	 * @return  array
 	 */
-	function mce_inline_css( $init_array ) {
+	public function mce_inline_css( $init_array ) {
 
 		$styles = '.mceItem.ocsTrigger { border: 1px dashed #0073aa; display: inline-block; } ';
 		$styles .= 'img.mceItem.ocsTrigger { padding: 5px; } ';
@@ -107,10 +98,10 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Print our scripts.
 	 *
-	 * @since  0.4
-	 * @see    `after_wp_tiny_mce` hook
+	 * @since   0.4
+	 * @see     `after_wp_tiny_mce` hook
 	 */
-	function print_scripts() {
+	public function print_scripts() {
 		static $done = false;
 		if ( $done ) {
 			return;
@@ -228,8 +219,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Shortcode Generator Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.4

@@ -1,9 +1,10 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin tab general
+ * Off-Canvas Sidebars plugin tab shortcode
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
+ * @since   0.5
  * @version 0.5
  */
 
@@ -22,10 +23,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	protected static $_instance = null;
 
 	/**
-	 * @since  0.1
-	 * @since  0.3  Private constructor.
-	 * @since  0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access private
+	 * Class constructor.
+	 * @since   0.1
+	 * @since   0.3  Private constructor.
+	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  private
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-shortcode';
@@ -35,7 +37,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 	/**
 	 * Initialize this tab.
-	 * @since  1.5
+	 * @since   1.5
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );
@@ -46,8 +48,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 	/**
 	 * Register settings.
-	 * @since  0.1
-	 * @since  0.5  Refactor into separate tab classes and methods
+	 * @since   0.1
+	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_settings() {
 		//parent::register_settings();
@@ -57,7 +59,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 	/**
 	 * Tab content.
-	 * @since  0.5
+	 * @since   0.5
 	 */
 	public function tab_content() {
 
@@ -204,8 +206,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Settings Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3

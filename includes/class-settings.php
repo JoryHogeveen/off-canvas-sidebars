@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin settings
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4
+ * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,7 +23,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * The plugin settings.
-	 * @var array
+	 *
+	 * @var    array
+	 * @since  0.1
 	 */
 	protected $settings = array();
 
@@ -80,9 +82,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	);
 
 	/**
-	 * @since  0.1
-	 * @since  0.3  Private constructor.
-	 * @access private
+	 * Class constructor.
+	 *
+	 * @since   0.1
+	 * @since   0.3  Private constructor.
+	 * @access  private
 	 */
 	private function __construct() {
 		$this->set_settings( (array) get_option( off_canvas_sidebars()->get_general_key(), array() ) );
@@ -92,6 +96,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Merge database plugin settings with default settings.
 	 *
 	 * @since   0.1
+	 * @since   0.5  Renamed from self::get_settings()
 	 * @param   array  $settings
 	 * @return  array
 	 */
@@ -164,9 +169,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Parses post values, checks all values with the current existing data.
-	 * @since  0.4
-	 * @param  array  $input
-	 * @return array  $output
+	 *
+	 * @since   0.4
+	 * @param   array  $input
+	 * @return  array  $output
 	 */
 	protected function parse_input( $input ) {
 		// First set current values.
@@ -217,10 +223,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Parses sidebar post values, checks all values with the current existing data.
-	 * @since  0.4
-	 * @param  array $input
-	 * @param  array $current
-	 * @return array
+	 *
+	 * @since   0.4
+	 * @param   array  $input
+	 * @param   array  $current
+	 * @return  array
 	 */
 	private function parse_sidebars_input( $input, $current ) {
 		if ( empty( $current['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
@@ -288,12 +295,13 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validates post values.
-	 * @since  0.1
-	 * @param  array  $input
-	 * @return array  $data
+	 *
+	 * @since   0.1
+	 * @param   array  $input
+	 * @return  array  $data
 	 */
 	public function validate_form( $input ) {
-		// Overwrite the old settings
+		// Overwrite the old settings.
 		$data = $this->parse_input( $input );
 
 		/**
@@ -357,10 +365,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validates checkbox boolean values, used by validate_input().
-	 * @since  0.4
-	 * @param  mixed   $value
-	 * @param  string  $key
-	 * @return bool
+	 *
+	 * @since   0.4
+	 * @param   mixed   $value
+	 * @param   string  $key
+	 * @return  bool
 	 */
 	public static function validate_numeric_boolean( $value, $key = '' ) {
 		if ( $key ) {
@@ -371,9 +380,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validates checkbox values, used by validate_input().
-	 * @since  0.1.2
-	 * @param  mixed  $value
-	 * @return int
+	 *
+	 * @since   0.1.2
+	 * @param   mixed  $value
+	 * @return  int
 	 */
 	public static function validate_checkbox( $value ) {
 		return ( ! empty( $value ) ) ? (int) strip_tags( $value ) : 0;
@@ -381,11 +391,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validates radio values against the possible options.
-	 * @since  0.4
-	 * @param  string  $value
-	 * @param  array   $options
-	 * @param  string  $default
-	 * @return int
+	 *
+	 * @since   0.4
+	 * @param   string  $value
+	 * @param   array   $options
+	 * @param   string  $default
+	 * @return  int
 	 */
 	public static function validate_radio( $value, $options, $default ) {
 		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? strip_tags( $value ) : $default;
@@ -393,10 +404,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validates id values, used by validate_input.
-	 * @since  0.2
-	 * @since  0.3  Convert to lowercase and convert spaces to dashes before preg_replace().
-	 * @param  string  $value
-	 * @return string
+	 *
+	 * @since   0.2
+	 * @since   0.3  Convert to lowercase and convert spaces to dashes before preg_replace().
+	 * @param   string  $value
+	 * @return  string
 	 */
 	public static function validate_id( $value ) {
 		return preg_replace( '/[^a-z0-9_-]+/i', '', str_replace( ' ', '-', strtolower( $value ) ) );
@@ -404,9 +416,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validates numeric values, used by validate_input().
-	 * @since  0.2.2
-	 * @param  mixed  $value
-	 * @return string
+	 *
+	 * @since   0.2.2
+	 * @param   mixed  $value
+	 * @return  string
 	 */
 	public static function validate_numeric( $value ) {
 		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
@@ -414,9 +427,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Remove whitespace.
-	 * @since  0.3
-	 * @param  mixed  $value
-	 * @return string
+	 *
+	 * @since   0.3
+	 * @param   mixed  $value
+	 * @return  string
 	 */
 	public static function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
@@ -425,9 +439,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Updates the existing widgets when a sidebar ID changes.
 	 *
-	 * @since  0.3
-	 * @param  string  $old_id
-	 * @param  string  $new_id
+	 * @since   0.3
+	 * @param   string  $old_id
+	 * @param   string  $new_id
 	 */
 	public function migrate_sidebars_widgets( $old_id, $new_id ) {
 		$old_id = 'off-canvas-' . $old_id;
@@ -443,8 +457,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Settings Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3

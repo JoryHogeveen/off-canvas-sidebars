@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars control widget
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.4
+ * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,8 +39,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$off_canvas_sidebars  = off_canvas_sidebars();
 		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		//$this->general_key  = $off_canvas_sidebars->get_general_key();
-		//$this->plugin_key   = $off_canvas_sidebars->get_plugin_key();
 	}
 
 	/**
@@ -70,7 +68,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				$prefix . '-toggle-' . $sidebar_id,
 			);
 			if ( $widget_data['button_class'] ) {
-				//$classes[] = $prefix . '-button';
 				$classes[] = 'button';
 			}
 

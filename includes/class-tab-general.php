@@ -2,8 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin tab general
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
+ * @since   0.5
  * @version 0.5
  */
 
@@ -22,10 +23,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	protected static $_instance = null;
 
 	/**
-	 * @since  0.1
-	 * @since  0.3  Private constructor.
-	 * @since  0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access private
+	 * @since   0.1
+	 * @since   0.3  Private constructor.
+	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  private
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-settings';
@@ -38,7 +39,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Initialize this tab.
-	 * @since  1.5
+	 * @since   1.5
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
@@ -46,7 +47,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Before form fields.
-	 * @since  1.5
+	 * @since   1.5
 	 */
 	public function ocs_page_form_before() {
 		echo '<p>';
@@ -62,8 +63,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Register settings.
-	 * @since 0.1
-	 * @since 0.5 Refactor into separate tab classes and methods
+	 * @since   0.1
+	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_settings() {
 		parent::register_settings();
@@ -93,8 +94,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	/**
 	 * General settings.
 	 *
-	 * @since 0.1
-	 * @since 0.5 Refactor into separate tab classes and methods
+	 * @since   0.1
+	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_general_settings() {
 
@@ -288,8 +289,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	/**
 	 * Admin settings.
 	 *
-	 * @since 0.1
-	 * @since 0.5 Refactor into separate tab classes and methods
+	 * @since   0.1
+	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_admin_settings() {
 
@@ -363,8 +364,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Settings Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3

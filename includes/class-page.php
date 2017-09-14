@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin page
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @since 0.5 Refactored from single settings class.
+ * @since   0.5 Refactored from single settings class.
  * @version 0.5
  */
 
@@ -32,9 +32,9 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	protected $tabs           = array();
 
 	/**
-	 * @since  0.1
-	 * @since  0.3  Private constructor.
-	 * @access private
+	 * @since   0.1
+	 * @since   0.3  Private constructor.
+	 * @access  private
 	 */
 	private function __construct() {
 		// @codingStandardsIgnoreStart
@@ -51,8 +51,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
-	 * Get plugin defaults.
-	 * @since  0.1
+	 * Get plugin data.
+	 * @since   0.1
 	 */
 	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
@@ -71,8 +71,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Enqueue our styles and scripts only when it's our page.
-	 * @since  0.1
-	 * @param  string  $hook
+	 * @since   0.1
+	 * @param   string  $hook
 	 */
 	public function enqueue_styles_scripts( $hook ) {
 		if ( 'appearance_page_' . $this->plugin_key !== $hook ) {
@@ -98,7 +98,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Create admin page under the appearance menu.
-	 * @since  0.1
+	 * @since   0.1
 	 */
 	public function add_admin_menus() {
 		add_theme_page(
@@ -112,7 +112,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Register the page tabs.
-	 * @since 0.5
+	 * @since   0.5
 	 */
 	private function register_tabs() {
 
@@ -126,12 +126,17 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		OCS_Off_Canvas_Sidebars_Tab_Shortcode::get_instance();
 		OCS_Off_Canvas_Sidebars_Tab_Importexport::get_instance();
 
+		/**
+		 * Register the tabs.
+		 * @param   array  $tabs  Tab instances.
+		 * @return  array  Array of tab instanced. Array key needs to be the tab ID.
+		 */
 		$this->tabs = apply_filters( 'ocs_page_register_tabs', $this->tabs );
 	}
 
 	/**
 	 * Get the current tab instance.
-	 * @return OCS_Off_Canvas_Sidebars_Tab
+	 * @return  OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_current_tab() {
 		return ( isset( $this->tabs[ $this->tab ] ) ) ? $this->tabs[ $this->tab ] : null;
@@ -139,7 +144,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Register our settings.
-	 * @since 0.1
+	 * @since   0.1
 	 */
 	public function register_settings() {
 
@@ -157,12 +162,11 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Plugin Options page rendering goes here, checks for active tab and replaces key with the related settings key.
 	 * Uses the plugin_options_tabs() method to render the tabs.
-	 *
-	 * @since  0.1
+	 * @since   0.1
 	 */
 	public function options_page() {
 		$do_submit = ( apply_filters( 'ocs_page_form_do_submit', true ) ) ? true : false;
-		?>
+	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Off-Canvas Sidebars', OCS_DOMAIN ); ?></h1>
 		<?php $this->plugin_options_tabs(); ?>
@@ -213,6 +217,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		//add_action( 'in_admin_footer', array( 'OCS_Lib', 'admin_footer' ) );
 	}
 
+	/**
+	 * Render the OCS sidebar.
+	 * @since   0.5
+	 */
 	protected function do_page_sidebar() {
 		?>
 	<div class="ocs-sidebar">
@@ -257,13 +265,13 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
 	 * Print out the settings fields for a particular settings section.
 	 *
-	 * @since  0.1
+	 * @since   0.1
 	 *
-	 * @global $wp_settings_sections  array of settings sections.
-	 * @global $wp_settings_fields    array of settings fields and their pages/sections.
+	 * @global  $wp_settings_sections  array of settings sections.
+	 * @global  $wp_settings_fields    array of settings fields and their pages/sections.
 	 *
-	 * @param  string  $page     Slug title of the admin page who's settings fields you want to show.
-	 * param  string  $section  Slug title of the settings section who's fields you want to show.
+	 * @param   string  $page     Slug title of the admin page who's settings fields you want to show.
+	 * param    string  $section  Slug title of the settings section who's fields you want to show.
 	 */
 	protected function do_settings_sections( $page ) {
 		global $wp_settings_sections, $wp_settings_fields;
@@ -302,20 +310,19 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Renders our tabs in the plugin options page, walks through the object's tabs array and prints them one by one.
 	 * Provides the heading for the options_page() method.
-	 * @since  0.1
+	 * @since   0.1
 	 */
-	function plugin_options_tabs() {
+	public function plugin_options_tabs() {
 		echo '<h1 class="nav-tab-wrapper">';
 		foreach ( $this->tabs as $tab_key => $tab ) {
-			$active = $this->tab === $tab_key ? 'nav-tab-active' : '';
-			echo '<a class="nav-tab ' . esc_attr( $active ) . '" href="?page=' . esc_attr( $this->plugin_key ) . '&amp;tab=' . esc_attr( $tab_key ) . '">' . esc_html( $tab->name ) . '</a>';
+			$active = $this->tab === $tab_key ? ' nav-tab-active' : '';
+			echo '<a class="nav-tab' . esc_attr( $active ) . '" href="?page=' . esc_attr( $this->plugin_key ) . '&amp;tab=' . esc_attr( $tab_key ) . '">' . esc_html( $tab->name ) . '</a>';
 		}
 		echo '</h1>';
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Settings Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
 	 * @since   0.3
