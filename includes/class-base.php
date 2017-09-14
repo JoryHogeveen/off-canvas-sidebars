@@ -1,5 +1,16 @@
 <?php
 /**
+ * Off-Canvas Sidebars - Class Base
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+/**
  * Off-Canvas Sidebars plugin base class
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
@@ -7,11 +18,6 @@
  * @since   0.5
  * @version 0.5
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die();
-}
-
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
 	/**

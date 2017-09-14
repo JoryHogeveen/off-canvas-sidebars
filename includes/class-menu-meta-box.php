@@ -1,18 +1,25 @@
 <?php
 /**
- * Off-Canvas Sidebars menu meta box
+ * Off-Canvas Sidebars - Class Menu_Meta_Box
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.5
- *
- * Credits to the Polylang plugin.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Off-Canvas Sidebars menu meta box
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @since   0.1
+ * @version 0.5
+ *
+ * Credits to the Polylang plugin.
+ */
 final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**

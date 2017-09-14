@@ -66,14 +66,14 @@ Though most themes can be *made* compatible with some modifications!
 
 = 2. Can I add as many sidebars as I like? =
 
-Yes you can, keep in mind that the more sidebars you add the heaver the load is on the server (PHP) and browser (JS).
+Yes you can, keep in mind that the more sidebars you add the heavier the load on the server (PHP) and browser (JS) will be.
 
 = 3. How do I change the CSS for the sidebars? =
 
 This plugin only provides the framework that handles the off-canvas part.
 There are some settings that slightly change the display but this is very limited.
 For more advanced customisations either:
-1. Edit your theme’s style.css file (usually located in `/wp-content/themes/YOURTHEME/`).
+1. Edit your theme style.css file (usually located in `/wp-content/themes/YOURTHEME/`).
 2. Use a plugin such as [Simple Custom CSS](https://wordpress.org/plugins/simple-custom-css/).
 
 == Screenshots ==

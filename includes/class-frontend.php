@@ -1,16 +1,23 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin front-end
+ * Off-Canvas Sidebars - Class Frontend
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Off-Canvas Sidebars plugin front-end
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @since   0.1
+ * @version 0.5
+ */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**

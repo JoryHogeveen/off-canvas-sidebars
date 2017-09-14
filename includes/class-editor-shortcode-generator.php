@@ -1,16 +1,23 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin shortcode generator
+ * Off-Canvas Sidebars - Class Editor_Shortcode_Generator
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Off-Canvas Sidebars plugin shortcode generator
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @since   0.4
+ * @version 0.5
+ */
 final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**

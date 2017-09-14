@@ -1,17 +1,23 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin main class
+ * Off-Canvas Sidebars - Class Init (Main class)
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @since   0.1
- * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Plugin initializer class.
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @since   0.1
+ * @version 0.5
+ */
 final class OCS_Off_Canvas_Sidebars
 {
 	/**

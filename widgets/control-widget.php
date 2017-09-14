@@ -1,16 +1,23 @@
 <?php
 /**
- * Off-Canvas Sidebars control widget
+ * Off-Canvas Sidebars - Class Control_Widget
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
- * @version 0.5
+ * @package off-canvas-sidebars
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Off-Canvas Sidebars control widget
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-slidebars
+ * @since   0.1
+ * @version 0.5
+ */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
 	private $settings = array();

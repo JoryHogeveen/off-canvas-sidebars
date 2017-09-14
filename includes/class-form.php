@@ -1,16 +1,23 @@
 <?php
 /**
- * Off-Canvas Sidebars plugin form
+ * Off-Canvas Sidebars - Class Form
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Off-Canvas Sidebars plugin form
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package off-canvas-sidebars
+ * @since   0.4
+ * @version 0.5
+ */
 abstract class OCS_Off_Canvas_Sidebars_Form
 {
 	/**
