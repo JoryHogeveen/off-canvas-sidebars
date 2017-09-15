@@ -81,7 +81,30 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
 	public function register_settings() {
-		register_setting( $this->tab, $this->key, array( $this, 'validate_form' ) );
+		// @todo Enhance this...
+		//register_setting( $this->tab, $this->key, array( $this, 'validate_form' ) );
+	}
+
+	/**
+	 * Check if this instance is the current page tab.
+	 * @since   0.5
+	 * @return  bool
+	 */
+	public function is_current_tab() {
+		$tab = $this->get_current_tab();
+		if ( $tab ) {
+			return ( $this->tab === $tab->tab );
+		}
+		return null;
+	}
+
+	/**
+	 * Get the current active tab.
+	 * @since   0.5
+	 * @return  OCS_Off_Canvas_Sidebars_Tab instance
+	 */
+	public function get_current_tab() {
+		return OCS_Off_Canvas_Sidebars_Page::get_instance()->get_current_tab();
 	}
 
 	/**

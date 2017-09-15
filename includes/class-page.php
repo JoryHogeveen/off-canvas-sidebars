@@ -154,6 +154,12 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function register_settings() {
 
+		$tab = $this->get_current_tab();
+		if ( $tab ) {
+			// @todo Enhance this...
+			register_setting( $this->request_tab, $this->general_key, array( $tab, 'validate_form' ) );
+		}
+
 		foreach ( $this->tabs as $tab_key => $tab ) {
 			$tab->register_settings();
 		}

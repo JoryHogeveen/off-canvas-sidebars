@@ -38,6 +38,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		$this->tab = 'ocs-importexport';
 		$this->name = esc_attr__( 'Import/Export', OCS_DOMAIN );
 		parent::__construct();
+		$this->maybe_importexport_settings();
 	}
 
 	/**
@@ -152,10 +153,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		if ( ! empty( $get['action'] ) && 'export' === $get['action'] ) {
 			header( "Content-Disposition: attachment; filename=" . $plugin_key . ".txt" );
 			header( 'Content-Type: text/plain; charset=utf-8' );
-			$general = $this->settings;
+			$settings = off_canvas_sidebars()->get_settings();
 
 			echo "[START=OCS SETTINGS]\n";
-			foreach ( $general as $id => $text )
+			foreach ( $settings as $id => $text )
 				echo "$id\t" . wp_json_encode( $text ) . "\n";
 			echo "[STOP=OCS SETTINGS]";
 			die();

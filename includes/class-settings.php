@@ -196,14 +196,14 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	protected function parse_input( $input ) {
 		// First set current values.
-		$current = $this->settings;
+		$current = $this->get_settings();
 
 		// Add new sidebar.
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
 			$new_sidebar_id = self::validate_id( $input['sidebars']['ocs_add_new'] );
 			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
 				$input['sidebars'][ $new_sidebar_id ] = array_merge(
-					off_canvas_sidebars()->get_default_sidebar_settings(),
+					$this->get_default_sidebar_settings(),
 					array(
 						'enable' => 1,
 						'label'  => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
@@ -223,7 +223,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		/**
 		 * Filter the form input data.
 		 * @since  0.5
-		 * @param  array  $input
+		 * @param  array  $input    New form input.
 		 * @return array
 		 */
 		$input = apply_filters( 'ocs_settings_parse_input', $input );
@@ -343,6 +343,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 			$sidebar = $data['sidebars'][ $sidebar_id ];
 
+			$sidebar = array_merge(
+				$this->get_default_sidebar_settings(),
+				$sidebar
+			);
+
 			// Make sure unchecked checkboxes are 0 on save.
 			$sidebar['enable']                    = self::validate_checkbox( $sidebar['enable'] );
 			$sidebar['overwrite_global_settings'] = self::validate_checkbox( $sidebar['overwrite_global_settings'] );
@@ -356,7 +361,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			$sidebar['animation_speed'] = self::validate_numeric( $sidebar['animation_speed'] );
 
 			// Validate radio options.
-			$sidebar['content'] = $this->validate_radio( $sidebar['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
+			$sidebar['content'] = self::validate_radio( $sidebar['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
 
 			$data['sidebars'][ $sidebar_id ] = $sidebar;
 
@@ -372,10 +377,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		} // End foreach().
 
 		// Validate global settings with defaults.
-		$data = off_canvas_sidebars()->validate_settings( $data, off_canvas_sidebars()->get_default_settings() );
+		$data = $this->validate_settings( $data, $this->get_default_settings() );
 		// Validate sidebar settings with defaults.
 		foreach ( $data['sidebars'] as $sidebar_id => $sidebar_settings ) {
-			$data['sidebars'][ $sidebar_id ] = off_canvas_sidebars()->validate_settings( $sidebar_settings, off_canvas_sidebars()->get_default_sidebar_settings() );
+			$data['sidebars'][ $sidebar_id ] = $this->validate_settings( $sidebar_settings, $this->get_default_sidebar_settings() );
 		}
 
 		unset( $data['ocs_tab'] );
@@ -402,7 +407,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Validates checkbox values, used by validate_input().
 	 *
 	 * @since   0.1.2
-	 * @param   mixed  $value
+	 * @param   mixed   $value
 	 * @return  int
 	 */
 	public static function validate_checkbox( $value ) {

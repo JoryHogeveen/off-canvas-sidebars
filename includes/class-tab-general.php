@@ -316,10 +316,14 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * @since   0.5
-	 * @param   array  $input
+	 * @param   array  $input  Form input.
 	 * @return  array
 	 */
 	public function ocs_settings_parse_input( $input ) {
+		if ( ! $this->is_current_tab() ) {
+			return $input;
+		}
+
 		$input['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'enable_frontend' );
 		$input['site_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'site_close' );
 		$input['hide_control_classes']          = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'hide_control_classes' );
@@ -335,6 +339,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @return  array
 	 */
 	public function ocs_settings_validate_input( $output ) {
+		if ( ! $this->is_current_tab() ) {
+			return $output;
+		}
 
 		// Make sure unchecked checkboxes are 0 on save.
 		$output['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['enable_frontend'] );
