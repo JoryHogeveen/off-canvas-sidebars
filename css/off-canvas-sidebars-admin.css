@@ -1,9 +1,10 @@
 /*!
  * Off-Canvas Sidebars plugin
  *
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4
+ * @since   0.2
+ * @version 0.5
  * @preserve
  */
 
@@ -37,6 +38,7 @@
 .off-canvas-sidebars-settings fieldset.radio label + .description { margin-bottom: .5em; display: inline-block; }
 
 .off-canvas-sidebars-settings input + select { vertical-align: top; }
+.off-canvas-sidebars-settings .form-table code { display: inline-block; }
 
 @media only screen and (min-width: 850px) {
 	.off-canvas-sidebars-settings {
