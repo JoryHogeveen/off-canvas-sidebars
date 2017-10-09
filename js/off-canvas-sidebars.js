@@ -3,7 +3,7 @@
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4
+ * @version 0.4.1
  * @global ocsOffCanvasSidebars
  * @preserve
  */
@@ -45,7 +45,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check = true;
-			var disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ) );
+			var disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ), 10 );
 			if ( disableOver && ! isNaN( disableOver ) ) {
 				if ( $window.width() > disableOver ) {
 		  			check = false;
@@ -185,7 +185,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
 					// Top slidebars
 					if ( $(this).hasClass( 'ocs-location-top' ) ) {
-						$(this).css( 'margin-top', parseInt( $(this).css('margin-top').replace( 'px', '' ) ) + bodyOffset.top + 'px' );
+						$(this).css( 'margin-top', parseInt( $(this).css('margin-top').replace( 'px', '' ), 10 ) + bodyOffset.top + 'px' );
 					}
 					// Left/Right slidebars
 					else if ( $(this).hasClass( 'ocs-location-left' ) || $(this).hasClass( 'ocs-location-right' ) ) {
@@ -214,7 +214,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					//if ( 'reveal' === slidebar.style ) {
 						//offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
 					//} else {
-						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', '') );
+						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
 					//}
 
 					//Compatibility with WP Admin Bar.
@@ -229,11 +229,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						// Set animation.
 						if ( 'opening' === e.type ) {
 							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
-							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) + offset + 'px' );
+							$this.css( 'top', parseInt( $this.css('top').replace('px', ''), 10 ) + offset + 'px' );
 						}
 						// Remove animation.
 						else if ( 'closing' === e.type ) {
-							$this.css( 'top', parseInt( $this.css('top').replace('px', '') ) - offset + 'px' );
+							$this.css( 'top', parseInt( $this.css('top').replace('px', ''), 10 ) - offset + 'px' );
 							setTimeout( function() {
 								ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
 							}, duration );
@@ -476,4 +476,4 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		ocsOffCanvasSidebars.init();
 	}
 
-} ) ( jQuery );
+} ( jQuery ) );
