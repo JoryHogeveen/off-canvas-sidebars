@@ -397,18 +397,18 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		} );*/
 
 		// Add close class to canvas container when Slidebar is opened.
-		$( controller.events ).on( 'opening', function () {
+		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
 			$( '[canvas]' ).addClass( prefix + '-close-any' );
-			$html.addClass( 'ocs-sidebar-active' );
+			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id  );
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 				$html.addClass( 'ocs-scroll-lock' );
 			}
 		} );
 
 		// Add close class to canvas container when Slidebar is opened.
-		$( controller.events ).on( 'closing', function () {
+		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock' );
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-sidebar-active-' + sidebar_id );
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
