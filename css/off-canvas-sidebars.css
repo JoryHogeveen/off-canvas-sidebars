@@ -22,6 +22,9 @@ html.ocs-initialized {
 	overflow-y: hidden;
 	height: auto;
 }
+html.ocs-scroll-lock {
+	overflow-y: hidden;
+}
 
 
 /*[canvas-fixed] {

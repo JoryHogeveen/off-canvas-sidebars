@@ -434,31 +434,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		disableOver();
 		$window.on( 'resize', disableOver );
 
-		// Disable scrolling outside of active sidebar.
-		$( '#' + prefix + '-site' ).on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
-			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock' ) && false != controller.getActiveSlidebar() ) {
-			if ( $html.hasClass( 'ocs-scroll-lock' ) ) {
-				e.preventDefault();
-				e.stopPropagation();
-				return false;
-			}
-		} );
-
-		// Disable scrolling site when scrolling inside active sidebar.
-		sidebarElements.on( 'scroll touchmove mousewheel DOMMouseScroll', function( e ) {
-			//if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
-			if ( $html.hasClass( 'ocs-scroll-lock' ) ) {
-				var $this = $(this);
-				if ( 0 > e.originalEvent.deltaY ) {
-					// scrolling up.
-					return ( 0 < $this.scrollTop() );
-				} else {
-					// scrolling down.
-					return ( $this.scrollTop() + $this.innerHeight() < $this[0].scrollHeight );
-				}
-			}
-		} );
-
 		/**
 		 * @fixme Fix for reveal and shift styles when page does not have enough height.
 		 * @since 0.4
