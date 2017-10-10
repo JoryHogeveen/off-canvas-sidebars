@@ -166,7 +166,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'site_close',
-				'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site. Default: true.', OCS_DOMAIN ),
+				'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 			)
 		);
 		add_settings_field(
@@ -177,7 +178,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'disable_over',
-				'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', OCS_DOMAIN ),
+				'label' => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
+				'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
 			)
 		);
@@ -189,7 +191,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'hide_control_classes',
-				'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>. Default: false.', OCS_DOMAIN ),
+				'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 			)
 		);
 		add_settings_field(
@@ -200,7 +203,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'scroll_lock',
-				'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open. Default: false.', OCS_DOMAIN ),
+				'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 			)
 		);
 		add_settings_field(
@@ -211,7 +215,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'background_color',
-				'description' => __( 'Choose a background color for the site container. Default: <code>#ffffff</code>.', OCS_DOMAIN ),
+				'description' => __( 'Choose a background color for the site container.', OCS_DOMAIN )
+				                 . '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#ffffff</code>.',
 			)
 		);
 		// Genesis already has before and after hooks set.
@@ -254,8 +259,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'use_fastclick',
-				'label' => __( 'Yes. Default: disabled', OCS_DOMAIN ),
-				'description' => __( 'Devices with touch capability often have a 300ms delay on click triggers. FastClick is a JavaScript library purposely built to elimate the delay where neccesary.', OCS_DOMAIN ),
+				'label' => __( 'Yes', OCS_DOMAIN ),
+				'description' => __( 'Devices with touch capability often have a 300ms delay on click triggers. FastClick is a JavaScript library purposely built to elimate the delay where neccesary.', OCS_DOMAIN )
+				                 . '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 			)
 		);
 
@@ -271,19 +277,19 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 				'options' => array(
 					'none' => array(
 						'name' => 'none',
-						'label' => __( 'No', OCS_DOMAIN ) . ' (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+						'label' => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
 						'value' => 'none',
 						'description' => __( 'This is the default Slidebars behaviour.', OCS_DOMAIN ),
 					),
 					'legacy-css' => array(
 						'name' => 'legacy-css',
-						'label' => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+						'label' => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
 						'value' => 'legacy-css',
 						'description' => __( 'This is your best option if your site uses sticky menus and/or other fixed elements within the site container.', OCS_DOMAIN ),
 					),
 					'custom-js' => array(
 						'name' => 'custom-js',
-						'label' => __( 'JavaScript solution', OCS_DOMAIN ) . ' (' . __( 'Experimental', OCS_DOMAIN ) . ')',
+						'label' => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
 						'value' => 'custom-js',
 						'description' => __( 'While still in development, this could fix compatibility issues with fixed elements.', OCS_DOMAIN ),
 					),

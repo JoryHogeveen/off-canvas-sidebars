@@ -84,7 +84,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 		echo '<div class="inside"><table class="form-table">';
 		echo '<tr><td>';
 
-		$sidebar_select = array();
+		$sidebar_select = array(
+			array(
+				'value' => '',
+				'label' => '-- ' . __( 'select', OCS_DOMAIN ) . ' --',
+			),
+		);
 		foreach ( (array) off_canvas_sidebars()->get_sidebars() as $sidebar_id => $sidebar_data ) {
 			$sidebar_select[] = array(
 				'value' => $sidebar_id,

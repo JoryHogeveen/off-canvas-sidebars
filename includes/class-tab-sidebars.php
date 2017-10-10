@@ -246,7 +246,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'sidebar' => $sidebar_id,
 				'name' => 'animation_speed',
 				'description' =>
-					__( 'Set the animation speed for showing and hiding this sidebar. Default: 300ms', OCS_DOMAIN ) . '<br>' .
+					__( 'Set the animation speed for showing and hiding this sidebar.', OCS_DOMAIN )
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>300ms</code>.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>ms</code>',
 			)
@@ -261,7 +262,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'sidebar' => $sidebar_id,
 				'name' => 'padding',
 				'description' =>
-					__( 'Add CSS padding (in pixels) to this sidebar. Default: none', OCS_DOMAIN ) . '<br>' .
+					__( 'Add CSS padding (in pixels) to this sidebar.', OCS_DOMAIN )
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'none', OCS_DOMAIN ) . '.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
 			)
@@ -276,7 +278,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'sidebar' => $sidebar_id,
 				'name' => 'background_color',
 				'description' =>
-					__( 'Choose a background color for this sidebar. Default: <code>#222222</code>.', OCS_DOMAIN ) . '<br>' .
+					__( 'Choose a background color for this sidebar.', OCS_DOMAIN )
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 			)
 		);
@@ -301,7 +304,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			array(
 				'sidebar' => $sidebar_id,
 				'name' => 'site_close',
-				'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site. Default: true.', OCS_DOMAIN ),
+				'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 			)
 		);
 		add_settings_field(
@@ -313,7 +317,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			array(
 				'sidebar' => $sidebar_id,
 				'name' => 'disable_over',
-				'description' => __( 'Disable off-canvas sidebars over specified screen width. Leave blank to disable.', OCS_DOMAIN ),
+				'label' => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
+				'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
 			)
 		);
@@ -326,7 +331,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			array(
 				'sidebar' => $sidebar_id,
 				'name' => 'hide_control_classes',
-				'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>. Default: false.', OCS_DOMAIN ),
+				'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 			)
 		);
 		add_settings_field(
@@ -338,7 +344,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			array(
 				'sidebar' => $sidebar_id,
 				'name' => 'scroll_lock',
-				'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open. Default: false.', OCS_DOMAIN ),
+				'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 			)
 		);
 
