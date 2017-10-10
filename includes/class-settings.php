@@ -224,9 +224,10 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		 * Filter the form input data.
 		 * @since  0.5
 		 * @param  array  $input    New form input.
+		 * @param  array  $current  Current settings.
 		 * @return array
 		 */
-		$input = apply_filters( 'ocs_settings_parse_input', $input );
+		$input = apply_filters( 'ocs_settings_parse_input', $input, $current );
 
 		// Handle existing sidebars.
 		$input = $this->parse_sidebars_input( $input, $current );
