@@ -108,6 +108,28 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Check if this instance is the current request handler tab.
+	 * @since   0.5
+	 * @return  bool
+	 */
+	public function is_request_tab() {
+		$tab = $this->get_request_tab();
+		if ( $tab ) {
+			return ( $this->tab === $tab->tab );
+		}
+		return null;
+	}
+
+	/**
+	 * Get the current request handler tab.
+	 * @since   0.5
+	 * @return  OCS_Off_Canvas_Sidebars_Tab instance
+	 */
+	public function get_request_tab() {
+		return OCS_Off_Canvas_Sidebars_Page::get_instance()->get_request_tab();
+	}
+
+	/**
 	 * Validate input.
 	 *
 	 * @since   0.5

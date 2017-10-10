@@ -320,7 +320,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @return  array
 	 */
 	public function ocs_settings_parse_input( $input ) {
-		if ( ! $this->is_current_tab() ) {
+		if ( ! $this->is_request_tab() ) {
 			return $input;
 		}
 
@@ -339,7 +339,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @return  array
 	 */
 	public function ocs_settings_validate_input( $output ) {
-		if ( ! $this->is_current_tab() ) {
+		if ( ! $this->is_request_tab() ) {
 			return $output;
 		}
 

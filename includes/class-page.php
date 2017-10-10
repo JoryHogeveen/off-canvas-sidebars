@@ -149,6 +149,14 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Get the tab instance for the form request handler.
+	 * @return  OCS_Off_Canvas_Sidebars_Tab
+	 */
+	public function get_request_tab() {
+		return ( isset( $this->tabs[ $this->request_tab ] ) ) ? $this->tabs[ $this->request_tab ] : null;
+	}
+
+	/**
 	 * Register our settings.
 	 * @since   0.1
 	 */
