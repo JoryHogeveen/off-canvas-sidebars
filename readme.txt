@@ -5,7 +5,7 @@ Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mob
 Requires at least: 4.1
 Tested up to: 4.8
 Requires PHP: 5.2.4
-Stable tag: 0.4
+Stable tag: 0.4.1
 
 Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -66,14 +66,14 @@ Though most themes can be *made* compatible with some modifications!
 
 = 2. Can I add as many sidebars as I like? =
 
-Yes you can, keep in mind that the more sidebars you add the heaver the load is on the server (PHP) and browser (JS).
+Yes you can, keep in mind that the more sidebars you add the heavier the load on the server (PHP) and browser (JS) will be.
 
 = 3. How do I change the CSS for the sidebars? =
 
 This plugin only provides the framework that handles the off-canvas part.
 There are some settings that slightly change the display but this is very limited.
 For more advanced customisations either:
-1. Edit your theme’s style.css file (usually located in `/wp-content/themes/YOURTHEME/`).
+1. Edit your theme style.css file (usually located in `/wp-content/themes/YOURTHEME/`).
 2. Use a plugin such as [Simple Custom CSS](https://wordpress.org/plugins/simple-custom-css/).
 
 == Screenshots ==
@@ -89,6 +89,13 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.4.1 =
+*	**Fix:** Loading the correct menu in an off-canvas sidebar was not working correctly. [#37](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/37)
+*	**Fix:** Scroll lock feature with CSS instead of JavaScript. [#39](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/39)
+*	**Enhancement:** Add active sidebar ID to the html element classes. [#41](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/41)
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/view-admin-as/pull/40)
 
 = 0.4 =
 *	**Feature:** `[ocs_trigger]` shortcode to display trigger buttons/elements anywhere you like, [click here for documentation](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes). [#24](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/24)
