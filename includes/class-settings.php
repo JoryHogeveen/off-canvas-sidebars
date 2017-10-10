@@ -254,8 +254,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			return $input;
 		}
 
-		unset( $input['sidebars']['ocs_update'] );
-
 		$current  = (array) $current['sidebars'];
 		$sidebars = (array) $input['sidebars'];
 

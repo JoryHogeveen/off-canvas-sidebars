@@ -62,7 +62,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 				//$classes = self::get_option_classes( $prefix_classes, 'enable' );
 				$html .= '<label><input type="checkbox" name="' . $prefix_name . '[' . $sidebar . '][enable]" id="' . $prefix_id . '_enable_' . $sidebar . '" value="1" ' . checked( $prefix_value[ $sidebar ]['enable'], 1, false ) . ' /> ' . $sidebars[ $sidebar ]['label'] . '</label>';
 			}
-			$html .= '<input type="hidden" name="' . $prefix_name . '[ocs_update]" value="1" />';
 			$html .= '</fieldset>';
 			echo $html;
 		} else {
