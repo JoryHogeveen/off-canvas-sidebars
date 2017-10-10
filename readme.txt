@@ -5,7 +5,7 @@ Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mob
 Requires at least: 4.1
 Tested up to: 4.8
 Requires PHP: 5.2.4
-Stable tag: 0.4
+Stable tag: 0.4.1
 
 Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -89,6 +89,13 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.4.1 =
+*	**Fix:** Loading the correct menu in an off-canvas sidebar was not working correctly. [#37](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/37)
+*	**Fix:** Scroll lock feature with CSS instead of JavaScript. [#39](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/39)
+*	**Enhancement:** Add active sidebar ID to the html element classes. [#41](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/41)
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/view-admin-as/pull/40)
 
 = 0.4 =
 *	**Feature:** `[ocs_trigger]` shortcode to display trigger buttons/elements anywhere you like, [click here for documentation](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes). [#24](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/24)
