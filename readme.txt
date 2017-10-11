@@ -95,7 +95,7 @@ For more advanced customisations either:
 *	**Fix:** Scroll lock feature with CSS instead of JavaScript. [#39](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/39)
 *	**Enhancement:** Add active sidebar ID to the html element classes. [#41](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/41)
 
-Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/view-admin-as/pull/40)
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/40)
 
 = 0.4 =
 *	**Feature:** `[ocs_trigger]` shortcode to display trigger buttons/elements anywhere you like, [click here for documentation](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes). [#24](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/24)
@@ -107,7 +107,7 @@ Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/view-admin-as/pull
 *	**UI:** Improve widget UI [#27](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/27)
 *	**Fix:** Enhance the codebase to be more aligned with the WP coding standards with CodeClimate.
 
-Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/view-admin-as/pull/25)
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/25)
 
 = 0.3.1.1 =
 *	**Fix:** Settings page checkbox bug when saving
