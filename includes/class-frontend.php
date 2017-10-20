@@ -484,7 +484,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend
 			'hide_control_classes' => (bool) $this->settings['hide_control_classes'],
 			'scroll_lock'          => (bool) $this->settings['scroll_lock'],
 			'legacy_css'           => (bool) ( 'legacy-css' === $this->settings['compatibility_position_fixed'] ),
-			'fixed_elements'       => $this->settings['fixed_elements'],
 			'css_prefix'           => $this->settings['css_prefix'],
 			'sidebars'             => $sidebars,
 			'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
