@@ -3,7 +3,7 @@
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4.1
+ * @version 0.4.2
  * @global ocsOffCanvasSidebars
  * @preserve
  */
@@ -402,13 +402,28 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id  );
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 				$html.addClass( 'ocs-scroll-lock' );
+				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
+					var scrollTop = $html.scrollTop();
+					$body.css({'top':'-'+scrollTop+'px'});
+					$html.addClass( 'ocs-scroll-fixed' );
+				}
 			}
 		} );
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-sidebar-active-' + sidebar_id );
+			var scrollTop = false;
+			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
+				scrollTop = true;
+			}
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
+			if ( scrollTop ) {
+				scrollTop = parseInt( $body.css('top').replace('px','').replace('-',''), 10 );
+				console.log( scrollTop );
+				$body.css({'top':''});
+				$html.scrollTop( scrollTop );
+			}
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
