@@ -404,7 +404,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				$html.addClass( 'ocs-scroll-lock' );
 				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
 					var scrollTop = $html.scrollTop();
-					$body.css({'top':'-'+scrollTop+'px'});
+					// Subtract current scroll top.
+					$body.css( { 'top': '-=' + scrollTop } );
+					$html.attr( 'ocs-scroll-fixed', scrollTop );
 					$html.addClass( 'ocs-scroll-fixed' );
 				}
 			}
@@ -419,9 +421,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
 			if ( scrollTop ) {
-				scrollTop = parseInt( $body.css('top').replace('px','').replace('-',''), 10 );
-				console.log( scrollTop );
-				$body.css({'top':''});
+				scrollTop = parseInt( $html.attr( 'ocs-scroll-fixed' ), 10 );
+				// Append stored scroll top.
+				$body.css( { 'top': '+=' + scrollTop } );
+				$html.removeAttr( 'ocs-scroll-fixed' );
 				$html.scrollTop( scrollTop );
 			}
 		} );
