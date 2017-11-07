@@ -426,6 +426,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				$body.css( { 'top': '+=' + scrollTop } );
 				$html.removeAttr( 'ocs-scroll-fixed' );
 				$html.scrollTop( scrollTop );
+				// Trigger slidebars css reset since position fixed changes the element heights.
+				$window.trigger( 'resize' );
 			}
 		} );
 
