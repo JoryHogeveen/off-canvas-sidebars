@@ -179,18 +179,28 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @since  0.4
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
-			$window.on('load resize', function() {
-				// Offset top = admin bar height
-				var bodyOffset = $body.offset();
-				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
-					// Top slidebars
-					if ( $(this).hasClass( 'ocs-location-top' ) ) {
-						$(this).css( 'margin-top', parseInt( $(this).css('margin-top').replace( 'px', '' ), 10 ) + bodyOffset.top + 'px' );
+			$window.on( 'load', function( e ) {
+				// Offset top = admin bar height.
+				var bodyOffset = $body.offset(),
+					$sidebars = $( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' );
+
+				$sidebars.each( function() {
+					var $this = $(this);
+					// Apply top offset on load. Not for bottom sidebars.
+					if ( ! $this.hasClass( 'ocs-location-bottom' ) ) {
+						$this.css( 'margin-top', '+=' + bodyOffset.top );
 					}
-					// Left/Right slidebars
-					else if ( $(this).hasClass( 'ocs-location-left' ) || $(this).hasClass( 'ocs-location-right' ) ) {
-						$(this).css( 'margin-top', bodyOffset.top + 'px' );
-					}
+				} );
+
+				// css event is triggers after resize.
+				$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'css', function() {
+					$sidebars.each( function() {
+						var $this = $(this);
+						// Apply top offset on css reset. Only for top sidebars.
+						if ( $this.hasClass( 'ocs-location-top' ) ) {
+							$this.css( 'margin-top', '+=' + bodyOffset.top );
+						}
+					} );
 				} );
 			} );
 		}
