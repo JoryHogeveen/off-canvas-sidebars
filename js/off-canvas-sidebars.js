@@ -377,8 +377,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		} );
 
-		// Close any.
-		$document.on( 'touchend click', '.' + prefix + '-close-any', function( e ) {
+		// Close all sidebars.
+		$document.on( 'touchend click', '.' + prefix + '-close--all', function( e ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -408,7 +408,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
-			$( '[canvas]' ).addClass( prefix + '-close-any' );
+			$( '[canvas]' ).addClass( prefix + '-close--all' );
 			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id  );
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 				$html.addClass( 'ocs-scroll-lock' );
@@ -424,7 +424,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
-			$( '[canvas]' ).removeClass( prefix + '-close-any' );
+			$( '[canvas]' ).removeClass( prefix + '-close--all' );
 			var scrollTop = false;
 			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
 				scrollTop = true;
