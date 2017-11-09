@@ -3,7 +3,7 @@
  *
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
- * @version 0.4.1
+ * @version 0.4.2
  * @global ocsOffCanvasSidebars
  * @preserve
  */
@@ -179,18 +179,28 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @since  0.4
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
-			$window.on('load resize', function() {
-				// Offset top = admin bar height
-				var bodyOffset = $body.offset();
-				$( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' ).each( function() {
-					// Top slidebars
-					if ( $(this).hasClass( 'ocs-location-top' ) ) {
-						$(this).css( 'margin-top', parseInt( $(this).css('margin-top').replace( 'px', '' ), 10 ) + bodyOffset.top + 'px' );
+			$window.on( 'load', function( e ) {
+				// Offset top = admin bar height.
+				var bodyOffset = $body.offset(),
+					$sidebars = $( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' );
+
+				$sidebars.each( function() {
+					var $this = $(this);
+					// Apply top offset on load. Not for bottom sidebars.
+					if ( ! $this.hasClass( 'ocs-location-bottom' ) ) {
+						$this.css( 'margin-top', '+=' + bodyOffset.top );
 					}
-					// Left/Right slidebars
-					else if ( $(this).hasClass( 'ocs-location-left' ) || $(this).hasClass( 'ocs-location-right' ) ) {
-						$(this).css( 'margin-top', bodyOffset.top + 'px' );
-					}
+				} );
+
+				// css event is triggers after resize.
+				$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'css', function() {
+					$sidebars.each( function() {
+						var $this = $(this);
+						// Apply top offset on css reset. Only for top sidebars.
+						if ( $this.hasClass( 'ocs-location-top' ) ) {
+							$this.css( 'margin-top', '+=' + bodyOffset.top );
+						}
+					} );
 				} );
 			} );
 		}
@@ -402,13 +412,33 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id  );
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
 				$html.addClass( 'ocs-scroll-lock' );
+				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
+					var scrollTop = $html.scrollTop();
+					// Subtract current scroll top.
+					$body.css( { 'top': '-=' + scrollTop } );
+					$html.attr( 'ocs-scroll-fixed', scrollTop );
+					$html.addClass( 'ocs-scroll-fixed' );
+				}
 			}
 		} );
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
 			$( '[canvas]' ).removeClass( prefix + '-close-any' );
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-sidebar-active-' + sidebar_id );
+			var scrollTop = false;
+			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
+				scrollTop = true;
+			}
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
+			if ( scrollTop ) {
+				scrollTop = parseInt( $html.attr( 'ocs-scroll-fixed' ), 10 );
+				// Append stored scroll top.
+				$body.css( { 'top': '+=' + scrollTop } );
+				$html.removeAttr( 'ocs-scroll-fixed' );
+				$html.scrollTop( scrollTop );
+				// Trigger slidebars css reset since position fixed changes the element heights.
+				$window.trigger( 'resize' );
+			}
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
