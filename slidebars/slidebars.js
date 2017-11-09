@@ -211,10 +211,20 @@ slidebars = function () {
 				// Calculate offset
 				var offset;
 
+				/**
+				 * Make sure that percentage based widths are rounded to actual pixels to prevent 1px differences on display.
+				 * 1. Reset inline style CSS.
+				 * 2. Get CSS value in pixels from stylesheets (rounded due to jQuery).
+				 * 3. Set inline CSS from the rounded value.
+				 */
 				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
+					offCanvas[ id ].element.css( 'height', '' );
 					offset = offCanvas[ id ].element.css( 'height' );
+					offCanvas[ id ].element.css( 'height', offset );
 				} else {
+					offCanvas[ id ].element.css( 'width', '' );
 					offset = offCanvas[ id ].element.css( 'width' );
+					offCanvas[ id ].element.css( 'width', offset );
 				}
 
 				// Apply negative margins
