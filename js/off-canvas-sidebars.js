@@ -179,7 +179,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @since  0.4
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
-			$window.on( 'load', function( e ) {
+			$window.on( 'load', function() {
 				// Offset top = admin bar height.
 				var bodyOffset = $body.offset(),
 					$sidebars = $( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' );
