@@ -435,4 +435,4 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 	ocsOffCanvasSidebarsSettings.init();
 
-} ) ( jQuery );
+} ( jQuery ) );
