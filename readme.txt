@@ -94,7 +94,7 @@ For more advanced customisations either:
 
 *	**Enhancement:** Keep scrollbar visible when scroll lock is active. [#44](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/44) & [PR #45](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/45) 
 *	**Enhancement:** (Slidebars library) Make sure that percentage based widths are rounded to actual pixels to prevent 1px differences on display.
-*	**Fix:** Fix PHP Notice on frontend.
+*	**Fix:** PHP Notice on `fixed_elements` key.
 *	**Compatibility:** Tested with WordPress 4.9
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/43)
