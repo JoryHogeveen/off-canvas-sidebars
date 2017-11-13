@@ -4,7 +4,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-sidebars
  * @since   0.2
- * @version 0.4.1
+ * @version 0.4.2
  * @preserve
  */
 
@@ -20,6 +20,13 @@ html.ocs-initialized {
 }
 html.ocs-scroll-lock {
 	overflow-y: hidden;
+}
+html.ocs-scroll-lock.ocs-scroll-fixed {
+	position: fixed;
+	overflow-y: scroll;
+}
+html.ocs-scroll-lock.ocs-scroll-fixed body {
+	position: relative;
 }
 [canvas=container],
 .ocs-initialized [canvas=container] {

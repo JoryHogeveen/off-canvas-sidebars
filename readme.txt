@@ -3,9 +3,9 @@ Contributors: keraweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 4.1
-Tested up to: 4.8
+Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 
 Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -90,7 +90,17 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.4.2 =
+
+*	**Enhancement:** Keep scrollbar visible when scroll lock is active. [#44](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/44) & [PR #45](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/45) 
+*	**Enhancement:** (Slidebars library) Make sure that percentage based widths are rounded to actual pixels to prevent 1px differences on display.
+*	**Fix:** PHP Notice on `fixed_elements` key.
+*	**Compatibility:** Tested with WordPress 4.9
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/43)
+
 = 0.4.1 =
+
 *	**Fix:** Loading the correct menu in an off-canvas sidebar was not working correctly. [#37](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/37)
 *	**Fix:** Scroll lock feature with CSS instead of JavaScript. [#39](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/39)
 *	**Enhancement:** Add active sidebar ID to the html element classes. [#41](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/41)
@@ -98,6 +108,7 @@ For more advanced customisations either:
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/40)
 
 = 0.4 =
+
 *	**Feature:** `[ocs_trigger]` shortcode to display trigger buttons/elements anywhere you like, [click here for documentation](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes). [#24](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/24)
 	*	Shortcode generator available in the settings page.
 	*	Integrate a shortcode generator with the WP Editor. [#32](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32)
@@ -110,9 +121,11 @@ Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebar
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/25)
 
 = 0.3.1.1 =
+
 *	**Fix:** Settings page checkbox bug when saving
 
 = 0.3.1 =
+
 *	**Feature:** Allow changing this plugin capability to show the settings page
 *	**Fix:** Update fixed element compat for the new Slidebars version (still experimental, Slidebars still doesn't fully support fixed elements within the site container)
 *	**Fix:** Don't echo empty sidebar CSS selectors if no styles are set
