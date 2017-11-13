@@ -13,9 +13,10 @@
  * @package off-canvas-slidebars
  * @author Jory Hogeveen <info@keraweb.nl>
  *
- * @version 0.4
- * @since 0.4  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
- * @global slidebars
+ * @since   0.4    Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @since   0.4.2  Parse slidebar widths/heights are rounded pixels (like jQuery does) to prevent 1px differences
+ * @version 0.4.2
+ * @global  slidebars
  * @preserve
  */
 
@@ -211,10 +212,20 @@ slidebars = function () {
 				// Calculate offset
 				var offset;
 
+				/**
+				 * Make sure that percentage based widths are rounded to actual pixels to prevent 1px differences on display.
+				 * 1. Reset inline style CSS.
+				 * 2. Get CSS value in pixels from stylesheets (rounded due to jQuery).
+				 * 3. Set inline CSS from the rounded value.
+				 */
 				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
+					offCanvas[ id ].element.css( 'height', '' );
 					offset = offCanvas[ id ].element.css( 'height' );
+					offCanvas[ id ].element.css( 'height', offset );
 				} else {
+					offCanvas[ id ].element.css( 'width', '' );
 					offset = offCanvas[ id ].element.css( 'width' );
+					offCanvas[ id ].element.css( 'width', offset );
 				}
 
 				// Apply negative margins
@@ -223,7 +234,7 @@ slidebars = function () {
 					do_offset = true;
 				} else if ( 'reveal' === offCanvas[ id ].style && ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) ) {
 					// temp disabled style condition to enable reveal location as well for top and bottom
-					// @todo, fix reveal support for top and bottom, current result is behaviour similar to push
+					// @todo, fix reveal support for top and bottom, current result is behaviour similar to push.
 					do_offset = true;
 				}
 				if ( do_offset ) {
@@ -237,7 +248,7 @@ slidebars = function () {
 						} else if ( 'left' === offCanvas[ id ].side || 'right' === offCanvas[ id ].side ) {
 							shiftPos = offCanvas[ id ].element.width() / 1.9;
 						}
-						// @todo, fix shift support for top and bottom
+						// @todo, fix shift support for top and bottom in legacy mode.
 						if ( 'left' === offCanvas[ id ].side || 'right' === offCanvas[ id ].side ) {
 							offCanvas[ id ].element.css( offCanvas[ id ].side, shiftPos + 'px' );
 						}

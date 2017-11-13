@@ -4,7 +4,7 @@
  * Compatibility for fixed elements with Slidebars.
  * @author Jory Hogeveen <info@keraweb.nl>
  * @package off-canvas-slidebars
- * @version 0.4
+ * @version 0.4.2
  * @global ocsOffCanvasSidebars
  * @preserve
  */
@@ -96,4 +96,4 @@
 
 	});
 
-} ) ( jQuery );
+} ( jQuery ) );

@@ -1,4 +1,4 @@
-# Off-Canvas Sidebars #
+# Off-Canvas Sidebars
 Add off-canvas sidebars using the Slidebars jQuery plugin.
 
 [![WordPress Plugin version](https://img.shields.io/wordpress/plugin/v/off-canvas-sidebars.svg?style=flat)](https://wordpress.org/plugins/off-canvas-sidebars/)
@@ -10,6 +10,8 @@ Add off-canvas sidebars using the Slidebars jQuery plugin.
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/JoryHogeveen/off-canvas-sidebars/blob/master/license.txt)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 [![Project Stats](https://www.openhub.net/p/off-canvas-sidebars/widgets/project_thin_badge.gif)](https://www.openhub.net/p/off-canvas-sidebars)
+
+![Off-Canvas Sidebars](https://raw.githubusercontent.com/JoryHogeveen/off-canvas-sidebars/master/.github/assets/banner-1544x500.jpg)  
 
 ## Description
 This plugin will add various options to implement off-canvas sidebars in your WordPress theme using the Slidebars jQuery plugin.
