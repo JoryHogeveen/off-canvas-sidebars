@@ -166,7 +166,19 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section_frontend',
 			array(
 				'name' => 'site_close',
-				'label' => __( 'Enables closing of a off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+				'label' => __( 'Enables closing of the off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
+			)
+		);
+		add_settings_field(
+			'link_close',
+			esc_attr__( 'Close sidebar when clicking on a link', OCS_DOMAIN ),
+			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
+			$this->tab,
+			'section_frontend',
+			array(
+				'name' => 'link_close',
+				'label' => __( 'Enables closing of the off-canvas sidebar by clicking on a link.', OCS_DOMAIN ),
 				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 			)
 		);
