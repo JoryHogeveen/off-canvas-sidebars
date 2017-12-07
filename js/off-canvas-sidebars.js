@@ -11,6 +11,7 @@
 if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	var ocsOffCanvasSidebars = {
 		site_close: true,
+		link_close: true,
 		disable_over: false,
 		hide_control_classes: false,
 		scroll_lock: false,
@@ -314,7 +315,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			sidebarElements = $( '.' + prefix + '-slidebar' );
 
 		sidebarElements.each( function() {
-			var id = $( this ).attr( 'ocs-sidebar-id' );
+			var $this = $( this );
+			var id = $this.attr( 'ocs-sidebar-id' );
 
 			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
 
@@ -386,10 +388,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
-		// Close the slidebar after clicking a link.
-		$( 'a' ).not( '.' + prefix + '-trigger' ).on( 'touchend click', function() {
-			if ( ! $(this).parents( '.' + prefix + '-trigger' ).length ) {
-				controller.close();
+		/**
+		 * Optionally close the slidebar when clicking a link.
+		 * @since  0.2
+		 * @since  0.5  Check setting.
+		 */
+		$( 'a' ).not( '.' + prefix + '-trigger' ).on( 'touchend click', function () {
+			if ( ocsOffCanvasSidebars._getSetting( 'link_close', false ) ) {
+				if ( ! $( this ).parents( '.' + prefix + '-trigger' ).length ) {
+					controller.close();
+				}
 			}
 		} );
 
