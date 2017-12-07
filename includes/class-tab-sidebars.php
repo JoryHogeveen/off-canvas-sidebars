@@ -39,6 +39,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		$this->tab = 'ocs-sidebars';
 		$this->name = esc_attr__( 'Sidebars', OCS_DOMAIN );
 		parent::__construct();
+
+		add_filter( 'ocs_settings_parse_input', array( $this, 'parse_input' ) );
+		add_filter( 'ocs_settings_validate_input', array( $this, 'validate_input' ), 11, 2 );
 	}
 
 	/**
@@ -375,6 +378,163 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			)
 		);
 
+	}
+
+	/**
+	 * Parses sidebar post values, checks all values with the current existing data.
+	 *
+	 * @todo Keep sidebar order when disable from general page.
+	 *
+	 * @since   0.4
+	 * @since   0.5  Moved to this class.
+	 * @param   array  $input
+	 * @param   array  $current
+	 * @return  array
+	 */
+	public function parse_input( $input, $current ) {
+		if ( empty( $current['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
+			return $input;
+		}
+
+		// Add new sidebar.
+		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
+			$new_sidebar_id = OCS_Off_Canvas_Sidebars_Settings::validate_id( $input['sidebars']['ocs_add_new'] );
+			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
+				$input['sidebars'][ $new_sidebar_id ] = array_merge(
+					off_canvas_sidebars_settings()->get_default_sidebar_settings(),
+					array(
+						'enable' => 1,
+						'label'  => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
+					)
+				);
+			} else {
+				add_settings_error(
+					$new_sidebar_id . '_duplicate_id',
+					esc_attr( 'ocs_duplicate_id' ),
+					// Translators: %s stands for a sidebar ID.
+					sprintf( __( 'The ID %s already exists! Sidebar not added.', OCS_DOMAIN ), '<code>' . $new_sidebar_id . '</code>' )
+				);
+			}
+		}
+		unset( $input['sidebars']['ocs_add_new'] );
+
+		$current  = (array) $current['sidebars'];
+		$sidebars = (array) $input['sidebars'];
+
+		foreach ( $current as $sidebar_id => $sidebar_data ) {
+
+			if ( ! isset( $sidebars[ $sidebar_id ] ) ) {
+				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
+				// Sidebars are set but this sidebar isn't checked as active.
+				$sidebars[ $sidebar_id ]['enable'] = 0;
+				continue;
+			}
+
+			// Global settings page.
+			if ( count( $sidebars[ $sidebar_id ] ) < 2 ) {
+				$current[ $sidebar_id ]['enable'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
+				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
+				continue;
+			}
+
+			// Default label is sidebar ID.
+			if ( empty( $sidebars[ $sidebar_id ]['label'] ) ) {
+				$sidebars[ $sidebar_id ]['label'] = $sidebar_id;
+			}
+
+			// Change sidebar ID.
+			if ( ! empty( $sidebars[ $sidebar_id ]['id'] ) && $sidebar_id !== $sidebars[ $sidebar_id ]['id'] ) {
+
+				$new_sidebar_id = OCS_Off_Canvas_Sidebars_Settings::validate_id( $sidebars[ $sidebar_id ]['id'] );
+
+				if ( $sidebar_id !== $new_sidebar_id ) {
+
+					if ( empty( $sidebars[ $new_sidebar_id ] ) ) {
+
+						$sidebars[ $new_sidebar_id ] = $sidebars[ $sidebar_id ];
+						$sidebars[ $new_sidebar_id ]['id'] = $new_sidebar_id;
+
+						unset( $sidebars[ $sidebar_id ] );
+
+						// Migrate existing widgets to the new sidebar.
+						OCS_Off_Canvas_Sidebars_Settings::migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
+
+					} else {
+						add_settings_error(
+							$sidebar_id . '_duplicate_id',
+							esc_attr( 'ocs_duplicate_id' ),
+							sprintf(
+								// Translators: %s stands for a sidebar ID.
+								__( 'The ID %s already exists! The ID is not changed.', OCS_DOMAIN ),
+								'<code>' . $new_sidebar_id . '</code>'
+							)
+						);
+					}
+				}
+			}
+		} // End foreach().
+
+		$input['sidebars'] = $sidebars;
+		return $input;
+	}
+
+	/**
+	 * @since   0.5
+	 * @param   array  $data
+	 * @param   array  $input
+	 * @return  array
+	 */
+	public function validate_input( $data, $input ) {
+		if ( ! $this->is_request_tab() ) {
+			return $data;
+		}
+
+		foreach ( $data['sidebars'] as $sidebar_id => $sidebar_data ) {
+
+			// Delete sidebar. Checks for original (non-parsed) input data.
+			if ( ! empty( $input['sidebars'][ $sidebar_id ]['delete'] ) ) {
+				unset( $input['sidebars'][ $sidebar_id ] );
+				unset( $data['sidebars'][ $sidebar_id ] );
+				continue;
+			}
+
+			$sidebar = $data['sidebars'][ $sidebar_id ];
+
+			$sidebar = array_merge(
+				off_canvas_sidebars_settings()->get_default_sidebar_settings(),
+				$sidebar
+			);
+
+			// Make sure unchecked checkboxes are 0 on save.
+			$sidebar['enable']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['enable'] );
+			$sidebar['overwrite_global_settings'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['overwrite_global_settings'] );
+			$sidebar['site_close']                = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['site_close'] );
+			$sidebar['link_close']                = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['link_close'] );
+			$sidebar['hide_control_classes']      = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['hide_control_classes'] );
+			$sidebar['scroll_lock']               = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['scroll_lock'] );
+
+			// Numeric values, not integers!
+			$sidebar['padding']         = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['padding'] );
+			$sidebar['disable_over']    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['disable_over'] );
+			$sidebar['animation_speed'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['animation_speed'] );
+
+			// Validate radio options.
+			$sidebar['content'] = OCS_Off_Canvas_Sidebars_Settings::validate_radio( $sidebar['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
+
+			$data['sidebars'][ $sidebar_id ] = $sidebar;
+
+			$new_sidebar_id = OCS_Off_Canvas_Sidebars_Settings::validate_id( $sidebar_id );
+			if ( $sidebar_id !== $new_sidebar_id ) {
+				$data['sidebars'][ $new_sidebar_id ] = $data['sidebars'][ $sidebar_id ];
+				$data['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
+
+				unset( $data['sidebars'][ $sidebar_id ] );
+
+				OCS_Off_Canvas_Sidebars_Settings::migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
+			}
+		} // End foreach().
+
+		return $data;
 	}
 
 	/**

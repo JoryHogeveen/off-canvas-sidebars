@@ -39,8 +39,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		$this->name = esc_attr__( 'Settings', OCS_DOMAIN );
 		parent::__construct();
 
-		add_filter( 'ocs_settings_parse_input', array( $this, 'ocs_settings_parse_input' ) );
-		add_filter( 'ocs_settings_validate_input', array( $this, 'ocs_settings_validate_form' ) );
+		add_filter( 'ocs_settings_parse_input', array( $this, 'parse_input' ) );
+		add_filter( 'ocs_settings_validate_input', array( $this, 'validate_input' ) );
 	}
 
 	/**
@@ -337,61 +337,64 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @param   array  $input  Form input.
 	 * @return  array
 	 */
-	public function ocs_settings_parse_input( $input ) {
+	public function parse_input( $input ) {
 		if ( ! $this->is_request_tab() ) {
 			return $input;
 		}
 
 		$input['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'enable_frontend' );
 		$input['site_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'site_close' );
+		$input['link_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'link_close' );
 		$input['hide_control_classes']          = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'hide_control_classes' );
 		$input['scroll_lock']                   = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'scroll_lock' );
 		$input['use_fastclick']                 = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'use_fastclick' );
 		$input['wp_editor_shortcode_rendering'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'wp_editor_shortcode_rendering' );
+
 		return $input;
 	}
 
 	/**
 	 * @since   0.5
-	 * @param   array  $output
+	 * @param   array  $data
 	 * @return  array
 	 */
-	public function ocs_settings_validate_input( $output ) {
+	public function validate_input( $data ) {
 		if ( ! $this->is_request_tab() ) {
-			return $output;
+			return $data;
 		}
 
 		// Make sure unchecked checkboxes are 0 on save.
-		$output['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['enable_frontend'] );
-		$output['site_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['site_close'] );
-		$output['hide_control_classes']          = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['hide_control_classes'] );
-		$output['scroll_lock']                   = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['scroll_lock'] );
-		$output['use_fastclick']                 = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['use_fastclick'] );
-		$output['wp_editor_shortcode_rendering'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $output['wp_editor_shortcode_rendering'] );
+		$data['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['enable_frontend'] );
+		$data['site_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['site_close'] );
+		$data['link_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['link_close'] );
+		$data['hide_control_classes']          = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['hide_control_classes'] );
+		$data['scroll_lock']                   = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['scroll_lock'] );
+		$data['use_fastclick']                 = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['use_fastclick'] );
+		$data['wp_editor_shortcode_rendering'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['wp_editor_shortcode_rendering'] );
 
 		// Numeric values, not integers!
-		$output['disable_over'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $output['disable_over'] );
+		$data['disable_over'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $data['disable_over'] );
 
 		// Remove whitespaces.
-		$output['website_before_hook'] = OCS_Off_Canvas_Sidebars_Settings::remove_whitespace( $output['website_before_hook'] );
-		$output['website_after_hook']  = OCS_Off_Canvas_Sidebars_Settings::remove_whitespace( $output['website_after_hook'] );
+		$data['website_before_hook'] = OCS_Off_Canvas_Sidebars_Settings::remove_whitespace( $data['website_before_hook'] );
+		$data['website_after_hook']  = OCS_Off_Canvas_Sidebars_Settings::remove_whitespace( $data['website_after_hook'] );
 
 		// Attribute validation.
-		$output['css_prefix'] = OCS_Off_Canvas_Sidebars_Settings::validate_id( $output['css_prefix'] );
+		$data['css_prefix'] = OCS_Off_Canvas_Sidebars_Settings::validate_id( $data['css_prefix'] );
 
 		// Validate radio options.
-		$output['compatibility_position_fixed'] = OCS_Off_Canvas_Sidebars_Settings::validate_radio(
-			$output['compatibility_position_fixed'],
+		$data['compatibility_position_fixed'] = OCS_Off_Canvas_Sidebars_Settings::validate_radio(
+			$data['compatibility_position_fixed'],
 			array( 'none', 'custom-js', 'legacy-css' ),
 			'none'
 		);
 
 		// Set default values if no value is set.
-		if ( empty( $output['css_prefix'] ) ) {
-			$output['css_prefix'] = 'ocs';
+		if ( empty( $data['css_prefix'] ) ) {
+			$data['css_prefix'] = 'ocs';
 		}
 
-		return $output;
+		return $data;
 	}
 
 	/**

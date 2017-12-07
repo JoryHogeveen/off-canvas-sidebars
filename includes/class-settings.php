@@ -152,7 +152,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.1
 	 * @since   0.5  Renamed from self::get_settings()
 	 * @param   array  $settings
-	 * @return  array
 	 */
 	function set_settings( $settings ) {
 
@@ -200,28 +199,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		// First set current values.
 		$current = $this->get_settings();
 
-		// Add new sidebar.
-		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
-			$new_sidebar_id = self::validate_id( $input['sidebars']['ocs_add_new'] );
-			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
-				$input['sidebars'][ $new_sidebar_id ] = array_merge(
-					$this->get_default_sidebar_settings(),
-					array(
-						'enable' => 1,
-						'label'  => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
-					)
-				);
-			} else {
-				add_settings_error(
-					$new_sidebar_id . '_duplicate_id',
-					esc_attr( 'ocs_duplicate_id' ),
-					// Translators: %s stands for a sidebar ID.
-					sprintf( __( 'The ID %s already exists! Sidebar not added.', OCS_DOMAIN ), '<code>' . $new_sidebar_id . '</code>' )
-				);
-			}
-		}
-		unset( $input['sidebars']['ocs_add_new'] );
-
 		/**
 		 * Filter the form input data.
 		 * @since  0.5
@@ -231,9 +208,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		 */
 		$input = apply_filters( 'ocs_settings_parse_input', $input, $current );
 
-		// Handle existing sidebars.
-		$input = $this->parse_sidebars_input( $input, $current );
-
 		// Overwrite non existing values with current values.
 		foreach ( $current as $key => $value ) {
 			if ( ! isset( $input[ $key ] ) ) {
@@ -241,76 +215,6 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 
-		return $input;
-	}
-
-	/**
-	 * Parses sidebar post values, checks all values with the current existing data.
-	 *
-	 * @since   0.4
-	 * @param   array  $input
-	 * @param   array  $current
-	 * @return  array
-	 */
-	private function parse_sidebars_input( $input, $current ) {
-		if ( empty( $current['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
-			return $input;
-		}
-
-		$current  = (array) $current['sidebars'];
-		$sidebars = (array) $input['sidebars'];
-
-		foreach ( $current as $sidebar_id => $sidebar_data ) {
-
-			if ( ! isset( $sidebars[ $sidebar_id ] ) ) {
-				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
-				// Sidebars are set but this sidebar isn't checked as active.
-				$sidebars[ $sidebar_id ]['enable'] = 0;
-				continue;
-			}
-
-			// Global settings page.
-			if ( count( $sidebars[ $sidebar_id ] ) < 2 ) {
-				$current[ $sidebar_id ]['enable'] = self::validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
-				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
-				continue;
-			}
-
-			// Default label is sidebar ID.
-			if ( empty( $sidebars[ $sidebar_id ]['label'] ) ) {
-				$sidebars[ $sidebar_id ]['label'] = $sidebar_id;
-			}
-
-			// Change sidebar ID.
-			if ( ! empty( $sidebars[ $sidebar_id ]['id'] ) && $sidebar_id !== $sidebars[ $sidebar_id ]['id'] ) {
-
-				$new_sidebar_id = self::validate_id( $sidebars[ $sidebar_id ]['id'] );
-
-				if ( $sidebar_id !== $new_sidebar_id ) {
-
-					if ( empty( $sidebars[ $new_sidebar_id ] ) ) {
-
-						$sidebars[ $new_sidebar_id ] = $sidebars[ $sidebar_id ];
-						$sidebars[ $new_sidebar_id ]['id'] = $new_sidebar_id;
-
-						unset( $sidebars[ $sidebar_id ] );
-
-						// Migrate existing widgets to the new sidebar.
-						$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
-
-					} else {
-						add_settings_error(
-							$sidebar_id . '_duplicate_id',
-							esc_attr( 'ocs_duplicate_id' ),
-							// Translators: %s stands for a sidebar ID.
-							sprintf( __( 'The ID %s already exists! The ID is not changed.', OCS_DOMAIN ), '<code>' . $new_sidebar_id . '</code>' )
-						);
-					}
-				}
-			}
-		} // End foreach().
-
-		$input['sidebars'] = $sidebars;
 		return $input;
 	}
 
@@ -328,54 +232,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		/**
 		 * Filter the parsed form data.
 		 * @since  0.5
-		 * @param  array  $data
+		 * @param  array  $data   Parsed input data.
+		 * @param  array  $input  Original input.
 		 * @return array
 		 */
-		$data = apply_filters( 'ocs_settings_validate_form', $data );
-
-		foreach ( $data['sidebars'] as $sidebar_id => $sidebar_data ) {
-
-			// Delete sidebar. Checks for original (non-parsed) input data.
-			if ( ! empty( $input['sidebars'][ $sidebar_id ]['delete'] ) ) {
-				unset( $input['sidebars'][ $sidebar_id ] );
-				unset( $data['sidebars'][ $sidebar_id ] );
-				continue;
-			}
-
-			$sidebar = $data['sidebars'][ $sidebar_id ];
-
-			$sidebar = array_merge(
-				$this->get_default_sidebar_settings(),
-				$sidebar
-			);
-
-			// Make sure unchecked checkboxes are 0 on save.
-			$sidebar['enable']                    = self::validate_checkbox( $sidebar['enable'] );
-			$sidebar['overwrite_global_settings'] = self::validate_checkbox( $sidebar['overwrite_global_settings'] );
-			$sidebar['site_close']                = self::validate_checkbox( $sidebar['site_close'] );
-			$sidebar['hide_control_classes']      = self::validate_checkbox( $sidebar['hide_control_classes'] );
-			$sidebar['scroll_lock']               = self::validate_checkbox( $sidebar['scroll_lock'] );
-
-			// Numeric values, not integers!
-			$sidebar['padding']         = self::validate_numeric( $sidebar['padding'] );
-			$sidebar['disable_over']    = self::validate_numeric( $sidebar['disable_over'] );
-			$sidebar['animation_speed'] = self::validate_numeric( $sidebar['animation_speed'] );
-
-			// Validate radio options.
-			$sidebar['content'] = self::validate_radio( $sidebar['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
-
-			$data['sidebars'][ $sidebar_id ] = $sidebar;
-
-			$new_sidebar_id = self::validate_id( $sidebar_id );
-			if ( $sidebar_id !== $new_sidebar_id ) {
-				$data['sidebars'][ $new_sidebar_id ] = $data['sidebars'][ $sidebar_id ];
-				$data['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
-
-				unset( $data['sidebars'][ $sidebar_id ] );
-
-				$this->migrate_sidebars_widgets( $sidebar_id, $new_sidebar_id );
-			}
-		} // End foreach().
+		$data = apply_filters( 'ocs_settings_validate_form', $data, $input );
 
 		// Validate global settings with defaults.
 		$data = $this->validate_settings( $data, $this->get_default_settings() );
@@ -469,7 +330,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $old_id
 	 * @param   string  $new_id
 	 */
-	public function migrate_sidebars_widgets( $old_id, $new_id ) {
+	public static function migrate_sidebars_widgets( $old_id, $new_id ) {
 		$old_id = 'off-canvas-' . $old_id;
 		$new_id = 'off-canvas-' . $new_id;
 		$sidebars_widgets = wp_get_sidebars_widgets();
