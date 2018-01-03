@@ -343,13 +343,20 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			return $input;
 		}
 
-		$input['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'enable_frontend' );
-		$input['site_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'site_close' );
-		$input['link_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'link_close' );
-		$input['hide_control_classes']          = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'hide_control_classes' );
-		$input['scroll_lock']                   = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'scroll_lock' );
-		$input['use_fastclick']                 = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'use_fastclick' );
-		$input['wp_editor_shortcode_rendering'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, 'wp_editor_shortcode_rendering' );
+		$checkbox_keys = array(
+			'enable_frontend',
+			'site_close',
+			'link_close',
+			'hide_control_classes',
+			'scroll_lock',
+			'use_fastclick',
+			'wp_editor_shortcode_rendering',
+		);
+
+		// Check checkboxes or they will be overwritten with the current settings.
+		foreach ( $checkbox_keys as $key ) {
+			$input[ $key ] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, $key );
+		}
 
 		return $input;
 	}
@@ -364,14 +371,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			return $data;
 		}
 
-		// Make sure unchecked checkboxes are 0 on save.
-		$data['enable_frontend']               = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['enable_frontend'] );
-		$data['site_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['site_close'] );
-		$data['link_close']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['link_close'] );
-		$data['hide_control_classes']          = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['hide_control_classes'] );
-		$data['scroll_lock']                   = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['scroll_lock'] );
-		$data['use_fastclick']                 = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['use_fastclick'] );
-		$data['wp_editor_shortcode_rendering'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $data['wp_editor_shortcode_rendering'] );
+		// Checkboxes already done in parse_input().
 
 		// Numeric values, not integers!
 		$data['disable_over'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $data['disable_over'] );
