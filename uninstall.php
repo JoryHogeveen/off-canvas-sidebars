@@ -3,8 +3,8 @@
  * Off-Canvas Sidebars plugin uninstall
  *
  * Uninstall
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
  * @version 0.4
  * @todo Uninstall for multi-networks aswell
  */

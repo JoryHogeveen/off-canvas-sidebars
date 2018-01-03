@@ -3,7 +3,7 @@
  * Off-Canvas Sidebars - Class Settings
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Off-Canvas Sidebars plugin settings
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  * @since   0.1
  * @version 0.5
  */

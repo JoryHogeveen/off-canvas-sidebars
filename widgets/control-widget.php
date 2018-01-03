@@ -3,7 +3,7 @@
  * Off-Canvas Sidebars - Class Control_Widget
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,10 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Off-Canvas Sidebars control widget
+ * Off-Canvas Sidebars control widget.
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
+ * @package Off_Canvas_Sidebars
  * @since   0.1
  * @version 0.5
  */
@@ -25,7 +25,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	private $widget_setting = 'off-canvas-controls';
 
 	/**
-	 * Sets up the widgets name etc
+	 * Sets up the widgets name etc.
 	 */
 	public function __construct() {
 		parent::__construct(
@@ -326,14 +326,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	}
 
 	/**
-	 * Processing widget options on save
+	 * Processing widget options on save.
 	 *
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @param  array $new_instance The new options
-	 * @param  array $old_instance The old options
+	 * @param  array  $new_instance  The new options.
+	 * @param  array  $old_instance  The old options.
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
@@ -379,7 +379,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	}
 
 	/**
-	 * Merge instance with defaults
+	 * Merge instance with defaults.
 	 *
 	 * @param   array  $settings
 	 * @return  array  $settings
@@ -423,7 +423,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	/**
 	 * Sanitize values.
 	 *
-	 * @param mixed $val The value
+	 * @param  mixed  $val  The value.
 	 * @return mixed
 	 */
 	public function sanitize_value( $val ) {

@@ -2,10 +2,10 @@
  * Off-Canvas Sidebars menu meta box scripts
  *
  * Menu Meta Box scripts
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
  * @version 0.4
- * @global ocsNavControl
+ * @global  ocsNavControl
  * @preserve
  *
  * Credits to the Polylang plugin for inspiration

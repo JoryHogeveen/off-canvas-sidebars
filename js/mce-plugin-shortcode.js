@@ -1,14 +1,16 @@
+/* eslint-disable no-extra-semi */
 ;/**
  * Off-Canvas Sidebars tinymce shortcode UI
  *
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
  * @version 0.4
- * @global ocsMceSettings
+ * @global  ocsMceSettings
  * @preserve
  *
  * https://generatewp.com/take-shortcodes-ultimate-level/
  */
+/* eslint-enable no-extra-semi */
 
 ( function( tinymce, $ ) {
 
@@ -432,7 +434,7 @@
 		/**
 		 * Convert attribute string to attribute object.
 		 * @param  {string|object} el The element.
-		 * @return {Object}
+		 * @return {Object}  Attributes.
 		 */
 		function parseHTMLToData( el ) {
 			var attr = window.decodeURIComponent( $( el ).attr( 'data-ocs-attr' ) );
@@ -523,8 +525,9 @@
 
 		/**
 		 * Remove OCS classes & attributes.
-		 * @param {string|object}  el     The element.
-		 * @param {object}         editor The editor.
+		 * @param  {string|object}  el     The element.
+		 * @param  {object}         editor The editor.
+		 * @return {void}
 		 */
 		function removeTriggerData( el, editor ) {
 			var $el = $( el );

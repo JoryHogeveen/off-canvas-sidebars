@@ -3,7 +3,7 @@
  * Off-Canvas Sidebars - Class Init (Main class)
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin initializer class.
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  * @since   0.1
  * @version 0.5
  */

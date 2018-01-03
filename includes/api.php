@@ -3,7 +3,7 @@
  * Off-Canvas Sidebars plugin API
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  * @version 0.4
  */
 
@@ -42,16 +42,16 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * @since  0.4
  * @param  array   $atts {
  *     Required array of arguments
- *     @type  string        id       (Required) The off-canvas sidebar ID.
- *     @type  string        text     The text to show. Default: ''.
- *     @type  string        action   The trigger action. Default: `toggle`.
- *     @type  string        element  The HTML element. Default: `button`.
- *     @type  array|string  class    Add extra classes? Also accepts a string with classes separated with a space.
- *     @type  array         attr  {
+ *     @type  string        $id       (Required) The off-canvas sidebar ID.
+ *     @type  string        $text     The text to show. Default: ''.
+ *     @type  string        $action   The trigger action. Default: `toggle`.
+ *     @type  string        $element  The HTML element. Default: `button`.
+ *     @type  array|string  $class    Add extra classes? Also accepts a string with classes separated with a space.
+ *     @type  array         $attr  {
  *          Other attributes to add. Format: attribute name (array key) => attribute value
  *     }
  * }
- * @param  string  $content  (Optional) HTML/text string.
+ * @param  string  $content  (optional) HTML/text string.
  * @return string
  */
 function the_ocs_control_trigger( $atts, $content = '' ) {

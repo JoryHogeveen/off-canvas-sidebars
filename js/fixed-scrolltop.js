@@ -1,13 +1,17 @@
+/* eslint-disable no-extra-semi */
 ;/**
  * Off-Canvas Sidebars plugin fixed-scrolltop.js
  *
  * Compatibility for fixed elements with Slidebars.
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-slidebars
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @since   0.1.2
  * @version 0.4.2
- * @global ocsOffCanvasSidebars
+ * @global  ocsOffCanvasSidebars
  * @preserve
  */
+/* eslint-enable no-extra-semi */
+
 ( function( $ ) {
 
 	var $window = $(window);

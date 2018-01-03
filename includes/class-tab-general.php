@@ -3,7 +3,7 @@
  * Off-Canvas Sidebars - Class Tab_General
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Off-Canvas Sidebars plugin tab general
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
+ * @package Off_Canvas_Sidebars
  * @since   0.5
  * @version 0.5
  */
@@ -333,6 +333,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	}
 
 	/**
+	 * Parses general post values, checks all values with the current existing data.
 	 * @since   0.5
 	 * @param   array  $input  Form input.
 	 * @return  array

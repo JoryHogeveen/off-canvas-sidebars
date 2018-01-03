@@ -1,12 +1,15 @@
+/* eslint-disable no-extra-semi */
 ;/**
  * Off-Canvas Sidebars plugin settings
  *
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
- * @version 0.4.2
- * @global ocsOffCanvasSidebarsSettings
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @since   0.1
+ * @version 0.5
+ * @global  ocsOffCanvasSidebarsSettings
  * @preserve
  */
+/* eslint-enable no-extra-semi */
 
 if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 	var ocsOffCanvasSidebarsSettings = {
