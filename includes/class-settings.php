@@ -239,7 +239,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		 * @param  array  $input  Original input.
 		 * @return array
 		 */
-		$data = apply_filters( 'ocs_settings_validate_form', $data, $input );
+		$data = apply_filters( 'ocs_settings_validate_input', $data, $input );
 
 		// Validate global settings with defaults.
 		$data = $this->validate_settings( $data, $this->get_default_settings() );
