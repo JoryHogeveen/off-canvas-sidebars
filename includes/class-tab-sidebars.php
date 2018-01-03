@@ -91,6 +91,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	/**
 	 * Section postbox classes.
 	 * @since   0.5
+	 * @param   string  $classes  Existing classes.
+	 * @return  string
 	 */
 	public function ocs_page_form_section_box_classes( $classes ) {
 		$classes .= ' section-sidebar if-js-closed';
@@ -383,8 +385,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	/**
 	 * Parses sidebar post values, checks all values with the current existing data.
 	 *
-	 * @todo Keep sidebar order when disable from general page.
-	 *
 	 * @since   0.4
 	 * @since   0.5  Moved to this class.
 	 * @param   array  $input
@@ -395,6 +395,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		if ( empty( $current['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
 			return $input;
 		}
+
+		$is_request_tab = $this->is_request_tab();
 
 		// Add new sidebar.
 		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
@@ -430,8 +432,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				continue;
 			}
 
-			// Global settings page.
-			if ( count( $sidebars[ $sidebar_id ] ) < 2 ) {
+			// Not the current tab, only update `enable`.
+			if ( ! $is_request_tab ) {
 				$current[ $sidebar_id ]['enable'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
 				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
 				continue;
@@ -487,7 +489,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		} // End foreach().
 
 		// Keep order on other pages.
-		if ( ! $this->is_request_tab() ) {
+		if ( ! $is_request_tab ) {
 			$sidebars = array_merge( $current, $sidebars );
 		}
 
