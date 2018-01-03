@@ -474,6 +474,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			}
 		} // End foreach().
 
+		// Keep order on other pages.
+		if ( ! $this->is_request_tab() ) {
+			$sidebars = array_merge( $current, $sidebars );
+		}
+
 		$input['sidebars'] = $sidebars;
 		return $input;
 	}
