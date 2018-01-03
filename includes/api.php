@@ -149,3 +149,18 @@ function off_canvas_sidebars_frontend() {
 	}
 	return null;
 }
+
+/**
+ * Main instance of Off-Canvas Sidebars Settings.
+ *
+ * Returns the main instance of OCS_Off_Canvas_Sidebars_Settings to prevent the need to use globals.
+ *
+ * @since   0.5
+ * @return  OCS_Off_Canvas_Sidebars_Settings
+ */
+function off_canvas_sidebars_settings() {
+	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Settings', 'get_instance' ) ) ) {
+		return OCS_Off_Canvas_Sidebars_Settings::get_instance();
+	}
+	return null;
+}
