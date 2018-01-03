@@ -442,6 +442,18 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				$sidebars[ $sidebar_id ]['label'] = $sidebar_id;
 			}
 
+			// Check checkboxes or they will be overwritten with the current settings.
+			$checkbox_keys = array(
+				'overwrite_global_settings',
+				'site_close',
+				'link_close',
+				'hide_control_classes',
+				'scroll_lock',
+			);
+			foreach ( $checkbox_keys as $key ) {
+				$sidebars[ $sidebar_id ][ $key ] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $sidebars[ $sidebar_id ], $key );
+			}
+
 			// Change sidebar ID.
 			if ( ! empty( $sidebars[ $sidebar_id ]['id'] ) && $sidebar_id !== $sidebars[ $sidebar_id ]['id'] ) {
 
