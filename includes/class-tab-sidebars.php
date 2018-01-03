@@ -40,7 +40,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		$this->name = esc_attr__( 'Sidebars', OCS_DOMAIN );
 		parent::__construct();
 
-		add_filter( 'ocs_settings_parse_input', array( $this, 'parse_input' ) );
+		add_filter( 'ocs_settings_parse_input', array( $this, 'parse_input' ), 11, 2 );
 		add_filter( 'ocs_settings_validate_input', array( $this, 'validate_input' ), 11, 2 );
 	}
 
@@ -524,7 +524,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			$sidebar['animation_speed'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['animation_speed'] );
 
 			// Validate radio options.
-			$sidebar['content'] = OCS_Off_Canvas_Sidebars_Settings::validate_radio( $sidebar['content'], array( 'sidebar', 'menu', 'action' ), 'sidebar' );
+			$sidebar['content'] = OCS_Off_Canvas_Sidebars_Settings::validate_radio(
+				$sidebar['content'],
+				array( 'sidebar', 'menu', 'action' ),
+				'sidebar'
+			);
 
 			$data['sidebars'][ $sidebar_id ] = $sidebar;
 
