@@ -397,6 +397,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @since  0.5  Check setting.
 		 */
 		$( 'a' ).not( '.' + prefix + '-trigger' ).on( 'touchend click', function () {
+			// Prevent touch+swipe.
+			if ( true === ocsOffCanvasSidebars._touchmove ) {
+				return;
+			}
 			if ( ocsOffCanvasSidebars._getSetting( 'link_close', false ) ) {
 				if ( ! $( this ).parents( '.' + prefix + '-trigger' ).length ) {
 					controller.close();
