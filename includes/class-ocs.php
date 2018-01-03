@@ -368,7 +368,7 @@ final class OCS_Off_Canvas_Sidebars
 					// Force our ID
 					$args['id'] = 'off-canvas-' . $sidebar_id;
 
-					if ( get_template() === 'genesis' ) {
+					if ( function_exists( 'genesis_register_sidebar' ) ) {
 						genesis_register_sidebar( $args );
 					} else {
 						register_sidebar( $args );
