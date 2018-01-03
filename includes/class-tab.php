@@ -56,7 +56,10 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	protected function __construct() {
 		$this->key = off_canvas_sidebars()->get_general_key();
 		$this->capability = apply_filters( 'ocs_settings_capability_' . $this->name, $this->capability );
-		add_filter( 'ocs_page_register_tabs', array( $this, 'register_tab' ) );
+
+		if ( current_user_can( $this->capability ) ) {
+			add_filter( 'ocs_page_register_tabs', array( $this, 'register_tab' ) );
+		}
 	}
 
 	/**
