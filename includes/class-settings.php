@@ -215,6 +215,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 
+		// Make sure all top level keys exists.
+		$input = array_merge( $this->get_default_settings(), $input );
+
 		return $input;
 	}
 
