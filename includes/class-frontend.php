@@ -480,6 +480,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
 			'site_close'           => (bool) $this->settings['site_close'],
+			'link_close'           => (bool) $this->settings['link_close'],
 			'disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
 			'hide_control_classes' => (bool) $this->settings['hide_control_classes'],
 			'scroll_lock'          => (bool) $this->settings['scroll_lock'],
