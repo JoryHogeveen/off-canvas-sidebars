@@ -96,6 +96,40 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Register setting section fields.
+	 *
+	 * @since   0.5  Refactor into separate tab classes and methods
+	 * @param   array  $args {
+	 *     @type  string        $id
+	 *     @type  string        $title
+	 *     @type  array|string  $callback
+	 * }
+	 */
+	public function register_section_fields( $args ) {
+		$section = $args['id'];
+
+		$fields = $this->get_settings_fields_by_section( $section );
+
+		foreach ( $fields as $id => $args ) {
+
+			if ( ! empty( $args['hidden'] ) ) {
+				continue;
+			}
+
+			$title = $args['title'];
+			unset( $args['title'] );
+
+			$callback = $args['callback'];
+			unset( $args['callback'] );
+			if ( is_string( $callback ) ) {
+				$callback = array( 'OCS_Off_Canvas_Sidebars_Form', $callback );
+			}
+
+			add_settings_field( $id, $title, $callback, $this->tab, $section, $args );
+		}
+	}
+
+	/**
 	 * Register a field for this tab.
 	 *
 	 * @since   0.5
