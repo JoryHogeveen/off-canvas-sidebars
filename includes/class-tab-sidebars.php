@@ -114,7 +114,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			add_settings_section(
 				'section_sidebar_' . $sidebar,
 				__( 'Off-Canvas Sidebar', OCS_DOMAIN ) . ' - <code class="js-dynamic-id">' . $sidebars[ $sidebar ]['label'] . '</code>',
-				array( $this, 'sidebar_section_callback' ),
+				array( $this, 'register_sidebar_fields' ),
 				$this->tab
 			);
 		}
@@ -127,24 +127,20 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	}
 
 	/**
-	 * Callback function to create sidebar sections.
-	 * @since   0.5
-	 * @param   array  $args  Callback params.
-	 */
-	public function sidebar_section_callback( $args ) {
-		$sidebar_id = str_replace( 'section_sidebar_', '', $args['id'] );
-		$this->register_sidebar_settings( $sidebar_id );
-	}
-
-	/**
 	 * Sidebar settings.
 	 *
-	 * @since   0.1
-	 * @param   string  $sidebar_id
+	 * @since   0.5
+	 * @param   array  $args {
+	 *     @type  string        $id
+	 *     @type  string        $title
+	 *     @type  array|string  $callback
+	 * }
 	 */
-	public function register_sidebar_settings( $sidebar_id ) {
+	public function register_sidebar_fields( $args ) {
+		$sidebar_id = str_replace( 'section_sidebar_', '', $args['id'] );
 
 		$fields = $this->get_settings_fields();
+		$section = 'section_sidebar_' . $sidebar_id;
 
 		foreach ( $fields as $id => $args ) {
 
@@ -167,14 +163,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				$args['value'] = $sidebar_id;
 			}
 
-			add_settings_field(
-				$id,
-				$title,
-				$callback,
-				$this->tab,
-				'section_sidebar_' . $sidebar_id,
-				$args
-			);
+			add_settings_field( $id, $title, $callback, $this->tab, $section, $args );
 		}
 	}
 
