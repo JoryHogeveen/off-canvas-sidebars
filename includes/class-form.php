@@ -72,35 +72,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	}
 
 	/**
-	 * The sidebars location option.
-	 * @since   0.3
-	 * @since   0.4  Moved to this class.
-	 * @static
-	 * @param   array  $args
-	 */
-	public static function sidebar_location( $args ) {
-		if ( ! isset( $args['sidebar'] ) ) {
-			return;
-		}
-		$prefixes       = self::get_option_prefixes( $args );
-		$prefix_name    = $prefixes['prefixName'];
-		$prefix_value   = $prefixes['prefixValue'];
-		$prefix_id      = $prefixes['prefixId'];
-		$prefix_classes = $prefixes['prefixClasses'];
-
-		$classes = self::get_option_classes( $prefix_classes, 'location' );
-
-		$html  = '<fieldset class="radio">';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[location]" class="' . $classes . '" id="' . $prefix_id . '_location_left" value="left" ' . checked( $prefix_value['location'], 'left', false ) . ' /> ' . esc_html__( 'Left', OCS_DOMAIN ) . '</label>';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[location]" class="' . $classes . '" id="' . $prefix_id . '_location_right" value="right" ' . checked( $prefix_value['location'], 'right', false ) . ' /> ' . esc_html__( 'Right', OCS_DOMAIN ) . '</label>';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[location]" class="' . $classes . '" id="' . $prefix_id . '_location_top" value="top" ' . checked( $prefix_value['location'], 'top', false ) . ' /> ' . esc_html__( 'Top', OCS_DOMAIN ) . '</label>';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[location]" class="' . $classes . '" id="' . $prefix_id . '_location_bottom" value="bottom" ' . checked( $prefix_value['location'], 'bottom', false ) . ' /> ' . esc_html__( 'Bottom', OCS_DOMAIN ) . '</label>';
-		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
-	}
-
-	/**
 	 * The sidebars size option.
 	 * @since   0.1
 	 * @since   0.2  Renamed from sidebar_width()
@@ -146,35 +117,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 		$html .= '</div>';
 
-		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
-	}
-
-	/**
-	 * The sidebars style option.
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
-	 * @static
-	 * @param   array  $args
-	 */
-	public static function sidebar_style( $args ) {
-		if ( ! isset( $args['sidebar'] ) ) {
-			return;
-		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
-		$prefix_classes = $prefixes['prefixClasses'];
-
-		$classes = self::get_option_classes( $prefix_classes, 'style' );
-
-		$html  = '<fieldset class="radio">';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[style]" class="' . $classes . '" id="' . $prefix_id . '_style_push" value="push" ' . checked( $prefix_value['style'], 'push', false ) . ' /> ' . esc_html__( 'Sidebar slides and pushes the site across when opened.', OCS_DOMAIN ) . '</label>';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[style]" class="' . $classes . '" id="' . $prefix_id . '_style_reveal" value="reveal" ' . checked( $prefix_value['style'], 'reveal', false ) . ' /> ' . esc_html__( 'Sidebar reveals and pushes the site across when opened.', OCS_DOMAIN ) . '</label>';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[style]" class="' . $classes . '" id="' . $prefix_id . '_style_shift" value="shift" ' . checked( $prefix_value['style'], 'shift', false ) . ' /> ' . esc_html__( 'Sidebar shifts and pushes the site across when opened.', OCS_DOMAIN ) . '</label>';
-		$html .= '<label><input type="radio" name="' . $prefix_name . '[style]" class="' . $classes . '" id="' . $prefix_id . '_style_overlay" value="overlay" ' . checked( $prefix_value['style'], 'overlay', false ) . ' /> ' . esc_html__( 'Sidebar overlays the site when opened.', OCS_DOMAIN ) . '</label>';
 		$html .= self::do_description( $args );
 		$html .= '</fieldset>';
 		echo $html;
