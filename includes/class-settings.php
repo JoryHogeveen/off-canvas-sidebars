@@ -295,6 +295,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 						$args[] = $field['default'];
 						break;
 					case 'text':
+						$callback = 'validate_text';
+						break;
 					case 'color':
 						break;
 				}
@@ -310,6 +312,20 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Validates text values, used by validate_input().
+	 *
+	 * @since   0.5
+	 * @param   mixed   $value
+	 * @return  int
+	 */
+	public static function validate_text( $value ) {
+		if ( ! is_scalar( $value ) || empty( $value ) ) {
+			return '';
+		}
+		return (string) strip_tags( $value );
 	}
 
 	/**
