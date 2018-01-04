@@ -149,23 +149,22 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		if ( 'ocs-sidebars' === tab.val() ) {
 
-			// Dynamic sidebar ID.
-			if ( $('.js-dynamic-id').length ) {
-				postbox.each( function() {
-					var sidebar = this;
-					$( '.js-dynamic-id', sidebar ).text( $( 'input.off_canvas_sidebars_options_sidebars_id', sidebar ).val() );
-					$('.sidebar_classes').show();
-					$( 'input.off_canvas_sidebars_options_sidebars_id', this ).on('keyup', function() {
-						$( '.js-dynamic-id', sidebar ).text( $(this).val() );
-					} );
-				} );
-			}
-
 			// Half opacity for closed disabled sidebars.
 			// @todo Use classes instead of CSS.
 			postbox.each( function() {
 				var sidebar = this,
-					$sidebar = $( sidebar );
+					$sidebar = $( sidebar ),
+					$dynamic_id = $( '.js-dynamic-id', sidebar );
+
+				// Dynamic sidebar ID.
+				if ( $dynamic_id.length ) {
+					var $dynamic_id_input = $( 'input.off_canvas_sidebars_options_sidebars_id', sidebar );
+					$dynamic_id.text( $dynamic_id_input.val() );
+					$('.sidebar_classes').show();
+					$dynamic_id_input.on('keyup', function() {
+						$dynamic_id.text( $(this).val() );
+					} );
+				}
 
 				$sidebar.css({'border-left':'5px solid #eee'});
 				if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is(':checked') ) {
