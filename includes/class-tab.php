@@ -139,6 +139,26 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Get a registered field by type.
+	 * @since   0.5
+	 * @param   string  $type
+	 * @param   bool    $return_keys  Return field keys only?
+	 * @return  array
+	 */
+	public function get_settings_fields_by_type( $type = '', $return_keys = false ) {
+		$fields = $this->get_settings_fields();
+		foreach ( $fields as $key => $field ) {
+			if ( empty( $field['type'] ) || $field['type'] !== $type ) {
+				unset( $fields[ $key ] );
+			}
+		}
+		if ( $return_keys ) {
+			return array_keys( $fields );
+		}
+		return $fields;
+	}
+
+	/**
 	 * Check if this instance is the current page tab.
 	 * @since   0.5
 	 * @return  bool
