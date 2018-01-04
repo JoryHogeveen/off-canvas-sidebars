@@ -111,9 +111,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 		// Register sidebar settings.
 		foreach ( $sidebars as $sidebar => $sidebar_data ) {
+			$label = $sidebars[ $sidebar ]['label'];
+			$sep = ' &nbsp; | &nbsp; ';
 			add_settings_section(
 				'section_sidebar_' . $sidebar,
-				__( 'Off-Canvas Sidebar', OCS_DOMAIN ) . ' - <code class="js-dynamic-id">' . $sidebars[ $sidebar ]['label'] . '</code>',
+				$label . $sep . '<code class="js-dynamic-id">' . $sidebar . '</code>',
 				array( $this, 'register_sidebar_fields' ),
 				$this->tab
 			);
