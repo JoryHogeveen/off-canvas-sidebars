@@ -200,7 +200,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		$current = $this->get_settings();
 
 		/**
-		 * Filter the form input data.
+		 * Filter the form input data before validation with defaults.
 		 * @since  0.5
 		 * @param  array  $input    New form input.
 		 * @param  array  $current  Current settings.
@@ -249,6 +249,65 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		unset( $data['ocs_tab'] );
+
+		return $data;
+	}
+
+	/**
+	 * Validate an array of fields by through the provided field data.
+	 * @since   0.5
+	 * @param   array  $data
+	 * @param   array  $fields
+	 * @return  array
+	 */
+	public static function validate_fields( $data, $fields ) {
+
+		foreach ( $fields as $field ) {
+			$field = wp_parse_args( $field, array(
+				'validate' => true,
+				'type'     => 'text',
+			) );
+			$key = $field['name'];
+
+			if ( ! isset( $data[ $key ] ) || ! $field['validate'] ) {
+				continue;
+			}
+
+			$args = array( $data[ $key ] );
+			$callback = null;
+
+			if ( is_string( $field['validate'] ) ) {
+				$callback = $field['validate'];
+			} else {
+				switch ( $field['type'] ) {
+					case 'checkbox':
+						// Make sure unchecked checkboxes are 0 on save.
+						$callback = 'validate_checkbox';
+						break;
+					case 'number':
+						// Numeric values, not integers!
+						$callback = 'validate_numeric';
+						break;
+					case 'radio':
+						// Validate radio options.
+						$callback = 'validate_radio';
+						$args[] = array_keys( $field['options'] );
+						$args[] = $field['default'];
+						break;
+					case 'text':
+					case 'color':
+						break;
+				}
+			}
+
+			if ( is_string( $callback ) ) {
+				$callback = array( 'OCS_Off_Canvas_Sidebars_Settings', $callback );
+			}
+
+			if ( is_callable( $callback ) && method_exists( $callback[0], $callback[1] ) ) {
+				$data[ $key ] = call_user_func_array( $callback, $args );
+			}
+		}
 
 		return $data;
 	}
