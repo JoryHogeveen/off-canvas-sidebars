@@ -298,6 +298,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 						$callback = 'validate_text';
 						break;
 					case 'color':
+						$callback = 'validate_color';
 						break;
 				}
 			}
@@ -388,6 +389,23 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	public static function validate_numeric( $value ) {
 		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
+	}
+
+	/**
+	 * Validates hex color values, used by validate_input().
+	 *
+	 * @since   0.5
+	 * @param   string  $value
+	 * @return  string
+	 */
+	public static function validate_color( $value ) {
+		$value = self::validate_text( $value );
+		$value = self::remove_whitespace( $value );
+		$value = substr( $value, 0, 7 );
+		if ( 0 !== strpos( $value, '#' ) ) {
+			$value = '#' . $value;
+		}
+		return (string) $value;
 	}
 
 	/**
