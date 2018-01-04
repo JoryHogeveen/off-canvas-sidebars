@@ -712,4 +712,4 @@
 
 	} );
 
-} ) ( window.tinymce, jQuery );
+} ( window.tinymce, jQuery ) );
