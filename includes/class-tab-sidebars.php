@@ -101,6 +101,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Register settings.
+	 *
 	 * @since   0.1
 	 * @since   0.5  Refactor into separate tab classes and methods
 	 */
@@ -113,9 +114,13 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			add_settings_section(
 				'section_sidebar_' . $sidebar,
 				__( 'Off-Canvas Sidebar', OCS_DOMAIN ) . ' - <code class="js-dynamic-id">' . $sidebars[ $sidebar ]['label'] . '</code>',
-				array( $this, 'section_callback' ),
+				array( $this, 'sidebar_section_callback' ),
 				$this->tab
 			);
+		}
+
+		foreach ( $this->get_tab_fields() as $key => $field ) {
+			$this->add_settings_field( $key, $field );
 		}
 
 		do_action( 'off_canvas_sidebar_settings_sidebars' );
@@ -126,7 +131,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @since   0.5
 	 * @param   array  $args  Callback params.
 	 */
-	public function section_callback( $args ) {
+	public function sidebar_section_callback( $args ) {
 		$sidebar_id = str_replace( 'section_sidebar_', '', $args['id'] );
 		$this->register_sidebar_settings( $sidebar_id );
 	}
@@ -134,252 +139,43 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	/**
 	 * Sidebar settings.
 	 *
-	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-	 * @todo Refactor to enable above checks?
-	 *
 	 * @since   0.1
 	 * @param   string  $sidebar_id
 	 */
 	public function register_sidebar_settings( $sidebar_id ) {
 
-		add_settings_field(
-			'sidebar_enable',
-			esc_attr__( 'Enable', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'enable',
-			)
-		);
-		add_settings_field(
-			'sidebar_id',
-			esc_attr__( 'ID', OCS_DOMAIN ) . ' <span class="required">*</span>',
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'text_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'id',
-				'value' => $sidebar_id,
-				'required' => true,
-				'description' => __( 'IMPORTANT: Must be unique!', OCS_DOMAIN ),
-			)
-		);
-		add_settings_field(
-			'sidebar_label',
-			esc_attr__( 'Name', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'text_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'label',
-			)
-		);
-		add_settings_field(
-			'sidebar_content',
-			esc_attr__( 'Content', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'radio_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'content',
-				'default' => 'sidebar',
-				'options' => array(
-					'sidebar' => array(
-						'name' => 'sidebar',
-						'label' => __( 'Sidebar', OCS_DOMAIN ) . ' &nbsp (' . __( 'Default', OCS_DOMAIN ) . ')',
-						'value' => 'sidebar',
-					),
-					'menu' => array(
-						'name' => 'menu',
-						'label' => __( 'Menu', OCS_DOMAIN ),
-						'value' => 'menu',
-					),
-					'action' => array(
-						'name' => 'action',
-						'label' => __( 'Custom', OCS_DOMAIN ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank">' . __( 'Action hook', OCS_DOMAIN ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
-						'value' => 'action',
-					),
-				),
-				'description' => __( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', OCS_DOMAIN ),
-			)
-		);
-		add_settings_field(
-			'sidebar_location',
-			esc_attr__( 'Location', OCS_DOMAIN ) . ' <span class="required">*</span>',
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'sidebar_location' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'required' => true,
-			)
-		);
-		add_settings_field(
-			'sidebar_size',
-			esc_attr__( 'Size', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'sidebar_size' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'description' => __( 'You can overwrite this with CSS', OCS_DOMAIN ),
-			)
-		);
-		add_settings_field(
-			'sidebar_style',
-			esc_attr__( 'Style', OCS_DOMAIN ) . ' <span class="required">*</span>',
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'sidebar_style' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'required' => true,
-			)
-		);
-		add_settings_field(
-			'animation_speed',
-			esc_attr__( 'Animation speed', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'number_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'animation_speed',
-				'description' =>
-					__( 'Set the animation speed for showing and hiding this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>300ms</code>.<br>' .
-					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
-				'input_after' => '<code>ms</code>',
-			)
-		);
-		add_settings_field(
-			'padding',
-			esc_attr__( 'Padding', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'number_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'padding',
-				'description' =>
-					__( 'Add CSS padding (in pixels) to this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'none', OCS_DOMAIN ) . '.<br>' .
-					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
-				'input_after' => '<code>px</code>',
-			)
-		);
-		add_settings_field(
-			'background_color',
-			esc_attr__( 'Background color', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'color_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'background_color',
-				'description' =>
-					__( 'Choose a background color for this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>.<br>' .
-					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
-			)
-		);
+		$fields = $this->get_settings_fields();
 
-		add_settings_field(
-			'overwrite_global_settings',
-			esc_attr__( 'Overwrite global settings', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'overwrite_global_settings',
-			)
-		);
-		add_settings_field(
-			'site_close',
-			esc_attr__( 'Close sidebar when clicking on the site', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'site_close',
-				'label' => __( 'Enables closing of the off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
-			)
-		);
-		add_settings_field(
-			'link_close',
-			esc_attr__( 'Close sidebar when clicking on a link', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'link_close',
-				'label' => __( 'Enables closing of the off-canvas sidebar by clicking on a link.', OCS_DOMAIN ),
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
-			)
-		);
-		add_settings_field(
-			'disable_over',
-			esc_attr__( 'Disable over', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'number_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'disable_over',
-				'label' => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
-				'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
-				'input_after' => '<code>px</code>',
-			)
-		);
-		add_settings_field(
-			'hide_control_classes',
-			esc_attr__( 'Auto-hide control classes', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'hide_control_classes',
-				'label' => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
-			)
-		);
-		add_settings_field(
-			'scroll_lock',
-			esc_attr__( 'Scroll lock', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'scroll_lock',
-				'label' => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open.', OCS_DOMAIN ),
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
-			)
-		);
+		foreach ( $fields as $id => $args ) {
 
-		add_settings_field(
-			'sidebar_delete',
-			esc_attr__( 'Delete sidebar', OCS_DOMAIN ),
-			array( 'OCS_Off_Canvas_Sidebars_Form', 'checkbox_option' ),
-			$this->tab,
-			'section_sidebar_' . $sidebar_id,
-			array(
-				'sidebar' => $sidebar_id,
-				'name' => 'delete',
-				'value' => 0,
-			)
-		);
+			if ( ! empty( $args['hidden'] ) ) {
+				continue;
+			}
 
+			$title = $args['title'];
+			unset( $args['title'] );
+
+			$callback = $args['callback'];
+			unset( $args['callback'] );
+			if ( is_string( $callback ) ) {
+				$callback = array( 'OCS_Off_Canvas_Sidebars_Form', $callback );
+			}
+
+			$args['sidebar'] = $sidebar_id;
+
+			if ( 'id' === $id ) {
+				$args['value'] = $sidebar_id;
+			}
+
+			add_settings_field(
+				$id,
+				$title,
+				$callback,
+				$this->tab,
+				'section_sidebar_' . $sidebar_id,
+				$args
+			);
+		}
 	}
 
 	/**
@@ -445,14 +241,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			}
 
 			// Check checkboxes or they will be overwritten with the current settings.
-			$checkbox_keys = array(
-				'overwrite_global_settings',
-				'site_close',
-				'link_close',
-				'hide_control_classes',
-				'scroll_lock',
-			);
-			foreach ( $checkbox_keys as $key ) {
+			foreach ( $this->get_settings_fields_by_type( 'checkbox', true ) as $key ) {
 				$sidebars[ $sidebar_id ][ $key ] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $sidebars[ $sidebar_id ], $key );
 			}
 
@@ -524,25 +313,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				$sidebar
 			);
 
-			// Make sure unchecked checkboxes are 0 on save.
-			$sidebar['enable']                    = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['enable'] );
-			$sidebar['overwrite_global_settings'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['overwrite_global_settings'] );
-			$sidebar['site_close']                = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['site_close'] );
-			$sidebar['link_close']                = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['link_close'] );
-			$sidebar['hide_control_classes']      = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['hide_control_classes'] );
-			$sidebar['scroll_lock']               = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebar['scroll_lock'] );
-
-			// Numeric values, not integers!
-			$sidebar['padding']         = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['padding'] );
-			$sidebar['disable_over']    = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['disable_over'] );
-			$sidebar['animation_speed'] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric( $sidebar['animation_speed'] );
-
-			// Validate radio options.
-			$sidebar['content'] = OCS_Off_Canvas_Sidebars_Settings::validate_radio(
-				$sidebar['content'],
-				array( 'sidebar', 'menu', 'action' ),
-				'sidebar'
-			);
+			$sidebar = OCS_Off_Canvas_Sidebars_Settings::validate_fields( $sidebar, $this->get_settings_fields() );
 
 			$data['sidebars'][ $sidebar_id ] = $sidebar;
 
@@ -558,6 +329,296 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		} // End foreach().
 
 		return $data;
+	}
+
+	/**
+	 * Register tab fields.
+	 * Note that section handling is not done with these fields as they are auto-added for each sidebar as a section.
+	 *
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 * @todo Refactor to enable above checks?
+	 *
+	 * @since   0.5
+	 */
+	protected function get_tab_fields() {
+
+		// Register sidebar fields.
+		return array(
+			'enable' => array(
+				'name'     => 'enable',
+				'title'    => esc_attr__( 'Enable', OCS_DOMAIN ),
+				'callback' => 'checkbox_option',
+				'type'     => 'checkbox',
+			),
+			'id' => array(
+				'name'        => 'id',
+				'title'       => esc_attr__( 'ID', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'callback'    => 'text_option',
+				'type'        => 'text',
+				'required'    => true,
+				'description' => __( 'IMPORTANT: Must be unique!', OCS_DOMAIN ),
+			),
+			'label' => array(
+				'name'        => 'label',
+				'title'       => esc_attr__( 'Name', OCS_DOMAIN ),
+				'callback'    => 'text_option',
+				'type'        => 'text',
+			),
+			'content' => array(
+				'name'     => 'content',
+				'title'    => esc_attr__( 'Content', OCS_DOMAIN ),
+				'callback' => 'radio_option',
+				'type'     => 'radio',
+				'default'  => 'sidebar',
+				'options'  => array(
+					'sidebar' => array(
+						'name' => 'sidebar',
+						'label' => __( 'Sidebar', OCS_DOMAIN ) . ' &nbsp (' . __( 'Default', OCS_DOMAIN ) . ')',
+						'value' => 'sidebar',
+					),
+					'menu' => array(
+						'name' => 'menu',
+						'label' => __( 'Menu', OCS_DOMAIN ),
+						'value' => 'menu',
+					),
+					'action' => array(
+						'name' => 'action',
+						'label' => __( 'Custom', OCS_DOMAIN ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank">' . __( 'Action hook', OCS_DOMAIN ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
+						'value' => 'action',
+					),
+				),
+				'description' => __( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', OCS_DOMAIN ),
+			),
+			'location' => array(
+				'name'     => 'location',
+				'title'    => esc_attr__( 'Location', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'callback' => 'radio_option',
+				'type'     => 'radio',
+				'required' => true,
+				'default'  => 'left',
+				'options'  => array(
+					'left' => array(
+						'name' => 'left',
+						'label' => esc_html__( 'Left', OCS_DOMAIN ),
+						'value' => 'left',
+					),
+					'right' => array(
+						'name' => 'right',
+						'label' => esc_html__( 'Right', OCS_DOMAIN ),
+						'value' => 'right',
+					),
+					'top' => array(
+						'name' => 'top',
+						'label' => esc_html__( 'Top', OCS_DOMAIN ),
+						'value' => 'top',
+					),
+					'bottom' => array(
+						'name' => 'bottom',
+						'label' => esc_html__( 'Bottom', OCS_DOMAIN ),
+						'value' => 'bottom',
+					),
+				),
+			),
+
+			// @todo Auto handler for radio options with a custom v,
+			'size' => array(
+				'name'        => 'size',
+				'title'       => esc_attr__( 'Size', OCS_DOMAIN ),
+				'callback'    => 'sidebar_size',
+				'type'        => 'radio',
+				'description' => __( 'You can overwrite this with CSS', OCS_DOMAIN ),
+				'options'     => array(
+					'default' => array(
+						'name' => 'default',
+						'label' => esc_html__( 'Default', OCS_DOMAIN ),
+						'value' => 'default',
+					),
+					'small' => array(
+						'name' => 'small',
+						'label' => esc_html__( 'Small', OCS_DOMAIN ),
+						'value' => 'small',
+					),
+					'large' => array(
+						'name' => 'large',
+						'label' => esc_html__( 'Large', OCS_DOMAIN ),
+						'value' => 'large',
+					),
+					'custom' => array(
+						'name' => 'custom',
+						'label' => esc_html__( 'Custom', OCS_DOMAIN ),
+						'value' => 'custom',
+					),
+				),
+				'default'  => 'default',
+			),
+			// @fixme See above. This makes sure the fields gets recogn,
+			'size_input' => array(
+				'name'    => 'size_input',
+				'hidden'  => true,
+				'default' => '',
+				'type'    => 'number',
+			),
+			// @fixme See above. This makes sure the fields gets recogn,
+			'size_input_type' => array(
+				'name'        => 'size_input_type',
+				'hidden'      => true,
+				'default'     => 'px',
+				'type'        => 'radio',
+				'options'     => array(
+					'px' => array(
+						'name' => 'px',
+						'label' => 'px',
+						'value' => 'px',
+					),
+					'%' => array(
+						'name' => '%',
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+			),
+			'sidebar_style' => array(
+				'name'     => 'style',
+				'title'    => esc_attr__( 'Style', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'callback' => 'radio_option',
+				'type'     => 'radio',
+				'required' => true,
+				'options'  => array(
+					'push' => array(
+						'name' => 'push',
+						'label' => esc_html__( 'Sidebar slides and pushes the site across when opened.', OCS_DOMAIN ),
+						'value' => 'push',
+					),
+					'reveal' => array(
+						'name' => 'reveal',
+						'label' => esc_html__( 'Sidebar reveals and pushes the site across when opened.', OCS_DOMAIN ),
+						'value' => 'reveal',
+					),
+					'shift' => array(
+						'name' => 'shift',
+						'label' => esc_html__( 'Sidebar shifts and pushes the site across when opened.', OCS_DOMAIN ),
+						'value' => 'shift',
+					),
+					'overlay' => array(
+						'name' => 'overlay',
+						'label' => esc_html__( 'Sidebar overlays the site when opened.', OCS_DOMAIN ),
+						'value' => 'overlay',
+					),
+				),
+				'default'  => 'push',
+			),
+			'animation_speed' => array(
+				'name'        => 'animation_speed',
+				'title'       => esc_attr__( 'Animation speed', OCS_DOMAIN ),
+				'callback'    => 'number_option',
+				'type'        => 'number',
+				'description' =>
+					__( 'Set the animation speed for showing and hiding this sidebar.', OCS_DOMAIN )
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>300ms</code>.<br>' .
+					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
+				'input_after' => '<code>ms</code>',
+			),
+			'padding' => array(
+				'name'        => 'padding',
+				'title'       => esc_attr__( 'Padding', OCS_DOMAIN ),
+				'callback'    => 'number_option',
+				'type'        => 'number',
+				'description' =>
+					__( 'Add CSS padding (in pixels) to this sidebar.', OCS_DOMAIN )
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'none', OCS_DOMAIN ) . '.<br>' .
+					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
+				'input_after' => '<code>px</code>',
+			),
+			// @todo Auto handler for radio options with a custom v,
+			'background_color' => array(
+				'name'        => 'background_color',
+				'title'       => esc_attr__( 'Background color', OCS_DOMAIN ),
+				'callback'    => 'color_option',
+				'type'        => 'color',
+				'description' =>
+					__( 'Choose a background color for this sidebar.', OCS_DOMAIN )
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>.<br>' .
+					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
+			),
+			// @fixme See above. This makes sure the fields gets recogn,
+			'background_color_type' => array(
+				'name'    => 'background_color_type',
+				'hidden'  => true,
+				'type'    => 'radio',
+				'default' => '',
+				'options' => array(
+					'default' => array(
+						'name'  => 'default',
+						'label' => esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>',
+						'value' => '',
+					),
+					'transparent' => array(
+						'name'  => 'transparent',
+						'label' => esc_html__( 'Transparent', OCS_DOMAIN ),
+						'value' => 'transparent',
+					),
+					'color' => array(
+						'name'  => 'color',
+						'label' => esc_html__( 'Color.', OCS_DOMAIN ),
+						'value' => 'color',
+					),
+				),
+			),
+			'overwrite_global_settings' => array(
+				'name'     => 'overwrite_global_settings',
+				'title'    => esc_attr__( 'Overwrite global settings', OCS_DOMAIN ),
+				'callback' => 'checkbox_option',
+				'type'     => 'checkbox',
+			),
+			'site_close' => array(
+				'name'        => 'site_close',
+				'title'       => esc_attr__( 'Close sidebar when clicking on the site', OCS_DOMAIN ),
+				'callback'    => 'checkbox_option',
+				'type'        => 'checkbox',
+				'label'       => __( 'Enables closing of the off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
+			),
+			'link_close' => array(
+				'name'        => 'link_close',
+				'title'       => esc_attr__( 'Close sidebar when clicking on a link', OCS_DOMAIN ),
+				'callback'    => 'checkbox_option',
+				'type'        => 'checkbox',
+				'label'       => __( 'Enables closing of the off-canvas sidebar by clicking on a link.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
+			),
+			'disable_over' => array(
+				'name'        => 'disable_over',
+				'title'       => esc_attr__( 'Disable over', OCS_DOMAIN ),
+				'callback'    => 'number_option',
+				'type'        => 'number',
+				'label'       => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
+				'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
+				'input_after' => '<code>px</code>',
+			),
+			'hide_control_classes' => array(
+				'name'        => 'hide_control_classes',
+				'title'       => esc_attr__( 'Auto-hide control classes', OCS_DOMAIN ),
+				'callback'    => 'checkbox_option',
+				'type'        => 'checkbox',
+				'label'       => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
+			),
+			'scroll_lock' => array(
+				'name'        => 'scroll_lock',
+				'title'       => esc_attr__( 'Scroll lock', OCS_DOMAIN ),
+				'callback'    => 'checkbox_option',
+				'type'        => 'checkbox',
+				'label'       => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open.', OCS_DOMAIN ),
+				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
+			),
+			'sidebar_delete' => array(
+				'name'     => 'delete',
+				'title'    => esc_attr__( 'Delete sidebar', OCS_DOMAIN ),
+				'callback' => 'checkbox_option',
+				'type'     => 'checkbox',
+				'value'    => 0,
+			),
+		);
 	}
 
 	/**
