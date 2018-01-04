@@ -42,6 +42,13 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	public $key = '';
 
 	/**
+	 * The fields for this tab.
+	 * @var    array
+	 * @since  0.5
+	 */
+	protected $fields = array();
+
+	/**
 	 * The capability required of this tab.
 	 * @var    string
 	 * @since  0.5
@@ -86,6 +93,49 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	public function register_settings() {
 		// @todo Enhance this...
 		//register_setting( $this->tab, $this->key, array( $this, 'validate_form' ) );
+	}
+
+	/**
+	 * Register a field for this tab.
+	 *
+	 * @since   0.5
+	 * @param   string  $key
+	 * @param   array   $args {
+	 *     @type  string  $name      (required)
+	 *     @type  string  $type      (required)
+	 *     @type  string  $callback  (required)
+	 *     @type  string  $validate
+	 *     @type  string  $label
+	 *     @type  string  $description
+	 *     @type  array   $options
+	 *     @type  string  $default
+	 *     @type  string  $value
+	 *     @type  bool    $required
+	 * }
+	 */
+	public function add_settings_field( $key, $args ) {
+		$args = wp_parse_args( $args, array(
+			'type'     => 'text',
+			'callback' => 'text_option',
+			'validate' => true,
+		) );
+		$this->fields[ $key ] = $args;
+	}
+
+	/**
+	 * Get a registered field.
+	 * @since   0.5
+	 * @param   string  $key
+	 * @return  array
+	 */
+	public function get_settings_fields( $key = '' ) {
+		if ( $key ) {
+			if ( isset( $this->fields[ $key ] ) ) {
+				return $this->fields[ $key ];
+			}
+			return null;
+		}
+		return $this->fields;
 	}
 
 	/**
