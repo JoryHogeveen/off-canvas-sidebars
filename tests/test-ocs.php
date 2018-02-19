@@ -8,8 +8,8 @@
 
 class OCS_UnitTest extends WP_UnitTestCase {
 
-	// Check that that activation doesn't break
-	function test_plugin_activated() {
-		$this->assertTrue( is_plugin_active( TEST_OCS_PLUGIN_PATH ) );
+	// Check that that activation doesn't break.
+	function test_activated() {
+		$this->assertTrue( is_plugin_active( TEST_OCS_PATH ) );
 	}
 }
