@@ -246,6 +246,16 @@ final class OCS_Off_Canvas_Sidebars
 	}
 
 	/**
+	 * Returns the plugin version.
+	 *
+	 * @since   0.1.2
+	 * @return  string
+	 */
+	public function get_db_version() {
+		return $this->db_version;
+	}
+
+	/**
 	 * Returns the plugin key.
 	 *
 	 * @since   0.1
