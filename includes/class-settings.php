@@ -108,7 +108,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $key
 	 * @return  array|null
 	 */
-	function get_settings( $key = null ) {
+	public function get_settings( $key = null ) {
 		if ( $key ) {
 			return ( isset( $this->settings[ $key ] ) ) ? $this->settings[ $key ] : null;
 		}
@@ -121,7 +121,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2
 	 * @return  array
 	 */
-	function get_default_settings() {
+	public function get_default_settings() {
 		return $this->default_settings;
 	}
 
@@ -131,7 +131,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2
 	 * @return  array
 	 */
-	function get_default_sidebar_settings() {
+	public function get_default_sidebar_settings() {
 		return $this->default_sidebar_settings;
 	}
 
@@ -153,7 +153,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.5  Renamed from self::get_settings()
 	 * @param   array  $settings
 	 */
-	function set_settings( $settings ) {
+	public function set_settings( $settings ) {
 
 		// Validate global settings.
 		$settings = $this->validate_settings( $settings, $this->get_default_settings() );
@@ -173,7 +173,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   array  $defaults
 	 * @return  array
 	 */
-	function validate_settings( $settings, $defaults ) {
+	public function validate_settings( $settings, $defaults ) {
 		// supports one level array
 		$settings = array_merge( $defaults, $settings );
 		// Remove unknown keys
@@ -255,6 +255,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Validate an array of fields by through the provided field data.
+	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @since   0.5
 	 * @param   array  $data
 	 * @param   array  $fields

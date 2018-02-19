@@ -172,6 +172,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	/**
 	 * Parses sidebar post values, checks all values with the current existing data.
 	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @since   0.4
 	 * @since   0.5  Moved to this class.
 	 * @param   array  $input

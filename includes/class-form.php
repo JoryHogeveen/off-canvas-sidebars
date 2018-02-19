@@ -499,7 +499,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	 * @static
 	 * @param   array  $attr  The current attributes.
 	 * @param   array  $new   The new attributes. Attribute names as key.
-	 * @return  array
+	 * @return  string[]
 	 */
 	public static function merge_attr( $attr, $new ) {
 		foreach ( $new as $key => $value ) {

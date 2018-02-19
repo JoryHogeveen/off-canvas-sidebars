@@ -29,6 +29,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	protected static $_instance = null;
 
 	/**
+	 * Class constructor.
 	 * @since   0.1
 	 * @since   0.3  Private constructor.
 	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
@@ -259,7 +260,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 				. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#ffffff</code>.<br>' .
 				__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 		);
-		// @fixme See above. This makes sure the fields gets recogn,
+		// @fixme See above. This makes sure the fields gets recognized.
 		$fields['background_color_type'] = array(
 			'name'    => 'background_color_type',
 			'hidden'  => true,
