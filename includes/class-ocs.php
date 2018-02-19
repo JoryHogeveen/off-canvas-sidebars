@@ -423,43 +423,46 @@ final class OCS_Off_Canvas_Sidebars
 		$settings = $this->get_settings();
 		$db_version = strtolower( $settings['db_version'] );
 
-		// Upgrade to 0.2.x
-		if ( version_compare( $db_version, '0.2', '<' ) && isset( $settings['sidebars'] ) ) {
-			foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
-				if ( empty( $sidebar_data['label'] ) ) {
-					// @codingStandardsIgnoreLine - Label is new
-					$settings['sidebars'][ $sidebar_id ]['label'] = __( ucfirst( $sidebar_id ), OCS_DOMAIN );
-					// Location is new. In older versions the location was the sidebar_id (left or right)
-					$settings['sidebars'][ $sidebar_id ]['location'] = $sidebar_id;
-					if ( isset( $sidebar_data['width'] ) ) {
-						if ( 'thin' === $sidebar_data['width'] ) {
-							$sidebar_data['width'] = 'small';
-						} elseif ( 'wide' === $sidebar_data['width'] ) {
-							$sidebar_data['width'] = 'large';
+		if ( $db_version ) {
+
+			// Upgrade to 0.2.x
+			if ( version_compare( $db_version, '0.2', '<' ) && isset( $settings['sidebars'] ) ) {
+				foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
+					if ( empty( $sidebar_data['label'] ) ) {
+						// @codingStandardsIgnoreLine - Label is new
+						$settings['sidebars'][ $sidebar_id ]['label'] = __( ucfirst( $sidebar_id ), OCS_DOMAIN );
+						// Location is new. In older versions the location was the sidebar_id (left or right)
+						$settings['sidebars'][ $sidebar_id ]['location'] = $sidebar_id;
+						if ( isset( $sidebar_data['width'] ) ) {
+							if ( 'thin' === $sidebar_data['width'] ) {
+								$sidebar_data['width'] = 'small';
+							} elseif ( 'wide' === $sidebar_data['width'] ) {
+								$sidebar_data['width'] = 'large';
+							}
+							$settings['sidebars'][ $sidebar_id ]['size'] = $sidebar_data['width'];
 						}
-						$settings['sidebars'][ $sidebar_id ]['size'] = $sidebar_data['width'];
-					}
-					if ( isset( $sidebar_data['width_input'] ) ) {
-						$settings['sidebars'][ $sidebar_id ]['size_input'] = $sidebar_data['width_input'];
-					}
-					if ( isset( $sidebar_data['width_input_type'] ) ) {
-						$settings['sidebars'][ $sidebar_id ]['size_input_type'] = $sidebar_data['width_input_type'];
+						if ( isset( $sidebar_data['width_input'] ) ) {
+							$settings['sidebars'][ $sidebar_id ]['size_input'] = $sidebar_data['width_input'];
+						}
+						if ( isset( $sidebar_data['width_input_type'] ) ) {
+							$settings['sidebars'][ $sidebar_id ]['size_input_type'] = $sidebar_data['width_input_type'];
+						}
 					}
 				}
 			}
-		}
 
-		// Upgrade to 0.3.x
-		if ( version_compare( $db_version, '0.3', '<' ) && version_compare( $db_version, '0', '>' ) ) {
-			// Old Slidebars classes prefix.
-			$settings['css_prefix'] = 'sb';
-		}
+			// Upgrade to 0.3.x
+			if ( version_compare( $db_version, '0.3', '<' ) && version_compare( $db_version, '0', '>' ) ) {
+				// Old Slidebars classes prefix.
+				$settings['css_prefix'] = 'sb';
+			}
 
-		// Upgrade to 0.4
-		if ( version_compare( $db_version, '0.4', '<' ) ) {
-			if ( ! empty( $settings['compatibility_position_fixed'] ) ) {
-				// This was the only option before 0.4.
-				$settings['compatibility_position_fixed'] = 'custom-js';
+			// Upgrade to 0.4
+			if ( version_compare( $db_version, '0.4', '<' ) ) {
+				if ( ! empty( $settings['compatibility_position_fixed'] ) ) {
+					// This was the only option before 0.4.
+					$settings['compatibility_position_fixed'] = 'custom-js';
+				}
 			}
 		}
 
