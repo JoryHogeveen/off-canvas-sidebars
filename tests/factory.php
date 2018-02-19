@@ -35,7 +35,15 @@ class OCS_UnitTest_Factory {
 	}
 
 	static function set_admin_user() {
-		wp_set_current_user( 1 );
+		$admin = get_user_by( 'login', 'admin' );
+		if ( ! $admin ) {
+			$id = wp_create_user( 'admin', 'test', 'test@test.domain' );
+			$admin = new WP_User( $id );
+		}
+		if ( ! in_array( 'administrator', $admin->roles, true ) ) {
+			$admin->add_role( 'administrator' );
+		}
+		wp_set_current_user( $admin->ID );
 	}
 
 	static function set_visitor_user() {
