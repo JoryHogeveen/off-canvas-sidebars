@@ -339,29 +339,19 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Validates checkbox boolean values, used by validate_input().
+	 * Validates checkbox values, used by validate_input().
 	 *
-	 * @since   0.4
+	 * @since   0.1.2
+	 * @since   0.5     Optional $key parameter.
 	 * @param   mixed   $value
 	 * @param   string  $key
-	 * @return  bool
+	 * @return  int
 	 */
-	public static function validate_numeric_boolean( $value, $key = '' ) {
+	public static function validate_checkbox( $value, $key = '' ) {
 		if ( $key ) {
 			return (int) ( ! empty( $value[ $key ] ) );
 		}
 		return (int) ( ! empty( $value ) );
-	}
-
-	/**
-	 * Validates checkbox values, used by validate_input().
-	 *
-	 * @since   0.1.2
-	 * @param   mixed   $value
-	 * @return  int
-	 */
-	public static function validate_checkbox( $value ) {
-		return ( ! empty( $value ) ) ? (int) strip_tags( $value ) : 0;
 	}
 
 	/**

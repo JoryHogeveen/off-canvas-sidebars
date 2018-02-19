@@ -115,7 +115,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 		// Check checkboxes or they will be overwritten with the current settings.
 		foreach ( $this->get_settings_fields_by_type( 'checkbox', true ) as $key ) {
-			$input[ $key ] = OCS_Off_Canvas_Sidebars_Settings::validate_numeric_boolean( $input, $key );
+			$input[ $key ] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $input, $key );
 		}
 
 		return $input;
