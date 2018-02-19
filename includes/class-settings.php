@@ -400,6 +400,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	public static function validate_color( $value ) {
 		$value = self::validate_text( $value );
 		$value = self::remove_whitespace( $value );
+		if ( ! $value ) {
+			return '';
+		}
 		$value = substr( $value, 0, 7 );
 		if ( 0 !== strpos( $value, '#' ) ) {
 			$value = '#' . $value;
