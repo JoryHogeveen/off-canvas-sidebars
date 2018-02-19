@@ -53,16 +53,17 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 		$this->assertEquals( $compare, $settings->validate_form( $new ) );
 
 		$new = array(
-			'enable_frontend'               => new stdClass(), // Invalid, parse as true (1)
-			'site_close'                    => 123, // Invalid, parse as true (1)
-			'link_close'                    => 321, // Invalid, parse as true (1)
-			'disable_over'                  => '300.123', // Invalid, will return parsed as integer
-			'background_color_type'         => 'color-123', // Invalid, will return to default
-			'background_color'              => '#123456123', // Invalid, will be trimmed
-			'website_before_hook'           => array(), // Invalid, will return empty
-			'website_after_hook'            => array(), // Invalid, will return empty
-			'use_fastclick'                 => true, // Invalid, parse as true (1)
-			'compatibility_position_fixed'  => 'legacy-css-yay', // Invalid, will return to default
+			// Invalid values.
+			'enable_frontend'               => new stdClass(), // Parse as true (1)
+			'site_close'                    => 123, // Parse as true (1)
+			'link_close'                    => 321, // Parse as true (1)
+			'disable_over'                  => '300.123', // Parsed as integer
+			'background_color_type'         => 'color-123', // Invalid radio option, will return to default
+			'background_color'              => '#123456123', // Invalid color, will be trimmed
+			'website_before_hook'           => array(), // Invalid value, will return empty
+			'website_after_hook'            => array(), // Invalid value, will return empty
+			'use_fastclick'                 => true, // Parse as int version (1)
+			'compatibility_position_fixed'  => 'legacy-css-yay', // Invalid radio option, will return to default
 		);
 
 		$compare = array_replace( $defaults, $new, array(
