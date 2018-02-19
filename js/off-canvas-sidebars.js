@@ -322,6 +322,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		sidebarElements.each( function() {
 			var $this  = $( this ),
 				id     = $this.data( 'ocs-sidebar-id' ),
+				css_id = prefix + '-' + id;
 
 			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
 
@@ -340,8 +341,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 
 				// Toggle the slidebar with respect for the disable_over setting.
-				if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
-					controller.toggle( prefix + '-' + id );
+				if ( ocsOffCanvasSidebars._checkDisableOver( css_id ) ) {
+					controller.toggle( css_id );
 				}
 			} );
 
@@ -360,8 +361,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 
 				// Open the slidebar with respect for the disable_over setting.
-				if ( ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
-					controller.open( prefix + '-' + id );
+				if ( ocsOffCanvasSidebars._checkDisableOver( css_id ) ) {
+					controller.open( css_id );
 				}
 			} );
 
@@ -379,7 +380,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					return;
 				}
 
-				controller.close( prefix + '-' + id );
+				controller.close( css_id );
 			} );
 
 		} );
