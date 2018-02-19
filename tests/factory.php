@@ -61,11 +61,15 @@ class OCS_UnitTest_Factory {
 	}
 
 	static function load_admin() {
+		// Required to use the admin.
+		self::set_admin_user();
+
 		// Load the settings page.
 		include_once OCS_PLUGIN_DIR . 'includes/class-form.php';
 		include_once OCS_PLUGIN_DIR . 'includes/class-page.php';
 
 		self::$page = OCS_Off_Canvas_Sidebars_Page::get_instance();
+		self::$page->register_settings();
 	}
 
 	public static function get_instance() {
