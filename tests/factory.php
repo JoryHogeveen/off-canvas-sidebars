@@ -31,7 +31,16 @@ class OCS_UnitTest_Factory {
 	 */
 	public static $page = null;
 
-	protected function __construct() {}
+	protected function __construct() {
+	}
+
+	static function set_admin_user() {
+		wp_set_current_user( 1 );
+	}
+
+	static function set_visitor_user() {
+		wp_set_current_user( 0 );
+	}
 
 	static function load() {
 		static $done;
