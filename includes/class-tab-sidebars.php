@@ -415,7 +415,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				),
 			),
 
-			// @todo Auto handler for radio options with a custom v,
+			// @todo Auto handler for radio options with a custom field.
 			'size' => array(
 				'name'        => 'size',
 				'title'       => esc_attr__( 'Size', OCS_DOMAIN ),
@@ -446,14 +446,14 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				),
 				'default'  => 'default',
 			),
-			// @fixme See above. This makes sure the fields gets recogn,
+			// @fixme See above. This only makes sure the fields gets recognized.
 			'size_input' => array(
 				'name'    => 'size_input',
 				'hidden'  => true,
 				'default' => '',
 				'type'    => 'number',
 			),
-			// @fixme See above. This makes sure the fields gets recogn,
+			// @fixme See above. This only makes sure the fields gets recognized.
 			'size_input_type' => array(
 				'name'        => 'size_input_type',
 				'hidden'      => true,
@@ -524,7 +524,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
 			),
-			// @todo Auto handler for radio options with a custom v,
+			// @todo Auto handler for radio options with a custom field
 			'background_color' => array(
 				'name'        => 'background_color',
 				'title'       => esc_attr__( 'Background color', OCS_DOMAIN ),
@@ -535,7 +535,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 			),
-			// @fixme See above. This makes sure the fields gets recogn,
+			// @fixme See above. This only makes sure the fields gets recognized.
 			'background_color_type' => array(
 				'name'    => 'background_color_type',
 				'hidden'  => true,

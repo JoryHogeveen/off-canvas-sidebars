@@ -329,7 +329,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 *
 	 * @since   0.5
 	 * @param   mixed   $value
-	 * @return  int
+	 * @return  string
 	 */
 	public static function validate_text( $value ) {
 		if ( ! is_scalar( $value ) || empty( $value ) ) {
@@ -361,7 +361,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $value
 	 * @param   array   $options
 	 * @param   string  $default
-	 * @return  int
+	 * @return  string
 	 */
 	public static function validate_radio( $value, $options, $default ) {
 		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? strip_tags( $value ) : $default;
@@ -418,7 +418,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  string
 	 */
 	public static function remove_whitespace( $value ) {
-		return ( ! empty( $value ) ) ? str_replace( array( ' ' ), '', (string) $value ) : '';
+		return ( ! empty( $value ) ) ? str_replace( ' ', '', (string) $value ) : '';
 	}
 
 	/**
