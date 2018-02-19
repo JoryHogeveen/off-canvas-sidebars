@@ -232,6 +232,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		// Overwrite the old settings.
 		$data = $this->parse_input( $input );
 
+		// @todo Enhance saving validation.
+		if ( ! has_filter( 'ocs_settings_validate_input' ) || ! OCS_Off_Canvas_Sidebars_Page::get_instance()->get_request_tab() ) {
+			wp_die();
+		}
+
 		/**
 		 * Filter the parsed form data.
 		 * @since  0.5
