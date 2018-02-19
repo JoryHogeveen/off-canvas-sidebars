@@ -267,11 +267,15 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	public static function validate_fields( $data, $fields ) {
 
-		foreach ( $fields as $field ) {
+		foreach ( $fields as $field_key => $field ) {
 			$field = wp_parse_args( $field, array(
 				'validate' => true,
 				'type'     => 'text',
 			) );
+			if ( empty( $field['name'] ) ) {
+				unset( $fields[ $field_key ] );
+				continue;
+			}
 			$key = $field['name'];
 
 			if ( ! isset( $data[ $key ] ) || ! $field['validate'] ) {
