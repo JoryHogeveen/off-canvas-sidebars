@@ -34,7 +34,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	protected $general_labels = array();
 	protected $capability     = 'edit_theme_options';
 	protected $request_tab    = '';
-	protected $tab            = '';
+	protected $tab            = 'ocs-settings';
 	protected $tabs           = array();
 
 	/**
@@ -44,8 +44,12 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	private function __construct() {
 		// @codingStandardsIgnoreStart
-		$this->request_tab = ( isset( $_POST['ocs_tab'] ) ) ? $_POST['ocs_tab'] : '';
-		$this->tab         = ( isset( $_GET['tab'] ) ) ? $_GET['tab'] : 'ocs-settings';
+		if ( isset( $_POST['ocs_tab'] ) ) {
+			$this->set_request_tab( $_POST['ocs_tab'] );
+		}
+		if ( isset( $_GET['tab'] ) ) {
+			$this->set_current_tab( $_GET['tab'] );
+		}
 		// @codingStandardsIgnoreEnd
 		$this->plugin_key = off_canvas_sidebars()->get_plugin_key();
 		$this->register_tabs();
@@ -142,6 +146,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get the current tab instance.
+	 * @since   0.5
 	 * @return  OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_current_tab() {
@@ -150,10 +155,29 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get the tab instance for the form request handler.
+	 * @since   0.5
 	 * @return  OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_request_tab() {
 		return ( isset( $this->tabs[ $this->request_tab ] ) ) ? $this->tabs[ $this->request_tab ] : null;
+	}
+
+	/**
+	 * Set the current tab.
+	 * @since   0.5
+	 * @param   string  $tab
+	 */
+	public function set_current_tab( $tab ) {
+		$this->tab = (string) $tab;
+	}
+
+	/**
+	 * Set the tab for the form request handler.
+	 * @since   0.5
+	 * @param   string  $tab
+	 */
+	public function set_request_tab( $tab ) {
+		$this->request_tab = (string) $tab;
 	}
 
 	/**
