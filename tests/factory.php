@@ -89,7 +89,7 @@ class OCS_UnitTest_Factory {
 }
 
 if ( ! function_exists( 'array_replace' ) ) {
-	function array_replace( array &$array, array &$array1 ) {
+	function array_replace( array $array, array $array2 ) {
 		$args = func_get_args();
 		$count = func_num_args();
 
