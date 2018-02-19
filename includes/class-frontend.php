@@ -113,10 +113,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		do_action( 'ocs_container_before' );
 
 		$atts = array(
-			'ocs-site_close'           => ( $this->settings['site_close'] ) ? true : false,
-			'ocs-disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
-			'ocs-hide_control_classes' => ( $this->settings['hide_control_classes'] ) ? true : false,
-			'ocs-scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
+			'data-ocs-site_close'           => ( $this->settings['site_close'] ) ? true : false,
+			'data-ocs-disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
+			'data-ocs-hide_control_classes' => ( $this->settings['hide_control_classes'] ) ? true : false,
+			'data-ocs-scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
 		);
 
 		foreach ( $atts as $name => $value ) {
@@ -337,15 +337,15 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			esc_attr( $data['location'] ), // Location
 			esc_attr( $data['style'] ), // Animation style
 		);
-		$atts['ocs-sidebar-id'] = esc_attr( $sidebar_id );
+		$atts['data-ocs-sidebar-id'] = esc_attr( $sidebar_id );
 
 		// Overwrite global settings
 		if ( true === (bool) $data['overwrite_global_settings'] ) {
-			$atts['ocs-overwrite_global_settings'] = esc_attr( (int) $data['overwrite_global_settings'] );
-			$atts['ocs-site_close']                = esc_attr( (int) $data['site_close'] );
-			$atts['ocs-disable_over']              = esc_attr( (int) $data['disable_over'] );
-			$atts['ocs-hide_control_classes']      = esc_attr( (int) $data['hide_control_classes'] );
-			$atts['ocs-scroll_lock']               = esc_attr( (int) $data['scroll_lock'] );
+			$atts['data-ocs-overwrite_global_settings'] = esc_attr( (int) $data['overwrite_global_settings'] );
+			$atts['data-ocs-site_close']                = esc_attr( (int) $data['site_close'] );
+			$atts['data-ocs-disable_over']              = esc_attr( (int) $data['disable_over'] );
+			$atts['data-ocs-hide_control_classes']      = esc_attr( (int) $data['hide_control_classes'] );
+			$atts['data-ocs-scroll_lock']               = esc_attr( (int) $data['scroll_lock'] );
 		}
 
 		foreach ( $atts as $name => $value ) {

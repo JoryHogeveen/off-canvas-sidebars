@@ -95,9 +95,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				// Fallback/Overwrite to enable sidebar settings from available attributes.
 				} else {
 					var sidebarElement = $( '#' + sidebarId );
-					overwrite = sidebarElement.attr( 'ocs-overwrite_global_settings' );
+					overwrite = sidebarElement.attr( 'data-ocs-overwrite_global_settings' );
 					if ( overwrite ) {
-						setting = sidebarElement.attr( 'ocs-' + key );
+						setting = sidebarElement.attr( 'data-ocs-' + key );
 						if ( 'undefined' !== typeof setting ) {
 							return setting;
 						} else {
@@ -109,8 +109,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 			if ( ocsOffCanvasSidebars.hasOwnProperty( key ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 				return ocsOffCanvasSidebars[ key ];
-			} else {
-				setting = $( '#' + prefix + '-site' ).attr( 'ocs-' + key );
+			}
+			// Fallback/Overwrite to enable global settings from available attributes.
+			else {
+				setting = $( '#' + prefix + '-site' ).attr( 'data-ocs-' + key );
 				if ( 'undefined' !== typeof setting ) {
 					return setting;
 				}
@@ -318,8 +320,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			sidebarElements = $( '.' + prefix + '-slidebar' );
 
 		sidebarElements.each( function() {
-			var $this = $( this );
-			var id = $this.attr( 'ocs-sidebar-id' );
+			var $this  = $( this ),
+				id     = $this.data( 'ocs-sidebar-id' ),
 
 			ocsOffCanvasSidebars.setSidebarDefaultSettings( id );
 
@@ -431,7 +433,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					var scrollTop = $html.scrollTop();
 					// Subtract current scroll top.
 					$body.css( { 'top': '-=' + scrollTop } );
-					$html.attr( 'ocs-scroll-fixed', scrollTop );
+					$html.data( 'ocs-scroll-fixed', scrollTop );
 					$html.addClass( 'ocs-scroll-fixed' );
 				}
 			}
@@ -446,7 +448,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
 			if ( scrollTop ) {
-				scrollTop = parseInt( $html.attr( 'ocs-scroll-fixed' ), 10 );
+				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
 				// Append stored scroll top.
 				$body.css( { 'top': '+=' + scrollTop } );
 				$html.removeAttr( 'ocs-scroll-fixed' );
@@ -460,7 +462,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		var disableOver = function() {
 			var prefix = ocsOffCanvasSidebars.css_prefix;
 			sidebarElements.each( function() {
-				var id = $( this ).attr( 'ocs-sidebar-id' );
+				var id = $( this ).data( 'ocs-sidebar-id' );
 
 				if ( ! ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
 					if ( controller.isActiveSlidebar( prefix + '-' + id ) ) {
