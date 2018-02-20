@@ -234,7 +234,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 		// @todo Enhance saving validation.
 		if ( ! has_filter( 'ocs_settings_validate_input' ) || ! OCS_Off_Canvas_Sidebars_Page::get_instance()->get_request_tab() ) {
-			wp_die();
+			wp_die( __( 'Something went wrong, please try again', OCS_DOMAIN ) );
 		}
 
 		/**
