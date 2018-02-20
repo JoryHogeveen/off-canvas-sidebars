@@ -97,5 +97,9 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 
 		// All values should be parsed correctly.
 		$this->assertEquals( $compare, $settings->validate_form( $new ) );
+
+		// @todo Check compare with current (non-default) settings.
+		// @todo Change sidebar enabled. Use factory to set default sidebars?
+		// @todo More validation types.
 	}
 }
