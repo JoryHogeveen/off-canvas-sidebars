@@ -8,17 +8,14 @@
 
 class OCS_Settings_UnitTest extends WP_UnitTestCase {
 
-	static function ocs_set_general() {
+	static function ocs_set_tab( $tab ) {
 		OCS_UnitTest_Factory::load();
-
-		$page = OCS_UnitTest_Factory::$page;
-		$page->set_request_tab('ocs-settings');
-		$page->set_current_tab('ocs-settings');
+		OCS_UnitTest_Factory::load_admin( $tab );
 	}
 
-	function test_save_general() {
+	function test_save() {
 
-		self::ocs_set_general();
+		self::ocs_set_tab( 'ocs-settings' );
 		$settings = OCS_UnitTest_Factory::$settings;
 
 		$defaults = $settings->get_default_settings();

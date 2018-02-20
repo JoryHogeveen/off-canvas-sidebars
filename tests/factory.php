@@ -60,15 +60,10 @@ class OCS_UnitTest_Factory {
 
 		self::$settings = OCS_Off_Canvas_Sidebars_Settings::get_instance();
 
-		$admin = true; // @todo Frontend only tests?
-		if ( $admin ) {
-			self::load_admin();
-		}
-
 		$done = true;
 	}
 
-	static function load_admin() {
+	static function load_admin( $tab = '' ) {
 		// Required to use the admin.
 		self::set_admin_user();
 
@@ -77,6 +72,12 @@ class OCS_UnitTest_Factory {
 		include_once OCS_PLUGIN_DIR . 'includes/class-page.php';
 
 		self::$page = OCS_Off_Canvas_Sidebars_Page::get_instance();
+
+		if ( $tab ) {
+			self::$page->set_request_tab( $tab );
+			self::$page->set_current_tab( $tab );
+		}
+
 		self::$page->register_settings();
 	}
 
