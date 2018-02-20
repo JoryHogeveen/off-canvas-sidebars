@@ -422,6 +422,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'callback'    => 'sidebar_size',
 				'type'        => 'radio',
 				'description' => __( 'You can overwrite this with CSS', OCS_DOMAIN ),
+				'default'     => 'default',
 				'options'     => array(
 					'default' => array(
 						'name' => 'default',
@@ -444,7 +445,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 						'value' => 'custom',
 					),
 				),
-				'default'  => 'default',
 			),
 			// @fixme See above. This only makes sure the fields gets recognized.
 			'size_input' => array(
@@ -457,7 +457,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			'size_input_type' => array(
 				'name'        => 'size_input_type',
 				'hidden'      => true,
-				'default'     => 'px',
+				'default'     => '%',
 				'type'        => 'radio',
 				'options'     => array(
 					'px' => array(
@@ -478,6 +478,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'callback' => 'radio_option',
 				'type'     => 'radio',
 				'required' => true,
+				'default'  => 'push',
 				'options'  => array(
 					'push' => array(
 						'name' => 'push',
@@ -500,7 +501,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 						'value' => 'overlay',
 					),
 				),
-				'default'  => 'push',
 			),
 			'animation_speed' => array(
 				'name'        => 'animation_speed',
