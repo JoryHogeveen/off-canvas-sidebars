@@ -98,7 +98,34 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 		// All values should be parsed correctly.
 		$this->assertEquals( $compare, $settings->validate_form( $new ) );
 
-		// @todo Check compare with current (non-default) settings.
+		/**
+		 * Overwrite or keep current settings.
+		 */
+
+		$current = array_replace( $defaults, array(
+			'enable_frontend'       => 1,
+			'site_close'            => 1,
+			'link_close'            => 1,
+			'disable_over'          => '300',
+			'background_color_type' => 'color',
+			'background_color'      => '#123456',
+		) );
+
+		$settings->set_settings( $current );
+
+		$new = array(
+			'enable_frontend'               => 1,
+			'site_close'                    => 1,
+			'link_close'                    => 0,
+			'compatibility_position_fixed'  => 'legacy-css',
+			'wp_editor_shortcode_rendering' => 1,
+			'css_prefix'                    => 'test_ocs',
+		);
+
+		$compare = array_replace( $current, $new );
+
+		$this->assertEquals( $compare, $settings->validate_form( $new ) );
+
 		// @todo Change sidebar enabled. Use factory to set default sidebars?
 		// @todo More validation types.
 
@@ -114,6 +141,9 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 
 		$defaults = $settings->get_default_settings();
 		$defaults['db_version'] = off_canvas_sidebars()->get_db_version();
+
+		// Reset settings.
+		$settings->set_settings( $defaults );
 
 		$compare = $defaults;
 		$compare['sidebars'] = array(
@@ -218,5 +248,98 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 		);
 
 		$this->assertEquals( $compare, $settings->validate_form( $new ) );
+
+		/**
+		 * Overwrite or keep current settings.
+		 */
+
+		$current = array_replace( $defaults, array(
+			'enable_frontend'       => 1,
+			'site_close'            => 1,
+			'link_close'            => 1,
+			'disable_over'          => '300',
+			'background_color_type' => 'color',
+			'background_color'      => '#123456',
+			'sidebars'              => array(
+				'test' => array(
+					// All valid, non default values.
+					'enable'                    => 1,
+					'label'                     => 'Test',
+					'content'                   => 'menu',
+					'location'                  => 'right',
+					'style'                     => 'overlay',
+					'size'                      => 'large',
+					'size_input'                => '300',
+					'size_input_type'           => 'px',
+					'animation_speed'           => '5000',
+					'padding'                   => '25',
+					'background_color'          => '#123456',
+					'background_color_type'     => 'color',
+					// Global overwrites.
+					'overwrite_global_settings' => 1,
+					'site_close'                => 0,
+					'link_close'                => 0,
+					'disable_over'              => '500',
+					'hide_control_classes'      => 1,
+					'scroll_lock'               => 1,
+				),
+			),
+		) );
+
+		$settings->set_settings( $current );
+
+		$new = array(
+			'sidebars' => array(
+				'test' => array(
+					// All valid, non default values.
+					'enable'                    => 0,
+					'label'                     => 'Test rename',
+					'content'                   => 'menu',
+					'location'                  => 'left', // update
+					'style'                     => 'push', // update
+					'size'                      => 'large',
+					'size_input'                => '300',
+					'size_input_type'           => 'px',
+					'animation_speed'           => '5000',
+					'padding'                   => '25',
+					'background_color'          => '', // update
+					'background_color_type'     => 'color',
+					// Global overwrites.
+					'overwrite_global_settings' => 0, // update
+					'site_close'                => 1, // update
+					'link_close'                => 1, // update
+					'disable_over'              => '', // update
+					'hide_control_classes'      => 0, // update
+					'scroll_lock'               => 0, // update
+				),
+				'test_2' => array(
+					// All valid, non default values.
+					'enable'                    => 1,
+					'label'                     => 'Test 2',
+					'content'                   => 'menu',
+					'location'                  => 'right',
+					'style'                     => 'overlay',
+					'size'                      => 'large',
+					'size_input'                => '300',
+					'size_input_type'           => 'px',
+					'animation_speed'           => '5000',
+					'padding'                   => '25',
+					'background_color'          => '#123456',
+					'background_color_type'     => 'color',
+					// Global overwrites.
+					'overwrite_global_settings' => 1,
+					'site_close'                => 0,
+					'link_close'                => 0,
+					'disable_over'              => '500',
+					'hide_control_classes'      => 1,
+					'scroll_lock'               => 1,
+				),
+			),
+		);
+
+		$compare = array_replace( $current, $new );
+
+		$this->assertEquals( $compare, $settings->validate_form( $new ) );
+
 	}
 }
