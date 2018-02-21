@@ -272,18 +272,24 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	public static function validate_fields( $data, $fields ) {
 
+		$new_data = array();
+
 		foreach ( $fields as $field_key => $field ) {
 			$field = wp_parse_args( $field, array(
 				'validate' => true,
 				'type'     => 'text',
 			) );
 			if ( empty( $field['name'] ) ) {
-				unset( $fields[ $field_key ] );
 				continue;
 			}
 			$key = $field['name'];
 
-			if ( ! isset( $data[ $key ] ) || ! $field['validate'] ) {
+			if ( ! isset( $data[ $key ] ) ) {
+				continue;
+			}
+
+			if ( ! $field['validate'] ) {
+				$new_data[ $key ] = $data[ $key ];
 				continue;
 			}
 
@@ -322,11 +328,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			}
 
 			if ( is_callable( $callback ) && method_exists( $callback[0], $callback[1] ) ) {
-				$data[ $key ] = call_user_func_array( $callback, $args );
+				$new_data[ $key ] = call_user_func_array( $callback, $args );
 			}
 		}
 
-		return $data;
+		return $new_data;
 	}
 
 	/**
