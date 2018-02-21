@@ -254,6 +254,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		unset( $data['ocs_tab'] );
+		$data['db_version'] = off_canvas_sidebars()->get_db_version();
 
 		return $data;
 	}
