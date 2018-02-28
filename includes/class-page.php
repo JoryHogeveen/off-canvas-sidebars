@@ -88,15 +88,21 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		if ( 'appearance_page_' . $this->plugin_key !== $hook ) {
 			return;
 		}
+		// @todo Minified versions.
 
-		// Add the color picker css and script file.
-		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_script( 'postbox' );
-
-		// Add our own scripts.
-		wp_enqueue_style( 'off-canvas-sidebars-admin', OCS_PLUGIN_URL . '/css/off-canvas-sidebars-admin.css', array(), OCS_PLUGIN_VERSION );
-		wp_enqueue_script( 'off-canvas-sidebars-settings', OCS_PLUGIN_URL . '/js/off-canvas-sidebars-settings.js', array( 'jquery' ), OCS_PLUGIN_VERSION, true );
+		wp_enqueue_style(
+			'off-canvas-sidebars-admin',
+			OCS_PLUGIN_URL . 'css/off-canvas-sidebars-admin.css',
+			array( 'wp-color-picker' ),
+			OCS_PLUGIN_VERSION
+		);
+		wp_enqueue_script(
+			'off-canvas-sidebars-settings',
+			OCS_PLUGIN_URL . 'js/off-canvas-sidebars-settings.js',
+			array( 'jquery', 'postbox', 'wp-color-picker' ),
+			OCS_PLUGIN_VERSION,
+			true // load in footer.
+		);
 		wp_localize_script( 'off-canvas-sidebars-settings', 'ocsOffCanvasSidebarsSettings', array(
 			'general_key' => $this->general_key,
 			'plugin_key' => $this->plugin_key,
