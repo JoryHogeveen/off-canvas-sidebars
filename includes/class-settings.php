@@ -105,7 +105,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the plugin settings.
 	 *
 	 * @since   0.5
-	 * @param   string  $key
+	 * @param   string  $key  (optional) Get a single setting by key?
 	 * @return  array|null
 	 */
 	public function get_settings( $key = null ) {
@@ -297,7 +297,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			$args = array( $data[ $key ] );
 			$callback = null;
 
-			if ( is_string( $field['validate'] ) ) {
+			if ( is_callable( $field['validate'] ) || is_string( $field['validate'] ) ) {
 				$callback = $field['validate'];
 			} else {
 				switch ( $field['type'] ) {
@@ -315,11 +315,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 						$args[] = array_keys( $field['options'] );
 						$args[] = $field['default'];
 						break;
-					case 'text':
-						$callback = 'validate_text';
-						break;
 					case 'color':
 						$callback = 'validate_color';
+						break;
+					case 'text':
+					default:
+						$callback = 'validate_text';
 						break;
 				}
 			}
@@ -328,9 +329,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 				$callback = array( 'OCS_Off_Canvas_Sidebars_Settings', $callback );
 			}
 
-			if ( is_callable( $callback ) && method_exists( $callback[0], $callback[1] ) ) {
-				$new_data[ $key ] = call_user_func_array( $callback, $args );
-			}
+			$new_data[ $key ] = call_user_func_array( $callback, $args );
 		}
 
 		return $new_data;
