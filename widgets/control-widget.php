@@ -82,14 +82,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				'text'          => '', // Text to show.
 				'action'        => 'toggle', // toggle|open|close.
 				'element'       => 'div', // button|span|i|b|a|etc.
-				'class'         => array(), // Extra classes (space separated), also accepts an array of classes.
+				'class'         => '', // Extra classes (space separated), also accepts an array of classes.
 				//'icon'          => '', // Icon classes.
 				//'icon_location' => 'before', // before|after.
 				//'attr'          => array(), // An array of attribute keys and their values.
 			);
 
 			if ( $widget_data['button_class'] ) {
-				$trigger_args['class'][] = 'button';
+				$trigger_args['class'] .= ' button';
 			}
 			if ( $widget_data['show_icon'] ) {
 				if ( $widget_data['icon'] ) {
