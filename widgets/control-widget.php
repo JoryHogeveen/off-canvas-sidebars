@@ -69,32 +69,34 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				continue;
 			}
 			$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
-			$classes = array(
-				$prefix . '-trigger',
-				$prefix . '-toggle',
-				$prefix . '-toggle-' . $sidebar_id,
-			);
-			if ( $widget_data['button_class'] ) {
-				$classes[] = 'button';
-			}
 
-			echo '<div class="' . implode( ' ', $classes ) . '">';
-			echo '<div class="inner">';
+			$trigger_args = array(
+				'id'            => $sidebar_id,
+				'text'          => '', // Text to show.
+				'action'        => 'toggle', // toggle|open|close.
+				'element'       => 'div', // button|span|i|b|a|etc.
+				'class'         => array(), // Extra classes (space separated), also accepts an array of classes.
+				//'icon'          => '', // Icon classes.
+				//'icon_location' => 'before', // before|after.
+				//'attr'          => array(), // An array of attribute keys and their values.
+			);
+
+			if ( $widget_data['button_class'] ) {
+				$trigger_args['class'][] = 'button';
+			}
 			if ( $widget_data['show_icon'] ) {
 				if ( $widget_data['icon'] ) {
-					if ( strpos( $widget_data['icon'], 'dashicons' ) !== false ) {
-						wp_enqueue_style( 'dashicons' );
-					}
-					echo '<span class="icon ' . $widget_data['icon'] . '"></span>';
+					$trigger_args['icon'] = $widget_data['icon'];
 				} else {
-					wp_enqueue_style( 'dashicons' );
-					echo '<span class="icon dashicons dashicons-menu"></span>';
+					$trigger_args['icon'] = 'dashicons dashicons-menu';
 				}
+				$trigger_args['icon_location'] = $widget_data['icon_location'];
 			}
 			if ( $widget_data['show_label'] ) {
-				echo '<span class="label">' . $widget_data['label'] . '</span>';
+				$trigger_args['text'] = $widget_data['label'];
 			}
-			echo '</div></div>';
+
+			the_ocs_control_trigger( $trigger_args );
 		};
 
 		echo '</div></div>';
