@@ -23,6 +23,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	private $settings = array();
 	private $general_labels = array();
 	private $widget_setting = 'off-canvas-controls';
+	private $advanced_fields = array(
+		'action',
+		'element',
+		'class',
+		'attr',
+	);
 	private $optional_fields = array(
 		'icon_location',
 		'action',
@@ -195,7 +201,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 				continue;
 			}
-			$ocs[ $sidebar_id ] = $this->merge_settings( $ocs[ $sidebar_id ] );
 			$field_sidebar_id = $field_id . '_' . $sidebar_id;
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
 		?>
@@ -234,8 +239,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				</label>
 			</p>
 
+			<?php
+			$has_advanced = (bool) array_intersect_key( $this->remove_defaults( $ocs[ $sidebar_id ] ), array_flip( $this->advanced_fields ) );
+			?>
+
 			<p>
-				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_advanced_toggle" value="1" <?php checked( false, 1 ); ?>>
+				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_advanced_toggle" value="1" <?php checked( $has_advanced, true ); ?>>
 				<label for="<?php echo $field_sidebar_id; ?>_advanced_toggle"><?php esc_html_e( 'Advanced options', OCS_DOMAIN ); ?></label>
 			</p>
 			<div id="<?php echo $field_sidebar_id . '_advanced'; ?>">
@@ -473,7 +482,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * @param   array  $settings
 	 * @return  array  $settings
 	 */
-	function merge_settings( $settings ) {
+	public function merge_settings( $settings ) {
 		$defaults = array();
 
 		foreach ( $this->settings['sidebars'] as $key => $value ) {
