@@ -135,7 +135,7 @@ add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
  */
 function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 	if ( ! is_array( $args ) ) {
-		$attr = explode( ';', $args );
+		$attr = explode( ';', trim( $args, '; ' ) );
 		$args = array();
 		foreach ( $attr as $key => $value ) {
 			$attr[ $key ] = explode( ':', $value );
