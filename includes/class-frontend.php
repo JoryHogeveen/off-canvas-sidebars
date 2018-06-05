@@ -366,6 +366,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @todo Refactor to enable above checks?
 	 *
 	 * @since   0.4.0
+	 * @since   0.5.0  Add icon options.
 	 * @param   string  $sidebar_id
 	 * @param   array   $args        See API: the_ocs_control_trigger() for info.
 	 * @return  string
@@ -375,11 +376,13 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$sidebar_id = (string) $sidebar_id;
 
 		$defaults = array(
-			'text'    => '', // Text to show.
-			'action'  => 'toggle', // toggle|open|close.
-			'element' => 'button', // button|span|i|b|a|etc.
-			'class'   => array(), // Extra classes (space separated), also accepts an array of classes.
-			'attr'    => array(), // An array of attribute keys and their values.
+			'text'          => '', // Text to show.
+			'action'        => 'toggle', // toggle|open|close.
+			'element'       => 'button', // button|span|i|b|a|etc.
+			'class'         => array(), // Extra classes (space separated), also accepts an array of classes.
+			'icon'          => '', // Icon classes.
+			'icon_location' => 'before', // before|after.
+			'attr'          => array(), // An array of attribute keys and their values.
 		);
 		$args = array_merge( $defaults, $args );
 
@@ -438,6 +441,18 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				$value = implode( ' ', $value );
 			}
 			$attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( (string) $value ) . '"';
+		}
+
+		if ( $args['icon'] ) {
+			if ( strpos( $args['icon'], 'dashicons' ) !== false ) {
+				wp_enqueue_style( 'dashicons' );
+			}
+			$icon = '<span class="icon ' . $args['icon'] . '"></span>';
+			if ( 'after' === $args['icon_location'] ) {
+				$args['text'] .= ' ' . $icon;
+			} else {
+				$args['text'] = $icon . ' ' . $args['text'];
+			}
 		}
 
 		$return = '<' . $args['element'] . $attr;

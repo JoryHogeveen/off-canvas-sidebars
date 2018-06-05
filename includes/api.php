@@ -40,6 +40,7 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  *
  * @api
  * @since  0.4.0
+ * @since  0.5.0  Add icon options.
  * @param  array   $atts {
  *     Required array of arguments
  *     @type  string        $id       (Required) The off-canvas sidebar ID.
@@ -63,13 +64,15 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
 		}
 
 		$atts = shortcode_atts( array(
-			'id'      => false,
-			'text'    => '', // Text to show.
-			'action'  => 'toggle', // toggle|open|close
-			'element' => 'button', // button|span|i|b|a|etc.
-			'class'   => array(), // Extra classes, also accepts a string with classes separated with a space.
-			'attr'    => array(), // An array of attribute keys and their values.
-			'echo'    => true,
+			'id'            => false,
+			'text'          => '', // Text to show.
+			'action'        => 'toggle', // toggle|open|close
+			'element'       => 'button', // button|span|i|b|a|etc.
+			'class'         => array(), // Extra classes, also accepts a string with classes separated with a space.
+			'icon'          => '', // Icon classes.
+			'icon_location' => 'before', // before|after.
+			'attr'          => array(), // An array of attribute keys and their values.
+			'echo'          => true,
 		), $atts, 'ocs_trigger' );
 
 		$return = '';
