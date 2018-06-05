@@ -32,6 +32,31 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Converts an array of attributes to a HTML string format starting with a space.
+	 *
+	 * @todo Maybe create an API class.
+	 *
+	 * @since   0.4.0
+	 * @since   0.5.0  Moved from OCS_Off_Canvas_Sidebars_Form.
+	 * @static
+	 * @param   array   $array  Array to parse. (attribute => value pairs)
+	 * @return  string
+	 */
+	public static function parse_to_html_attr( $array ) {
+		$str = '';
+		if ( is_array( $array ) && ! empty( $array ) ) {
+			foreach ( $array as $attr => $value ) {
+				if ( is_array( $value ) ) {
+					$value = implode( ' ', $value );
+				}
+				$array[ $attr ] = esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
+			}
+			$str = implode( ' ', $array );
+		}
+		return $str;
+	}
+
+	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
 	 * @since   0.5.0

@@ -17,8 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
  * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
-abstract class OCS_Off_Canvas_Sidebars_Form
+abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * Frontend type selection
@@ -518,28 +519,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 			$attr[ $key ] .= ( ! empty( $value ) ) ? ' ' . $value : '';
 		}
 		return $attr;
-	}
-
-	/**
-	 * Converts an array of attributes to a HTML string format starting with a space.
-	 *
-	 * @since   0.4.0
-	 * @static
-	 * @param   array   $array  Array to parse. (attribute => value pairs)
-	 * @return  string
-	 */
-	public static function parse_to_html_attr( $array ) {
-		$str = '';
-		if ( is_array( $array ) && ! empty( $array ) ) {
-			foreach ( $array as $attr => $value ) {
-				if ( is_array( $value ) ) {
-					$value = implode( ' ', $value );
-				}
-				$array[ $attr ] = esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
-			}
-			$str = implode( ' ', $array );
-		}
-		return $str;
 	}
 
 } // End class().

@@ -451,7 +451,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 
-		$return = '<' . $args['element'] . OCS_Off_Canvas_Sidebars_Form::parse_to_html_attr( $attr );
+		$return = '<' . $args['element'] . ' ' . self::parse_to_html_attr( $attr );
 		if ( $singleton ) {
 			$return .= ' />';
 		} else {
