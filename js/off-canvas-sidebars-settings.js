@@ -225,7 +225,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		if ( 'ocs-shortcode' === tab.val() ) {
 
-			var fields = [ 'id', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
+			var fields = [ 'id', 'text', 'icon', 'icon_location', 'action', 'element', 'class', 'attr', 'nested' ];
 
 			for ( var i = 0, l = fields.length; i < l; i++ ) {
 				$( '#off_canvas_sidebars_options_' + fields[ i ] ).on( 'change keyup', function() {
@@ -298,6 +298,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle',
 				classes = prefix + '-trigger ' + prefix + '-' + action,
 				singleton = false,
+				text = field_data.text.val(),
+				icon = field_data.icon.val(),
 				html = '';
 
 			if ( field_data.id.val() ) {
@@ -313,13 +315,26 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 			if ( 'input' === element || 'img' === element ) {
 				singleton = true;
-				attributes.value = field_data.text.val();
+				attributes.value = text;
+			} else {
+				// Icons can not be used with singleton elements.
+				if ( icon ) {
+					icon = '<span class="icon ' + icon + '"></span>';
+					if ( text ) {
+						text = '<span class="label">' + text + '</span>';
+					}
+					if ( 'after' === field_data.icon_location.val() ) {
+						text += icon;
+					} else {
+						text = icon + text;
+					}
+				}
 			}
 
 			if ( singleton ) {
 				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>';
 			} else {
-				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>' + field_data.text.val() + '</' + element + '>';
+				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>' + text + '</' + element + '>';
 			}
 
 			$( '#ocs_shortcode_preview' ).html( html );

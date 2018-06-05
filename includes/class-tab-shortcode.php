@@ -117,6 +117,37 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 		) );
 
 		echo '</td></tr>';
+		echo '<tr><td>';
+
+		OCS_Off_Canvas_Sidebars_Form::text_option( array(
+			'name'        => 'icon',
+			'label'       => __( 'Icon', OCS_DOMAIN ),
+			'value'       => '',
+			'class'       => 'widefat',
+			// Translators: %s stands for <code>dashicons</code>.
+			'description' => __( 'The icon classes.', OCS_DOMAIN ) . ' ' . sprintf( __( 'Do not forget the base icon class like %s', OCS_DOMAIN ), '<code>dashicons</code>' ),
+			'multiline'   => false,
+		) );
+
+		echo '</td></tr>';
+		echo '<tr><td>';
+
+		OCS_Off_Canvas_Sidebars_Form::select_option( array(
+			'name' => 'icon_location',
+			'label' => __( 'Icon location', OCS_DOMAIN ),
+			'options' => array(
+				array(
+					'label' => __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
+					'value' => '',
+				),
+				array(
+					'label' => __( 'After', OCS_DOMAIN ),
+					'value' => 'after',
+				),
+			),
+		) );
+
+		echo '</td></tr>';
 		echo '</table></div></div>';
 
 		echo '<div id="section_shortcode_optionaloptions" class="stuffbox postbox postbox postbox-third">';
