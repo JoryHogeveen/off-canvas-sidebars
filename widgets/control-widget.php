@@ -183,17 +183,16 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 				continue;
 			}
-			$hidden = 'style="display:none;"';
 			$field_sidebar_id = $field_id . '_' . $sidebar_id;
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
 		?>
-		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo ( $counter ) ? $hidden : ''; ?>>
+		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane <?php echo ( $counter ) ? 'autohide-js' : ''; ?>">
 			<h4><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_show_label" name="<?php echo $field_sidebar_name . '[show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
 				<label for="<?php echo $field_sidebar_id; ?>_show_label"><?php esc_html_e( 'Show label', OCS_DOMAIN ); ?></label>
 			</p>
-			<p class="<?php echo $field_sidebar_id; ?>_label" <?php echo ( ! $ocs[ $sidebar_id ]['show_label'] ) ? $hidden : ''; ?>>
+			<p class="<?php echo $field_sidebar_id; ?>_label">
 				<label for="<?php echo $field_sidebar_id; ?>_label"><?php esc_html_e( 'Label text', OCS_DOMAIN ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_label" name="<?php echo $field_sidebar_name . '[label]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['label']; ?>">
 			</p>
@@ -201,12 +200,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_show_icon" name="<?php echo $field_sidebar_name . '[show_icon]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_icon'], 1 ); ?>>
 				<label for="<?php echo $field_sidebar_id; ?>_show_icon"><?php esc_html_e( 'Show icon', OCS_DOMAIN ); ?></label>
 			</p>
-			<p class="<?php echo $field_sidebar_id; ?>_icon" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
+			<p class="<?php echo $field_sidebar_id; ?>_icon">
 				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', OCS_DOMAIN ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_icon" name="<?php echo $field_sidebar_name . '[icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
-			<p class="<?php echo $field_sidebar_id; ?>_icon_location" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
 				<label for="<?php echo $field_sidebar_id; ?>_icon_location"><?php esc_html_e( 'Icon location', OCS_DOMAIN ); ?></label>
+			<p class="<?php echo $field_sidebar_id; ?>_icon_location">
 				<select id="<?php echo $field_sidebar_id; ?>_icon_location" name="<?php echo $field_sidebar_name . '[icon_location]'; ?>">
 					<option><?php echo __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
 					<option value="after" <?php selected( $ocs[ $sidebar_id ]['icon_location'], 'after' ); ?>><?php _e( 'After', OCS_DOMAIN ); ?></option>
@@ -221,7 +220,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				?>
 				</label>
 			</p>
-			<hr />
+			<hr class="autohide-js" />
 		</div>
 		<?php
 			$counter++;
@@ -287,6 +286,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				);
 				<?php } ?>
 
+				$( '#<?php echo $field_id; ?>_panes .autohide-js' ).hide();
 				$( '#<?php echo $field_id; ?>_tabs' ).show();
 				$( '#<?php echo $field_id; ?>_tabs .ocs-tab' ).each( function() {
 					var $this = $(this);
