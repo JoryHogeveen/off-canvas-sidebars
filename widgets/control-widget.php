@@ -304,6 +304,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				border: 1px solid #ccc;
 				background: #fafafa;
 			}
+			#<?php echo $field_id; ?>_panes h4 {
+				margin: .33em 0;;
+			}
 			#<?php echo $this->id; ?>-preview {
 				background: #f5f5f5;
 				border: 1px solid #eee;
