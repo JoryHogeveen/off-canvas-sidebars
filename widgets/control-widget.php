@@ -186,7 +186,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
 		?>
 		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane" <?php echo ( $counter ) ? $hidden : ''; ?>>
-			<h4 class=""><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
+			<h4><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_show_label" name="<?php echo $field_sidebar_name . '[show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
 				<label for="<?php echo $field_sidebar_id; ?>_show_label"><?php esc_html_e( 'Show label', OCS_DOMAIN ); ?></label>
@@ -202,6 +202,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			<p class="<?php echo $field_sidebar_id; ?>_icon" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
 				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', OCS_DOMAIN ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_icon" name="<?php echo $field_sidebar_name . '[icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
+			</p>
+			<p class="<?php echo $field_sidebar_id; ?>_icon_location" <?php echo ( ! $ocs[ $sidebar_id ]['show_icon'] ) ? $hidden : ''; ?>>
+				<label for="<?php echo $field_sidebar_id; ?>_icon_location"><?php esc_html_e( 'Icon location', OCS_DOMAIN ); ?></label>
+				<select id="<?php echo $field_sidebar_id; ?>_icon_location" name="<?php echo $field_sidebar_name . '[icon_location]'; ?>">
+					<option><?php echo __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+					<option value="after" <?php selected( $ocs[ $sidebar_id ]['icon_location'], 'after' ); ?>><?php _e( 'After', OCS_DOMAIN ); ?></option>
+				</select>
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_button_class" name="<?php echo $field_sidebar_name . '[button_class]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['button_class'], 1 ); ?>>
@@ -269,12 +276,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			( function( $ ) {
 				<?php foreach ( $ocs as $sidebar_id => $value ) { ?>
 				gocs_show_hide_options(
-					'<?php echo $field_id . '_' . $sidebar_id; ?>_show_label',
-					'<?php echo $field_id . '_' . $sidebar_id; ?>_label'
+					'#<?php echo $field_id . '_' . $sidebar_id; ?>_show_label',
+					'.<?php echo $field_id . '_' . $sidebar_id; ?>_label'
 				);
 				gocs_show_hide_options(
-					'<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon',
-					'<?php echo $field_id . '_' . $sidebar_id; ?>_icon'
+					'#<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon',
+					'.<?php echo $field_id . '_' . $sidebar_id; ?>_icon, .<?php echo $field_id . '_' . $sidebar_id; ?>_icon_location'
 				);
 				<?php } ?>
 
@@ -304,8 +311,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				} );
 
 				function gocs_show_hide_options( trigger, target ) {
-					var $trigger = $( '#' + trigger ),
-						$target = $( '.' + target );
+					var $trigger = $( trigger ),
+						$target = $( target );
 					if ( ! $trigger.is(':checked') ) {
 						$target.slideUp('fast');
 					}
@@ -350,10 +357,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		// checkboxes
 		foreach ( $new_ocs as $sidebar_id => $value ) {
-			$new_ocs[ $sidebar_id ]['enable']       = ( ! empty( $new_ocs[ $sidebar_id ]['enable'] ) )       ? 1 : 0;
-			$new_ocs[ $sidebar_id ]['show_label']   = ( ! empty( $new_ocs[ $sidebar_id ]['show_label'] ) )   ? 1 : 0;
-			$new_ocs[ $sidebar_id ]['show_icon']    = ( ! empty( $new_ocs[ $sidebar_id ]['show_icon'] ) )    ? 1 : 0;
-			$new_ocs[ $sidebar_id ]['button_class'] = ( ! empty( $new_ocs[ $sidebar_id ]['button_class'] ) ) ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['enable']        = ( ! empty( $new_ocs[ $sidebar_id ]['enable'] ) )         ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['show_label']    = ( ! empty( $new_ocs[ $sidebar_id ]['show_label'] ) )     ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['show_icon']     = ( ! empty( $new_ocs[ $sidebar_id ]['show_icon'] ) )      ? 1 : 0;
+			$new_ocs[ $sidebar_id ]['icon_location'] = ( 'after' === $new_ocs[ $sidebar_id ]['icon_location'] ) ? 'after' : '';
+			$new_ocs[ $sidebar_id ]['button_class']  = ( ! empty( $new_ocs[ $sidebar_id ]['button_class'] ) )   ? 1 : 0;
 		}
 
 		$new_ocs = array_map( array( $this, 'sanitize_value' ), $new_ocs );
@@ -388,12 +396,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		foreach ( $this->settings['sidebars'] as $key => $value ) {
 			$defaults[ $key ] = array(
-				'enable'       => 0,
-				'show_label'   => 0,
-				'label'        => 'menu',
-				'show_icon'    => 1,
-				'icon'         => false,
-				'button_class' => 1,
+				'enable'        => 0,
+				'show_label'    => 0,
+				'label'         => 'menu',
+				'show_icon'     => 1,
+				'icon'          => false,
+				'icon_location' => '',
+				'button_class'  => 1,
 			);
 		};
 
