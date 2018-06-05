@@ -15,49 +15,50 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.5
- * @version 0.5
+ * @since   0.5.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The name of this tab.
 	 * @var    string
-	 * @since  0.5
+	 * @since  0.5.0
 	 */
 	public $tab = '';
 
 	/**
 	 * The ID of this tab.
 	 * @var    string
-	 * @since  0.5
+	 * @since  0.5.0
 	 */
 	public $name = '';
 
 	/**
 	 * The setting key of this tab.
 	 * @var    string
-	 * @since  0.5
+	 * @since  0.5.0
 	 */
 	public $key = '';
 
 	/**
 	 * The fields for this tab.
 	 * @var    array
-	 * @since  0.5
+	 * @since  0.5.0
 	 */
 	protected $fields = array();
 
 	/**
 	 * The capability required of this tab.
 	 * @var    string
-	 * @since  0.5
+	 * @since  0.5.0
 	 */
 	public $capability = 'edit_theme_options';
 
 	/**
 	 * Class constructor.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @access  protected
 	 */
 	protected function __construct() {
@@ -71,7 +72,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Register this tab.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $tabs
 	 * @return  array  mixed
 	 */
@@ -87,8 +88,8 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Register settings.
-	 * @since   0.1
-	 * @since   0.5  Refactor into separate tab classes and methods
+	 * @since   0.1.0
+	 * @since   0.5.0  Refactor into separate tab classes and methods.
 	 */
 	public function register_settings() {
 		// @todo Enhance this...
@@ -98,7 +99,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Register setting section fields.
 	 *
-	 * @since   0.5  Refactor into separate tab classes and methods
+	 * @since   0.5.0  Refactor into separate tab classes and methods.
 	 * @param   array  $args {
 	 *     @type  string        $id
 	 *     @type  string        $title
@@ -132,7 +133,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Register a field for this tab.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $key
 	 * @param   array   $args {
 	 *     @type  string  $name      (required)
@@ -158,7 +159,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get a registered field.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $key
 	 * @return  array
 	 */
@@ -174,7 +175,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get a registered field by type.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $type
 	 * @param   bool    $return_keys  Return field keys only?
 	 * @return  array
@@ -194,7 +195,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get a registered field by section.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $section
 	 * @param   bool    $return_keys  Return field keys only?
 	 * @return  array
@@ -214,7 +215,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Check if this instance is the current page tab.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @return  bool
 	 */
 	public function is_current_tab() {
@@ -227,8 +228,8 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get the current active tab.
-	 * @since   0.5
-	 * @return  OCS_Off_Canvas_Sidebars_Tab instance
+	 * @since   0.5.0
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_current_tab() {
 		return OCS_Off_Canvas_Sidebars_Page::get_instance()->get_current_tab();
@@ -236,7 +237,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Check if this instance is the current request handler tab.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @return  bool
 	 */
 	public function is_request_tab() {
@@ -249,8 +250,8 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get the current request handler tab.
-	 * @since   0.5
-	 * @return  OCS_Off_Canvas_Sidebars_Tab instance
+	 * @since   0.5.0
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_request_tab() {
 		return OCS_Off_Canvas_Sidebars_Page::get_instance()->get_request_tab();
@@ -259,7 +260,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Validate input.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $input
 	 * @return  array
 	 */

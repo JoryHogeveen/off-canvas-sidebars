@@ -4,8 +4,8 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1
- * @version 0.5
+ * @since   0.1.0
+ * @version 0.5.0
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -43,7 +43,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		/**
 		 * Validate the disable_over setting ( using _getSetting() ).
 		 * Internal function, do not overwrite.
-		 * @since  0.3
+		 * @since  0.3.0
 		 * @param  {string}   sidebarId  The sidebar ID.
 		 * @return {boolean}  disableOver status.
 		 */
@@ -63,7 +63,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 *
 		 * Internal function, do not overwrite.
 		 *
-		 * @since  0.3
+		 * @since  0.3.0
 		 * @param  {string}               key        The setting key to look for.
 		 * @param  {string|boolean|null}  sidebarId  The sidebar ID.
 		 *                                           Pass `false` to check for an active slidebar.
@@ -213,7 +213,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		/**
 		 * Fix position issues for fixed elements on slidebar animations.
-		 * @since  0.4
+		 * @since  0.4.0
  		 */
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
 			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
@@ -292,7 +292,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	/**
 	 * Set the default settings for sidebars if they are not found.
-	 * @since  0.3
+	 * @since  0.3.0
 	 * @param  {string}  sidebarId  The sidebar ID.
 	 * @return {null}  Nothing.
 	 */
@@ -311,7 +311,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	/**
 	 * Setup automatic trigger handling.
-	 * @since  0.3
+	 * @since  0.3.0
 	 * @return {null}  Nothing.
 	 */
 	ocsOffCanvasSidebars.setupTriggers = function() {
@@ -328,7 +328,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 			/**
 			 * Toggle the sidebar.
-			 * @since  0.1
+			 * @since  0.1.0
 			 */
 			$document.on( 'touchend click', '.' + prefix + '-toggle-' + id, function( e ) {
 				// Stop default action and bubbling.
@@ -348,7 +348,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 			/**
 			 * Open the sidebar.
-			 * @since  0.3
+			 * @since  0.3.0
 			 */
 			$document.on( 'touchend click', '.' + prefix + '-open-' + id, function( e ) {
 				// Stop default action and bubbling.
@@ -368,7 +368,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 			/**
 			 * Close the sidebar.
-			 * @since  0.3
+			 * @since  0.3.0
 			 */
 			$document.on( 'touchend click', '.' + prefix + '-close-' + id, function( e ) {
 				// Stop default action and bubbling.
@@ -396,8 +396,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		/**
 		 * Optionally close the slidebar when clicking a link.
-		 * @since  0.2
-		 * @since  0.5  Check setting.
+		 * @since  0.2.0
+		 * @since  0.5.0  Check setting.
 		 */
 		$( 'a' ).not( '.' + prefix + '-trigger' ).on( 'touchend click', function () {
 			// Prevent touch+swipe.
@@ -494,7 +494,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	/**
 	 * Get all fixed elements within the canvas container.
-	 * @since  0.4
+	 * @since  0.4.0
 	 * @return {object}  A jQuery selection of fixed elements.
 	 */
 	ocsOffCanvasSidebars.getFixedElements = function() {
@@ -505,7 +505,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	/**
 	 * Automatically apply browser prefixes before setting CSS values.
-	 * @since  0.4
+	 * @since  0.4.0
 	 * @param  {object}         elem   The element.
 	 * @param  {string}         prop   The CSS property.
 	 * @param  {string|number}  value  The CSS property value.

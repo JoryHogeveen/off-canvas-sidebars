@@ -15,16 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1
- * @version 0.5
+ * @since   0.1.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Settings
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Settings
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
@@ -32,7 +33,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * The plugin settings.
 	 *
 	 * @var    array
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $settings = array();
 
@@ -40,7 +41,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Default settings.
 	 *
 	 * @var    array
-	 * @since  0.2
+	 * @since  0.2.0
 	 */
 	protected $default_settings = array(
 		'db_version'                    => '0',
@@ -66,7 +67,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Default sidebar settings.
 	 *
 	 * @var    array
-	 * @since  0.2
+	 * @since  0.2.0
 	 */
 	protected $default_sidebar_settings = array(
 		'enable'                    => 0,
@@ -93,8 +94,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Class constructor.
 	 *
-	 * @since   0.1
-	 * @since   0.3  Private constructor.
+	 * @since   0.1.0
+	 * @since   0.3.0  Private constructor.
 	 * @access  private
 	 */
 	private function __construct() {
@@ -104,7 +105,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Get the plugin settings.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $key  (optional) Get a single setting by key?
 	 * @return  array|null
 	 */
@@ -118,7 +119,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Returns the default settings.
 	 *
-	 * @since   0.2
+	 * @since   0.2.0
 	 * @return  array
 	 */
 	public function get_default_settings() {
@@ -128,7 +129,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Returns the default sidebar_settings.
 	 *
-	 * @since   0.2
+	 * @since   0.2.0
 	 * @return  array
 	 */
 	public function get_default_sidebar_settings() {
@@ -138,7 +139,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Store the settings in the database.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $settings
 	 */
 	public function update_settings( $settings ) {
@@ -149,8 +150,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Merge database plugin settings with default settings.
 	 *
-	 * @since   0.1
-	 * @since   0.5  Renamed from self::get_settings()
+	 * @since   0.1.0
+	 * @since   0.5.0  Renamed from `self::get_settings()`.
 	 * @param   array  $settings
 	 */
 	public function set_settings( $settings ) {
@@ -168,7 +169,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Validate setting keys.
 	 *
-	 * @since   0.2
+	 * @since   0.2.0
 	 * @param   array  $settings
 	 * @param   array  $defaults
 	 * @return  array
@@ -191,7 +192,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Parses post values, checks all values with the current existing data.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @param   array  $input
 	 * @return  array  $output
 	 */
@@ -201,7 +202,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 		/**
 		 * Filter the form input data before validation with defaults.
-		 * @since  0.5
+		 * @since  0.5.0
 		 * @param  array  $input    New form input.
 		 * @param  array  $current  Current settings.
 		 * @return array
@@ -224,7 +225,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Validates post values.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @param   array  $input
 	 * @return  array  $data
 	 */
@@ -239,7 +240,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 		/**
 		 * Filter the parsed form data.
-		 * @since  0.5
+		 * @since  0.5.0
 		 * @param  array  $data   Parsed input data.
 		 * @param  array  $input  Original input.
 		 * @return array
@@ -266,7 +267,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $data
 	 * @param   array  $fields
 	 * @return  array
@@ -338,7 +339,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Validates text values, used by validate_input().
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   mixed   $value
 	 * @return  string
 	 */
@@ -353,7 +354,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Validates checkbox values, used by validate_input().
 	 *
 	 * @since   0.1.2
-	 * @since   0.5     Optional $key parameter.
+	 * @since   0.5.0   Optional $key parameter.
 	 * @param   mixed   $value
 	 * @param   string  $key
 	 * @return  int
@@ -368,7 +369,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Validates radio values against the possible options.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @param   string  $value
 	 * @param   array   $options
 	 * @param   string  $default
@@ -381,8 +382,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Validates id values, used by validate_input.
 	 *
-	 * @since   0.2
-	 * @since   0.3  Convert to lowercase and convert spaces to dashes before preg_replace().
+	 * @since   0.2.0
+	 * @since   0.3.0  Convert to lowercase and convert spaces to dashes before `preg_replace()`.
 	 * @param   string  $value
 	 * @return  string
 	 */
@@ -404,7 +405,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Validates hex color values, used by validate_input().
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $value
 	 * @return  string
 	 */
@@ -424,7 +425,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Remove whitespace.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @param   mixed  $value
 	 * @return  string
 	 */
@@ -435,7 +436,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Updates the existing widgets when a sidebar ID changes.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @param   string  $old_id
 	 * @param   string  $new_id
 	 */
@@ -456,9 +457,9 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Settings
+	 * @return  \OCS_Off_Canvas_Sidebars_Settings
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

@@ -15,15 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.5
- * @version 0.5
+ * @since   0.5.0
+ * @version 0.5.0
  */
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * Get the plugin settings.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $key
 	 * @return  mixed
 	 */
@@ -34,7 +34,7 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @access  public
 	 * @return  string
 	 */
@@ -45,9 +45,8 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Magic method to keep the object from being cloned.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @access  public
-	 * @return  void
 	 */
 	public function __clone() {
 		_doing_it_wrong(
@@ -60,9 +59,8 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Magic method to keep the object from being unserialized.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @access  public
-	 * @return  void
 	 */
 	public function __wakeup() {
 		_doing_it_wrong(
@@ -75,7 +73,7 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Magic method to prevent a fatal error when calling a method that doesn't exist.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @access  public
 	 * @param   string  $method
 	 * @param   array   $args

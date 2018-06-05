@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.4
+ * @version 0.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Echos one, multiple or all OCS sidebars.
  *
  * @api
- * @since  0.3
+ * @since  0.3.0
  * @param  string|array  $sidebars  (Optional) The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
  */
 function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
@@ -39,7 +39,7 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * Output a trigger element for off-canvas sidebars.
  *
  * @api
- * @since  0.4
+ * @since  0.4.0
  * @param  array   $atts {
  *     Required array of arguments
  *     @type  string        $id       (Required) The off-canvas sidebar ID.
@@ -95,7 +95,7 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
  * Example 2 (nested shortcode with some options:
  * [ocs_trigger id="right" attr="type:button;alt:Yay!!"]My trigger button text[/ocs_trigger]
  *
- * @since  0.4
+ * @since  0.4.0
  * @see    the_ocs_control_trigger() for detailed info.
  * @param  array   $atts
  * @param  string  $content  (Optional) HTML/text string.
@@ -140,8 +140,8 @@ add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
  *
  * Returns the main instance of OCS_Off_Canvas_Sidebars_Frontend to prevent the need to use globals.
  *
- * @since   0.3
- * @return  OCS_Off_Canvas_Sidebars_Frontend
+ * @since   0.3.0
+ * @return  \OCS_Off_Canvas_Sidebars_Frontend
  */
 function off_canvas_sidebars_frontend() {
 	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Frontend', 'get_instance' ) ) ) {
@@ -155,8 +155,8 @@ function off_canvas_sidebars_frontend() {
  *
  * Returns the main instance of OCS_Off_Canvas_Sidebars_Settings to prevent the need to use globals.
  *
- * @since   0.5
- * @return  OCS_Off_Canvas_Sidebars_Settings
+ * @since   0.5.0
+ * @return  \OCS_Off_Canvas_Sidebars_Settings
  */
 function off_canvas_sidebars_settings() {
 	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Settings', 'get_instance' ) ) ) {

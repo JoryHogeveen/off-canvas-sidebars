@@ -15,24 +15,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.5
- * @version 0.5
+ * @since   0.5.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Sidebars_Tab
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Tab_Importexport
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Tab_Importexport
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
 	/**
-	 * @since   0.1
-	 * @since   0.3  Private constructor.
-	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access  private
+	 * @since   0.1.0
+	 * @since   0.3.0  Private constructor.
+	 * @since   0.5.0  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  protected
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-importexport';
@@ -43,7 +44,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Initialize this tab.
-	 * @since  1.5
+	 * @since  1.5.0
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );
@@ -55,8 +56,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Register settings.
-	 * @since   0.1
-	 * @since   0.5  Refactor into separate tab classes and methods
+	 * @since   0.1.0
+	 * @since   0.5.0  Refactor into separate tab classes and methods
 	 */
 	public function register_settings() {
 		//parent::register_settings();
@@ -65,7 +66,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	}
 
 	/**
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @return  string
 	 */
 	public function ocs_page_form_action() {
@@ -74,7 +75,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Tab content.
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	public function tab_content() {
 		$export_link = add_query_arg( 'action', 'export' );
@@ -98,7 +99,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Import/Export handler.
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function maybe_importexport_settings() {
 		static $done;
@@ -208,9 +209,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Tab_Importexport
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab_Importexport
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

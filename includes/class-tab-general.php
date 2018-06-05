@@ -15,25 +15,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.5
- * @version 0.5
+ * @since   0.5.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_Tab
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Tab_General
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Tab_General
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
 	/**
 	 * Class constructor.
-	 * @since   0.1
-	 * @since   0.3  Private constructor.
-	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access  private
+	 * @since   0.1.0
+	 * @since   0.3.0  Private constructor.
+	 * @since   0.5.0  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  protected
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-settings';
@@ -46,7 +47,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Initialize this tab.
-	 * @since   1.5
+	 * @since   1.5.0
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
@@ -54,7 +55,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Before form fields.
-	 * @since   1.5
+	 * @since   1.5.0
 	 */
 	public function ocs_page_form_before() {
 		echo '<p>';
@@ -70,8 +71,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Register settings.
-	 * @since   0.1
-	 * @since   0.5  Refactor into separate tab classes and methods
+	 * @since   0.1.0
+	 * @since   0.5.0  Refactor into separate tab classes and methods.
 	 */
 	public function register_settings() {
 		parent::register_settings();
@@ -104,7 +105,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Parses general post values, checks all values with the current existing data.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $input  Form input.
 	 * @return  array
 	 */
@@ -122,7 +123,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	}
 
 	/**
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $data
 	 * @return  array
 	 */
@@ -151,7 +152,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	protected function get_tab_fields() {
 
@@ -376,9 +377,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Tab_General
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab_General
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

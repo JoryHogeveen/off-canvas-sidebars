@@ -15,16 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1
- * @version 0.5
+ * @since   0.1.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Frontend
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Frontend
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
@@ -32,7 +33,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 	/**
 	 * Class constructor.
-	 * @since  0.3  private constructor
+	 * @since  0.3.0  Private constructor.
 	 * @access private
 	 */
 	private function __construct() {
@@ -54,7 +55,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Add classes to the body
 	 *
-	 * @since   1.4
+	 * @since   1.4.0
 	 * @param   array  $classes
 	 * @return  array
 	 */
@@ -68,8 +69,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Add default actions
 	 *
-	 * @since   0.1
-	 * @return  void
+	 * @since   0.1.0
 	 */
 	private function default_actions() {
 
@@ -90,26 +90,26 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$before_hook = trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
 		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
 
-		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition
-		add_action( $after_hook,  array( $this, 'after_site' ), 999999999 ); // enforce last addition
-		add_action( $after_hook,  array( $this, 'do_sidebars' ), 999999999 ); // enforce last addition
+		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition.
+		add_action( $after_hook,  array( $this, 'after_site' ), 999999999 ); // enforce last addition.
+		add_action( $after_hook,  array( $this, 'do_sidebars' ), 999999999 ); // enforce last addition.
 
 		/* EXPERIMENTAL */
-		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition
-		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition
+		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
+		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition.
 	}
 
 	/**
 	 * before_site action hook
 	 *
-	 * @since   0.1
-	 * @since   0.2    Add canvas attribute (Slidebars 2.0)
-	 * @since   0.2.1  Add actions
-	 * @return  void
+	 * @since   0.1.0
+	 * @since   0.2.0  Add canvas attribute (Slidebars 2.0).
+	 * @since   0.2.1  Add actions.
+	 * @access  public
 	 */
 	public function before_site() {
 
-		// Add content before the site container
+		// Add content before the site container.
 		do_action( 'ocs_container_before' );
 
 		$atts = array(
@@ -128,7 +128,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		echo '<div id="' . $this->settings['css_prefix'] . '-site" canvas="container" ' . implode( ' ', $atts ) . '>';
 
-		// Add content before other content in the site container
+		// Add content before other content in the site container.
 		do_action( 'ocs_container_inner_before' );
 	}
 
@@ -136,12 +136,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * after_site action hook
 	 *
 	 * @since   0.1
-	 * @since   0.2.1  Add actions
-	 * @return  void
+	 * @since   0.2.1  Add actions.
+	 * @access  public
 	 */
 	public function after_site() {
 
-		// Add content after other content in the site container
+		// Add content after other content in the site container.
 		do_action( 'ocs_container_inner_after' );
 
 		if ( 'jquery' !== $this->settings['frontend_type'] ) {
@@ -152,12 +152,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * EXPERIMENTAL: Not used in this version
+	 * EXPERIMENTAL: Not used in this version.
 	 *
-	 * after_site action hook for scripts
+	 * after_site action hook for scripts.
 	 *
-	 * @since   0.1
-	 * @return  void
+	 * @since   0.1.0
+	 * @access  public
 	 */
 	public function after_site_script() {
 		if ( ! is_admin() ) {
@@ -172,10 +172,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Echo all sidebars
+	 * Echo all sidebars.
 	 *
-	 * @since   0.3
-	 * @return  void
+	 * @since   0.3.0
 	 * @access  public
 	 */
 	public function do_sidebars() {
@@ -189,10 +188,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Echos a sidebar
 	 *
-	 * @since   0.1
-	 * @param   string  $sidebar_id
-	 * @return  void
+	 * @since   0.1.0
 	 * @access  public
+	 * @param   string  $sidebar_id
 	 */
 	public function do_sidebar( $sidebar_id ) {
 		if ( ! empty( $this->settings['sidebars'][ $sidebar_id ] ) ) {
@@ -208,12 +206,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			/**
 			 * Action to add content before the default sidebar content
 			 *
-			 * @since 0.3
+			 * @since 0.3.0
 			 *
-			 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+			 * @see  \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings
 			 *
-			 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
-			 * @param  array  $sidebar_data  The sidebar settings
+			 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+			 * @param  array   $sidebar_data  The sidebar settings.
 			 */
 			do_action( 'ocs_custom_content_sidebar_before', $sidebar_id, $sidebar_data );
 
@@ -222,7 +220,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				case 'sidebar':
 					/**
 					 * Sidebar args are set when registering.
-					 * @see  OCS_Off_Canvas_Sidebars::register_sidebars()
+					 * @see  \OCS_Off_Canvas_Sidebars::register_sidebars()
 					 */
 					if ( 'genesis' === get_template() ) {
 						genesis_widget_area( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
@@ -243,20 +241,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 					 *
 					 * Please note that the theme_location property will be overwritten!
 					 *
-					 * @since 0.3
+					 * @since 0.3.0
 					 *
 					 * @see https://developer.wordpress.org/reference/functions/wp_nav_menu/
-					 * @see OCS_Off_Canvas_Sidebars::$default_sidebar_settings for the sidebar settings.
+					 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 					 *
-					 * @param  array  $args          The wp_nav_menu() arguments.
-					 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-					 * @param  array  $sidebar_data  The sidebar settings.
+					 * @param  array   $args          The wp_nav_menu() arguments.
+					 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+					 * @param  array   $sidebar_data  The sidebar settings.
 					 */
 					apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
 
 					// Force the set theme location.
 					$args['theme_location'] = 'off-canvas-' . $sidebar_id;
-					// Force echo
+					// Force echo.
 					$args['echo'] = true;
 
 					wp_nav_menu( $args );
@@ -266,14 +264,14 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				case 'action':
 				default:
 					/**
-					 * Action to hook into the sidebar content
+					 * Action to hook into the sidebar content.
 					 *
-					 * @since 0.3
+					 * @since 0.3.0
 					 *
-					 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+					 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 					 *
-					 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
-					 * @param  array  $sidebar_data  The sidebar settings
+					 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+					 * @param  array   $sidebar_data  The sidebar settings.
 					 */
 					do_action( 'ocs_custom_content_sidebar_' . $sidebar_id, $sidebar_id, $sidebar_data );
 
@@ -281,14 +279,14 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 
 			/**
-			 * Action to add content after the default sidebar content
+			 * Action to add content after the default sidebar content.
 			 *
-			 * @since 0.3
+			 * @since 0.3.0
 			 *
-			 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+			 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 			 *
-			 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
-			 * @param  array  $sidebar_data  The sidebar settings
+			 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+			 * @param  array   $sidebar_data  The sidebar settings.
 			 */
 			do_action( 'ocs_custom_content_sidebar_after', $sidebar_id, $sidebar_data );
 
@@ -299,8 +297,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Get sidebar attributes
 	 *
-	 * @since   0.1
-	 * @since   0.3  Overwrite global setting attributes
+	 * @since   0.1.0
+	 * @since   0.3.0  Overwrite global setting attributes.
 	 * @param   string  $sidebar_id
 	 * @param   array   $data
 	 * @return  string
@@ -319,27 +317,27 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$atts['class'][] = 'ocs-style-' . esc_attr( $data['style'] );
 
 		/**
-		 * Filter the classes for a sidebar
+		 * Filter the classes for a sidebar.
 		 *
-		 * @since  0.3
+		 * @since  0.3.0
 		 *
-		 * @see OCS_Off_Canvas_Sidebars->default_sidebar_settings for the sidebar settings
+		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 		 *
 		 * @param  array  $classes       Classes
-		 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
-		 * @param  array  $sidebar_data  The sidebar settings
+		 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+		 * @param  array  $sidebar_data  The sidebar settings.
 		 */
 		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar_id, $data );
 
 		// Slidebars 2.0
 		$atts['off-canvas'] = array(
-			$prefix . '-' . esc_attr( $sidebar_id ), // ID
-			esc_attr( $data['location'] ), // Location
-			esc_attr( $data['style'] ), // Animation style
+			$prefix . '-' . esc_attr( $sidebar_id ), // ID.
+			esc_attr( $data['location'] ), // Location.
+			esc_attr( $data['style'] ), // Animation style.
 		);
 		$atts['data-ocs-sidebar-id'] = esc_attr( $sidebar_id );
 
-		// Overwrite global settings
+		// Overwrite global settings.
 		if ( true === (bool) $data['overwrite_global_settings'] ) {
 			$atts['data-ocs-overwrite_global_settings'] = esc_attr( (int) $data['overwrite_global_settings'] );
 			$atts['data-ocs-site_close']                = esc_attr( (int) $data['site_close'] );
@@ -361,15 +359,15 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Generate a trigger element
+	 * Generate a trigger element.
 	 *
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @param   string  $sidebar_id
-	 * @param   array   $args  see API: the_ocs_control_trigger() for info
+	 * @param   array   $args        See API: the_ocs_control_trigger() for info.
 	 * @return  string
 	 */
 	public function do_control_trigger( $sidebar_id, $args = array() ) {
@@ -377,11 +375,11 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$sidebar_id = (string) $sidebar_id;
 
 		$defaults = array(
-			'text'    => '', // Text to show
-			'action'  => 'toggle', // toggle|open|close
+			'text'    => '', // Text to show.
+			'action'  => 'toggle', // toggle|open|close.
 			'element' => 'button', // button|span|i|b|a|etc.
-			'class'   => array(), // Extra classes (space separated), also accepts an array of classes
-			'attr'    => array(), // An array of attribute keys and their values
+			'class'   => array(), // Extra classes (space separated), also accepts an array of classes.
+			'attr'    => array(), // An array of attribute keys and their values.
 		);
 		$args = array_merge( $defaults, $args );
 
@@ -391,7 +389,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		$singleton = false;
 
-		// Is it a singleton element? Add the text to the attributes
+		// Is it a singleton element? Add the text to the attributes.
 		if ( in_array( $args['element'], array( 'br', 'hr', 'img', 'input' ), true ) ) {
 			$singleton = true;
 			if ( 'img' === $args['element'] && empty( $args['attr']['alt'] ) ) {
@@ -408,7 +406,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 		foreach ( $args['attr'] as $key => $value ) {
 			if ( 'class' === $key ) {
-				// Add our own classes
+				// Add our own classes.
 				$ocs_classes = array(
 					$this->settings['css_prefix'] . '-trigger',
 					$this->settings['css_prefix'] . '-' . $args['action'],
@@ -423,7 +421,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 					}
 				}
 
-				// Optionally add extra classes
+				// Optionally add extra classes.
 				if ( ! empty( $args['class'] ) ) {
 					if ( ! is_array( $args['class'] ) ) {
 						$args['class'] = explode( ' ', $args['class'] );
@@ -453,12 +451,11 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Add necessary scripts and styles
+	 * Add necessary scripts and styles.
 	 *
-	 * @since   0.1
-	 * @since   0.2    Add our own scripts and styles + localize them
-	 * @since   0.2.2  Add FastClick library
-	 * @return  void
+	 * @since   0.1.0
+	 * @since   0.2.0  Add our own scripts and styles + localize them.
+	 * @since   0.2.2  Add FastClick library.
 	 */
 	public function add_styles_scripts() {
 		// @todo Validate and use minified files
@@ -500,10 +497,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Add necessary inline scripts
+	 * Add necessary inline scripts.
 	 *
-	 * @since   0.1
-	 * @return  void
+	 * @since   0.1.0
 	 */
 	public function add_inline_scripts() {
 		if ( ! is_admin() ) {
@@ -516,14 +512,13 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Add inline styles
+	 * Add inline styles.
 	 *
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.1
-	 * @return  void
+	 * @since   0.1.0
 	 */
 	public function add_inline_styles() {
 		if ( ! is_admin() ) {
@@ -592,9 +587,9 @@ foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Frontend
+	 * @return  \OCS_Off_Canvas_Sidebars_Frontend
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -603,4 +598,4 @@ foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 		return self::$_instance;
 	}
 
-} // end class
+} // End class().

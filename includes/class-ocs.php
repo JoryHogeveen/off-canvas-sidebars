@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1
- * @version 0.5
+ * @since   0.1.0
+ * @version 0.5.0
  */
 final class OCS_Off_Canvas_Sidebars
 {
@@ -32,7 +32,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Plugin version.
 	 *
 	 * @var    string
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $version = OCS_PLUGIN_VERSION;
 
@@ -40,7 +40,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Database version.
 	 *
 	 * @var    string
-	 * @since  0.2
+	 * @since  0.2.0
 	 */
 	protected $db_version = '0';
 
@@ -48,7 +48,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * User ignore nag key.
 	 *
 	 * @var    string
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $noticeKey = 'ocs_ignore_theme_compatibility_notice';
 
@@ -56,7 +56,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Current user object.
 	 *
 	 * @var    object
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $curUser = false;
 
@@ -64,7 +64,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Enable functionalities?
 	 *
 	 * @var    bool
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $enable = false;
 
@@ -72,7 +72,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Plugin key.
 	 *
 	 * @var    string
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $plugin_key = 'off-canvas-sidebars-settings';
 
@@ -80,7 +80,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Plugin general settings key, also used as option key.
 	 *
 	 * @var    string
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $general_key = 'off_canvas_sidebars_options';
 
@@ -88,14 +88,14 @@ final class OCS_Off_Canvas_Sidebars
 	 * Plugin settings.
 	 *
 	 * @var    array
-	 * @since  0.1
+	 * @since  0.1.0
 	 */
 	protected $general_labels = array();
 
 	/**
 	 * Init function to register plugin hook.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  private
 	 */
 	private function __construct() {
@@ -131,7 +131,7 @@ final class OCS_Off_Canvas_Sidebars
 
 		} else {
 
-			// Added for possible use in future
+			// Added for possible use in future.
 			add_action( 'admin_notices', array( $this, 'compatibility_notice' ) );
 			add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'ignore_compatibility_notice' ) );
 		}
@@ -140,8 +140,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Init function/action to check current user, load necessary data and classes, register hooks.
 	 *
-	 * @return  void
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function init() {
 		// Get the current user.
@@ -177,7 +176,7 @@ final class OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Register widgets.
-	 * @since  0.4
+	 * @since  0.4.0
 	 */
 	public function widgets_init() {
 		register_widget( 'OCS_Off_Canvas_Sidebars_Control_Widget' );
@@ -187,8 +186,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Add notice when theme is not compatible.
 	 * Checks for version in the notice ignore meta value. If the version is the same (user has clicked ignore), then hide it.
 	 *
-	 * @return  void
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function compatibility_notice() {
 		if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
@@ -206,7 +204,7 @@ final class OCS_Off_Canvas_Sidebars
 	 *
 	 * Store format: `boolean`
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function ignore_compatibility_notice() {
 		update_user_meta( $this->curUser->ID, $this->noticeKey, $this->version );
@@ -258,7 +256,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Returns the plugin key.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @return  string
 	 */
 	public function get_plugin_key() {
@@ -268,7 +266,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Returns the general key (plugin settings).
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @return  string
 	 */
 	public function get_general_key() {
@@ -278,8 +276,8 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Returns the general labels.
 	 *
-	 * @since   0.1
-	 * @since   0.5  Key parameter.
+	 * @since   0.1.0
+	 * @since   0.5.0  `$key` parameter.
 	 * @param   string  $key  (optional) The label key.
 	 * @return  array|string
 	 */
@@ -301,7 +299,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Returns a sidebar key based on its label.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @param   string  $label
 	 * @return  string  $key
 	 */
@@ -318,8 +316,8 @@ final class OCS_Off_Canvas_Sidebars
 	 * Checks if an off-canvas sidebar is enabled.
 	 * If no $id parameter is passed it will check if any off-canvas sidebar is enabled.
 	 *
-	 * @since   0.1
-	 * @since   0.5  Optional ID parameter
+	 * @since   0.1.0
+	 * @since   0.5.0  Optional ID parameter.
 	 * @param   string  $id  Sidebar ID.
 	 * @return  bool
 	 */
@@ -340,8 +338,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * Register slidebar sidebars.
 	 * Also checks if theme is based on the Genesis Framework.
 	 *
-	 * @since   0.1
-	 * @return  void
+	 * @since   0.1.0
 	 */
 	public function register_sidebars() {
 		$sidebars = $this->get_sidebars();
@@ -367,18 +364,18 @@ final class OCS_Off_Canvas_Sidebars
 					 *
 					 * Please note that the ID will be overwritten!
 					 *
-					 * @since 0.3
+					 * @since 0.3.0
 					 *
-					 * @see https://codex.wordpress.org/Function_Reference/register_sidebar
-					 * @see $default_sidebar_settings for the sidebar settings.
+					 * @see  https://codex.wordpress.org/Function_Reference/register_sidebar
+					 * @see  OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 					 *
-					 * @param  array  $args          The register_sidebar() arguments
-					 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars
-					 * @param  array  $sidebar_data  The sidebar settings
+					 * @param  array  $args          The register_sidebar() arguments.
+					 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+					 * @param  array  $sidebar_data  The sidebar settings.
 					 */
 					$args = apply_filters( 'ocs_register_sidebar_args', $args, $sidebar_id, $sidebar_data );
 
-					// Force our ID
+					// Force our ID.
 					$args['id'] = 'off-canvas-' . $sidebar_id;
 
 					if ( function_exists( 'genesis_register_sidebar' ) ) {
@@ -402,7 +399,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Add Settings link to plugin's entry on the Plugins page.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @param   array   $links
 	 * @param   string  $file
 	 * @return  array
@@ -418,8 +415,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Load plugin textdomain.
 	 *
-	 * @since   0.1
-	 * @return  void
+	 * @since   0.1.0
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'off-canvas-sidebars', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -432,9 +428,8 @@ final class OCS_Off_Canvas_Sidebars
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.2
+	 * @since   0.2.0
 	 * @access  private
-	 * @return  void
 	 */
 	private function db_update() {
 		$settings = $this->get_settings();
@@ -490,9 +485,8 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Check the correct DB version in the DB.
 	 *
-	 * @since   0.2
+	 * @since   0.2.0
 	 * @access  public
-	 * @return  void
 	 */
 	public function maybe_db_update() {
 		$db_version = strtolower( $this->get_settings( 'db_version' ) );
@@ -509,7 +503,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * @since   0.1.2
 	 * @static
 	 * @see     off_canvas_sidebars()
-	 * @return  OCS_Off_Canvas_Sidebars
+	 * @return  \OCS_Off_Canvas_Sidebars
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -521,7 +515,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @access  public
 	 * @return  string
 	 */
@@ -532,9 +526,8 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Magic method to keep the object from being cloned.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @access  public
-	 * @return  void
 	 */
 	public function __clone() {
 		_doing_it_wrong(
@@ -547,9 +540,8 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Magic method to keep the object from being unserialized.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @access  public
-	 * @return  void
 	 */
 	public function __wakeup() {
 		_doing_it_wrong(
@@ -562,7 +554,7 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Magic method to prevent a fatal error when calling a method that doesn't exist.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @access  public
 	 * @param   string  $method
 	 * @param   array   $args

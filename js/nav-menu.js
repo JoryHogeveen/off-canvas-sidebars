@@ -4,7 +4,7 @@
  * Menu Meta Box scripts
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.4
+ * @version 0.4.0
  * @global  ocsNavControl
  * @preserve
  *

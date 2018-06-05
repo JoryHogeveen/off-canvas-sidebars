@@ -15,8 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.4
- * @version 0.5
+ * @since   0.4.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_Canvas_Sidebars_Base
 {
@@ -24,7 +25,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	 * The single instance of the class.
 	 *
 	 * @var    OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
-	 * @since  0.4
+	 * @since  0.4.0
 	 */
 	protected static $_instance = null;
 
@@ -32,7 +33,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 
 	/**
 	 * This class gets called in the init hook.
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @access  private
 	 */
 	private function __construct() {
@@ -54,7 +55,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Show our own button.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @param   string  $editor_id  The Editor ID.
 	 */
 	public function media_buttons( $editor_id ) {
@@ -71,7 +72,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Add our tinyMCE plugin to the list.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @param   array  $plugin_array
 	 * @return  array
 	 */
@@ -83,8 +84,8 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Add our tinyMCE styles.
 	 *
-	 * @since   0.4
-	 * @param   $init_array
+	 * @since   0.4.0
+	 * @param   array  $init_array
 	 * @return  array
 	 */
 	public function mce_inline_css( $init_array ) {
@@ -105,7 +106,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Print our scripts.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @see     `after_wp_tiny_mce` hook
 	 */
 	public function print_scripts() {
@@ -229,9 +230,9 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
+	 * @return  \OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

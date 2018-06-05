@@ -15,16 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.5 Refactored from single settings class.
- * @version 0.5
+ * @since   0.5.0  Refactored from single settings class.
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Page
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Page
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
@@ -38,8 +39,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	protected $tabs           = array();
 
 	/**
-	 * @since   0.1
-	 * @since   0.3  Private constructor.
+	 * @since   0.1.0
+	 * @since   0.3.0  Private constructor.
 	 * @access  private
 	 */
 	private function __construct() {
@@ -62,7 +63,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get plugin data.
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
@@ -72,7 +73,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 		/**
 		 * Change the capability for the OCS settings.
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  string
 		 * @return string
 		 */
@@ -81,7 +82,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Enqueue our styles and scripts only when it's our page.
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @param   string  $hook
 	 */
 	public function enqueue_styles_scripts( $hook ) {
@@ -114,7 +115,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Create admin page under the appearance menu.
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function add_admin_menus() {
 		add_theme_page(
@@ -128,7 +129,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Register the page tabs.
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	private function register_tabs() {
 
@@ -144,6 +145,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 		/**
 		 * Register the tabs.
+		 * @since   0.5.0
 		 * @param   array  $tabs  Tab instances.
 		 * @return  array  Array of tab instanced. Array key needs to be the tab ID.
 		 */
@@ -152,8 +154,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get the current tab instance.
-	 * @since   0.5
-	 * @return  OCS_Off_Canvas_Sidebars_Tab
+	 * @since   0.5.0
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_current_tab() {
 		return ( isset( $this->tabs[ $this->tab ] ) ) ? $this->tabs[ $this->tab ] : null;
@@ -161,8 +163,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get the tab instance for the form request handler.
-	 * @since   0.5
-	 * @return  OCS_Off_Canvas_Sidebars_Tab
+	 * @since   0.5.0
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_request_tab() {
 		return ( isset( $this->tabs[ $this->request_tab ] ) ) ? $this->tabs[ $this->request_tab ] : null;
@@ -170,7 +172,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Set the current tab.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $tab
 	 */
 	public function set_current_tab( $tab ) {
@@ -179,7 +181,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Set the tab for the form request handler.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $tab
 	 */
 	public function set_request_tab( $tab ) {
@@ -188,7 +190,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Register our settings.
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function register_settings() {
 
@@ -212,7 +214,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Plugin Options page rendering goes here, checks for active tab and replaces key with the related settings key.
 	 * Uses the plugin_options_tabs() method to render the tabs.
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function options_page() {
 		$do_submit = ( apply_filters( 'ocs_page_form_do_submit', true ) ) ? true : false;
@@ -269,7 +271,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Render the OCS sidebar.
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	protected function do_page_sidebar() {
 		?>
@@ -315,10 +317,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
 	 * Print out the settings fields for a particular settings section.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 *
-	 * @global  $wp_settings_sections  array of settings sections.
-	 * @global  $wp_settings_fields    array of settings fields and their pages/sections.
+	 * @global  array  $wp_settings_sections  Array of settings sections.
+	 * @global  array  $wp_settings_fields    Array of settings fields and their pages/sections.
 	 *
 	 * @param   string  $page     Slug title of the admin page who's settings fields you want to show.
 	 * param    string  $section  Slug title of the settings section who's fields you want to show.
@@ -366,7 +368,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Renders our tabs in the plugin options page, walks through the object's tabs array and prints them one by one.
 	 * Provides the heading for the options_page() method.
-	 * @since   0.1
+	 * @since   0.1.0
 	 */
 	public function plugin_options_tabs() {
 		echo '<h1 class="nav-tab-wrapper">';
@@ -381,9 +383,9 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Page
+	 * @return  \OCS_Off_Canvas_Sidebars_Page
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

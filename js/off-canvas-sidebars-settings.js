@@ -4,8 +4,8 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1
- * @version 0.5
+ * @since   0.1.0
+ * @version 0.5.0
  * @global  ocsOffCanvasSidebarsSettings
  * @preserve
  */
@@ -237,7 +237,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		/**
 		 * Formats the data to a shortcode.
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @return {null}  Nothing.
 		 */
 		function create_shortcode() {
@@ -286,7 +286,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		/**
 		 * Parses the shortcode data for a HTML preview.
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {object}  field_data  The shortcode data.
 		 * @return {null}  Nothing.
 		 */
@@ -333,7 +333,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: key="value" key="value"
 		 * Out: { key: value, key: value }
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {string}  attrString  The attribute string.
 		 * @return {object}  The attribute object.
 		 */
@@ -357,7 +357,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: key:value;key:value
 		 * Out: { key: value, key: value }
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {string}  attrString  The attribute string.
 		 * @return {object}  The attribute object.
 		 */
@@ -383,7 +383,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: { key: value, key: value }
 		 * Out: key="value" key="value"
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {object}  attrObj  The attribute object.
 		 * @return {string}  The attribute string.
 		 */
@@ -403,7 +403,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: { key: value, key: value }
 		 * Out: key:value;key:value
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {object}  attrObj  The attribute object.
 		 * @return {string}  The attribute string.
 		 */
@@ -418,7 +418,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		}
 
 		/**
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {string}   s  The string.
 		 * @param  {string}   a  The attribute to find.
 		 * @param  {boolean}  f  @todo

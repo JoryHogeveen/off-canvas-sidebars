@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1
- * @version 0.5
+ * @since   0.1.0
+ * @version 0.5.0
  */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
@@ -111,7 +111,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * @todo Refactor to enable above checks?
 	 *
 	 * @param  array  $instance  The widget options.
-	 * @return void
 	 */
 	public function form( $instance ) {
 		$off_canvas_sidebars = off_canvas_sidebars();

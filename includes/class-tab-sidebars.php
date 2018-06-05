@@ -15,25 +15,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.5
- * @version 0.5
+ * @since   0.5.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars_Tab
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Tab_Sidebars
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Tab_Sidebars
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
 	/**
 	 * Class constructor.
-	 * @since   0.1
-	 * @since   0.3  Private constructor.
-	 * @since   0.5  Protected constructor. Refactor into separate tab classes and methods.
-	 * @access  private
+	 * @since   0.1.0
+	 * @since   0.3.0  Private constructor.
+	 * @since   0.5.0  Protected constructor. Refactor into separate tab classes and methods.
+	 * @access  protected
 	 */
 	protected function __construct() {
 		$this->tab = 'ocs-sidebars';
@@ -46,7 +47,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Initialize this tab.
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
@@ -57,7 +58,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Before form fields.
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	public function ocs_page_form_before() {
 		?>
@@ -70,7 +71,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Before sections (in table).
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	public function ocs_page_form_section_table_before() {
 		$css_prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
@@ -82,7 +83,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * After sections.
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	public function ocs_page_form_section_after() {
 		submit_button( null, 'primary', 'submit', false );
@@ -90,7 +91,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 	/**
 	 * Section postbox classes.
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   string  $classes  Existing classes.
 	 * @return  string
 	 */
@@ -102,8 +103,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	/**
 	 * Register settings.
 	 *
-	 * @since   0.1
-	 * @since   0.5  Refactor into separate tab classes and methods
+	 * @since   0.1.0
+	 * @since   0.5.0  Refactor into separate tab classes and methods.
 	 */
 	public function register_settings() {
 		parent::register_settings();
@@ -131,7 +132,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	/**
 	 * Sidebar settings.
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $args {
 	 *     @type  string        $id
 	 *     @type  string        $title
@@ -176,8 +177,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.4
-	 * @since   0.5  Moved to this class.
+	 * @since   0.4.0
+	 * @since   0.5.0  Moved to this class.
 	 * @param   array  $input
 	 * @param   array  $current
 	 * @return  array
@@ -282,7 +283,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	}
 
 	/**
-	 * @since   0.5
+	 * @since   0.5.0
 	 * @param   array  $data
 	 * @param   array  $input
 	 * @return  array
@@ -333,7 +334,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.5
+	 * @since   0.5.0
 	 */
 	protected function get_tab_fields() {
 
@@ -620,9 +621,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Tab_Sidebars
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab_Sidebars
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {

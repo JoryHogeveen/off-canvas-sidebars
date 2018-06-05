@@ -15,16 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.4
- * @version 0.5
+ * @since   0.4.0
+ * @version 0.5.0
  */
 abstract class OCS_Off_Canvas_Sidebars_Form
 {
 	/**
 	 * Frontend type selection
 	 * @deprecated
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
+	 * @todo Remove.
+	 * @since   0.1.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param array $args
 	 */
@@ -44,8 +45,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Echo checkboxes to enable/disable sidebars outside the sidebars tab.
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
+	 * @since   0.1.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 */
 	public static function enabled_sidebars_option() {
@@ -73,9 +74,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * The sidebars size option.
-	 * @since   0.1
-	 * @since   0.2  Renamed from sidebar_width()
-	 * @since   0.4  Moved to this class.
+	 * @since   0.1.0
+	 * @since   0.2.0  Renamed from sidebar_width()
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -124,8 +125,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * General input fields.
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
+	 * @since   0.1.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -178,8 +179,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Render checkbox option.
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
+	 * @since   0.1.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -222,8 +223,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Render radio option.
-	 * @since   0.3
-	 * @since   0.4  Moved to this class.
+	 * @since   0.3.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -281,7 +282,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Render select option.
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @static
 	 * @param   array  $args
 	 */
@@ -335,8 +336,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Render number option.
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
+	 * @since   0.1.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -380,8 +381,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Render color option.
-	 * @since   0.1
-	 * @since   0.4  Moved to this class.
+	 * @since   0.1.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -421,7 +422,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Render description.
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @static
 	 * @param   array   $args
 	 * @param   string  $elem
@@ -437,7 +438,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	/**
 	 * Returns attribute prefixes for general settings and sidebar settings.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @static
 	 * @param   array  $args      Arguments from the settings field.
 	 * @return  array  $prefixes  Prefixes for name, value and id attributes.
@@ -474,8 +475,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 
 	/**
 	 * Combine classes prefixed with the field name.
-	 * @since   0.2
-	 * @since   0.4  Moved to this class.
+	 * @since   0.2.0
+	 * @since   0.4.0  Moved to this class.
 	 * @static
 	 * @param   $classes
 	 * @param   $append
@@ -495,7 +496,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	 * Merge two arrays of attributes into one, combining values.
 	 * It currently doesn't convert variable types.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @static
 	 * @param   array  $attr  The current attributes.
 	 * @param   array  $new   The new attributes. Attribute names as key.
@@ -522,7 +523,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 	/**
 	 * Converts an array of attributes to a HTML string format starting with a space.
 	 *
-	 * @since   0.4
+	 * @since   0.4.0
 	 * @static
 	 * @param   array   $array  Array to parse. (attribute => value pairs)
 	 * @return  string
@@ -541,4 +542,4 @@ abstract class OCS_Off_Canvas_Sidebars_Form
 		return $str;
 	}
 
-} // end class
+} // End class().
