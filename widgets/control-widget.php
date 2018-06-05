@@ -322,6 +322,10 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 					'#<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon',
 					'.<?php echo $field_id . '_' . $sidebar_id; ?>_icon, .<?php echo $field_id . '_' . $sidebar_id; ?>_icon_location'
 				);
+				gocs_show_hide_options(
+					'#<?php echo $field_id . '_' . $sidebar_id; ?>_advanced_toggle',
+					'#<?php echo $field_id . '_' . $sidebar_id; ?>_advanced'
+				);
 				<?php } ?>
 
 				$( '#<?php echo $field_id; ?>_panes .autohide-js' ).hide();
