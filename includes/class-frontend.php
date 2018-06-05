@@ -386,9 +386,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		);
 		$args = wp_parse_args( $args, $defaults );
 
-		if ( ! is_array( $args['attr'] ) ) {
-			$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
-		}
+		$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
 
 		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
 			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
@@ -407,45 +405,34 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 
-		$attr = '';
-		if ( empty( $args['attr']['class'] ) ) {
-			$args['attr']['class'] = array();
-		}
-		foreach ( $args['attr'] as $key => $value ) {
-			if ( 'class' === $key ) {
-				// Add our own classes.
-				$ocs_classes = array(
-					$this->settings['css_prefix'] . '-trigger',
-					$this->settings['css_prefix'] . '-' . $args['action'],
-					$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id,
-				);
-				if ( ! is_array( $value ) ) {
-					$value = explode( ' ', $value );
-				}
-				foreach ( $ocs_classes as $class ) {
-					if ( ! in_array( $class, $value, true ) ) {
-						$value[] = $class;
-					}
-				}
+		$attr = array(
+			'class' => array(),
+		);
+		$attr = array_merge( $attr, $args['attr'] );
 
-				// Optionally add extra classes.
-				if ( ! empty( $args['class'] ) ) {
-					if ( ! is_array( $args['class'] ) ) {
-						$args['class'] = explode( ' ', $args['class'] );
-					}
-					foreach ( $args['class'] as $c ) {
-						$c = trim( $c );
-						if ( $c && ! in_array( $c, $value, true ) ) {
-							$value[] = $c;
-						}
-					}
-				}
+		// Add our own classes.
+		$classes = array(
+			$this->settings['css_prefix'] . '-trigger',
+			$this->settings['css_prefix'] . '-' . $args['action'],
+			$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id,
+		);
+
+		// Optionally add extra classes.
+		if ( ! empty( $args['class'] ) ) {
+			if ( ! is_array( $args['class'] ) ) {
+				$args['class'] = explode( ' ', $args['class'] );
 			}
-			if ( is_array( $value ) ) {
-				$value = implode( ' ', $value );
-			}
-			$attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( (string) $value ) . '"';
+			$classes = array_merge( $classes, (array) $args['class'] );
 		}
+
+		// Parse classes.
+		if ( ! is_array( $attr['class'] ) ) {
+			$attr['class'] = explode( ' ', $attr['class'] );
+		}
+		$attr['class'] = array_merge( $attr['class'], $classes );
+		$attr['class'] = array_map( 'trim', $attr['class'] );
+		$attr['class'] = array_filter( $attr['class'] );
+		$attr['class'] = array_unique( $attr['class'] );
 
 		// Icons can not be used with singleton elements.
 		if ( $args['icon'] && ! $singleton ) {
@@ -464,7 +451,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 
-		$return = '<' . $args['element'] . $attr;
+		$return = '<' . $args['element'] . OCS_Off_Canvas_Sidebars_Form::parse_to_html_attr( $attr );
 		if ( $singleton ) {
 			$return .= ' />';
 		} else {
