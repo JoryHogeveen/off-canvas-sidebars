@@ -54,6 +54,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				);
 
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_site_close', 'tr' );
+				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_link_close', 'tr' );
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_disable_over', 'tr' );
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_hide_control_classes', 'tr' );
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_scroll_lock', 'tr' );
