@@ -139,7 +139,7 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 		$args = array();
 		foreach ( $attr as $key => $value ) {
 			$attr[ $key ] = explode( ':', $value );
-			if ( count( $attr[ $key ] ) > 1 ) {
+			if ( count( $attr[ $key ] ) > 0 ) {
 				$attribute = trim( $attr[ $key ][0] );
 				unset( $attr[ $key ][0] );
 				$args[ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
