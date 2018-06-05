@@ -430,8 +430,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 						$args['class'] = explode( ' ', $args['class'] );
 					}
 					foreach ( $args['class'] as $c ) {
-						$c = esc_attr( $c );
-						if ( ! in_array( $c, $value, true ) ) {
+						$c = trim( $c );
+						if ( $c && ! in_array( $c, $value, true ) ) {
 							$value[] = $c;
 						}
 					}
@@ -448,7 +448,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			if ( strpos( $args['icon'], 'dashicons' ) !== false ) {
 				wp_enqueue_style( 'dashicons' );
 			}
-			$icon = '<span class="icon ' . $args['icon'] . '"></span>';
+			$icon = '<span class="icon ' . esc_attr( $args['icon'] ) . '"></span>';
 			if ( $args['text'] ) {
 				// Wrap label in a separate span for styling purposes.
 				$args['text'] = '<span class="label">' . $args['text'] . '</span>';
