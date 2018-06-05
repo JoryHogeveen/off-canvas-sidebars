@@ -205,12 +205,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', OCS_DOMAIN ); ?></label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_icon" name="<?php echo $field_sidebar_name . '[icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
-				<label for="<?php echo $field_sidebar_id; ?>_icon_location"><?php esc_html_e( 'Icon location', OCS_DOMAIN ); ?></label>
 			<p class="<?php echo $field_sidebar_id; ?>_icon_location">
 				<select id="<?php echo $field_sidebar_id; ?>_icon_location" name="<?php echo $field_sidebar_name . '[icon_location]'; ?>">
 					<option><?php echo __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
 					<option value="after" <?php selected( $ocs[ $sidebar_id ]['icon_location'], 'after' ); ?>><?php _e( 'After', OCS_DOMAIN ); ?></option>
 				</select>
+				<label for="<?php echo $field_sidebar_id; ?>_icon_location"><?php esc_html_e( 'Icon location', OCS_DOMAIN ); ?></label>
 			</p>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_button_class" name="<?php echo $field_sidebar_name . '[button_class]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['button_class'], 1 ); ?>>
