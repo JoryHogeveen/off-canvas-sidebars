@@ -81,45 +81,54 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			if ( ! $sidebar_data['enable'] || ! $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) {
 				continue;
 			}
-			$widget_data = $instance[ $this->widget_setting ][ $sidebar_id ];
-
-			$trigger_args = array(
-				'id'            => $sidebar_id,
-				'text'          => '', // Text to show.
-				'action'        => 'toggle', // toggle|open|close.
-				'element'       => 'div', // button|span|i|b|a|etc.
-				'class'         => '', // Extra classes (space separated), also accepts an array of classes.
-				//'icon'          => '', // Icon classes.
-				//'icon_location' => 'before', // before|after.
-				//'attr'          => array(), // An array of attribute keys and their values.
-			);
-
-			if ( $widget_data['button_class'] ) {
-				$trigger_args['class'] .= ' button';
-			}
-			if ( $widget_data['show_icon'] ) {
-				if ( $widget_data['icon'] ) {
-					$trigger_args['icon'] = $widget_data['icon'];
-				} else {
-					$trigger_args['icon'] = 'dashicons dashicons-menu';
-				}
-			}
-			if ( $widget_data['show_label'] ) {
-				$trigger_args['text'] = $widget_data['label'];
-			}
-
-			foreach ( $this->optional_fields as $key ) {
-				if ( ! empty( $widget_data[ $key ] ) ) {
-					$trigger_args[ $key ] = $widget_data[ $key ];
-				}
-			}
-
-			the_ocs_control_trigger( $trigger_args );
+			$trigger_args = $instance[ $this->widget_setting ][ $sidebar_id ];
+			$trigger_args['id'] = $sidebar_id;
+			$this->do_control_trigger( $trigger_args );
 		};
 
 		echo '</div></div>';
 
 		echo $args['after_widget'];
+	}
+
+	/**
+	 * Render a control trigger.
+	 * @since  0.5.0
+	 * @param  array  $args
+	 */
+	public function do_control_trigger( $args ) {
+		$trigger_args = array(
+			'id'            => $args['id'],
+			'text'          => '', // Text to show.
+			'action'        => 'toggle', // toggle|open|close.
+			'element'       => 'div', // button|span|i|b|a|etc.
+			'class'         => '', // Extra classes (space separated), also accepts an array of classes.
+			//'icon'          => '', // Icon classes.
+			//'icon_location' => 'before', // before|after.
+			//'attr'          => array(), // An array of attribute keys and their values.
+		);
+
+		if ( $args['button_class'] ) {
+			$trigger_args['class'] .= ' button';
+		}
+		if ( $args['show_icon'] ) {
+			if ( $args['icon'] ) {
+				$trigger_args['icon'] = $args['icon'];
+			} else {
+				$trigger_args['icon'] = 'dashicons dashicons-menu';
+			}
+		}
+		if ( $args['show_label'] ) {
+			$trigger_args['text'] = $args['label'];
+		}
+
+		foreach ( $this->optional_fields as $key ) {
+			if ( ! empty( $args[ $key ] ) ) {
+				$trigger_args[ $key ] = $args[ $key ];
+			}
+		}
+
+		the_ocs_control_trigger( $trigger_args );
 	}
 
 	/**
@@ -224,8 +233,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			</p>
 			<p class="<?php echo $field_sidebar_id; ?>_icon_location">
 				<select id="<?php echo $field_sidebar_id; ?>_icon_location" name="<?php echo $field_sidebar_name . '[icon_location]'; ?>">
-					<option><?php echo __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
-					<option value="after" <?php selected( $ocs[ $sidebar_id ]['icon_location'], 'after' ); ?>><?php _e( 'After', OCS_DOMAIN ); ?></option>
+					<option><?php echo esc_html__( 'Before', OCS_DOMAIN ) . ' (' . esc_html__( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+					<option value="after" <?php selected( $ocs[ $sidebar_id ]['icon_location'], 'after' ); ?>><?php esc_html_e( 'After', OCS_DOMAIN ); ?></option>
 				</select>
 				<label for="<?php echo $field_sidebar_id; ?>_icon_location"><?php esc_html_e( 'Icon location', OCS_DOMAIN ); ?></label>
 			</p>
@@ -250,9 +259,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			<div id="<?php echo $field_sidebar_id . '_advanced'; ?>">
 				<p>
 					<select id="<?php echo $field_sidebar_id; ?>_action" name="<?php echo $field_sidebar_name . '[action]'; ?>">
-						<option value=""><?php echo __( 'Toggle', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
-						<option value="open" <?php selected( $ocs[ $sidebar_id ]['action'], 'open' ); ?>><?php _e( 'Open', OCS_DOMAIN ); ?></option>
-						<option value="close" <?php selected( $ocs[ $sidebar_id ]['action'], 'close' ); ?>><?php _e( 'Close', OCS_DOMAIN ); ?></option>
+						<option value=""><?php echo esc_html__( 'Toggle', OCS_DOMAIN ) . ' (' . esc_html__( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+						<option value="open" <?php selected( $ocs[ $sidebar_id ]['action'], 'open' ); ?>><?php esc_html_e( 'Open', OCS_DOMAIN ); ?></option>
+						<option value="close" <?php selected( $ocs[ $sidebar_id ]['action'], 'close' ); ?>><?php esc_html_e( 'Close', OCS_DOMAIN ); ?></option>
 					</select>
 					<label for="<?php echo $field_sidebar_id; ?>_action"><?php esc_html_e( 'Trigger action', OCS_DOMAIN ); ?></label>
 				</p>

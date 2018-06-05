@@ -297,7 +297,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				prefix = ocsOffCanvasSidebarsSettings.css_prefix,
 				action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle',
 				classes = prefix + '-trigger ' + prefix + '-' + action,
-				singleton = false,
 				text = field_data.text.val(),
 				icon = field_data.icon.val(),
 				html = '';
@@ -314,9 +313,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			attributes.class = classes;
 
 			if ( 'input' === element || 'img' === element ) {
-				singleton = true;
+
+				// Singleton element.
 				attributes.value = text;
+
+				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>';
+
 			} else {
+
 				// Icons can not be used with singleton elements.
 				if ( icon ) {
 					icon = '<span class="icon ' + icon + '"></span>';
@@ -329,11 +333,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 						text = icon + text;
 					}
 				}
-			}
 
-			if ( singleton ) {
-				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>';
-			} else {
 				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>' + text + '</' + element + '>';
 			}
 
