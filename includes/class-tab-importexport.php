@@ -99,6 +99,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Import/Export handler.
+	 *
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @since   0.1.0
 	 */
 	public function maybe_importexport_settings() {

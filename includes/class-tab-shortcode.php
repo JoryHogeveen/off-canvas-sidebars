@@ -66,6 +66,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 	/**
 	 * Tab content.
+	 *
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+	 * @todo Refactor to enable above checks?
+	 *
 	 * @since   0.5.0
 	 */
 	public function tab_content() {
