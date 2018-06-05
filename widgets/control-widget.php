@@ -220,6 +220,44 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				?>
 				</label>
 			</p>
+
+			<p>
+				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_advanced_toggle" value="1" <?php checked( false, 1 ); ?>>
+				<label for="<?php echo $field_sidebar_id; ?>_advanced_toggle"><?php esc_html_e( 'Advanced options', OCS_DOMAIN ); ?></label>
+			</p>
+			<div id="<?php echo $field_sidebar_id . '_advanced'; ?>">
+				<p>
+					<select id="<?php echo $field_sidebar_id; ?>_action" name="<?php echo $field_sidebar_name . '[action]'; ?>">
+						<option value=""><?php echo __( 'Toggle', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+						<option value="open" <?php selected( $ocs[ $sidebar_id ]['action'], 'open' ); ?>><?php _e( 'Open', OCS_DOMAIN ); ?></option>
+						<option value="close" <?php selected( $ocs[ $sidebar_id ]['action'], 'close' ); ?>><?php _e( 'Close', OCS_DOMAIN ); ?></option>
+					</select>
+					<label for="<?php echo $field_sidebar_id; ?>_action"><?php esc_html_e( 'Trigger action', OCS_DOMAIN ); ?></label>
+				</p>
+				<p>
+					<select id="<?php echo $field_sidebar_id; ?>_element" name="<?php echo $field_sidebar_name . '[element]'; ?>">
+						<option value=""><?php echo __( 'div', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+						<?php
+							$elements = array( /*'div',*/ 'button', 'span', 'a', 'b', 'strong', 'i', 'em', 'img' );
+							foreach ( $elements as $element ) {
+								?>
+								<option value="<?php echo $element; ?>" <?php selected( $ocs[ $sidebar_id ]['element'], $element ); ?>><?php echo $element; ?></option>
+								<?php
+							}
+						?>
+					</select>
+					<label for="<?php echo $field_sidebar_id; ?>_element"><?php esc_html_e( 'HTML element', OCS_DOMAIN ); ?></label>
+				</p>
+				<p class="<?php echo $field_sidebar_id; ?>_class">
+					<label for="<?php echo $field_sidebar_id; ?>_class"><?php esc_html_e( 'Extra classes', OCS_DOMAIN ); ?>:</label>
+					<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_class" name="<?php echo $field_sidebar_name . '[class]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['class']; ?>">
+				</p>
+				<p class="<?php echo $field_sidebar_id; ?>_attr">
+					<label for="<?php echo $field_sidebar_id; ?>_attr"><?php esc_html_e( 'Custom attributes', OCS_DOMAIN ); ?>:</label>
+					<textarea class="widefat" id="<?php echo $field_sidebar_id; ?>_attr" name="<?php echo $field_sidebar_name . '[attr]'; ?>"><?php echo $ocs[ $sidebar_id ]['attr']; ?></textarea>
+				</p>
+			</div>
+
 			<hr class="autohide-js" />
 		</div>
 		<?php
@@ -405,6 +443,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				'icon'          => false,
 				'icon_location' => '',
 				'button_class'  => 1,
+				// Advanced.
+				'action'        => '',
+				'element'       => '',
+				'class'         => '',
+				'attr'          => '',
 			);
 		};
 
