@@ -394,10 +394,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	/**
 	 * Processing widget options on save.
 	 *
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
-	 * @todo Refactor to enable above checks?
-	 *
 	 * @param  array  $new_instance  The new options.
 	 * @param  array  $old_instance  The old options.
 	 * @return array
@@ -421,22 +417,18 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		foreach ( $new_ocs as $sidebar_id => $sidebar_settings ) {
 			if ( empty( $ocs[ $sidebar_id ] ) ) {
 				$ocs[ $sidebar_id ] = $sidebar_settings;
-			} else {
-				if ( is_array( $sidebar_settings ) ) {
-					foreach ( $new_ocs[ $sidebar_id ] as $setting => $value ) {
-						$ocs[ $sidebar_id ][ $setting ] = $value;
-					}
-				} else {
-					$ocs[ $sidebar_id ] = $sidebar_settings;
-				}
+				continue;
 			}
-
-			foreach ( $this->optional_fields as $key ) {
-				if ( empty( $ocs[ $sidebar_id ][ $key ] ) ) {
-					unset( $ocs[ $sidebar_id ][ $key ] );
+			if ( is_array( $sidebar_settings ) ) {
+				foreach ( $new_ocs[ $sidebar_id ] as $setting => $value ) {
+					$ocs[ $sidebar_id ][ $setting ] = $value;
 				}
+			} else {
+				$ocs[ $sidebar_id ] = $sidebar_settings;
 			}
 		}
+
+		$ocs = array_map( array( $this, 'remove_defaults' ), $ocs );
 
 		$instance[ $this->widget_setting ] = $ocs;
 
@@ -456,6 +448,22 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$sidebar_settings['show_icon']     = ( ! empty( $sidebar_settings['show_icon'] ) )      ? 1 : 0;
 		$sidebar_settings['icon_location'] = ( 'after' === $sidebar_settings['icon_location'] ) ? 'after' : '';
 		$sidebar_settings['button_class']  = ( ! empty( $sidebar_settings['button_class'] ) )   ? 1 : 0;
+		return $sidebar_settings;
+	}
+
+	/**
+	 * Remove optional setting keys if they are empty.
+	 *
+	 * @since   0.5.0
+	 * @param   array  $sidebar_settings
+	 * @return  array  $sidebar_settings
+	 */
+	public function remove_defaults( $sidebar_settings ) {
+		foreach ( $this->optional_fields as $key ) {
+			if ( empty( $sidebar_settings[ $key ] ) ) {
+				unset( $sidebar_settings[ $key ] );
+			}
+		}
 		return $sidebar_settings;
 	}
 
