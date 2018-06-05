@@ -149,8 +149,10 @@ add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
 function off_canvas_sidebars_frontend() {
 	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Frontend', 'get_instance' ) ) ) {
 		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
+	} else {
+		include_once OCS_PLUGIN_DIR . 'includes/class-frontend.php';
+		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 	}
-	return null;
 }
 
 /**
@@ -164,6 +166,8 @@ function off_canvas_sidebars_frontend() {
 function off_canvas_sidebars_settings() {
 	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Settings', 'get_instance' ) ) ) {
 		return OCS_Off_Canvas_Sidebars_Settings::get_instance();
+	} else {
+		include_once OCS_PLUGIN_DIR . 'includes/class-settings.php';
+		OCS_Off_Canvas_Sidebars_Settings::get_instance();
 	}
-	return null;
 }

@@ -114,8 +114,8 @@ final class OCS_Off_Canvas_Sidebars
 			include_once OCS_PLUGIN_DIR . 'includes/api.php';
 			// Load the base and settings class.
 			include_once OCS_PLUGIN_DIR . 'includes/class-base.php';
-			include_once OCS_PLUGIN_DIR . 'includes/class-settings.php';
-			OCS_Off_Canvas_Sidebars_Settings::get_instance();
+
+			off_canvas_sidebars_settings();
 
 			$this->maybe_db_update();
 
@@ -167,10 +167,7 @@ final class OCS_Off_Canvas_Sidebars
 			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
 
 		} else {
-
-			// If a sidebar is enabled, load the front-end.
-			include_once OCS_PLUGIN_DIR . 'includes/class-frontend.php';
-			OCS_Off_Canvas_Sidebars_Frontend::get_instance();
+			off_canvas_sidebars_frontend();
 		}
 	}
 
