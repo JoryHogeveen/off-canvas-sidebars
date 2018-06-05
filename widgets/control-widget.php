@@ -23,6 +23,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	private $settings = array();
 	private $general_labels = array();
 	private $widget_setting = 'off-canvas-controls';
+	private $optional_fields = array(
+		'icon_location',
+		'action',
+		'element',
+		'class',
+		'attr',
+	);
 
 	/**
 	 * Sets up the widgets name etc.
@@ -90,10 +97,15 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				} else {
 					$trigger_args['icon'] = 'dashicons dashicons-menu';
 				}
-				$trigger_args['icon_location'] = $widget_data['icon_location'];
 			}
 			if ( $widget_data['show_label'] ) {
 				$trigger_args['text'] = $widget_data['label'];
+			}
+
+			foreach ( $this->optional_fields as $key ) {
+				if ( ! empty( $widget_data[ $key ] ) ) {
+					$trigger_args[ $key ] = $widget_data[ $key ];
+				}
 			}
 
 			the_ocs_control_trigger( $trigger_args );
@@ -417,14 +429,20 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		foreach ( $new_ocs as $sidebar_id => $sidebar_settings ) {
 			if ( empty( $ocs[ $sidebar_id ] ) ) {
 				$ocs[ $sidebar_id ] = $sidebar_settings;
-				continue;
-			}
-			if ( is_array( $sidebar_settings ) ) {
-				foreach ( $new_ocs[ $sidebar_id ] as $setting => $value ) {
-					$ocs[ $sidebar_id ][ $setting ] = $value;
-				}
 			} else {
-				$ocs[ $sidebar_id ] = $sidebar_settings;
+				if ( is_array( $sidebar_settings ) ) {
+					foreach ( $new_ocs[ $sidebar_id ] as $setting => $value ) {
+						$ocs[ $sidebar_id ][ $setting ] = $value;
+					}
+				} else {
+					$ocs[ $sidebar_id ] = $sidebar_settings;
+				}
+			}
+
+			foreach ( $this->optional_fields as $key ) {
+				if ( empty( $ocs[ $sidebar_id ][ $key ] ) ) {
+					unset( $ocs[ $sidebar_id ][ $key ] );
+				}
 			}
 		}
 
