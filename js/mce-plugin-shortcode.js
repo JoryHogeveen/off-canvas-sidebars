@@ -1,9 +1,10 @@
 /* eslint-disable no-extra-semi */
 ;/**
- * Off-Canvas Sidebars tinymce shortcode UI
+ * Off-Canvas Sidebars - TinyMCE shortcode UI
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
+ * @since   0.4.0
  * @version 0.4.0
  * @global  ocsMceSettings
  * @preserve

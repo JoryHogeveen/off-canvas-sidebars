@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @since   0.1.0
+ * @since   0.2.0
  * @version 0.5.0
  * @global  ocsOffCanvasSidebarsSettings
  * @preserve
@@ -287,6 +287,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		/**
 		 * Parses the shortcode data for a HTML preview.
 		 * @since  0.4.0
+		 * @since  0.5.0  Add icon options.
 		 * @param  {object}  field_data  The shortcode data.
 		 * @return {null}  Nothing.
 		 */
