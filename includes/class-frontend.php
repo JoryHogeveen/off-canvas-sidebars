@@ -384,7 +384,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			'icon_location' => 'before', // before|after.
 			'attr'          => array(), // An array of attribute keys and their values.
 		);
-		$args = array_merge( $defaults, $args );
+		$args = wp_parse_args( $args, $defaults );
 
 		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
 			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
@@ -443,15 +443,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( (string) $value ) . '"';
 		}
 
-		if ( $args['icon'] ) {
+		// Icons can not be used with singleton elements.
+		if ( $args['icon'] && ! $singleton ) {
 			if ( strpos( $args['icon'], 'dashicons' ) !== false ) {
 				wp_enqueue_style( 'dashicons' );
 			}
 			$icon = '<span class="icon ' . $args['icon'] . '"></span>';
+			if ( $args['text'] ) {
+				// Wrap label in a separate span for styling purposes.
+				$args['text'] = '<span class="label">' . $args['text'] . '</span>';
+			}
 			if ( 'after' === $args['icon_location'] ) {
-				$args['text'] .= ' ' . $icon;
+				$args['text'] .= $icon;
 			} else {
-				$args['text'] = $icon . ' ' . $args['text'];
+				$args['text'] = $icon . $args['text'];
 			}
 		}
 
