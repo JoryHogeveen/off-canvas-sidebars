@@ -71,7 +71,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
-		$prefix   = $this->settings['css_prefix'];
 
 		echo $args['before_widget'];
 
@@ -220,7 +219,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<label for="<?php echo $field_sidebar_id; ?>_show_label"><?php esc_html_e( 'Show label', OCS_DOMAIN ); ?></label>
 			</p>
 			<p class="<?php echo $field_sidebar_id; ?>_label">
-				<label for="<?php echo $field_sidebar_id; ?>_label"><?php esc_html_e( 'Label text', OCS_DOMAIN ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_label"><?php esc_html_e( 'Label text', OCS_DOMAIN ); ?>:</label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_label" name="<?php echo $field_sidebar_name . '[label]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['label']; ?>">
 			</p>
 			<p>
@@ -228,7 +227,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<label for="<?php echo $field_sidebar_id; ?>_show_icon"><?php esc_html_e( 'Show icon', OCS_DOMAIN ); ?></label>
 			</p>
 			<p class="<?php echo $field_sidebar_id; ?>_icon">
-				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', OCS_DOMAIN ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_icon"><?php esc_html_e( 'Icon classes', OCS_DOMAIN ); ?>:</label>
 				<input type="text" class="widefat" id="<?php echo $field_sidebar_id; ?>_icon" name="<?php echo $field_sidebar_name . '[icon]'; ?>" value="<?php echo $ocs[ $sidebar_id ]['icon']; ?>">
 			</p>
 			<p class="<?php echo $field_sidebar_id; ?>_icon_location">
@@ -254,7 +253,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_advanced_toggle" value="1" <?php checked( $has_advanced, true ); ?>>
-				<label for="<?php echo $field_sidebar_id; ?>_advanced_toggle"><?php esc_html_e( 'Advanced options', OCS_DOMAIN ); ?></label>
+				<label for="<?php echo $field_sidebar_id; ?>_advanced_toggle"><strong><?php esc_html_e( 'Advanced options', OCS_DOMAIN ); ?></strong></label>
 			</p>
 			<div id="<?php echo $field_sidebar_id . '_advanced'; ?>">
 				<p>
