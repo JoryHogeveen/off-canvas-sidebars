@@ -120,23 +120,34 @@ function shortcode_ocs_trigger( $atts, $content = '' ) {
 	}
 	unset( $atts['classes'] );
 
-	// Parse attributes send through the shortcode.
-	if ( ! empty( $atts['attr'] ) ) {
-		$attr = explode( ';', $atts['attr'] );
-		$atts['attr'] = array();
+	return the_ocs_control_trigger( $atts, $content );
+}
+add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
+
+/**
+ * Parses arguments in a custom notation: key:value;key:value;
+ * Also uses wp_parse_args.
+ *
+ * @since  0.5.0
+ * @param  string|array  $args
+ * @param  array         $defaults
+ * @return array
+ */
+function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
+	if ( ! is_array( $args ) ) {
+		$attr = explode( ';', $args );
+		$args = array();
 		foreach ( $attr as $key => $value ) {
 			$attr[ $key ] = explode( ':', $value );
 			if ( count( $attr[ $key ] ) > 1 ) {
 				$attribute = trim( $attr[ $key ][0] );
 				unset( $attr[ $key ][0] );
-				$atts['attr'][ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
+				$args[ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
 			}
 		}
 	}
-
-	return the_ocs_control_trigger( $atts, $content );
+	return wp_parse_args( $args, $defaults );
 }
-add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
 
 /**
  * Main instance of Off-Canvas Sidebars Frontend.

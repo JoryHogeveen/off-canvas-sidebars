@@ -386,6 +386,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		);
 		$args = wp_parse_args( $args, $defaults );
 
+		if ( ! is_array( $args['attr'] ) ) {
+			$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
+		}
+
 		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
 			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
 		}
