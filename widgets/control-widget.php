@@ -362,7 +362,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 						} else {
 							$target.slideUp('fast');
 						}
-					} );
+					} ).trigger('change');
 				}
 			} ) ( jQuery );
 		-->
