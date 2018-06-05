@@ -296,14 +296,15 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 					<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
 				</a>
 				<p class="inner">
-					<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><?php esc_html_e( 'Rate it 5 on WordPress.org', OCS_DOMAIN ); ?></a><br />
-					<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><?php esc_html_e( 'Blog about it & link to the plugin page', OCS_DOMAIN ); ?></a><br />
-					<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"><?php esc_html_e( 'Check out my other WordPress plugins', OCS_DOMAIN ); ?></a><br />
+					<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><span class="icon dashicons dashicons-star-filled"></span><?php esc_html_e( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ); ?></a><br />
+					<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><span class="icon dashicons dashicons-testimonial"></span><?php esc_html_e( 'Blog about it & link to the plugin page', OCS_DOMAIN ); ?></a><br />
+					<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"><span class="icon dashicons dashicons-admin-plugins"></span><?php esc_html_e( 'Check out my other WordPress plugins', OCS_DOMAIN ); ?></a><br />
 				</p>
 				<hr />
 				<h4 class="inner"><?php esc_html_e( 'Want to help?', OCS_DOMAIN ); ?></h4>
 				<p class="inner">
-					<a href="https://github.com/JoryHogeveen/off-canvas-sidebars" target="_blank"><?php esc_html_e( 'Follow and/or contribute on GitHub', OCS_DOMAIN ); ?></a>
+					<a href="https://github.com/JoryHogeveen/off-canvas-sidebars" target="_blank"><span class="icon dashicons dashicons-editor-code"></span><?php esc_html_e( 'Follow and/or contribute on GitHub', OCS_DOMAIN ); ?></a><br />
+					<a href="https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars" target="_blank"><span class="icon dashicons dashicons-translation"></span><?php esc_html_e( 'Help translating this plugin!', OCS_DOMAIN ); ?></a>
 				</p>
 				<hr />
 				<p class="ocs-link inner"><?php esc_html_e( 'Created by', OCS_DOMAIN ); ?>: <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
