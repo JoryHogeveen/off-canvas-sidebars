@@ -415,15 +415,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			$new_ocs = $new_instance[ $this->widget_setting ];
 		}
 
-		// checkboxes
-		foreach ( $new_ocs as $sidebar_id => $value ) {
-			$new_ocs[ $sidebar_id ]['enable']        = ( ! empty( $new_ocs[ $sidebar_id ]['enable'] ) )         ? 1 : 0;
-			$new_ocs[ $sidebar_id ]['show_label']    = ( ! empty( $new_ocs[ $sidebar_id ]['show_label'] ) )     ? 1 : 0;
-			$new_ocs[ $sidebar_id ]['show_icon']     = ( ! empty( $new_ocs[ $sidebar_id ]['show_icon'] ) )      ? 1 : 0;
-			$new_ocs[ $sidebar_id ]['icon_location'] = ( 'after' === $new_ocs[ $sidebar_id ]['icon_location'] ) ? 'after' : '';
-			$new_ocs[ $sidebar_id ]['button_class']  = ( ! empty( $new_ocs[ $sidebar_id ]['button_class'] ) )   ? 1 : 0;
-		}
-
+		$new_ocs = array_map( array( $this, 'parse_values' ), $new_ocs );
 		$new_ocs = array_map( array( $this, 'sanitize_value' ), $new_ocs );
 
 		foreach ( $new_ocs as $sidebar_id => $sidebar_settings ) {
@@ -449,6 +441,22 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		$instance[ $this->widget_setting ] = $ocs;
 
 		return $instance;
+	}
+
+	/**
+	 * Parse form values.
+	 *
+	 * @since   0.5.0
+	 * @param   array  $sidebar_settings
+	 * @return  array  $sidebar_settings
+	 */
+	public function parse_values( $sidebar_settings ) {
+		$sidebar_settings['enable']        = ( ! empty( $sidebar_settings['enable'] ) )         ? 1 : 0;
+		$sidebar_settings['show_label']    = ( ! empty( $sidebar_settings['show_label'] ) )     ? 1 : 0;
+		$sidebar_settings['show_icon']     = ( ! empty( $sidebar_settings['show_icon'] ) )      ? 1 : 0;
+		$sidebar_settings['icon_location'] = ( 'after' === $sidebar_settings['icon_location'] ) ? 'after' : '';
+		$sidebar_settings['button_class']  = ( ! empty( $sidebar_settings['button_class'] ) )   ? 1 : 0;
+		return $sidebar_settings;
 	}
 
 	/**
