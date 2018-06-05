@@ -79,25 +79,25 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 			),
 
 			/**
-			 * (Custom attributes order goes before regular order.
+			 * (Custom attributes order goes before regular order but class is always first).
 			 */
 
 			// Custom attribute.
 			array(
 				'shortcode' => '[ocs_trigger id="left" text="test" attr="foo:bar"]',
-				'compare' => '<button foo="bar" class="ocs-trigger ocs-toggle ocs-toggle-left">test</button>',
+				'compare' => '<button class="ocs-trigger ocs-toggle ocs-toggle-left" foo="bar">test</button>',
 			),
 
 			// Custom attributes.
 			array(
 				'shortcode' => '[ocs_trigger id="left" text="test" attr="foo:bar;multi:multiple words test"]',
-				'compare' => '<button foo="bar" multi="multiple words test" class="ocs-trigger ocs-toggle ocs-toggle-left">test</button>',
+				'compare' => '<button class="ocs-trigger ocs-toggle ocs-toggle-left" foo="bar" multi="multiple words test">test</button>',
 			),
 
 			// Custom empty attribute (alias).
 			array(
 				'shortcode' => '[ocs_trigger id="left" text="test" attributes="foo:bar;empty"]',
-				'compare' => '<button foo="bar" empty="" class="ocs-trigger ocs-toggle ocs-toggle-left">test</button>',
+				'compare' => '<button class="ocs-trigger ocs-toggle ocs-toggle-left" foo="bar" empty="">test</button>',
 			),
 
 			/**
@@ -107,7 +107,7 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 			// Image (using custom attribute, with faulty end `; `) + text as alt.
 			array(
 				'shortcode' => '[ocs_trigger id="left" element="img" attr="src:http://your.domain/image.jpg; " text="test"]',
-				'compare' => '<img src="http://your.domain/image.jpg" alt="test" class="ocs-trigger ocs-toggle ocs-toggle-left" />',
+				'compare' => '<img class="ocs-trigger ocs-toggle ocs-toggle-left" src="http://your.domain/image.jpg" alt="test" />',
 			),
 
 			// Image as nested shortcode (using div as the element). It will ignore the `text` parameter.
