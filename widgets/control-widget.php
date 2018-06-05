@@ -183,6 +183,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
 				continue;
 			}
+			$ocs[ $sidebar_id ] = $this->merge_settings( $ocs[ $sidebar_id ] );
 			$field_sidebar_id = $field_id . '_' . $sidebar_id;
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
 		?>
