@@ -164,7 +164,8 @@ final class OCS_Off_Canvas_Sidebars
 			OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator::get_instance();
 
 			// Add settings link to plugins page.
-			add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
+			add_filter( 'plugin_action_links', array( $this, 'filter_plugin_action_links' ), 10, 2 );
+			add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
 
 		} else {
 			off_canvas_sidebars_frontend();
@@ -397,14 +398,43 @@ final class OCS_Off_Canvas_Sidebars
 	 * Add Settings link to plugin's entry on the Plugins page.
 	 *
 	 * @since   0.1.0
+	 * @since   0.5.0   Renamed from `add_settings_link`.
 	 * @param   array   $links
 	 * @param   string  $file
 	 * @return  array
 	 */
-	public function add_settings_link( $links, $file ) {
+	public function filter_plugin_action_links( $links, $file ) {
 		if ( OCS_BASENAME === $file ) {
 			$settings_link = '<a href="' . admin_url( 'themes.php?page=' . $this->plugin_key ) . '">' . esc_attr__( 'Settings', OCS_DOMAIN ) . '</a>';
 			array_unshift( $links, $settings_link );
+		}
+		return $links;
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @since   0.5.0
+	 * @see     \WP_Plugins_List_Table::single_row()
+	 * @param   array[]  $links  The existing links.
+	 * @param   string   $file   The plugin file.
+	 * @return  array
+	 */
+	public function action_plugin_row_meta( $links, $file ) {
+		if ( OCS_BASENAME === $file ) {
+			$icon_attr = array(
+				'style' => array(
+					'font-size: inherit;',
+					'line-height: inherit;',
+					'display: inline;',
+					'vertical-align: text-top;',
+				),
+			);
+			foreach ( $this->get_links() as $id => $link ) {
+				$icon_attr['class'] = 'dashicons ' . $link['icon'];
+				$title = '<span ' . OCS_Off_Canvas_Sidebars_Base::parse_to_html_attr( $icon_attr ) . '></span> ' . esc_html( $link['title'] );
+				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
+			}
 		}
 		return $links;
 	}
@@ -490,6 +520,78 @@ final class OCS_Off_Canvas_Sidebars
 		if ( version_compare( $db_version, $this->db_version, '<' ) ) {
 			$this->db_update();
 		}
+	}
+
+	/**
+	 * Plugin links.
+	 *
+	 * @since   0.5.0
+	 * @return  array[]
+	 */
+	public function get_links() {
+		static $links;
+		if ( ! empty( $links ) ) {
+			return $links;
+		}
+
+		$links = array(
+			'support' => array(
+				'title' => __( 'Support', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Need support?', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-sos',
+				'url'   => 'https://wordpress.org/support/plugin/off-canvas-sidebars/',
+			),
+			'slack' => array(
+				'title' => __( 'Slack', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Quick help via Slack', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-format-chat',
+				'url'   => 'https://keraweb.slack.com/messages/plugin-ocs/',
+			),
+			'review' => array(
+				'title' => __( 'Review', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Give 5 stars on WordPress.org!', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-star-filled',
+				'url'   => 'https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/',
+			),
+			'translate' => array(
+				'title' => __( 'Translate', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Help translating this plugin!', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-translation',
+				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars',
+			),
+			'issue' => array(
+				'title' => __( 'Report issue', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Have ideas or a bug report?', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-lightbulb',
+				'url'   => 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues',
+			),
+			'docs' => array(
+				'title' => __( 'Documentation', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Documentation', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-book-alt',
+				'url'   => 'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki',
+			),
+			'github' => array(
+				'title' => __( 'GitHub', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Follow development on GitHub', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-editor-code',
+				'url'   => 'https://github.com/JoryHogeveen/off-canvas-sidebars/tree/dev',
+			),
+			'donate' => array(
+				'title' => __( 'Donate', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Buy me a coffee!', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-smiley',
+				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
+			),
+			'plugins' => array(
+				'title' => __( 'Plugins', VIEW_ADMIN_AS_DOMAIN ),
+				'description' => __( 'Check out my other plugins', VIEW_ADMIN_AS_DOMAIN ),
+				'icon'  => 'dashicons-admin-plugins',
+				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+			),
+		);
+
+		return $links;
 	}
 
 	/**
