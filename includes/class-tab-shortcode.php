@@ -80,7 +80,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		echo '<div id="section_shortcode_options" class="stuffbox postbox postbox postbox-third first">';
 
-		echo '<h3 class="hndle"><span>' . __( 'Required options', OCS_DOMAIN ) . ':</span></h3>';
+		echo '<h3 class="hndle"><span>' . __( 'Basic options', OCS_DOMAIN ) . ':</span></h3>';
 
 		echo '<div class="inside"><table class="form-table">';
 		echo '<tr><td>';
@@ -152,7 +152,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		echo '<div id="section_shortcode_optionaloptions" class="stuffbox postbox postbox postbox-third">';
 
-		echo '<h3 class="hndle"><span>' . __( 'Optional options', OCS_DOMAIN ) . ':</span></h3>';
+		echo '<h3 class="hndle"><span>' . __( 'Advanced options', OCS_DOMAIN ) . ':</span></h3>';
 
 		echo '<div class="inside"><table class="form-table">';
 		echo '<tr><td>';
