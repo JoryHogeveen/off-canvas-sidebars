@@ -177,7 +177,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section'     => $section,
 			'label'       => __( 'Let this plugin add the necessary elements on the front-end.', OCS_DOMAIN ),
 			'description' => '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup" target="_blank">'
-			                 . __( 'Read this to setup your theme for support!', OCS_DOMAIN ) . '</a>',
+			                 . __( 'Read this to setup your theme!', OCS_DOMAIN ) . '</a>',
 			//(Themes based on the Genesis Framework are supported by default)
 		);
 
@@ -204,7 +204,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'callback'    => 'checkbox_option',
 			'type'        => 'checkbox',
 			'section'     => $section,
-			'label'       => __( 'Enables closing of the off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+			'label'       => __( 'Enable', OCS_DOMAIN ) . '.',
 			'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 		);
 
@@ -214,7 +214,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'callback'    => 'checkbox_option',
 			'type'        => 'checkbox',
 			'section'     => $section,
-			'label'       => __( 'Enables closing of the off-canvas sidebar by clicking on a link.', OCS_DOMAIN ),
+			'label'       => __( 'Enable', OCS_DOMAIN ) . '.',
 			'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 		);
 
@@ -281,7 +281,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 				),
 				'color' => array(
 					'name'  => 'color',
-					'label' => esc_html__( 'Color.', OCS_DOMAIN ),
+					'label' => esc_html__( 'Color', OCS_DOMAIN ),
 					'value' => 'color',
 				),
 			),

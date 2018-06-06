@@ -555,7 +555,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					),
 					'color' => array(
 						'name'  => 'color',
-						'label' => esc_html__( 'Color.', OCS_DOMAIN ),
+						'label' => esc_html__( 'Color', OCS_DOMAIN ),
 						'value' => 'color',
 					),
 				),
@@ -571,7 +571,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'title'       => esc_attr__( 'Close sidebar when clicking on the site', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Enables closing of the off-canvas sidebar by clicking on the site.', OCS_DOMAIN ),
+				'label'       => __( 'Enable', OCS_DOMAIN ) . '.',
 				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 			),
 			'link_close' => array(
@@ -579,7 +579,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'title'       => esc_attr__( 'Close sidebar when clicking on a link', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Enables closing of the off-canvas sidebar by clicking on a link.', OCS_DOMAIN ),
+				'label'       => __( 'Enable', OCS_DOMAIN ) . '.',
 				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
 			),
 			'disable_over' => array(

@@ -266,7 +266,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				</p>
 				<p>
 					<select id="<?php echo $field_sidebar_id; ?>_element" name="<?php echo $field_sidebar_name . '[element]'; ?>">
-						<option value=""><?php echo __( 'div', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+						<option value=""><?php echo 'div (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
 						<?php
 							$elements = array( /*'div',*/ 'button', 'span', 'a', 'b', 'strong', 'i', 'em', 'img' );
 							foreach ( $elements as $element ) {
