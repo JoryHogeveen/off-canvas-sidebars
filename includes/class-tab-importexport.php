@@ -62,7 +62,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	public function register_settings() {
 		//parent::register_settings();
 
-		do_action( 'off_canvas_sidebar_settings_importexport' );
+		do_action( 'off_canvas_sidebar_settings_' . $this->filter );
 	}
 
 	/**

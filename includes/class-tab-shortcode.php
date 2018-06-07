@@ -61,7 +61,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	public function register_settings() {
 		//parent::register_settings();
 
-		do_action( 'off_canvas_sidebar_settings_shortcode' );
+		do_action( 'off_canvas_sidebar_settings_' . $this->filter );
 	}
 
 	/**

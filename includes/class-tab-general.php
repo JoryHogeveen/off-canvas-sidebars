@@ -100,7 +100,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			$this->add_settings_field( $key, $field );
 		}
 
-		do_action( 'off_canvas_sidebar_settings_general' );
+		do_action( 'off_canvas_sidebar_settings_' . $this->filter );
 	}
 
 	/**

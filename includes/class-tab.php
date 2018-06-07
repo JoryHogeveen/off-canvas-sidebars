@@ -22,14 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
-	 * The name of this tab.
+	 * The ID of this tab.
 	 * @var    string
 	 * @since  0.5.0
 	 */
 	public $tab = '';
 
 	/**
-	 * The ID of this tab.
+	 * The name of this tab.
 	 * @var    string
 	 * @since  0.5.0
 	 */
@@ -41,6 +41,13 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @since  0.5.0
 	 */
 	public $key = '';
+
+	/**
+	 * The filter name of this tab.
+	 * @var    string
+	 * @since  0.5.0
+	 */
+	public $filter = '';
 
 	/**
 	 * The fields for this tab.
@@ -63,7 +70,10 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	protected function __construct() {
 		$this->key = off_canvas_sidebars()->get_general_key();
-		$this->capability = apply_filters( 'ocs_settings_capability_' . $this->name, $this->capability );
+		if ( ! $this->filter ) {
+			$this->filter = str_replace( array( 'ocs-', 'ocs_' ), '', $this->tab );
+		}
+		$this->capability = apply_filters( 'ocs_settings_capability_' . $this->filter, $this->capability );
 
 		if ( current_user_can( $this->capability ) ) {
 			add_filter( 'ocs_page_register_tabs', array( $this, 'register_tab' ) );
