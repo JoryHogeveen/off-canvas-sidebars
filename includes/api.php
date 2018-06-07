@@ -2,9 +2,9 @@
 /**
  * Off-Canvas Sidebars plugin API
  *
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
- * @version 0.4
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @version 0.4.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Echos one, multiple or all OCS sidebars.
  *
  * @api
- * @since  0.3
+ * @since  0.3.0
  * @param  string|array  $sidebars  (Optional) The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
  */
 function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
@@ -39,19 +39,22 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * Output a trigger element for off-canvas sidebars.
  *
  * @api
- * @since  0.4
+ * @since  0.4.0
+ * @since  0.5.0  Add icon options.
  * @param  array   $atts {
  *     Required array of arguments
- *     @type  string        id       (Required) The off-canvas sidebar ID.
- *     @type  string        text     The text to show. Default: ''.
- *     @type  string        action   The trigger action. Default: `toggle`.
- *     @type  string        element  The HTML element. Default: `button`.
- *     @type  array|string  class    Add extra classes? Also accepts a string with classes separated with a space.
- *     @type  array         attr  {
+ *     @type  string        $id               (Required) The off-canvas sidebar ID.
+ *     @type  string        $text             The text to show. Default: ''.
+ *     @type  string        $action           The trigger action. Default: `toggle`.
+ *     @type  string        $element          The HTML element. Default: `button`.
+ *     @type  array|string  $class            Add extra classes? Also accepts a string with classes separated with a space.
+ *     @type  string        $icon             Icon classes.
+ *     @type  string        $icon_location    The icon location (`before` or `after`). Default: `before`.
+ *     @type  array         $attr  {
  *          Other attributes to add. Format: attribute name (array key) => attribute value
  *     }
  * }
- * @param  string  $content  (Optional) HTML/text string.
+ * @param  string  $content  (optional) HTML/text string.
  * @return string
  */
 function the_ocs_control_trigger( $atts, $content = '' ) {
@@ -63,13 +66,15 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
 		}
 
 		$atts = shortcode_atts( array(
-			'id'      => false,
-			'text'    => '', // Text to show.
-			'action'  => 'toggle', // toggle|open|close
-			'element' => 'button', // button|span|i|b|a|etc.
-			'class'   => array(), // Extra classes, also accepts a string with classes separated with a space.
-			'attr'    => array(), // An array of attribute keys and their values.
-			'echo'    => true,
+			'id'            => false,
+			'text'          => '', // Text to show.
+			'action'        => 'toggle', // toggle|open|close
+			'element'       => 'button', // button|span|i|b|a|etc.
+			'class'         => array(), // Extra classes, also accepts a string with classes separated with a space.
+			'icon'          => '', // Icon classes.
+			'icon_location' => 'before', // before|after.
+			'attr'          => array(), // An array of attribute keys and their values.
+			'echo'          => true,
 		), $atts, 'ocs_trigger' );
 
 		$return = '';
@@ -95,7 +100,7 @@ function the_ocs_control_trigger( $atts, $content = '' ) {
  * Example 2 (nested shortcode with some options:
  * [ocs_trigger id="right" attr="type:button;alt:Yay!!"]My trigger button text[/ocs_trigger]
  *
- * @since  0.4
+ * @since  0.4.0
  * @see    the_ocs_control_trigger() for detailed info.
  * @param  array   $atts
  * @param  string  $content  (Optional) HTML/text string.
@@ -117,35 +122,65 @@ function shortcode_ocs_trigger( $atts, $content = '' ) {
 	}
 	unset( $atts['classes'] );
 
-	// Parse attributes send through the shortcode.
-	if ( ! empty( $atts['attr'] ) ) {
-		$attr = explode( ';', $atts['attr'] );
-		$atts['attr'] = array();
-		foreach ( $attr as $key => $value ) {
-			$attr[ $key ] = explode( ':', $value );
-			if ( count( $attr[ $key ] ) > 1 ) {
-				$attribute = trim( $attr[ $key ][0] );
-				unset( $attr[ $key ][0] );
-				$atts['attr'][ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
-			}
-		}
-	}
-
 	return the_ocs_control_trigger( $atts, $content );
 }
 add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
+
+/**
+ * Parses arguments in a custom notation: key:value;key:value;
+ * Also uses wp_parse_args.
+ *
+ * @since  0.5.0
+ * @param  string|array  $args
+ * @param  array         $defaults
+ * @return array
+ */
+function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
+	if ( ! is_array( $args ) ) {
+		$attr = explode( ';', trim( $args, '; ' ) );
+		$args = array();
+		foreach ( $attr as $key => $value ) {
+			$attr[ $key ] = explode( ':', $value );
+			if ( count( $attr[ $key ] ) > 0 ) {
+				$attribute = trim( $attr[ $key ][0] );
+				unset( $attr[ $key ][0] );
+				$args[ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
+			}
+		}
+	}
+	return wp_parse_args( $args, $defaults );
+}
 
 /**
  * Main instance of Off-Canvas Sidebars Frontend.
  *
  * Returns the main instance of OCS_Off_Canvas_Sidebars_Frontend to prevent the need to use globals.
  *
- * @since   0.3
- * @return  OCS_Off_Canvas_Sidebars_Frontend
+ * @since   0.3.0
+ * @return  \OCS_Off_Canvas_Sidebars_Frontend
  */
 function off_canvas_sidebars_frontend() {
 	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Frontend', 'get_instance' ) ) ) {
 		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
+	} else {
+		include_once OCS_PLUGIN_DIR . 'includes/class-frontend.php';
+		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 	}
-	return null;
+}
+
+/**
+ * Main instance of Off-Canvas Sidebars Settings.
+ *
+ * Returns the main instance of OCS_Off_Canvas_Sidebars_Settings to prevent the need to use globals.
+ *
+ * @since   0.5.0
+ * @return  \OCS_Off_Canvas_Sidebars_Settings
+ */
+function off_canvas_sidebars_settings() {
+	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Settings', 'get_instance' ) ) ) {
+		return OCS_Off_Canvas_Sidebars_Settings::get_instance();
+	} else {
+		include_once OCS_PLUGIN_DIR . 'includes/class-settings.php';
+		OCS_Off_Canvas_Sidebars_Settings::get_instance();
+	}
 }

@@ -1,25 +1,33 @@
 <?php
 /**
- * Off-Canvas Sidebars menu meta box
+ * Off-Canvas Sidebars - Class Menu_Meta_Box
  *
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
- * @version 0.4
- *
- * Credits to the Polylang plugin.
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
+/**
+ * Off-Canvas Sidebars menu meta box
+ *
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @since   0.1.0
+ * @version 0.5.0
+ * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
+ *
+ * Credits to the Polylang plugin.
+ */
+final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Menu_Meta_box
-	 * @since  0.3
+	 * @var    \OCS_Off_Canvas_Sidebars_Menu_Meta_box
+	 * @since  0.3.0
 	 */
 	protected static $_instance = null;
 
@@ -37,7 +45,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	);
 
 	/**
-	 * @since  0.3  private constructor
+	 * Class constructor.
+	 * @since  0.3.0  Private constructor.
 	 * @access private
 	 */
 	private function __construct() {
@@ -50,9 +59,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	}
 
 	/**
-	 * Get plugin defaults
+	 * Get plugin data.
+	 * @since  0.1.0
 	 */
-	function load_plugin_data() {
+	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
 		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
@@ -64,10 +74,14 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		}
 	}
 
-	function add_meta_box() {
+	/**
+	 * Add the meta box to the menu options.
+	 * @since  0.1.0
+	 */
+	public function add_meta_box() {
 		add_meta_box(
 			$this->plugin_key . '-meta-box',
-			esc_html__( 'Off-Canvas Control', 'off-canvas-sidebars' ),
+			esc_html__( 'Off-Canvas Control', OCS_DOMAIN ),
 			array( $this, 'meta_box' ),
 			'nav-menus',
 			'side',
@@ -75,6 +89,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		);
 	}
 
+	/**
+	 * Meta box callback.
+	 * @since  0.1.0
+	 */
 	function meta_box() {
 		global $_nav_menu_placeholder; //, $nav_menu_selected_id;
 		$off_canvas_sidebars = off_canvas_sidebars();
@@ -120,10 +138,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		<?php
 	}
 
-	/*
-	 * prepares javascript to modify the off-canvas control menu item
-	 *
-	 * @since 0.1
+	/**
+	 * prepares javascript to modify the off-canvas control menu item.
+	 * @since  0.1.0
 	 */
 	public function admin_enqueue_scripts() {
 		$screen = get_current_screen();
@@ -135,9 +152,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array( 'jquery' ), $version );
 
 		$data['strings'] = array(
-			'show_icon'             => __( 'Show icon', 'off-canvas-sidebars' ),
-			'icon'                  => __( 'Icon classes', 'off-canvas-sidebars' ),
-			'menu_item_type'        => __( 'Off-Canvas Control', 'off-canvas-sidebars' ),
+			'show_icon'             => __( 'Show icon', OCS_DOMAIN ),
+			'icon'                  => __( 'Icon classes', OCS_DOMAIN ),
+			'menu_item_type'        => __( 'Off-Canvas Control', OCS_DOMAIN ),
 			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
 		);
 		$data['controls'] = array();
@@ -147,7 +164,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			}
 		}
 
-		// get all language switcher menu items
+		// Get all language switcher menu items.
 		$items = get_posts( array(
 			'numberposts' => -1,
 			'nopaging'    => true,
@@ -156,22 +173,21 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 			'meta_key'    => $this->meta_key,
 		) );
 
-		// the options values for the triggers.
+		// The options values for the triggers.
 		$data['val'] = array();
 		foreach ( $items as $item )
 			$data['val'][ $item ] = get_post_meta( $item, $this->meta_key, true );
 
-		// send all these data to javascript
+		// Send all these data to javascript.
 		wp_localize_script( 'off_canvas_control_nav_menu', 'ocsNavControl', $data );
 	}
 
-	/*
-	 * save our menu item options
+	/**
+	 * save our menu item options.
 	 *
-	 * @since 0.1
-	 *
-	 * @param   int     $menu_id not used
-	 * @param   int     $menu_item_db_id
+	 * @since   0.1.0
+	 * @param   int  $menu_id          (not used)
+	 * @param   int  $menu_item_db_id
 	 */
 	public function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0 ) {
 		$off_canvas_sidebars = off_canvas_sidebars();
@@ -197,7 +213,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		if ( in_array( $_POST['menu-item-title'][ $menu_item_db_id ], $available_controls, true ) ) {
 			$default_control = $off_canvas_sidebars->get_sidebar_key_by_label( $_POST['menu-item-title'][ $menu_item_db_id ] );
 		}
-		// default values.
+		// Default values.
 		$options = array( 'off-canvas-control' => $default_control );
 
 		// Our jQuery form has not been displayed.
@@ -224,14 +240,13 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		}
 	}
 
-	/*
+	/**
 	 * Splits the one item of backend in several items on frontend.
 	 * Takes care to menu_order as it is used later in wp_nav_menu.
 	 *
-	 * @since 0.1
-	 *
-	 * @param   array   $items menu items
-	 * @return  array   modified items
+	 * @since   0.1.0
+	 * @param   array  $items  Menu items.
+	 * @return  array  Modified items.
 	 */
 	public function wp_get_nav_menu_items( $items ) {
 
@@ -271,13 +286,12 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 	}
 
 	/**
-	 * Main Off-Canvas Sidebars Menu Meta Box Instance.
-	 *
+	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
-	 * @since   0.3
+	 * @since   0.3.0
 	 * @static
-	 * @return  OCS_Off_Canvas_Sidebars_Menu_Meta_box
+	 * @return  \OCS_Off_Canvas_Sidebars_Menu_Meta_box
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -286,4 +300,4 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box
 		return self::$_instance;
 	}
 
-} // end class
+} // End class().

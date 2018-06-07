@@ -1,12 +1,15 @@
+/* eslint-disable no-extra-semi */
 ;/**
  * Off-Canvas Sidebars plugin settings
  *
- * @author Jory Hogeveen <info@keraweb.nl>
- * @package off-canvas-sidebars
- * @version 0.4.2
- * @global ocsOffCanvasSidebarsSettings
+ * @author  Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @since   0.2.0
+ * @version 0.5.0
+ * @global  ocsOffCanvasSidebarsSettings
  * @preserve
  */
+/* eslint-enable no-extra-semi */
 
 if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 	var ocsOffCanvasSidebarsSettings = {
@@ -51,6 +54,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				);
 
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_site_close', 'tr' );
+				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_link_close', 'tr' );
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_disable_over', 'tr' );
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_hide_control_classes', 'tr' );
 				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_scroll_lock', 'tr' );
@@ -146,23 +150,22 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		if ( 'ocs-sidebars' === tab.val() ) {
 
-			// Dynamic sidebar ID.
-			if ( $('.js-dynamic-id').length ) {
-				postbox.each( function() {
-					var sidebar = this;
-					$( '.js-dynamic-id', sidebar ).text( $( 'input.off_canvas_sidebars_options_sidebars_id', sidebar ).val() );
-					$('.sidebar_classes').show();
-					$( 'input.off_canvas_sidebars_options_sidebars_id', this ).on('keyup', function() {
-						$( '.js-dynamic-id', sidebar ).text( $(this).val() );
-					} );
-				} );
-			}
-
 			// Half opacity for closed disabled sidebars.
 			// @todo Use classes instead of CSS.
 			postbox.each( function() {
 				var sidebar = this,
-					$sidebar = $( sidebar );
+					$sidebar = $( sidebar ),
+					$dynamic_id = $( '.js-dynamic-id', sidebar );
+
+				// Dynamic sidebar ID.
+				if ( $dynamic_id.length ) {
+					var $dynamic_id_input = $( 'input.off_canvas_sidebars_options_sidebars_id', sidebar );
+					$dynamic_id.text( $dynamic_id_input.val() );
+					$('.sidebar_classes').show();
+					$dynamic_id_input.on('keyup', function() {
+						$dynamic_id.text( $(this).val() );
+					} );
+				}
 
 				$sidebar.css({'border-left':'5px solid #eee'});
 				if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is(':checked') ) {
@@ -223,7 +226,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		if ( 'ocs-shortcode' === tab.val() ) {
 
-			var fields = [ 'id', 'text', 'action', 'element', 'class', 'attr', 'nested' ];
+			var fields = [ 'id', 'text', 'icon', 'icon_location', 'action', 'element', 'class', 'attr', 'nested' ];
 
 			for ( var i = 0, l = fields.length; i < l; i++ ) {
 				$( '#off_canvas_sidebars_options_' + fields[ i ] ).on( 'change keyup', function() {
@@ -235,7 +238,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		/**
 		 * Formats the data to a shortcode.
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @return {null}  Nothing.
 		 */
 		function create_shortcode() {
@@ -284,7 +287,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 		/**
 		 * Parses the shortcode data for a HTML preview.
-		 * @since  0.4
+		 * @since  0.4.0
+		 * @since  0.5.0  Add icon options.
 		 * @param  {object}  field_data  The shortcode data.
 		 * @return {null}  Nothing.
 		 */
@@ -295,7 +299,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				prefix = ocsOffCanvasSidebarsSettings.css_prefix,
 				action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle',
 				classes = prefix + '-trigger ' + prefix + '-' + action,
-				singleton = false,
+				text = field_data.text.val(),
+				icon = field_data.icon.val(),
 				html = '';
 
 			if ( field_data.id.val() ) {
@@ -310,14 +315,28 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			attributes.class = classes;
 
 			if ( 'input' === element || 'img' === element ) {
-				singleton = true;
-				attributes.value = field_data.text.val();
-			}
 
-			if ( singleton ) {
+				// Singleton element.
+				attributes.value = text;
+
 				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>';
+
 			} else {
-				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>' + field_data.text.val() + '</' + element + '>';
+
+				// Icons can not be used with singleton elements.
+				if ( icon ) {
+					icon = '<span class="icon ' + icon + '"></span>';
+					if ( text ) {
+						text = '<span class="label">' + text + '</span>';
+					}
+					if ( 'after' === field_data.icon_location.val() ) {
+						text += icon;
+					} else {
+						text = icon + text;
+					}
+				}
+
+				html = '<' + element + ' ' + attrObjectToHTML( attributes ) + '>' + text + '</' + element + '>';
 			}
 
 			$( '#ocs_shortcode_preview' ).html( html );
@@ -331,7 +350,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: key="value" key="value"
 		 * Out: { key: value, key: value }
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {string}  attrString  The attribute string.
 		 * @return {object}  The attribute object.
 		 */
@@ -355,7 +374,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: key:value;key:value
 		 * Out: { key: value, key: value }
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {string}  attrString  The attribute string.
 		 * @return {object}  The attribute object.
 		 */
@@ -381,7 +400,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: { key: value, key: value }
 		 * Out: key="value" key="value"
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {object}  attrObj  The attribute object.
 		 * @return {string}  The attribute string.
 		 */
@@ -401,7 +420,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * In: { key: value, key: value }
 		 * Out: key:value;key:value
 		 *
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {object}  attrObj  The attribute object.
 		 * @return {string}  The attribute string.
 		 */
@@ -416,7 +435,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		}
 
 		/**
-		 * @since  0.4
+		 * @since  0.4.0
 		 * @param  {string}   s  The string.
 		 * @param  {string}   a  The attribute to find.
 		 * @param  {boolean}  f  @todo

@@ -10,8 +10,8 @@
  * Modified by: Jory Hogeveen
  * Version numbers and info below is related to Off-Canvas Sidebars, not Slidebars.
  *
- * @package off-canvas-slidebars
- * @author Jory Hogeveen <info@keraweb.nl>
+ * @package Off_Canvas_Sidebars
+ * @author  Jory Hogeveen <info@keraweb.nl>
  *
  * @since   0.4    Add scope for this reference + Add legacy CSS support (no hardware acceleration)
  * @since   0.4.2  Parse slidebar widths/heights are rounded pixels (like jQuery does) to prevent 1px differences

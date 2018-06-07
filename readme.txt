@@ -5,7 +5,7 @@ Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mob
 Requires at least: 4.1
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 0.4.2
+Stable tag: 0.5
 
 Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -89,6 +89,20 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.5 =
+
+*	**Feature:** Make closing the slidebar after clicking a link an option. [#47](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/47) & [#48](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/48)
+*	**Feature:** Add icon options in control trigger API and shortcode.
+*	**Feature:** Enhance widget UI with advanced options for control triggers. [#27](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/27)
+*	**Enhancement:** Setting page JS and UI enhancements.
+*	**Enhancement:** Use data attributes to conform [W3C HTML5 specifications](http://www.w3.org/TR/html5/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes). [#50](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/50) 
+*	**Enhancement:** Add support links on plugins overview page.
+*	**Refactoring:** Separate classes for tabs, page and settings/validation. Enhances plugin option validation. [#38](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/38)
+*	**Refactoring:** Global OCS_DOMAIN constant
+*	**Updated/Added:** Screenshots.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/36)
 
 = 0.4.2 =
 
