@@ -43,11 +43,13 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * @since  0.5.0  Add icon options.
  * @param  array   $atts {
  *     Required array of arguments
- *     @type  string        $id       (Required) The off-canvas sidebar ID.
- *     @type  string        $text     The text to show. Default: ''.
- *     @type  string        $action   The trigger action. Default: `toggle`.
- *     @type  string        $element  The HTML element. Default: `button`.
- *     @type  array|string  $class    Add extra classes? Also accepts a string with classes separated with a space.
+ *     @type  string        $id               (Required) The off-canvas sidebar ID.
+ *     @type  string        $text             The text to show. Default: ''.
+ *     @type  string        $action           The trigger action. Default: `toggle`.
+ *     @type  string        $element          The HTML element. Default: `button`.
+ *     @type  array|string  $class            Add extra classes? Also accepts a string with classes separated with a space.
+ *     @type  string        $icon             Icon classes.
+ *     @type  string        $icon_location    The icon location (`before` or `after`). Default: `before`.
  *     @type  array         $attr  {
  *          Other attributes to add. Format: attribute name (array key) => attribute value
  *     }
