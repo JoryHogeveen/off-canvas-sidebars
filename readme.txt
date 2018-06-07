@@ -102,6 +102,8 @@ For more advanced customisations either:
 *	**Refactoring:** Global OCS_DOMAIN constant
 *	**Updated/Added:** Screenshots.
 
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/36)
+
 = 0.4.2 =
 
 *	**Enhancement:** Keep scrollbar visible when scroll lock is active. [#44](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/44) & [PR #45](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/45) 
