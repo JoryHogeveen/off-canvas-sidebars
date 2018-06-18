@@ -67,7 +67,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$html .= '</fieldset>';
 			echo $html;
 		} else {
-			$tab = 'ocs-sidebars';
+			$tab = '&tab=ocs-sidebars';
 			$link = '?page=' . esc_attr( off_canvas_sidebars()->get_plugin_key() ) . $tab;
 			echo '<a href="' . $link . '">' . esc_html__( 'Click here to add off-canvas sidebars', OCS_DOMAIN ) . '</a>';
 		}
