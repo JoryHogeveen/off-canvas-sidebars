@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0  Refactored from single settings class.
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
@@ -153,12 +153,22 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Get a tab instance.
+	 * @since   0.5.1
+	 * @param   string  $tab
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
+	 */
+	public function get_tab( $tab ) {
+		return ( isset( $this->tabs[ $tab ] ) ) ? $this->tabs[ $tab ] : null;
+	}
+
+	/**
 	 * Get the current tab instance.
 	 * @since   0.5.0
 	 * @return  \OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_current_tab() {
-		return ( isset( $this->tabs[ $this->tab ] ) ) ? $this->tabs[ $this->tab ] : null;
+		return $this->get_tab( $this->tab );
 	}
 
 	/**
@@ -167,7 +177,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 * @return  \OCS_Off_Canvas_Sidebars_Tab
 	 */
 	public function get_request_tab() {
-		return ( isset( $this->tabs[ $this->request_tab ] ) ) ? $this->tabs[ $this->request_tab ] : null;
+		return $this->get_tab( $this->request_tab );
 	}
 
 	/**
