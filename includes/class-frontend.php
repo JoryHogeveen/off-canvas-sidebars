@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -326,9 +326,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 *
 		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 		 *
-		 * @param  array  $classes       Classes
-		 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-		 * @param  array  $sidebar_data  The sidebar settings.
+		 * @param  array   $classes       Classes
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
 		 */
 		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar_id, $data );
 
@@ -414,10 +414,11 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$attr = array_merge( $attr, $args['attr'] );
 
 		// Add our own classes.
+		$prefix = $this->settings['css_prefix'];
 		$classes = array(
-			$this->settings['css_prefix'] . '-trigger',
-			$this->settings['css_prefix'] . '-' . $args['action'],
-			$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id,
+			$prefix . '-trigger',
+			$prefix . '-' . $args['action'],
+			$prefix . '-' . $args['action'] . '-' . $sidebar_id,
 		);
 
 		// Optionally add extra classes.
