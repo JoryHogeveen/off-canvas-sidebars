@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
@@ -84,7 +84,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * Register this tab.
 	 * @since   0.5.0
 	 * @param   array  $tabs
-	 * @return  array  mixed
+	 * @return  array
 	 */
 	public function register_tab( $tabs ) {
 		$tabs[ $this->tab ] = $this;
@@ -147,8 +147,8 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @param   string  $key
 	 * @param   array   $args {
 	 *     @type  string  $name      (required)
-	 *     @type  string  $type      (required)
-	 *     @type  string  $callback  (required)
+	 *     @type  string  $type
+	 *     @type  string  $callback
 	 *     @type  string  $validate
 	 *     @type  string  $label
 	 *     @type  string  $description
@@ -221,6 +221,16 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 			return array_keys( $fields );
 		}
 		return $fields;
+	}
+
+	/**
+	 * Get a tab.
+	 * @since   0.5.1
+	 * @param   string  $tab
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
+	 */
+	public function get_tab( $tab ) {
+		return OCS_Off_Canvas_Sidebars_Page::get_instance()->get_tab( $tab );
 	}
 
 	/**
