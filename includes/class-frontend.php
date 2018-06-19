@@ -201,7 +201,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				return;
 			}
 
-			echo '<div id="' . $this->settings['css_prefix'] . '-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+			echo '<div ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
 
 			/**
 			 * Action to add content before the default sidebar content
@@ -299,6 +299,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 *
 	 * @since   0.1.0
 	 * @since   0.3.0  Overwrite global setting attributes.
+	 * @since   0.5.1  Move `id` attr here.
 	 * @param   string  $sidebar_id
 	 * @param   array   $data
 	 * @return  string
@@ -306,6 +307,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	public function get_sidebar_attributes( $sidebar_id, $data ) {
 		$prefix = $this->settings['css_prefix'];
 		$atts = array();
+
+		$atts['id'] = $prefix . '-' . $sidebar_id;
 
 		$atts['class'] = array();
 		$atts['class'][] = $prefix . '-slidebar';
