@@ -309,12 +309,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		$atts['class'] = array();
 		$atts['class'][] = $prefix . '-slidebar';
-		$atts['class'][] = $prefix . '-' . esc_attr( $sidebar_id );
+		$atts['class'][] = $prefix . '-' . $sidebar_id;
 		$atts['class'][] = 'ocs-slidebar';
-		$atts['class'][] = 'ocs-' . esc_attr( $sidebar_id );
-		$atts['class'][] = 'ocs-size-' . esc_attr( $data['size'] );
-		$atts['class'][] = 'ocs-location-' . esc_attr( $data['location'] );
-		$atts['class'][] = 'ocs-style-' . esc_attr( $data['style'] );
+		$atts['class'][] = 'ocs-' . $sidebar_id;
+		$atts['class'][] = 'ocs-size-' . $data['size'];
+		$atts['class'][] = 'ocs-location-' . $data['location'];
+		$atts['class'][] = 'ocs-style-' . $data['style'];
 
 		/**
 		 * Filter the classes for a sidebar.
@@ -331,19 +331,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		// Slidebars 2.0
 		$atts['off-canvas'] = array(
-			$prefix . '-' . esc_attr( $sidebar_id ), // ID.
-			esc_attr( $data['location'] ), // Location.
-			esc_attr( $data['style'] ), // Animation style.
+			$prefix . '-' . $sidebar_id, // ID.
+			$data['location'], // Location.
+			$data['style'], // Animation style.
 		);
-		$atts['data-ocs-sidebar-id'] = esc_attr( $sidebar_id );
+		$atts['data-ocs-sidebar-id'] = $sidebar_id;
 
 		// Overwrite global settings.
 		if ( true === (bool) $data['overwrite_global_settings'] ) {
-			$atts['data-ocs-overwrite_global_settings'] = esc_attr( (int) $data['overwrite_global_settings'] );
-			$atts['data-ocs-site_close']                = esc_attr( (int) $data['site_close'] );
-			$atts['data-ocs-disable_over']              = esc_attr( (int) $data['disable_over'] );
-			$atts['data-ocs-hide_control_classes']      = esc_attr( (int) $data['hide_control_classes'] );
-			$atts['data-ocs-scroll_lock']               = esc_attr( (int) $data['scroll_lock'] );
+			$atts['data-ocs-overwrite_global_settings'] = (int) $data['overwrite_global_settings'];
+			$atts['data-ocs-site_close']                = (int) $data['site_close'];
+			$atts['data-ocs-disable_over']              = (int) $data['disable_over'];
+			$atts['data-ocs-hide_control_classes']      = (int) $data['hide_control_classes'];
+			$atts['data-ocs-scroll_lock']               = (int) $data['scroll_lock'];
 		}
 
 		foreach ( $atts as $name => $value ) {
@@ -351,7 +351,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				$value = implode( ' ', $value );
 			}
 
-			$atts[ $name ] = $name . '="' . $value . '"';
+			$atts[ $name ] = $name . '="' . esc_attr( $value ) . '"';
 		}
 		$return = implode( ' ', $atts );
 
