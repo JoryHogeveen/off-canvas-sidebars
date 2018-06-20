@@ -218,7 +218,7 @@
 
 		// Show toolbar.
 		editor.on( 'wptoolbar', function ( e ) {
-			e = get_ocs_trigger_element( e );
+			e = getTriggerElement( e );
 			if ( e ) {
 				toolbarElement = e.element;
 				if ( $( e.element ).is( 'img' ) ) {
@@ -234,7 +234,7 @@
 
 		// Disable our button if the selected text is already a OCS shortcode.
 		editor.on( 'NodeChange', function ( e ) {
-			if ( get_ocs_trigger_element( e ) ) {
+			if ( getTriggerElement( e ) ) {
 				$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', true );
 			} else {
 				$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', false );
@@ -257,7 +257,7 @@
 		} );
 
 		editor.on( 'DblClick', function ( e ) {
-			e = get_ocs_trigger_element( e );
+			e = getTriggerElement( e );
 			if ( e ) {
 				doTriggerPopup( e.target, this );
 			}
@@ -268,7 +268,7 @@
 		 * @param   {object}  e  The MCE element.
 		 * @returns {object}  The OCS trigger MCE element.
 		 */
-		function get_ocs_trigger_element( e ) {
+		function getTriggerElement( e ) {
 			if ( ! e.element ) {
 				return null;
 			}
