@@ -58,37 +58,37 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * @return string
  */
 function the_ocs_control_trigger( $atts, $content = '' ) {
-	$instance = off_canvas_sidebars_frontend();
-	if ( $instance ) {
 
-		if ( empty( $atts['id'] ) ) {
-			return __( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
-		}
-
-		$atts = shortcode_atts( array(
-			'id'            => false,
-			'text'          => '', // Text to show.
-			'action'        => 'toggle', // toggle|open|close
-			'element'       => 'button', // button|span|i|b|a|etc.
-			'class'         => array(), // Extra classes, also accepts a string with classes separated with a space.
-			'icon'          => '', // Icon classes.
-			'icon_location' => 'before', // before|after.
-			'attr'          => array(), // An array of attribute keys and their values.
-			'echo'          => true,
-		), $atts, 'ocs_trigger' );
-
-		$return = '';
-		if ( ! empty( $content ) ) {
-			$atts['text'] = $content;
-		}
-
-		$return = $instance->do_control_trigger( $atts['id'], $atts ) . $return;
-		if ( (boolean) $atts['echo'] ) {
-			echo $return;
-		}
-		return $return;
+	if ( empty( $atts['id'] ) ) {
+		return __( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
 	}
-	return '';
+
+	$atts = shortcode_atts( array(
+		'id'            => false,
+		'text'          => '', // Text to show.
+		'action'        => 'toggle', // toggle|open|close
+		'element'       => 'button', // button|span|i|b|a|etc.
+		'class'         => array(), // Extra classes, also accepts a string with classes separated with a space.
+		'icon'          => '', // Icon classes.
+		'icon_location' => 'before', // before|after.
+		'attr'          => array(), // An array of attribute keys and their values.
+		'echo'          => true,
+	), $atts, 'ocs_trigger' );
+
+	$return = '';
+	if ( ! empty( $content ) ) {
+		//if ( strpos( $content, '[ocs_trigger' ) !== false ) {
+			//$return = do_shortcode( $content . '[/ocs_trigger]' );
+		//} else {
+			$atts['text'] = $content;
+		//}
+	}
+
+	$return = OCS_Off_Canvas_Sidebars_Control_Trigger::render( $atts['id'], $atts ) . $return;
+	if ( (boolean) $atts['echo'] ) {
+		echo $return;
+	}
+	return $return;
 }
 
 /**
