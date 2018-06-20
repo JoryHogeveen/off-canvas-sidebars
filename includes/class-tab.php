@@ -111,9 +111,9 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 *
 	 * @since   0.5.0  Refactor into separate tab classes and methods.
 	 * @param   array  $args {
-	 *     @type  string        $id
-	 *     @type  string        $title
-	 *     @type  array|string  $callback
+	 *     @type  string           $id
+	 *     @type  string           $title
+	 *     @type  string|callable  $callback
 	 * }
 	 */
 	public function register_section_fields( $args ) {
@@ -146,16 +146,16 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @since   0.5.0
 	 * @param   string  $key
 	 * @param   array   $args {
-	 *     @type  string  $name      (required)
-	 *     @type  string  $type
-	 *     @type  string  $callback
-	 *     @type  string  $validate
-	 *     @type  string  $label
-	 *     @type  string  $description
-	 *     @type  array   $options
-	 *     @type  string  $default
-	 *     @type  string  $value
-	 *     @type  bool    $required
+	 *     @type  string           $name      (required)
+	 *     @type  string           $type
+	 *     @type  string|callable  $callback
+	 *     @type  string|callable  $validate
+	 *     @type  string           $label
+	 *     @type  string           $description
+	 *     @type  array            $options
+	 *     @type  string           $default
+	 *     @type  string           $value
+	 *     @type  bool             $required
 	 * }
 	 */
 	public function add_settings_field( $key, $args ) {
