@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_Canvas_Sidebars_Base
@@ -107,6 +107,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	 * Print our scripts.
 	 *
 	 * @since   0.4.0
+	 * @since   0.5.1  Use Control Trigger class.
 	 * @see     `after_wp_tiny_mce` hook
 	 */
 	public function print_scripts() {
@@ -115,110 +116,52 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 			return;
 		}
 
-		$sidebars = array();
-		foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
-			if ( empty( $sidebar_data['enable'] ) ) {
-				continue;
-			}
-			$label = $sidebar_id;
-			if ( ! empty( $sidebar_data['label'] ) ) {
-				$label = $sidebar_data['label'] . ' (' . $sidebar_id . ')';
-			}
-			$sidebars[] = array(
-				'text'  => $label,
-				'value' => $sidebar_id,
-			);
-		}
+		$fields = OCS_Off_Canvas_Sidebars_Control_Trigger::get_fields_by_group( 'basic' );
+		// Remove select option for Sidebar ID.
+		array_shift( $fields['id']['options'] );
 
-		$elements = array( 'button', 'span', 'a', 'b', 'strong', 'i', 'em', 'img', 'div' );
-		$element_values = array();
-		foreach ( $elements as $e ) {
-			$element_values[] = array(
-				'text'  => '<' . $e . '>',
-				'value' => $e,
-			);
-		}
-
-		$fields = array(
-			'id' => array(
-				'type'    => 'listbox',
-				'name'    => 'id',
-				'label'   => __( 'Sidebar ID', OCS_DOMAIN ),
-				'value'   => '',
-				'values'  => $sidebars,
-				'tooltip' => __( '(Required) The off-canvas sidebar ID', OCS_DOMAIN ),
-			),
-			'text' => array(
-				'type'      => 'textbox',
-				'name'      => 'text',
-				'label'     => __( 'Text', OCS_DOMAIN ),
-				'value'     => '',
-				'tooltip'   => __( 'Limited HTML allowed', OCS_DOMAIN ),
-				'multiline' => true,
-			),
-			'optional_container' => array(
-				'type' => 'container',
-				'html' => '<b style="font-weight: 600 !important;">' . __( 'Optional options', OCS_DOMAIN ) . ':</b>',
-			),
-			'action' => array(
-				'type'   => 'listbox',
-				'name'   => 'action',
-				'label'  => __( 'Trigger action', OCS_DOMAIN ),
-				'value'  => '',
-				'values' => array(
-					array(
-						'text'  => __( 'Toggle', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
-						'value' => '',
-					),
-					array(
-						'text' => __( 'Open', OCS_DOMAIN ),
-						'value' => 'open',
-					),
-					array(
-						'text' => __( 'Close', OCS_DOMAIN ),
-						'value' => 'close',
-					),
-				),
-				//'tooltip' => __( 'The trigger action. Default: toggle', OCS_DOMAIN ),
-			),
-			'element' => array(
-				'type'    => 'listbox',
-				'name'    => 'element',
-				'label'   => __( 'HTML element', OCS_DOMAIN ),
-				'value'   => '',
-				'values'  => $element_values,
-				'tooltip' => __( 'Choose wisely', OCS_DOMAIN ),
-			),
-			'class' => array(
-				'type'    => 'textbox',
-				'name'    => 'class',
-				'label'   => __( 'Extra classes', OCS_DOMAIN ),
-				'value'   => '',
-				'tooltip' => __( 'Separate multiple classes with a space', OCS_DOMAIN ),
-			),
-			'attr' => array(
-				'type'      => 'textbox',
-				'name'      => 'attr',
-				'label'     => __( 'Custom attributes', OCS_DOMAIN ),
-				'value'     => '',
-				'tooltip'   => __( 'key : value ; key : value', OCS_DOMAIN ),
-				'multiline' => true,
-			),
-			'nested' => array(
-				'type'    => 'checkbox',
-				'name'    => 'nested',
-				'label'   => __( 'Nested shortcode', OCS_DOMAIN ) . '?',
-				'value'   => '',
-				'tooltip' => __( '[ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]', OCS_DOMAIN ),
-			),
+		$fields['advanced_options'] = array(
+			'type' => 'container',
+			'html' => '<b style="font-weight: 600 !important;">' . __( 'Advanced options', OCS_DOMAIN ) . ':</b>',
 		);
+		$fields = array_merge( $fields, OCS_Off_Canvas_Sidebars_Control_Trigger::get_fields_by_group( 'advanced' ) );
+
+		foreach ( $fields as $key => $field ) {
+			switch ( $field['type'] ) {
+				case 'text':
+					$field['type'] = 'textbox';
+					break;
+				case 'select':
+					$field['type'] = 'listbox';
+					break;
+			}
+			if ( isset( $field['description'] ) ) {
+				$field['tooltip'] = $field['description'];
+				unset( $field['description'] );
+			}
+			if ( isset( $field['options'] ) ) {
+				$field['values'] = $field['options'];
+				unset( $field['options'] );
+				foreach ( $field['values'] as $vkey => $value ) {
+					if ( isset( $value['label'] ) ) {
+						$field['values'][ $vkey ]['text'] = $value['label'];
+						unset( $field['values'][ $vkey ]['label'] );
+					}
+				}
+			}
+			if ( ! isset( $field['value'] ) ) {
+				$field['value'] = '';
+			}
+
+			$fields[ $key ] = $field;
+		}
 ?>
 <script type="text/javascript" id="ocs-mce-settings">
 	var ocsMceSettings = {
 		prefix: '<?php echo $this->settings['css_prefix']; ?>',
 		title: '<?php esc_html_e( 'Off-Canvas Sidebars - Trigger Control Shortcode', OCS_DOMAIN ); ?>',
 		fields: <?php echo wp_json_encode( $fields ); ?>,
-		elements: <?php echo wp_json_encode( $elements ); ?>,
+		elements: <?php echo wp_json_encode( OCS_Off_Canvas_Sidebars_Control_Trigger::$control_elements ); ?>,
 		render: <?php echo ( $this->settings['wp_editor_shortcode_rendering'] ) ? 'true' : 'false'; ?>
 	};
 </script>
