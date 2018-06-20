@@ -364,10 +364,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Generate a trigger element.
 	 *
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
-	 * @todo Refactor to enable above checks?
-	 *
+	 * @see     OCS_Off_Canvas_Sidebars_Control_Trigger::render()
 	 * @since   0.4.0
 	 * @since   0.5.0  Add icon options.
 	 * @param   string  $sidebar_id
@@ -375,94 +372,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  string
 	 */
 	public function do_control_trigger( $sidebar_id, $args = array() ) {
-
-		$sidebar_id = (string) $sidebar_id;
-
-		$defaults = array(
-			'text'          => '', // Text to show.
-			'action'        => 'toggle', // toggle|open|close.
-			'element'       => 'button', // button|span|i|b|a|etc.
-			'class'         => array(), // Extra classes (space separated), also accepts an array of classes.
-			'icon'          => '', // Icon classes.
-			'icon_location' => 'before', // before|after.
-			'attr'          => array(), // An array of attribute keys and their values.
-		);
-		$args = wp_parse_args( $args, $defaults );
-
-		$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
-
-		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
-			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
-		}
-
-		$singleton = false;
-
-		// Is it a singleton element? Add the text to the attributes.
-		if ( in_array( $args['element'], array( 'br', 'hr', 'img', 'input' ), true ) ) {
-			$singleton = true;
-			if ( 'img' === $args['element'] && empty( $args['attr']['alt'] ) ) {
-				$args['attr']['alt'] = $args['text'];
-			}
-			if ( 'input' === $args['element'] && empty( $args['attr']['value'] ) ) {
-				$args['attr']['value'] = $args['text'];
-			}
-		}
-
-		$attr = array(
-			'class' => array(),
-		);
-		$attr = array_merge( $attr, $args['attr'] );
-
-		// Add our own classes.
-		$prefix = $this->settings['css_prefix'];
-		$classes = array(
-			$prefix . '-trigger',
-			$prefix . '-' . $args['action'],
-			$prefix . '-' . $args['action'] . '-' . $sidebar_id,
-		);
-
-		// Optionally add extra classes.
-		if ( ! empty( $args['class'] ) ) {
-			if ( ! is_array( $args['class'] ) ) {
-				$args['class'] = explode( ' ', $args['class'] );
-			}
-			$classes = array_merge( $classes, (array) $args['class'] );
-		}
-
-		// Parse classes.
-		if ( ! is_array( $attr['class'] ) ) {
-			$attr['class'] = explode( ' ', $attr['class'] );
-		}
-		$attr['class'] = array_merge( $attr['class'], $classes );
-		$attr['class'] = array_map( 'trim', $attr['class'] );
-		$attr['class'] = array_filter( $attr['class'] );
-		$attr['class'] = array_unique( $attr['class'] );
-
-		// Icons can not be used with singleton elements.
-		if ( $args['icon'] && ! $singleton ) {
-			if ( strpos( $args['icon'], 'dashicons' ) !== false ) {
-				wp_enqueue_style( 'dashicons' );
-			}
-			$icon = '<span class="icon ' . esc_attr( $args['icon'] ) . '"></span>';
-			if ( $args['text'] ) {
-				// Wrap label in a separate span for styling purposes.
-				$args['text'] = '<span class="label">' . $args['text'] . '</span>';
-			}
-			if ( 'after' === $args['icon_location'] ) {
-				$args['text'] .= $icon;
-			} else {
-				$args['text'] = $icon . $args['text'];
-			}
-		}
-
-		$return = '<' . $args['element'] . ' ' . self::parse_to_html_attr( $attr );
-		if ( $singleton ) {
-			$return .= ' />';
-		} else {
-			$return .= '>' . $args['text'] . '</' . $args['element'] . '>';
-		}
-
-		return $return;
+		return OCS_Off_Canvas_Sidebars_Control_Trigger::render( $sidebar_id, $args );
 	}
 
 	/**
