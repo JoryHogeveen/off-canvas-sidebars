@@ -321,7 +321,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			}
 			$value = ( isset( $option['label'] ) ) ? $option['label'] : $option['value'];
 			$selected = selected( $prefix_value[ $args['name'] ], $option['value'], false );
-			$html .= '<option value="' . $option['value'] . '" ' . $selected . '>' . $value . '</option>';
+			$html .= '<option value="' . esc_attr( $option['value'] ) . '" ' . $selected . '>' . esc_html( $value ) . '</option>';
 
 		} // End foreach().
 
