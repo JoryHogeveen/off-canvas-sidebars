@@ -121,6 +121,9 @@ final class OCS_Off_Canvas_Sidebars
 
 			$this->general_labels = $this->get_general_labels();
 
+			// Load the control trigger API class.
+			include_once OCS_PLUGIN_DIR . 'includes/class-control-trigger.php';
+
 			// Register the widget.
 			include_once OCS_PLUGIN_DIR . 'widgets/control-widget.php';
 			add_action( 'widgets_init', array( $this, 'widgets_init' ) );
