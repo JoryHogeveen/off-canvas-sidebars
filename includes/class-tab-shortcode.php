@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebars_Tab
@@ -67,9 +67,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	/**
 	 * Tab content.
 	 *
-	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-	 * @todo Refactor to enable above checks?
-	 *
 	 * @since   0.5.0
 	 */
 	public function tab_content() {
@@ -87,71 +84,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 		echo '<h3 class="hndle"><span>' . __( 'Basic options', OCS_DOMAIN ) . ':</span></h3>';
 
 		echo '<div class="inside"><table class="form-table">';
-		echo '<tr><td>';
 
-		$sidebar_select = array(
-			array(
-				'value' => '',
-				'label' => '-- ' . __( 'select', OCS_DOMAIN ) . ' --',
-			),
-		);
-		foreach ( (array) off_canvas_sidebars()->get_sidebars() as $sidebar_id => $sidebar_data ) {
-			$sidebar_select[] = array(
-				'value' => $sidebar_id,
-				'label' => $sidebar_data['label'],
-			);
-		}
-		OCS_Off_Canvas_Sidebars_Form::select_option( array(
-			'name' => 'id',
-			'label' => __( 'Sidebar ID', OCS_DOMAIN ),
-			'description' => __( '(Required) The off-canvas sidebar ID', OCS_DOMAIN ),
-			'options' => $sidebar_select,
-		) );
+		$fields = OCS_Off_Canvas_Sidebars_Control_Trigger::get_fields_by_group( 'basic' );
+		$this->render_table_fields( $fields );
 
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		OCS_Off_Canvas_Sidebars_Form::text_option( array(
-			'name'        => 'text',
-			'label'       => __( 'Text', OCS_DOMAIN ),
-			'value'       => '',
-			'class'       => 'widefat',
-			'description' => __( 'Limited HTML allowed', OCS_DOMAIN ),
-			'multiline'   => true,
-		) );
-
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		OCS_Off_Canvas_Sidebars_Form::text_option( array(
-			'name'        => 'icon',
-			'label'       => __( 'Icon', OCS_DOMAIN ),
-			'value'       => '',
-			'class'       => 'widefat',
-			// Translators: %s stands for <code>dashicons</code>.
-			'description' => __( 'The icon classes.', OCS_DOMAIN ) . ' ' . sprintf( __( 'Do not forget the base icon class like %s', OCS_DOMAIN ), '<code>dashicons</code>' ),
-			'multiline'   => false,
-		) );
-
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		OCS_Off_Canvas_Sidebars_Form::select_option( array(
-			'name' => 'icon_location',
-			'label' => __( 'Icon location', OCS_DOMAIN ),
-			'options' => array(
-				array(
-					'label' => __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
-					'value' => '',
-				),
-				array(
-					'label' => __( 'After', OCS_DOMAIN ),
-					'value' => 'after',
-				),
-			),
-		) );
-
-		echo '</td></tr>';
 		echo '</table></div></div>';
 
 		echo '<div id="section_shortcode_optionaloptions" class="stuffbox postbox postbox postbox-third">';
@@ -159,84 +95,18 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 		echo '<h3 class="hndle"><span>' . __( 'Advanced options', OCS_DOMAIN ) . ':</span></h3>';
 
 		echo '<div class="inside"><table class="form-table">';
-		echo '<tr><td>';
 
-		OCS_Off_Canvas_Sidebars_Form::select_option( array(
-			'name' => 'action',
-			'label' => __( 'Trigger action', OCS_DOMAIN ),
-			'options' => array(
-				array(
-					'label' => __( 'Toggle', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
-					'value' => '',
-				),
-				array(
-					'label' => __( 'Open', OCS_DOMAIN ),
-					'value' => 'open',
-				),
-				array(
-					'label' => __( 'Close', OCS_DOMAIN ),
-					'value' => 'close',
-				),
-			),
-			//'tooltip' => __( 'The trigger action. Default: toggle', OCS_DOMAIN ),
-		) );
+		$fields = OCS_Off_Canvas_Sidebars_Control_Trigger::get_fields_by_group( 'advanced' );
 
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		$elements = array( 'button', 'span', 'a', 'b', 'strong', 'i', 'em', 'img', 'div' );
-		$element_values = array();
-		$element_values[] = array(
-			'value' => '',
-			'label' => ' - ' . __( 'Select', OCS_DOMAIN ) . ' - ',
-		);
-		foreach ( $elements as $e ) {
-			$element_values[] = array(
-				'value' => $e,
-				'label' => '' . $e . '',
-			);
+		if ( isset( $fields['element']['options'] ) ) {
+			// Add select option to the `element` field.
+			array_unshift( $fields['element']['options'], array(
+				'value' => '',
+				'label' => ' - ' . __( 'Select', OCS_DOMAIN ) . ' - ',
+			) );
 		}
-		OCS_Off_Canvas_Sidebars_Form::select_option( array(
-			'name' => 'element',
-			'label' => __( 'HTML element', OCS_DOMAIN ),
-			'options' => $element_values,
-			'description' => __( 'Choose wisely', OCS_DOMAIN ) . '. ' . __( 'Default', OCS_DOMAIN ) . ': <code>button</code>',
-		) );
 
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		OCS_Off_Canvas_Sidebars_Form::text_option( array(
-			'name' => 'class',
-			'label' => __( 'Extra classes', OCS_DOMAIN ),
-			'value' => '',
-			'class' => 'widefat',
-			'description' => __( 'Separate multiple classes with a space', OCS_DOMAIN ),
-		) );
-
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		OCS_Off_Canvas_Sidebars_Form::text_option( array(
-			'name' => 'attr',
-			'label' => __( 'Custom attributes', OCS_DOMAIN ),
-			'value' => '',
-			'class' => 'widefat',
-			'description' => __( 'key : value ; key : value', OCS_DOMAIN ),
-			'multiline' => true,
-		) );
-
-		echo '</td></tr>';
-		echo '<tr><td>';
-
-		OCS_Off_Canvas_Sidebars_Form::checkbox_option( array(
-			'name' => 'nested',
-			'label' => __( 'Nested shortcode', OCS_DOMAIN ) . '?',
-			'value' => '',
-			'description' => __( '[ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]', OCS_DOMAIN ),
-		) );
-
-		echo '</td></tr>';
+		$this->render_table_fields( $fields );
 
 		echo '</table></div></div>';
 		?>
@@ -250,6 +120,46 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 				<textarea id="ocs_shortcode_html" class="widefat"></textarea>
 			</div></div>
 		<?php
+	}
+
+	/**
+	 * Render table fields.
+	 *
+	 * @since  0.5.1
+	 * @param  array  $fields
+	 */
+	public function render_table_fields( $fields ) {
+		foreach ( $fields as $field ) {
+			echo '<tr><td>';
+			switch ( $field['type'] ) {
+				case 'text':
+					$field['value'] = '';
+					$field['class'] = 'widefat';
+					OCS_Off_Canvas_Sidebars_Form::text_option( $field );
+					break;
+				case 'select':
+					OCS_Off_Canvas_Sidebars_Form::select_option( $field );
+					break;
+				case 'radio':
+					OCS_Off_Canvas_Sidebars_Form::radio_option( $field );
+					break;
+				case 'checkbox':
+					$field['value'] = '';
+					OCS_Off_Canvas_Sidebars_Form::checkbox_option( $field );
+					break;
+				case 'number':
+					$field['value'] = '';
+					$field['class'] = 'widefat';
+					OCS_Off_Canvas_Sidebars_Form::number_option( $field );
+					break;
+				case 'color':
+					$field['value'] = '';
+					$field['class'] = 'widefat';
+					OCS_Off_Canvas_Sidebars_Form::color_option( $field );
+					break;
+			}
+			echo '</td></tr>';
+		}
 	}
 
 	/**
