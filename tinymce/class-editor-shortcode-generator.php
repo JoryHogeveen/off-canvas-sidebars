@@ -77,7 +77,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	 * @return  array
 	 */
 	public function mce_external_plugins( $plugin_array ) {
-		$plugin_array['off_canvas_sidebars'] = OCS_PLUGIN_URL . 'js/mce-plugin-shortcode.js';
+		$plugin_array['off_canvas_sidebars'] = OCS_PLUGIN_URL . 'tinymce/mce-plugin-shortcode.js';
 		return $plugin_array;
 	}
 

@@ -163,7 +163,7 @@ final class OCS_Off_Canvas_Sidebars
 			OCS_Off_Canvas_Sidebars_Page::get_instance();
 
 			// Load the WP Editor shortcode generator.
-			include_once OCS_PLUGIN_DIR . 'includes/class-editor-shortcode-generator.php';
+			include_once OCS_PLUGIN_DIR . 'tinymce/class-editor-shortcode-generator.php';
 			OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator::get_instance();
 
 			// Add settings link to plugins page.
