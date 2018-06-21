@@ -370,6 +370,8 @@
 			return content;
 		}
 
+		/* eslint-disable complexity, max-statements */
+		/* @todo Refactor to enable above checks? */
 		/**
 		 * Convert data to HTML.
 		 * @param  {string}   cls     Class.
@@ -469,7 +471,10 @@
 			}
 			// data-mce-resize="false" data-mce-placeholder="1"
 		}
+		/* eslint-enable */
 
+		/* eslint-disable complexity */
+		/* @todo Refactor to enable above checks? */
 		/**
 		 * Convert attribute string to attribute object.
 		 * @param  {string|object} el The element.
@@ -538,6 +543,7 @@
 
 			return attributes;
 		}
+		/* eslint-enable */
 
 		/**
 		 * Get the element text, also checks for nested element attributes.

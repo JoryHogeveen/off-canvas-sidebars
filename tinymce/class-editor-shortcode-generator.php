@@ -29,8 +29,6 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	 */
 	protected static $_instance = null;
 
-	private $settings = array();
-
 	/**
 	 * This class gets called in the init hook.
 	 * @since   0.4.0
@@ -44,7 +42,6 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 
 		if ( 'true' === get_user_option( 'rich_editing' ) ) {
 			//add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
-			$this->settings = off_canvas_sidebars()->get_settings();
 			add_action( 'media_buttons', array( $this, 'media_buttons' ), 20 );
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
 			add_filter( 'tiny_mce_before_init', array( $this, 'mce_inline_css' ) );
@@ -106,15 +103,37 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	/**
 	 * Print our scripts.
 	 *
-	 * @since   0.4.0
-	 * @since   0.5.1  Use Control Trigger class.
-	 * @see     `after_wp_tiny_mce` hook
+	 * @since  0.4.0
+	 * @since  0.5.1  Use Control Trigger class.
+	 * @see    `after_wp_tiny_mce` hook
 	 */
 	public function print_scripts() {
 		static $done = false;
 		if ( $done ) {
 			return;
 		}
+		$settings = off_canvas_sidebars()->get_settings();
+?>
+<script type="text/javascript" id="ocs-mce-settings">
+	var ocsMceSettings = {
+		prefix: '<?php echo $settings['css_prefix']; ?>',
+		title: '<?php esc_html_e( 'Off-Canvas Sidebars - Trigger Control Shortcode', OCS_DOMAIN ); ?>',
+		fields: <?php echo wp_json_encode( $this->get_fields() ); ?>,
+		elements: <?php echo wp_json_encode( OCS_Off_Canvas_Sidebars_Control_Trigger::$control_elements ); ?>,
+		render: <?php echo ( $settings['wp_editor_shortcode_rendering'] ) ? 'true' : 'false'; ?>
+	};
+</script>
+<?php
+		$done = true;
+	}
+
+	/**
+	 * Get control trigger fields and convert them to TinyMCE structure.
+	 *
+	 * @since   0.5.1
+	 * @return  array
+	 */
+	public function get_fields() {
 
 		$fields = OCS_Off_Canvas_Sidebars_Control_Trigger::get_fields_by_group( 'basic' );
 		// Remove select option for Sidebar ID.
@@ -155,18 +174,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 
 			$fields[ $key ] = $field;
 		}
-?>
-<script type="text/javascript" id="ocs-mce-settings">
-	var ocsMceSettings = {
-		prefix: '<?php echo $this->settings['css_prefix']; ?>',
-		title: '<?php esc_html_e( 'Off-Canvas Sidebars - Trigger Control Shortcode', OCS_DOMAIN ); ?>',
-		fields: <?php echo wp_json_encode( $fields ); ?>,
-		elements: <?php echo wp_json_encode( OCS_Off_Canvas_Sidebars_Control_Trigger::$control_elements ); ?>,
-		render: <?php echo ( $this->settings['wp_editor_shortcode_rendering'] ) ? 'true' : 'false'; ?>
-	};
-</script>
-<?php
-		$done = true;
+		return $fields;
 	}
 
 	/**
