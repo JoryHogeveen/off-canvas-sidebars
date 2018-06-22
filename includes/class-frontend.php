@@ -353,16 +353,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$atts['data-ocs-scroll_lock']               = (int) $data['scroll_lock'];
 		}
 
-		foreach ( $atts as $name => $value ) {
-			if ( is_array( $value ) ) {
-				$value = implode( ' ', $value );
-			}
-
-			$atts[ $name ] = $name . '="' . esc_attr( $value ) . '"';
-		}
-		$return = implode( ' ', $atts );
-
-		return $return;
+		return self::parse_to_html_attr( $atts );
 	}
 
 	/**
