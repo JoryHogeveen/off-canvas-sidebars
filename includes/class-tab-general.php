@@ -134,10 +134,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 		$data = OCS_Off_Canvas_Sidebars_Settings::validate_fields( $data, $this->get_settings_fields() );
 
-		// Remove whitespaces.
-		$data['website_before_hook'] = OCS_Off_Canvas_Sidebars_Settings::remove_whitespace( $data['website_before_hook'] );
-		$data['website_after_hook']  = OCS_Off_Canvas_Sidebars_Settings::remove_whitespace( $data['website_after_hook'] );
-
 		// Set default values if no value is set.
 		if ( empty( $data['css_prefix'] ) ) {
 			$data['css_prefix'] = 'ocs';
@@ -160,8 +156,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 		$section = 'section_general';
 
-		$fields['enabled_sidebars'] = array(
+		$fields['sidebars'] = array(
 			'title'    => esc_attr__( 'Enable Sidebars', OCS_DOMAIN ),
+			'name'     => 'sidebars',
 			'callback' => 'enabled_sidebars_option',
 			'validate' => false,
 			'section'  => $section,
