@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -29,6 +29,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	protected static $_instance = null;
 
+	/**
+	 * Plugin settings.
+	 * @var  array
+	 */
 	private $settings = array();
 
 	/**
@@ -96,7 +100,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
-		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almnost last addition.
+		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almost last addition.
 	}
 
 	/**
@@ -201,7 +205,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				return;
 			}
 
-			echo '<div id="' . $this->settings['css_prefix'] . '-' . esc_attr( $sidebar_id ) . '" ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+			echo '<div ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
 
 			/**
 			 * Action to add content before the default sidebar content
@@ -299,6 +303,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 *
 	 * @since   0.1.0
 	 * @since   0.3.0  Overwrite global setting attributes.
+	 * @since   0.5.1  Move `id` attr here.
 	 * @param   string  $sidebar_id
 	 * @param   array   $data
 	 * @return  string
@@ -307,14 +312,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$prefix = $this->settings['css_prefix'];
 		$atts = array();
 
+		$atts['id'] = $prefix . '-' . $sidebar_id;
+
 		$atts['class'] = array();
 		$atts['class'][] = $prefix . '-slidebar';
-		$atts['class'][] = $prefix . '-' . esc_attr( $sidebar_id );
+		$atts['class'][] = $prefix . '-' . $sidebar_id;
 		$atts['class'][] = 'ocs-slidebar';
-		$atts['class'][] = 'ocs-' . esc_attr( $sidebar_id );
-		$atts['class'][] = 'ocs-size-' . esc_attr( $data['size'] );
-		$atts['class'][] = 'ocs-location-' . esc_attr( $data['location'] );
-		$atts['class'][] = 'ocs-style-' . esc_attr( $data['style'] );
+		$atts['class'][] = 'ocs-' . $sidebar_id;
+		$atts['class'][] = 'ocs-size-' . $data['size'];
+		$atts['class'][] = 'ocs-location-' . $data['location'];
+		$atts['class'][] = 'ocs-style-' . $data['style'];
 
 		/**
 		 * Filter the classes for a sidebar.
@@ -323,48 +330,36 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 *
 		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 		 *
-		 * @param  array  $classes       Classes
-		 * @param  string $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-		 * @param  array  $sidebar_data  The sidebar settings.
+		 * @param  array   $classes       Classes
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
 		 */
 		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar_id, $data );
 
 		// Slidebars 2.0
 		$atts['off-canvas'] = array(
-			$prefix . '-' . esc_attr( $sidebar_id ), // ID.
-			esc_attr( $data['location'] ), // Location.
-			esc_attr( $data['style'] ), // Animation style.
+			$prefix . '-' . $sidebar_id, // ID.
+			$data['location'], // Location.
+			$data['style'], // Animation style.
 		);
-		$atts['data-ocs-sidebar-id'] = esc_attr( $sidebar_id );
+		$atts['data-ocs-sidebar-id'] = $sidebar_id;
 
 		// Overwrite global settings.
 		if ( true === (bool) $data['overwrite_global_settings'] ) {
-			$atts['data-ocs-overwrite_global_settings'] = esc_attr( (int) $data['overwrite_global_settings'] );
-			$atts['data-ocs-site_close']                = esc_attr( (int) $data['site_close'] );
-			$atts['data-ocs-disable_over']              = esc_attr( (int) $data['disable_over'] );
-			$atts['data-ocs-hide_control_classes']      = esc_attr( (int) $data['hide_control_classes'] );
-			$atts['data-ocs-scroll_lock']               = esc_attr( (int) $data['scroll_lock'] );
+			$atts['data-ocs-overwrite_global_settings'] = (int) $data['overwrite_global_settings'];
+			$atts['data-ocs-site_close']                = (int) $data['site_close'];
+			$atts['data-ocs-disable_over']              = (int) $data['disable_over'];
+			$atts['data-ocs-hide_control_classes']      = (int) $data['hide_control_classes'];
+			$atts['data-ocs-scroll_lock']               = (int) $data['scroll_lock'];
 		}
 
-		foreach ( $atts as $name => $value ) {
-			if ( is_array( $value ) ) {
-				$value = implode( ' ', $value );
-			}
-
-			$atts[ $name ] = $name . '="' . $value . '"';
-		}
-		$return = implode( ' ', $atts );
-
-		return $return;
+		return self::parse_to_html_attr( $atts );
 	}
 
 	/**
 	 * Generate a trigger element.
 	 *
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
-	 * @todo Refactor to enable above checks?
-	 *
+	 * @see     OCS_Off_Canvas_Sidebars_Control_Trigger::render()
 	 * @since   0.4.0
 	 * @since   0.5.0  Add icon options.
 	 * @param   string  $sidebar_id
@@ -372,93 +367,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  string
 	 */
 	public function do_control_trigger( $sidebar_id, $args = array() ) {
-
-		$sidebar_id = (string) $sidebar_id;
-
-		$defaults = array(
-			'text'          => '', // Text to show.
-			'action'        => 'toggle', // toggle|open|close.
-			'element'       => 'button', // button|span|i|b|a|etc.
-			'class'         => array(), // Extra classes (space separated), also accepts an array of classes.
-			'icon'          => '', // Icon classes.
-			'icon_location' => 'before', // before|after.
-			'attr'          => array(), // An array of attribute keys and their values.
-		);
-		$args = wp_parse_args( $args, $defaults );
-
-		$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
-
-		if ( in_array( $args['element'], array( 'base', 'body', 'html', 'link', 'meta', 'noscript', 'style', 'script', 'title' ), true ) ) {
-			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
-		}
-
-		$singleton = false;
-
-		// Is it a singleton element? Add the text to the attributes.
-		if ( in_array( $args['element'], array( 'br', 'hr', 'img', 'input' ), true ) ) {
-			$singleton = true;
-			if ( 'img' === $args['element'] && empty( $args['attr']['alt'] ) ) {
-				$args['attr']['alt'] = $args['text'];
-			}
-			if ( 'input' === $args['element'] && empty( $args['attr']['value'] ) ) {
-				$args['attr']['value'] = $args['text'];
-			}
-		}
-
-		$attr = array(
-			'class' => array(),
-		);
-		$attr = array_merge( $attr, $args['attr'] );
-
-		// Add our own classes.
-		$classes = array(
-			$this->settings['css_prefix'] . '-trigger',
-			$this->settings['css_prefix'] . '-' . $args['action'],
-			$this->settings['css_prefix'] . '-' . $args['action'] . '-' . $sidebar_id,
-		);
-
-		// Optionally add extra classes.
-		if ( ! empty( $args['class'] ) ) {
-			if ( ! is_array( $args['class'] ) ) {
-				$args['class'] = explode( ' ', $args['class'] );
-			}
-			$classes = array_merge( $classes, (array) $args['class'] );
-		}
-
-		// Parse classes.
-		if ( ! is_array( $attr['class'] ) ) {
-			$attr['class'] = explode( ' ', $attr['class'] );
-		}
-		$attr['class'] = array_merge( $attr['class'], $classes );
-		$attr['class'] = array_map( 'trim', $attr['class'] );
-		$attr['class'] = array_filter( $attr['class'] );
-		$attr['class'] = array_unique( $attr['class'] );
-
-		// Icons can not be used with singleton elements.
-		if ( $args['icon'] && ! $singleton ) {
-			if ( strpos( $args['icon'], 'dashicons' ) !== false ) {
-				wp_enqueue_style( 'dashicons' );
-			}
-			$icon = '<span class="icon ' . esc_attr( $args['icon'] ) . '"></span>';
-			if ( $args['text'] ) {
-				// Wrap label in a separate span for styling purposes.
-				$args['text'] = '<span class="label">' . $args['text'] . '</span>';
-			}
-			if ( 'after' === $args['icon_location'] ) {
-				$args['text'] .= $icon;
-			} else {
-				$args['text'] = $icon . $args['text'];
-			}
-		}
-
-		$return = '<' . $args['element'] . ' ' . self::parse_to_html_attr( $attr );
-		if ( $singleton ) {
-			$return .= ' />';
-		} else {
-			$return .= '>' . $args['text'] . '</' . $args['element'] . '>';
-		}
-
-		return $return;
+		return OCS_Off_Canvas_Sidebars_Control_Trigger::render( $sidebar_id, $args );
 	}
 
 	/**

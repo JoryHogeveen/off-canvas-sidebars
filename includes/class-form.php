@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
@@ -67,7 +67,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$html .= '</fieldset>';
 			echo $html;
 		} else {
-			$tab = 'ocs-sidebars';
+			$tab = '&tab=ocs-sidebars';
 			$link = '?page=' . esc_attr( off_canvas_sidebars()->get_plugin_key() ) . $tab;
 			echo '<a href="' . $link . '">' . esc_html__( 'Click here to add off-canvas sidebars', OCS_DOMAIN ) . '</a>';
 		}
@@ -321,7 +321,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			}
 			$value = ( isset( $option['label'] ) ) ? $option['label'] : $option['value'];
 			$selected = selected( $prefix_value[ $args['name'] ], $option['value'], false );
-			$html .= '<option value="' . $option['value'] . '" ' . $selected . '>' . $value . '</option>';
+			$html .= '<option value="' . esc_attr( $option['value'] ) . '" ' . $selected . '>' . esc_html( $value ) . '</option>';
 
 		} // End foreach().
 

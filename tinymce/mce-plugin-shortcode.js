@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.4.0
+ * @version 0.5.1
  * @global  ocsMceSettings
  * @preserve
  *
@@ -218,7 +218,8 @@
 
 		// Show toolbar.
 		editor.on( 'wptoolbar', function ( e ) {
-			if ( -1 < e.element.className.indexOf( 'ocsTrigger' ) ) {
+			e = getTriggerElement( e );
+			if ( e ) {
 				toolbarElement = e.element;
 				if ( $( e.element ).is( 'img' ) ) {
 					e.toolbar = toolbarImg;
@@ -233,7 +234,7 @@
 
 		// Disable our button if the selected text is already a OCS shortcode.
 		editor.on( 'NodeChange', function ( e ) {
-			if ( -1 < e.element.className.indexOf( 'ocsTrigger' ) ) {
+			if ( getTriggerElement( e ) ) {
 				$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', true );
 			} else {
 				$( e.target.container ).closest( '.wp-editor-wrap' ).find( 'button.ocs-shortcode-generator' ).attr( 'disabled', false );
@@ -256,10 +257,32 @@
 		} );
 
 		editor.on( 'DblClick', function ( e ) {
-			if ( -1 < e.target.className.indexOf( 'ocsTrigger' ) ) {
+			e = getTriggerElement( e );
+			if ( e ) {
 				doTriggerPopup( e.target, this );
 			}
 		} );
+
+		/**
+		 * Check if a MCE element is a OCS trigger.
+		 * @param   {object}  e  The MCE element.
+		 * @returns {object}  The OCS trigger MCE element.
+		 */
+		function getTriggerElement( e ) {
+			if ( ! e.element ) {
+				return null;
+			}
+			if ( e.element.className && -1 < e.element.className.indexOf( 'ocsTrigger' ) ) {
+				return e;
+			}
+			// Icon triggers.
+			if ( 1 < e.parents.length && e.parents[1].className && -1 < e.parents[1].className.indexOf( 'ocsTrigger' ) ) {
+				e.element = e.parents[1];
+				e.parents.shift();
+				return e;
+			}
+			return null;
+		}
 
 		/**
 		 * Sets the selected element and the element data before triggering the popup
@@ -347,6 +370,8 @@
 			return content;
 		}
 
+		/* eslint-disable complexity, max-statements */
+		/* @todo Refactor to enable above checks? */
 		/**
 		 * Convert data to HTML.
 		 * @param  {string}   cls     Class.
@@ -360,6 +385,8 @@
 				//id: getAttr( data, 'id' ),
 				//action: getAttr( data, 'action' ),
 				element: getAttr( data, 'element', false ),
+				icon: getAttr( data, 'icon', false ),
+				icon_location: getAttr( data, 'icon_location', false ),
 				class: getAttr( data, 'class', false ),
 				attributes: getAttr( data, 'attr', false )
 			};
@@ -416,6 +443,19 @@
 
 			if ( 'img' === attrData.element ) { // && 'string' !== typeof elAttributes.alt
 				attributes.alt = content;
+			} else {
+				// Icons can not be used with singleton elements.
+				if ( attrData.icon ) {
+					icon = '<span class="ocs-parse-remove icon ' + attrData.icon + '">&nbsp;</span>';
+					if ( con ) {
+						con = '<span class="ocs-parse-text ocs-parse-remove label">' + con + '</span>';
+					}
+					if ( 'after' === attrData.icon_location ) {
+						con += icon;
+					} else {
+						con = icon + con;
+					}
+				}
 			}
 
 			attributes['data-ocs-nested'] = nested;
@@ -431,7 +471,10 @@
 			}
 			// data-mce-resize="false" data-mce-placeholder="1"
 		}
+		/* eslint-enable */
 
+		/* eslint-disable complexity */
+		/* @todo Refactor to enable above checks? */
 		/**
 		 * Convert attribute string to attribute object.
 		 * @param  {string|object} el The element.
@@ -500,6 +543,7 @@
 
 			return attributes;
 		}
+		/* eslint-enable */
 
 		/**
 		 * Get the element text, also checks for nested element attributes.
@@ -510,6 +554,12 @@
 			var $el = $( el ),
 				text = window.decodeURIComponent( $el.attr( 'data-ocs-text' ) );
 			if ( $el.html().length ) {
+
+				$( '.ocs-parse-text', $el ).each( function() {
+					$(this).before( $(this).text() );
+				} );
+				$( '.ocs-parse-remove', $el ).remove();
+
 				text = $el.html();
 			}
 

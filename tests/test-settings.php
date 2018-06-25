@@ -145,6 +145,45 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 		// Reset settings.
 		$settings->set_settings( $defaults );
 
+		/**
+		 * Adding new sidebar through the front end form.
+		 */
+
+		$compare = $defaults;
+		$compare['sidebars'] = array(
+			'test' => $settings->get_default_sidebar_settings(),
+		);
+		// Overwrites by parser.
+		$compare['sidebars']['test']['enable'] = 1;
+		$compare['sidebars']['test']['label'] = 'Test';
+
+		$new = array(
+			'sidebars' => array(
+				'_ocs_add_new' => 'Test',
+			),
+		);
+
+		$this->assertEquals( $compare, $settings->validate_form( $new ) );
+
+		/**
+		 * Adding new sidebar through the front end form without name should not work.
+		 */
+
+		$compare = $defaults;
+		$compare['sidebars'] = array();
+
+		$new = array(
+			'sidebars' => array(
+				'_ocs_add_new' => '',
+			),
+		);
+
+		$this->assertEquals( $compare, $settings->validate_form( $new ) );
+
+		/**
+		 * Adding new sidebar through code (ID only).
+		 */
+
 		$compare = $defaults;
 		$compare['sidebars'] = array(
 			'new' => $settings->get_default_sidebar_settings(),

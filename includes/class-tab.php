@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
@@ -84,7 +84,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * Register this tab.
 	 * @since   0.5.0
 	 * @param   array  $tabs
-	 * @return  array  mixed
+	 * @return  array
 	 */
 	public function register_tab( $tabs ) {
 		$tabs[ $this->tab ] = $this;
@@ -111,9 +111,9 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 *
 	 * @since   0.5.0  Refactor into separate tab classes and methods.
 	 * @param   array  $args {
-	 *     @type  string        $id
-	 *     @type  string        $title
-	 *     @type  array|string  $callback
+	 *     @type  string           $id
+	 *     @type  string           $title
+	 *     @type  string|callable  $callback
 	 * }
 	 */
 	public function register_section_fields( $args ) {
@@ -146,16 +146,16 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @since   0.5.0
 	 * @param   string  $key
 	 * @param   array   $args {
-	 *     @type  string  $name      (required)
-	 *     @type  string  $type      (required)
-	 *     @type  string  $callback  (required)
-	 *     @type  string  $validate
-	 *     @type  string  $label
-	 *     @type  string  $description
-	 *     @type  array   $options
-	 *     @type  string  $default
-	 *     @type  string  $value
-	 *     @type  bool    $required
+	 *     @type  string           $name      (required)
+	 *     @type  string           $type
+	 *     @type  string|callable  $callback
+	 *     @type  string|callable  $validate
+	 *     @type  string           $label
+	 *     @type  string           $description
+	 *     @type  array            $options
+	 *     @type  string           $default
+	 *     @type  string           $value
+	 *     @type  bool             $required
 	 * }
 	 */
 	public function add_settings_field( $key, $args ) {
@@ -221,6 +221,16 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 			return array_keys( $fields );
 		}
 		return $fields;
+	}
+
+	/**
+	 * Get a tab.
+	 * @since   0.5.1
+	 * @param   string  $tab
+	 * @return  \OCS_Off_Canvas_Sidebars_Tab
+	 */
+	public function get_tab( $tab ) {
+		return OCS_Off_Canvas_Sidebars_Page::get_instance()->get_tab( $tab );
 	}
 
 	/**

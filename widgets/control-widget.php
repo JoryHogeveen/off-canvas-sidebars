@@ -46,7 +46,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			__( 'Off-Canvas Control', OCS_DOMAIN ),
 			array(
 				'classname'   => 'off_canvas_control',
-				'description' => __( 'Button to trigger off-canvas sidebars', OCS_DOMAIN ),
+				'description' => __( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
 		);
 		$this->load_plugin_data();

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars_Tab
@@ -63,7 +63,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	public function ocs_page_form_before() {
 		?>
 	<p>
-	<?php esc_html_e( 'Add a new sidebar', OCS_DOMAIN ); ?> <input name="<?php echo esc_attr( $this->key ) . '[sidebars][ocs_add_new]'; ?>" value="" type="text" placeholder="<?php esc_html_e( 'Name', OCS_DOMAIN ); ?>" />
+	<?php esc_html_e( 'Add a new sidebar', OCS_DOMAIN ); ?> <input name="<?php echo esc_attr( $this->key ) . '[sidebars][_ocs_add_new]'; ?>" value="" type="text" placeholder="<?php esc_html_e( 'Name', OCS_DOMAIN ); ?>" />
 	<?php submit_button( __( 'Add sidebar', OCS_DOMAIN ), 'primary', 'submit', false ); ?>
 	</p>
 		<?php
@@ -184,21 +184,26 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @return  array
 	 */
 	public function parse_input( $input, $current ) {
-		if ( empty( $current['sidebars'] ) || ! isset( $input['sidebars'] ) ) {
+		if ( empty( $input['sidebars'] ) ) {
+			// Somehow the sidebars were removed on submit. Sidebars can only be removed with the delete option.
+			if ( ! empty( $current['sidebars'] ) ) {
+				$input['sidebars'] = $current['sidebars'];
+			}
 			return $input;
 		}
 
 		$is_request_tab = $this->is_request_tab();
 
 		// Add new sidebar.
-		if ( ! empty( $input['sidebars']['ocs_add_new'] ) ) {
-			$new_sidebar_id = OCS_Off_Canvas_Sidebars_Settings::validate_id( $input['sidebars']['ocs_add_new'] );
-			if ( empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
+		if ( ! empty( $input['sidebars']['_ocs_add_new'] ) ) {
+			$new_sidebar_id = OCS_Off_Canvas_Sidebars_Settings::validate_id( $input['sidebars']['_ocs_add_new'] );
+			if ( $new_sidebar_id && empty( $input['sidebars'][ $new_sidebar_id ] ) && empty( $current['sidebars'][ $new_sidebar_id ] ) ) {
 				$input['sidebars'][ $new_sidebar_id ] = array_merge(
 					off_canvas_sidebars_settings()->get_default_sidebar_settings(),
 					array(
 						'enable' => 1,
-						'label'  => strip_tags( stripslashes( $input['sidebars']['ocs_add_new'] ) ),
+						'id'     => $new_sidebar_id,
+						'label'  => strip_tags( stripslashes( $input['sidebars']['_ocs_add_new'] ) ),
 					)
 				);
 			} else {
@@ -210,7 +215,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				);
 			}
 		}
-		unset( $input['sidebars']['ocs_add_new'] );
+		unset( $input['sidebars']['_ocs_add_new'] );
+
+		if ( empty( $current['sidebars'] ) ) {
+			return $input;
+		}
 
 		$current  = (array) $current['sidebars'];
 		$sidebars = (array) $input['sidebars'];
