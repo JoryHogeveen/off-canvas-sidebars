@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.0
+ * @version 0.5.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
