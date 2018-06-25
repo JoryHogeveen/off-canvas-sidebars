@@ -92,8 +92,8 @@ For more advanced customisations either:
 
 = 0.5.1 =
 
-- [x] **Fix:** Bug with creating sidebars on a new installation. [#52](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/52)
-- [x] **Enhancement/Refactoring:** Control trigger rendering.
+*	**Fix:** Bug with creating sidebars on a new installation. [#52](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/52)
+*	**Enhancement/Refactoring:** Control trigger rendering.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/53)
 
@@ -106,7 +106,7 @@ Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebar
 *	**Enhancement:** Use data attributes to conform [W3C HTML5 specifications](http://www.w3.org/TR/html5/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes). [#50](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/50) 
 *	**Enhancement:** Add support links on plugins overview page.
 *	**Refactoring:** Separate classes for tabs, page and settings/validation. Enhances plugin option validation. [#38](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/38)
-*	**Refactoring:** Global OCS_DOMAIN constant
+*	**Refactoring:** Global OCS_DOMAIN constant.
 *	**Updated/Added:** Screenshots.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/36)
