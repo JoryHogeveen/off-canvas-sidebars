@@ -197,105 +197,135 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $sidebar_id
 	 */
 	public function do_sidebar( $sidebar_id ) {
-		if ( ! empty( $this->settings['sidebars'][ $sidebar_id ] ) ) {
+		if ( empty( $this->settings['sidebars'][ $sidebar_id ] ) ) {
+			return;
+		}
 
+		$sidebar_data = $this->settings['sidebars'][ $sidebar_id ];
+
+		if ( ! $this->is_sidebar_enabled( $sidebar_id, $sidebar_data ) ) {
+			return;
+		}
+
+		echo '<div ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+
+		/**
+		 * Action to add content before the default sidebar content
+		 *
+		 * @since 0.3.0
+		 *
+		 * @see  \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings
+		 *
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
+		 */
+		do_action( 'ocs_custom_content_sidebar_before', $sidebar_id, $sidebar_data );
+
+		switch ( $sidebar_data['content'] ) {
+
+			case 'sidebar':
+				/**
+				 * Sidebar args are set when registering.
+				 * @see  \OCS_Off_Canvas_Sidebars::register_sidebars()
+				 */
+				if ( 'genesis' === get_template() ) {
+					genesis_widget_area( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+				} else {
+					dynamic_sidebar( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
+				}
+
+				break;
+
+			case 'menu':
+				$args = array(
+					'fallback_cb' => false,
+					'container' => 'nav', // HTML5 FTW!
+				);
+
+				/**
+				 * Filter nav menu args.
+				 *
+				 * Please note that the theme_location property will be overwritten!
+				 *
+				 * @since 0.3.0
+				 *
+				 * @see https://developer.wordpress.org/reference/functions/wp_nav_menu/
+				 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
+				 *
+				 * @param  array   $args          The wp_nav_menu() arguments.
+				 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+				 * @param  array   $sidebar_data  The sidebar settings.
+				 */
+				apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
+
+				// Force the set theme location.
+				$args['theme_location'] = 'off-canvas-' . $sidebar_id;
+				// Force echo.
+				$args['echo'] = true;
+
+				wp_nav_menu( $args );
+
+				break;
+
+			case 'action':
+			default:
+				/**
+				 * Action to hook into the sidebar content.
+				 *
+				 * @since 0.3.0
+				 *
+				 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
+				 *
+				 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+				 * @param  array   $sidebar_data  The sidebar settings.
+				 */
+				do_action( 'ocs_custom_content_sidebar_' . $sidebar_id, $sidebar_id, $sidebar_data );
+
+				break;
+		}
+
+		/**
+		 * Action to add content after the default sidebar content.
+		 *
+		 * @since 0.3.0
+		 *
+		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
+		 *
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
+		 */
+		do_action( 'ocs_custom_content_sidebar_after', $sidebar_id, $sidebar_data );
+
+		echo '</div>';
+	}
+
+	/**
+	 * Check if an off-canvas sidebar should be shown.
+	 *
+	 * @since   0.5.2
+	 * @param   string  $sidebar_id
+	 * @param   array   $sidebar_data
+	 * @return  bool
+	 */
+	public function is_sidebar_enabled( $sidebar_id, $sidebar_data ) {
+		if ( ! $sidebar_data ) {
+			if ( ! isset( $this->settings['sidebars'][ $sidebar_id ] ) ) {
+				return false;
+			}
 			$sidebar_data = $this->settings['sidebars'][ $sidebar_id ];
+		}
 
-			if ( empty( $sidebar_data['enable'] ) ) {
-				return;
-			}
+		$enabled = ! empty( $sidebar_data['enable'] );
 
-			echo '<div ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
-
-			/**
-			 * Action to add content before the default sidebar content
-			 *
-			 * @since 0.3.0
-			 *
-			 * @see  \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings
-			 *
-			 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-			 * @param  array   $sidebar_data  The sidebar settings.
-			 */
-			do_action( 'ocs_custom_content_sidebar_before', $sidebar_id, $sidebar_data );
-
-			switch ( $sidebar_data['content'] ) {
-
-				case 'sidebar':
-					/**
-					 * Sidebar args are set when registering.
-					 * @see  \OCS_Off_Canvas_Sidebars::register_sidebars()
-					 */
-					if ( 'genesis' === get_template() ) {
-						genesis_widget_area( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
-					} else {
-						dynamic_sidebar( 'off-canvas-' . $sidebar_id );//, array('before'=>'<aside class="sidebar widget-area">', 'after'=>'</aside>'));
-					}
-
-					break;
-
-				case 'menu':
-					$args = array(
-						'fallback_cb' => false,
-						'container' => 'nav', // HTML5 FTW!
-					);
-
-					/**
-					 * Filter nav menu args.
-					 *
-					 * Please note that the theme_location property will be overwritten!
-					 *
-					 * @since 0.3.0
-					 *
-					 * @see https://developer.wordpress.org/reference/functions/wp_nav_menu/
-					 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
-					 *
-					 * @param  array   $args          The wp_nav_menu() arguments.
-					 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-					 * @param  array   $sidebar_data  The sidebar settings.
-					 */
-					apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
-
-					// Force the set theme location.
-					$args['theme_location'] = 'off-canvas-' . $sidebar_id;
-					// Force echo.
-					$args['echo'] = true;
-
-					wp_nav_menu( $args );
-
-					break;
-
-				case 'action':
-				default:
-					/**
-					 * Action to hook into the sidebar content.
-					 *
-					 * @since 0.3.0
-					 *
-					 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
-					 *
-					 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-					 * @param  array   $sidebar_data  The sidebar settings.
-					 */
-					do_action( 'ocs_custom_content_sidebar_' . $sidebar_id, $sidebar_id, $sidebar_data );
-
-					break;
-			}
-
-			/**
-			 * Action to add content after the default sidebar content.
-			 *
-			 * @since 0.3.0
-			 *
-			 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
-			 *
-			 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
-			 * @param  array   $sidebar_data  The sidebar settings.
-			 */
-			do_action( 'ocs_custom_content_sidebar_after', $sidebar_id, $sidebar_data );
-
-			echo '</div>';
-		} // End if().
+		/**
+		 * Filter whether an off-canvas sidebar should be rendered.
+		 * @since   0.5.2
+		 * @param   bool    $enabled
+		 * @param   string  $sidebar_id
+		 * @param   array   $sidebar_data
+		 * @return  bool
+		 */
+		return (bool) apply_filters( 'ocs_is_sidebar_enabled', $enabled, $sidebar_id, $sidebar_data );
 	}
 
 	/**
