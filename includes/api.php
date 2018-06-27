@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.4.0
+ * @version 0.5.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
