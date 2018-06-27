@@ -113,7 +113,6 @@ final class OCS_Off_Canvas_Sidebars
 		'Menu_Meta_Box'    => 'includes/class-menu-meta-box.php',
 		'Mce_Shortcode'    => 'tinymce/class-mce-shortcode.php',
 		'Control_Widget'   => 'widgets/control-widget.php',
-		'Control_Block'    => 'gutenberg/class-control-block.php',
 	);
 
 	/**
