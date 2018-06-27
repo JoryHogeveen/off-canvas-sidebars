@@ -1,6 +1,6 @@
 <?php
 /**
- * Off-Canvas Sidebars - Class Editor_Shortcode_Generator
+ * Off-Canvas Sidebars - Class Mce_Shortcode
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
@@ -11,20 +11,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Off-Canvas Sidebars plugin shortcode generator
+ * Off-Canvas Sidebars plugin TinyMCe shortcode generator
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.1
+ * @since   0.5.2  Renamed from `OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator`.
+ * @version 0.5.2
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
-final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_Canvas_Sidebars_Base
+final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebars_Base
 {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var    OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
+	 * @var    OCS_Off_Canvas_Sidebars_Mce_Shortcode
 	 * @since  0.4.0
 	 */
 	protected static $_instance = null;
@@ -183,7 +184,7 @@ final class OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator extends OCS_Off_C
 	 *
 	 * @since   0.4.0
 	 * @static
-	 * @return  \OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator
+	 * @return  \OCS_Off_Canvas_Sidebars_Mce_Shortcode
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
