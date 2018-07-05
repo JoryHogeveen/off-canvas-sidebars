@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.1
+ * @version 0.5.2
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars_Tab
@@ -542,7 +542,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'type'        => 'color',
 				'description' =>
 					__( 'Choose a background color for this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>.<br>' .
+					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#000000</code>.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 			),
 			// @fixme See above. This only makes sure the fields gets recognized.
@@ -554,7 +554,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'options' => array(
 					'default' => array(
 						'name'  => 'default',
-						'label' => esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#222222</code>',
+						'label' => esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#000000</code>',
 						'value' => '',
 					),
 					'transparent' => array(

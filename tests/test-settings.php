@@ -21,6 +21,9 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 		$defaults               = $settings->get_default_settings();
 		$defaults['db_version'] = off_canvas_sidebars()->get_db_version();
 
+		// Reset settings.
+		$settings->set_settings( $defaults );
+
 		/**
 		 * Empty data.
 		 */

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.1
+ * @version 0.5.2
  */
 final class OCS_Off_Canvas_Sidebars
 {
@@ -93,6 +93,29 @@ final class OCS_Off_Canvas_Sidebars
 	protected $general_labels = array();
 
 	/**
+	 * Class registry
+	 *
+	 * @since  0.5.2
+	 * @var    array
+	 */
+	private $classes = array(
+		'Base'             => 'includes/class-base.php',
+		'Control_Trigger'  => 'includes/class-control-trigger.php',
+		'Form'             => 'includes/class-form.php',
+		'Frontend'         => 'includes/class-frontend.php',
+		'Page'             => 'includes/class-page.php',
+		'Settings'         => 'includes/class-settings.php',
+		'Tab'              => 'includes/class-tab.php',
+		'Tab_General'      => 'includes/class-tab-general.php',
+		'Tab_Importexport' => 'includes/class-tab-importexport.php',
+		'Tab_Shortcode'    => 'includes/class-tab-shortcode.php',
+		'Tab_Sidebars'     => 'includes/class-tab-sidebars.php',
+		'Menu_Meta_Box'    => 'includes/class-menu-meta-box.php',
+		'Mce_Shortcode'    => 'tinymce/class-mce-shortcode.php',
+		'Control_Widget'   => 'widgets/control-widget.php',
+	);
+
+	/**
 	 * Init function to register plugin hook.
 	 *
 	 * @since   0.1.0
@@ -107,13 +130,13 @@ final class OCS_Off_Canvas_Sidebars
 		$this->enable = true; // Added for possible use in future.
 		if ( true === $this->enable ) {
 
+			spl_autoload_register( array( $this, '_autoload' ) );
+
 			// Lets start!
 			add_action( 'init', array( $this, 'init' ) );
 
 			// Load the OCS API.
 			include_once OCS_PLUGIN_DIR . 'includes/api.php';
-			// Load the base and settings class.
-			include_once OCS_PLUGIN_DIR . 'includes/class-base.php';
 
 			off_canvas_sidebars_settings();
 
@@ -121,15 +144,10 @@ final class OCS_Off_Canvas_Sidebars
 
 			$this->general_labels = $this->get_general_labels();
 
-			// Load the control trigger API class.
-			include_once OCS_PLUGIN_DIR . 'includes/class-control-trigger.php';
-
 			// Register the widget.
-			include_once OCS_PLUGIN_DIR . 'widgets/control-widget.php';
 			add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 
 			// Load menu-meta-box option.
-			include_once OCS_PLUGIN_DIR . 'includes/class-menu-meta-box.php';
 			OCS_Off_Canvas_Sidebars_Menu_Meta_Box::get_instance();
 
 		} else {
@@ -137,6 +155,25 @@ final class OCS_Off_Canvas_Sidebars
 			// Added for possible use in future.
 			add_action( 'admin_notices', array( $this, 'compatibility_notice' ) );
 			add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'ignore_compatibility_notice' ) );
+		}
+	}
+
+	/**
+	 * Class autoloader if needed.
+	 *
+	 * @since   0.5.2
+	 * @access  private
+	 * @internal
+	 * @param   string  $class  The class name.
+	 */
+	public function _autoload( $class ) {
+		$prefix = 'OCS_Off_Canvas_Sidebars_';
+		if ( 0 !== strpos( $class, $prefix ) ) {
+			return;
+		}
+		$ocs_class = str_replace( $prefix, '', $class );
+		if ( isset( $this->classes[ $ocs_class ] ) ) {
+			include_once OCS_PLUGIN_DIR . $this->classes[ $ocs_class ];
 		}
 	}
 
@@ -158,13 +195,10 @@ final class OCS_Off_Canvas_Sidebars
 		if ( is_admin() ) {
 
 			// Load the settings page.
-			include_once OCS_PLUGIN_DIR . 'includes/class-form.php';
-			include_once OCS_PLUGIN_DIR . 'includes/class-page.php';
 			OCS_Off_Canvas_Sidebars_Page::get_instance();
 
 			// Load the WP Editor shortcode generator.
-			include_once OCS_PLUGIN_DIR . 'tinymce/class-editor-shortcode-generator.php';
-			OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator::get_instance();
+			OCS_Off_Canvas_Sidebars_Mce_Shortcode::get_instance();
 
 			// Add settings link to plugins page.
 			add_filter( 'plugin_action_links', array( $this, 'filter_plugin_action_links' ), 10, 2 );

@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.4.0
+ * @version 0.5.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -160,12 +160,7 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
  * @return  \OCS_Off_Canvas_Sidebars_Frontend
  */
 function off_canvas_sidebars_frontend() {
-	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Frontend', 'get_instance' ) ) ) {
-		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
-	} else {
-		include_once OCS_PLUGIN_DIR . 'includes/class-frontend.php';
-		return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
-	}
+	return OCS_Off_Canvas_Sidebars_Frontend::get_instance();
 }
 
 /**
@@ -177,10 +172,5 @@ function off_canvas_sidebars_frontend() {
  * @return  \OCS_Off_Canvas_Sidebars_Settings
  */
 function off_canvas_sidebars_settings() {
-	if ( is_callable( array( 'OCS_Off_Canvas_Sidebars_Settings', 'get_instance' ) ) ) {
-		return OCS_Off_Canvas_Sidebars_Settings::get_instance();
-	} else {
-		include_once OCS_PLUGIN_DIR . 'includes/class-settings.php';
-		OCS_Off_Canvas_Sidebars_Settings::get_instance();
-	}
+	return OCS_Off_Canvas_Sidebars_Settings::get_instance();
 }
