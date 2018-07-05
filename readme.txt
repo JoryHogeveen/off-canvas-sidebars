@@ -1,6 +1,6 @@
 === Off-Canvas Sidebars ===
 Contributors: keraweb
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
 Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
 Requires at least: 4.1
 Tested up to: 4.9

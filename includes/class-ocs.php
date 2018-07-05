@@ -618,7 +618,7 @@ final class OCS_Off_Canvas_Sidebars
 				'title' => __( 'Donate', OCS_DOMAIN ),
 				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
 				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
+				'url'   => 'https://www.keraweb.nl/donate.php?for=off-canvas-sidebars',
 			),
 			'plugins' => array(
 				'title' => __( 'Plugins', OCS_DOMAIN ),
