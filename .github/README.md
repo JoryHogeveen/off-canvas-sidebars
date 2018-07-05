@@ -8,7 +8,7 @@ Add off-canvas sidebars using the Slidebars jQuery plugin.
 [![Travis](https://secure.travis-ci.org/JoryHogeveen/off-canvas-sidebars.png?branch=master)](http://travis-ci.org/JoryHogeveen/off-canvas-sidebars)
 [![Code Climate](https://codeclimate.com/github/JoryHogeveen/off-canvas-sidebars/badges/gpa.svg)](https://codeclimate.com/github/JoryHogeveen/off-canvas-sidebars)  
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/JoryHogeveen/off-canvas-sidebars/blob/master/license.txt)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.keraweb.nl/donate.php?for=off-canvas-sidebars)
 [![Project Stats](https://www.openhub.net/p/off-canvas-sidebars/widgets/project_thin_badge.gif)](https://www.openhub.net/p/off-canvas-sidebars)
 
 ![Off-Canvas Sidebars](https://raw.githubusercontent.com/JoryHogeveen/off-canvas-sidebars/master/.github/assets/banner-1544x500.jpg)  
