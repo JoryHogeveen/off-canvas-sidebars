@@ -1,13 +1,13 @@
-=== Off-Canvas Sidebars ===
+=== Off-Canvas Sidebars (Slidebars) ===
 Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
-Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
+Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobile, tablet, responsive, genesis
 Requires at least: 4.1
 Tested up to: 4.9
 Requires PHP: 5.2.4
 Stable tag: 0.5.2
 
-Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
+Add off-canvas sidebars (Slidebars) containing widgets, menus or other content using the Slidebars jQuery plugin.
 
 == Description ==
 
@@ -15,10 +15,11 @@ This plugin will add various options to implement off-canvas sidebars in your Wo
 
 = Overview / Features =
 
-*	Add off-canvas sidebars to the left, right, top and bottom of your website
-*	Use sidebar areas (widget-ready areas), menu locations or [custom hooks](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters) to place content into the off-canvas sidebars
-*	You can add control buttons with a widget, menu item, [shortcode](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes) or with [custom code](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup)
-*	Various customisation options and settings available in the Appearances menu
+*	Add off-canvas sidebars to the left, right, top and bottom of your website.
+*	Use sidebar areas (widget-ready areas), menu locations or [custom hooks](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters) to place content into the off-canvas sidebars.
+*	You can add control buttons with a widget, menu item, [shortcode](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes) or with [custom code](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup).
+*	Various customisation options and settings available in the Appearances menu.
+*	Extensive API for [PHP](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/PHP-API) and [JS](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/JavaScript-API).
 
 = Compatibility (IMPORTANT!) =
 
