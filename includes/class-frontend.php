@@ -194,11 +194,18 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @access  public
 	 */
 	public function do_sidebars() {
+
+		// Add content before the off-canvas sidebars.
+		do_action( 'ocs_sidebars_before' );
+
 		if ( ! empty( $this->settings['sidebars'] ) ) {
 			foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 				$this->do_sidebar( $sidebar_id );
 			}
 		}
+
+		// Add content after the off-canvas sidebars.
+		do_action( 'ocs_sidebars_after' );
 	}
 
 	/**
