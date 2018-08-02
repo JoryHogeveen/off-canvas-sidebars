@@ -563,11 +563,13 @@ final class OCS_Off_Canvas_Sidebars
 	 * Plugin links.
 	 *
 	 * @since   0.5.0
-	 * @return  array[]
+	 * @param   string  $link
+	 * @param   string  $key
+	 * @return  array[]|array|string
 	 */
-	public function get_links() {
+	public function get_links( $link = '', $key = '' ) {
 		static $links;
-		if ( ! empty( $links ) ) {
+		if ( ! empty( $links ) && ! $link ) {
 			return $links;
 		}
 
@@ -627,6 +629,19 @@ final class OCS_Off_Canvas_Sidebars
 				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
 		);
+
+		if ( $link ) {
+			if ( isset( $links[ $link ] ) ) {
+				if ( $key ) {
+					if ( isset( $links[ $link ][ $key ] ) ) {
+						return $links[ $link ][ $key ];
+					}
+					return '';
+				}
+				return $links[ $link ];
+			}
+			return array();
+		}
 
 		return $links;
 	}
