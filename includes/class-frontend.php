@@ -124,21 +124,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		// Add content before the site container.
 		do_action( 'ocs_container_before' );
 
-		$atts = array(
-			'data-ocs-site_close'           => ( $this->settings['site_close'] ) ? true : false,
-			'data-ocs-disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
-			'data-ocs-hide_control_classes' => ( $this->settings['hide_control_classes'] ) ? true : false,
-			'data-ocs-scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
-		);
-
-		foreach ( $atts as $name => $value ) {
-			if ( is_array( $value ) ) {
-				$value = implode( ' ', $value );
-			}
-			$atts[ $name ] = $name . '="' . $value . '"';
-		}
-
-		echo '<div id="' . $this->settings['css_prefix'] . '-site" canvas="container" ' . implode( ' ', $atts ) . '>';
+		// Open site canvas container.
+		echo '<div ' . $this->get_container_attributes() . '>';
 
 		// Add content before other content in the site container.
 		do_action( 'ocs_container_inner_before' );
@@ -156,8 +143,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		// Add content after other content in the site container.
 		do_action( 'ocs_container_inner_after' );
 
+		// Close site canvas container.
 		if ( 'jquery' !== $this->settings['frontend_type'] ) {
-			echo '</div>'; // close #ocs-site
+			echo '</div>';
 		}
 
 		// Add content after the site container.
@@ -191,6 +179,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Echo all sidebars.
 	 *
 	 * @since   0.3.0
+	 * @since   0.5.x  Add actions.
 	 * @access  public
 	 */
 	public function do_sidebars() {
@@ -345,6 +334,26 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 * @return  bool
 		 */
 		return (bool) apply_filters( 'ocs_is_sidebar_enabled', $enabled, $sidebar_id, $sidebar_data );
+	}
+
+	/**
+	 * Get container attributes
+	 *
+	 * @since   0.5.x
+	 * @return  string
+	 */
+	public function get_container_attributes() {
+
+		$atts = array(
+			'id'                            => $this->settings['css_prefix'] . '-site',
+			'canvas'                        => 'container',
+			'data-ocs-site_close'           => ( $this->settings['site_close'] ) ? true : false,
+			'data-ocs-disable_over'         => ( $this->settings['disable_over'] ) ? (int) $this->settings['disable_over'] : false,
+			'data-ocs-hide_control_classes' => ( $this->settings['hide_control_classes'] ) ? true : false,
+			'data-ocs-scroll_lock'          => ( $this->settings['scroll_lock'] ) ? true : false,
+		);
+
+		return self::parse_to_html_attr( $atts );
 	}
 
 	/**
