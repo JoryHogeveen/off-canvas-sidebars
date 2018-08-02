@@ -105,7 +105,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
 		add_action( $after_hook,  array( $this, 'after_site' ), $after_prio );
-		add_action( $after_hook,  array( $this, 'do_sidebars' ), $after_prio );
 
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
@@ -160,8 +159,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		if ( 'jquery' !== $this->settings['frontend_type'] ) {
 			echo '</div>'; // close #ocs-site
 		}
-		// Add content after the site container
+
+		// Add content after the site container.
 		do_action( 'ocs_container_after' );
+
+		// Add all the enabled sidebars.
+		$this->do_sidebars();
 	}
 
 	/**
