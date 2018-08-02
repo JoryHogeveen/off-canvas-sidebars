@@ -91,12 +91,18 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$after_hook  = 'website_after';
 		}
 
+		$before_prio = 5; // enforce early addition.
+		$after_prio = 999999999; // enforce last addition.
+		if ( 'wp_footer' === $after_hook ) {
+			$after_prio = -999999999; // enforce first addition.
+		}
+
 		$before_hook = trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
 		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
 
-		add_action( $before_hook, array( $this, 'before_site' ), 5 ); // enforce early addition.
-		add_action( $after_hook,  array( $this, 'after_site' ), 999999999 ); // enforce last addition.
-		add_action( $after_hook,  array( $this, 'do_sidebars' ), 999999999 ); // enforce last addition.
+		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
+		add_action( $after_hook,  array( $this, 'after_site' ), $after_prio );
+		add_action( $after_hook,  array( $this, 'do_sidebars' ), $after_prio );
 
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
