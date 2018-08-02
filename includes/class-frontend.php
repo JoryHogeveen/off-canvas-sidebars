@@ -97,6 +97,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$after_prio = -999999999; // enforce first addition.
 		}
 
+		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
+		$after_prio  = apply_filters( 'ocs_website_after_hook_priority', $after_prio );
+
 		$before_hook = trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
 		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
 
