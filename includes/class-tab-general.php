@@ -228,11 +228,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 		$fields['hide_control_classes'] = array(
 			'name'        => 'hide_control_classes',
-			'title'       => esc_attr__( 'Auto-hide control classes', OCS_DOMAIN ),
+			'title'       => esc_attr__( 'Auto-hide control triggers', OCS_DOMAIN ),
 			'callback'    => 'checkbox_option',
 			'type'        => 'checkbox',
 			'section'     => $section,
-			'label'       => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
+			'label'       => __( 'Hide off-canvas sidebar control triggers if the sidebar is disabled.', OCS_DOMAIN ),
 			'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 		);
 
