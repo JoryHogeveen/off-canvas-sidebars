@@ -84,13 +84,13 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		<h3><?php esc_html_e( 'Import/Export Settings', OCS_DOMAIN ); ?></h3>
 
 		<p>
-			<a class="submit button" href="<?php echo $export_link; ?>">
+			<a class="submit button" href="<?php echo esc_attr( $export_link ); ?>">
 				<?php esc_attr_e( 'Export Settings', OCS_DOMAIN ); ?>
 			</a>
 		</p>
 
 		<p>
-			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo $plugin_key; ?>-import" value="true" />
+			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo esc_attr( $plugin_key ); ?>-import" value="true" />
 			<?php submit_button( esc_attr__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-submit', false ); ?>
 			<input type="file" name="<?php echo $plugin_key; ?>-import-file" id="<?php echo $plugin_key; ?>-import-file" />
 		</p>

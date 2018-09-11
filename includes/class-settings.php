@@ -347,7 +347,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		if ( ! is_scalar( $value ) || empty( $value ) ) {
 			return '';
 		}
-		return (string) strip_tags( $value );
+		return (string) wp_strip_all_tags( $value );
 	}
 
 	/**
@@ -376,7 +376,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  string
 	 */
 	public static function validate_radio( $value, $options, $default ) {
-		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? strip_tags( $value ) : $default;
+		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? wp_strip_all_tags( $value ) : $default;
 	}
 
 	/**

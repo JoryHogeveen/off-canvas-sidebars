@@ -333,14 +333,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'label'       => __( 'Custom attributes', OCS_DOMAIN ),
 				'description' => __( 'key : value ; key : value', OCS_DOMAIN ),
 				'multiline'   => true,
-				'group'   => 'advanced',
+				'group'       => 'advanced',
 			),
 			'nested' => array(
 				'type'        => 'checkbox',
 				'name'        => 'nested',
 				'label'       => __( 'Nested shortcode', OCS_DOMAIN ) . '?',
 				'description' => '[ocs_trigger text="' . $strings['your_text'] . '"] ' . $strings['or'] . ' [ocs_trigger]' . $strings['your_text'] . '[/ocs_trigger]',
-				'group'       => 'advanced',
+				'group'   => 'advanced',
 			),
 		);
 

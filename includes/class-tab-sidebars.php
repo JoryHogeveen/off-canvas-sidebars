@@ -77,6 +77,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		$css_prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
 		echo '<tr class="sidebar_classes" style="display: none;"><th>' . esc_html__( 'ID & Classes', OCS_DOMAIN ) . '</th><td>';
 		echo  esc_html__( 'Sidebar ID', OCS_DOMAIN ) . ': <code>#' . $css_prefix . '-<span class="js-dynamic-id"></span></code> &nbsp; '
+		      . esc_html__( 'Trigger Classes', OCS_DOMAIN ) . ': <code>.' . $css_prefix . '-toggle-<span class="js-dynamic-id"></span></code> <code>.' . $css_prefix . '-open-<span class="js-dynamic-id"></span></code> <code>.' . $css_prefix . '-close-<span class="js-dynamic-id"></span></code>';
 		echo '</td></tr>';
 	}
 
@@ -202,7 +203,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					array(
 						'enable' => 1,
 						'id'     => $new_sidebar_id,
-						'label'  => strip_tags( stripslashes( $input['sidebars']['_ocs_add_new'] ) ),
+						'label'  => wp_strip_all_tags( stripslashes( $input['sidebars']['_ocs_add_new'] ) ),
 					)
 				);
 			} else {
@@ -483,7 +484,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			'sidebar_style' => array(
 				'name'     => 'style',
-				'title'    => esc_attr__( 'Style', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'title'    => esc_attr__( 'Style', OCS_DOMAIN ) . ' (' . esc_attr__( 'Animation', OCS_DOMAIN ) . ') <span class="required">*</span>',
 				'callback' => 'radio_option',
 				'type'     => 'radio',
 				'required' => true,

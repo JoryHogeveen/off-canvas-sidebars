@@ -79,6 +79,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 				}
 			}
+
 			if ( sidebarId ) {
 
 				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
