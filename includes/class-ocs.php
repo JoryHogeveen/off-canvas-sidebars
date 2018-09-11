@@ -225,10 +225,10 @@ final class OCS_Off_Canvas_Sidebars
 	 */
 	public function compatibility_notice() {
 		if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
-			$class = 'error notice is-dismissible';
+			$class   = 'error notice is-dismissible';
 			$message = '<strong>' . __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> ' . $this->general_labels['compatibility_notice_theme'];
-			$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', OCS_DOMAIN ) . '</span></a>';
-			$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e) {e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
+			$ignore  = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', OCS_DOMAIN ) . '</span></a>';
+			$script  = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e) {e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
 			echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
 		}
 	}
@@ -320,7 +320,7 @@ final class OCS_Off_Canvas_Sidebars
 		static $labels;
 		if ( ! $labels ) {
 			$labels = array(
-				'no_sidebars_available' => __( 'Please enable an off-canvas sidebar', OCS_DOMAIN ),
+				'no_sidebars_available'      => __( 'Please enable an off-canvas sidebar', OCS_DOMAIN ),
 				// Translators: %s stands for the URL.
 				'compatibility_notice_theme' => sprintf( __( 'If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank">please let me know!</a>', OCS_DOMAIN ), 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues' ),
 			);
@@ -385,9 +385,9 @@ final class OCS_Off_Canvas_Sidebars
 
 					$args = array(
 						//'id'            => 'off-canvas-' . $sidebar_id,
-						'class'         => 'off-canvas-sidebar',
-						'name'          => __( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label'],
-						'description'   => __( 'This is a widget area that is used for off-canvas widgets.', OCS_DOMAIN ),
+						'class'       => 'off-canvas-sidebar',
+						'name'        => __( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label'],
+						'description' => __( 'This is a widget area that is used for off-canvas widgets.', OCS_DOMAIN ),
 						//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
 						//'after_widget'  => '</div></div></section>',
 						//'before_title'  => '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
@@ -496,7 +496,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * @access  private
 	 */
 	private function db_update() {
-		$settings = $this->get_settings();
+		$settings   = $this->get_settings();
 		$db_version = strtolower( $settings['db_version'] );
 
 		if ( $db_version ) {
@@ -574,59 +574,59 @@ final class OCS_Off_Canvas_Sidebars
 		}
 
 		$links = array(
-			'support' => array(
-				'title' => __( 'Support', OCS_DOMAIN ),
+			'support'   => array(
+				'title'       => __( 'Support', OCS_DOMAIN ),
 				'description' => __( 'Need support?', OCS_DOMAIN ),
-				'icon'  => 'dashicons-sos',
-				'url'   => 'https://wordpress.org/support/plugin/off-canvas-sidebars/',
+				'icon'        => 'dashicons-sos',
+				'url'         => 'https://wordpress.org/support/plugin/off-canvas-sidebars/',
 			),
-			'slack' => array(
-				'title' => __( 'Slack', OCS_DOMAIN ),
+			'slack'     => array(
+				'title'       => __( 'Slack', OCS_DOMAIN ),
 				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
-				'icon'  => 'dashicons-format-chat',
-				'url'   => 'https://keraweb.slack.com/messages/plugin-ocs/',
+				'icon'        => 'dashicons-format-chat',
+				'url'         => 'https://keraweb.slack.com/messages/plugin-ocs/',
 			),
-			'review' => array(
-				'title' => __( 'Review', OCS_DOMAIN ),
+			'review'    => array(
+				'title'       => __( 'Review', OCS_DOMAIN ),
 				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
-				'icon'  => 'dashicons-star-filled',
-				'url'   => 'https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/',
+				'icon'        => 'dashicons-star-filled',
+				'url'         => 'https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/',
 			),
 			'translate' => array(
-				'title' => __( 'Translate', OCS_DOMAIN ),
+				'title'       => __( 'Translate', OCS_DOMAIN ),
 				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
-				'icon'  => 'dashicons-translation',
-				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars',
+				'icon'        => 'dashicons-translation',
+				'url'         => 'https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars',
 			),
-			'issue' => array(
-				'title' => __( 'Report issue', OCS_DOMAIN ),
+			'issue'     => array(
+				'title'       => __( 'Report issue', OCS_DOMAIN ),
 				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
-				'icon'  => 'dashicons-lightbulb',
-				'url'   => 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues',
+				'icon'        => 'dashicons-lightbulb',
+				'url'         => 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues',
 			),
-			'docs' => array(
-				'title' => __( 'Documentation', OCS_DOMAIN ),
+			'docs'      => array(
+				'title'       => __( 'Documentation', OCS_DOMAIN ),
 				'description' => __( 'Documentation', OCS_DOMAIN ),
-				'icon'  => 'dashicons-book-alt',
-				'url'   => 'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki',
+				'icon'        => 'dashicons-book-alt',
+				'url'         => 'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki',
 			),
-			'github' => array(
-				'title' => __( 'GitHub', OCS_DOMAIN ),
+			'github'    => array(
+				'title'       => __( 'GitHub', OCS_DOMAIN ),
 				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
-				'icon'  => 'dashicons-editor-code',
-				'url'   => 'https://github.com/JoryHogeveen/off-canvas-sidebars/tree/dev',
+				'icon'        => 'dashicons-editor-code',
+				'url'         => 'https://github.com/JoryHogeveen/off-canvas-sidebars/tree/dev',
 			),
-			'donate' => array(
-				'title' => __( 'Donate', OCS_DOMAIN ),
+			'donate'    => array(
+				'title'       => __( 'Donate', OCS_DOMAIN ),
 				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
-				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.keraweb.nl/donate.php?for=off-canvas-sidebars',
+				'icon'        => 'dashicons-smiley',
+				'url'         => 'https://www.keraweb.nl/donate.php?for=off-canvas-sidebars',
 			),
-			'plugins' => array(
-				'title' => __( 'Plugins', OCS_DOMAIN ),
+			'plugins'   => array(
+				'title'       => __( 'Plugins', OCS_DOMAIN ),
 				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
-				'icon'  => 'dashicons-admin-plugins',
-				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+				'icon'        => 'dashicons-admin-plugins',
+				'url'         => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
 		);
 

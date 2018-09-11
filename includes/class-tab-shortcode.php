@@ -37,14 +37,14 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-shortcode';
+		$this->tab  = 'ocs-shortcode';
 		$this->name = esc_attr__( 'Shortcode', OCS_DOMAIN );
 		parent::__construct();
 	}
 
 	/**
 	 * Initialize this tab.
-	 * @since   1.5.0
+	 * @since   0.5.0
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );

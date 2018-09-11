@@ -144,10 +144,11 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 */
 	public function admin_enqueue_scripts() {
 		$screen = get_current_screen();
-		if ( 'nav-menus' !== $screen->base )
+		if ( 'nav-menus' !== $screen->base ) {
 			return;
+		}
 
-		$suffix = ''; //defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$suffix  = ''; //defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
 		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array( 'jquery' ), $version );
 
@@ -175,8 +176,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 		// The options values for the triggers.
 		$data['val'] = array();
-		foreach ( $items as $item )
+		foreach ( $items as $item ) {
 			$data['val'][ $item ] = get_post_meta( $item, $this->meta_key, true );
+		}
 
 		// Send all these data to javascript.
 		wp_localize_script( 'off_canvas_control_nav_menu', 'ocsNavControl', $data );

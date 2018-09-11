@@ -105,9 +105,9 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			true // load in footer.
 		);
 		wp_localize_script( 'off-canvas-sidebars-settings', 'ocsOffCanvasSidebarsSettings', array(
-			'general_key' => $this->general_key,
-			'plugin_key' => $this->plugin_key,
-			'css_prefix' => $this->settings['css_prefix'],
+			'general_key'               => $this->general_key,
+			'plugin_key'                => $this->plugin_key,
+			'css_prefix'                => $this->get_settings( 'css_prefix' ),
 			'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
 		) );
 

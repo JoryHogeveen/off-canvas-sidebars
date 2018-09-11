@@ -190,6 +190,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	 * @todo Refactor to enable above checks?
 	 *
 	 * @since   0.5.1
+	 * @static
+	 *
 	 * @return  array {
 	 *     @type array $field_id {
 	 *         @type  string  $type
@@ -228,7 +230,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				$label = $sidebar_data['label'] . ' (' . $sidebar_id . ')';
 			}
 			$sidebars[] = array(
-				'label'  => $label,
+				'label' => $label,
 				'value' => $sidebar_id,
 			);
 		}
@@ -236,7 +238,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		$elements = array();
 		foreach ( self::$control_elements as $e ) {
 			$elements[] = array(
-				'label'  => '<' . $e . '>',
+				'label' => '<' . $e . '>',
 				'value' => $e,
 			);
 		}
@@ -245,7 +247,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			// Translators: [ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]
 			'your_text' => __( 'Your text', OCS_DOMAIN ),
 			// Translators: [ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]
-			'or' => __( 'or', OCS_DOMAIN ),
+			'or'        => __( 'or', OCS_DOMAIN ),
 		);
 
 		$fields = array(
@@ -288,7 +290,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 						'value' => 'after',
 					),
 				),
-				'group'       => 'basic',
+				'group'   => 'basic',
 			),
 			'action' => array(
 				'type'    => 'select',
@@ -331,7 +333,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'label'       => __( 'Custom attributes', OCS_DOMAIN ),
 				'description' => __( 'key : value ; key : value', OCS_DOMAIN ),
 				'multiline'   => true,
-				'group'       => 'advanced',
+				'group'   => 'advanced',
 			),
 			'nested' => array(
 				'type'        => 'checkbox',

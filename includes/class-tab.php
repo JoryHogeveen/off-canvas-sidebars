@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.1
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
@@ -164,6 +164,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 			'callback' => 'text_option',
 			'validate' => true,
 		) );
+
 		$this->fields[ $key ] = $args;
 	}
 

@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.0
+ * @version 0.5.3
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -71,8 +71,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @return {string|boolean}  The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
-			var overwrite, setting;
-			var prefix = ocsOffCanvasSidebars.css_prefix;
+			var overwrite, setting,
+				prefix = ocsOffCanvasSidebars.css_prefix;
 
 			if ( 'undefined' !== typeof sidebarId ) {
 				if ( ! sidebarId && null !== sidebarId ) {

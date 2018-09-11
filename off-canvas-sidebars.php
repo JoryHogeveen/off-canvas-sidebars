@@ -71,7 +71,7 @@ if ( ! class_exists( 'OCS_Off_Canvas_Sidebars' ) && ! function_exists( 'off_canv
 // end if class_exists.
 } else {
 
-	// @since  1.5.1  added notice on class name conflict.
+	// @since  0.5.1  added notice on class name conflict.
 	add_action( 'admin_notices', 'off_canvas_sidebars_conflict_admin_notice' );
 	function off_canvas_sidebars_conflict_admin_notice() {
 		echo '<div class="notice-error notice is-dismissible"><p><strong>' . esc_html__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> '

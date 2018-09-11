@@ -92,7 +92,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		$before_prio = 5; // enforce early addition.
-		$after_prio = 999999999; // enforce last addition.
+		$after_prio  = 999999999; // enforce last addition.
 		if ( 'wp_footer' === $after_hook ) {
 			$after_prio = -999999999; // enforce first addition.
 		}
@@ -104,7 +104,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
 
 		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
-		add_action( $after_hook,  array( $this, 'after_site' ), $after_prio );
+		add_action( $after_hook, array( $this, 'after_site' ), $after_prio );
 
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
@@ -176,7 +176,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Echo all sidebars.
+	 * Render all sidebars.
 	 *
 	 * @since   0.3.0
 	 * @since   0.5.x  Add actions.
@@ -198,7 +198,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
-	 * Echos a sidebar
+	 * Render a sidebar.
 	 *
 	 * @since   0.1.0
 	 * @access  public
@@ -247,7 +247,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			case 'menu':
 				$args = array(
 					'fallback_cb' => false,
-					'container' => 'nav', // HTML5 FTW!
+					'container'   => 'nav', // HTML5 FTW!
 				);
 
 				/**
@@ -372,7 +372,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		$atts['id'] = $prefix . '-' . $sidebar_id;
 
-		$atts['class'] = array();
+		$atts['class']   = array();
 		$atts['class'][] = $prefix . '-slidebar';
 		$atts['class'][] = $prefix . '-' . $sidebar_id;
 		$atts['class'][] = 'ocs-slidebar';
@@ -400,6 +400,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$data['location'], // Location.
 			$data['style'], // Animation style.
 		);
+
 		$atts['data-ocs-sidebar-id'] = $sidebar_id;
 
 		// Overwrite global settings.
@@ -436,6 +437,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2.2  Add FastClick library.
 	 */
 	public function add_styles_scripts() {
+
 		// @todo Validate and use minified files
 		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;

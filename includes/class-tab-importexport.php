@@ -36,7 +36,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-importexport';
+		$this->tab  = 'ocs-importexport';
 		$this->name = esc_attr__( 'Import/Export', OCS_DOMAIN );
 		parent::__construct();
 		$this->maybe_importexport_settings();
@@ -44,7 +44,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Initialize this tab.
-	 * @since  1.5.0
+	 * @since  0.5.0
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );
@@ -79,7 +79,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 */
 	public function tab_content() {
 		$export_link = add_query_arg( 'action', 'export' );
-		$plugin_key = off_canvas_sidebars()->get_plugin_key();
+		$plugin_key  = off_canvas_sidebars()->get_plugin_key();
 		?>
 		<h3><?php esc_html_e( 'Import/Export Settings', OCS_DOMAIN ); ?></h3>
 

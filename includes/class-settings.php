@@ -107,7 +107,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 *
 	 * @since   0.5.0
 	 * @param   string  $key  (optional) Get a single setting by key?
-	 * @return  array|null
+	 * @return  mixed
 	 */
 	public function get_settings( $key = null ) {
 		if ( $key ) {
@@ -295,7 +295,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 				continue;
 			}
 
-			$args = array( $data[ $key ] );
+			$args     = array( $data[ $key ] );
 			$callback = null;
 
 			if ( is_callable( $field['validate'] ) || is_string( $field['validate'] ) ) {
@@ -313,8 +313,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 					case 'radio':
 						// Validate radio options.
 						$callback = 'validate_radio';
-						$args[] = array_keys( $field['options'] );
-						$args[] = $field['default'];
+						$args[]   = array_keys( $field['options'] );
+						$args[]   = $field['default'];
 						break;
 					case 'color':
 						$callback = 'validate_color';
@@ -441,8 +441,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $new_id
 	 */
 	public static function migrate_sidebars_widgets( $old_id, $new_id ) {
-		$old_id = 'off-canvas-' . $old_id;
-		$new_id = 'off-canvas-' . $new_id;
+		$old_id           = 'off-canvas-' . $old_id;
+		$new_id           = 'off-canvas-' . $new_id;
 		$sidebars_widgets = wp_get_sidebars_widgets();
 
 		if ( ! empty( $sidebars_widgets[ $old_id ] ) ) {

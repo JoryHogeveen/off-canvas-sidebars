@@ -37,7 +37,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-settings';
+		$this->tab  = 'ocs-settings';
 		$this->name = esc_attr__( 'Settings', OCS_DOMAIN );
 		parent::__construct();
 
@@ -47,7 +47,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Initialize this tab.
-	 * @since   1.5.0
+	 * @since   0.5.0
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
@@ -55,7 +55,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Before form fields.
-	 * @since   1.5.0
+	 * @since   0.5.0
 	 */
 	public function ocs_page_form_before() {
 		echo '<p>';
@@ -266,7 +266,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section' => $section,
 			'default' => '',
 			'options' => array(
-				'default' => array(
+				'default'     => array(
 					'name'  => 'default',
 					'label' => esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#ffffff</code>',
 					'value' => '',
@@ -276,7 +276,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 					'label' => esc_html__( 'Transparent', OCS_DOMAIN ),
 					'value' => 'transparent',
 				),
-				'color' => array(
+				'color'       => array(
 					'name'  => 'color',
 					'label' => esc_html__( 'Color', OCS_DOMAIN ),
 					'value' => 'color',
@@ -332,22 +332,22 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section'  => $section,
 			'default'  => 'none',
 			'options'  => array(
-				'none' => array(
-					'name'  => 'none',
-					'label' => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
-					'value' => 'none',
+				'none'       => array(
+					'name'        => 'none',
+					'label'       => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+					'value'       => 'none',
 					'description' => __( 'This is the default Slidebars behaviour.', OCS_DOMAIN ),
 				),
 				'legacy-css' => array(
-					'name'  => 'legacy-css',
-					'label' => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
-					'value' => 'legacy-css',
+					'name'        => 'legacy-css',
+					'label'       => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+					'value'       => 'legacy-css',
 					'description' => __( 'This is your best option if your site uses sticky menus and/or other fixed elements within the site container.', OCS_DOMAIN ),
 				),
-				'custom-js' => array(
-					'name'  => 'custom-js',
-					'label' => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
-					'value' => 'custom-js',
+				'custom-js'  => array(
+					'name'        => 'custom-js',
+					'label'       => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
+					'value'       => 'custom-js',
 					'description' => __( 'While still in development, this could fix compatibility issues with fixed elements.', OCS_DOMAIN ),
 				),
 			),
@@ -356,12 +356,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		$section = 'section_admin';
 
 		$fields['wp_editor_shortcode_rendering'] = array(
-			'name'     => 'wp_editor_shortcode_rendering',
-			'title'    => esc_attr__( 'Enable shortcode UI for the WordPress Editor?', OCS_DOMAIN ),
-			'callback' => 'checkbox_option',
-			'type'     => 'checkbox',
-			'section'  => $section,
-			'label'    => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
+			'name'        => 'wp_editor_shortcode_rendering',
+			'title'       => esc_attr__( 'Enable shortcode UI for the WordPress Editor?', OCS_DOMAIN ),
+			'callback'    => 'checkbox_option',
+			'type'        => 'checkbox',
+			'section'     => $section,
+			'label'       => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
 			'description' => __( 'This will render the shortcodes to actual HTML elements in the WP Editor.', OCS_DOMAIN ),
 		);
 
