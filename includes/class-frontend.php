@@ -308,22 +308,32 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Get the enabled plugin sidebars.
+	 *
+	 * @since   0.5.3
+	 * @return  array
+	 */
+	public function get_enabled_sidebars() {
+		$sidebars = off_canvas_sidebars_settings()->get_sidebars();
+		foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
+			if ( ! $this->is_sidebar_enabled( $sidebar_id ) ) {
+				unset( $sidebars[ $sidebar_id ] );
+			}
+		}
+		return $sidebars;
+	}
+
+	/**
 	 * Check if an off-canvas sidebar should be shown.
+	 * Difference with settings is that this method allows a filter for frontend.
 	 *
 	 * @since   0.5.2
 	 * @param   string  $sidebar_id
 	 * @param   array   $sidebar_data
 	 * @return  bool
 	 */
-	public function is_sidebar_enabled( $sidebar_id, $sidebar_data ) {
-		if ( ! $sidebar_data ) {
-			if ( ! isset( $this->settings['sidebars'][ $sidebar_id ] ) ) {
-				return false;
-			}
-			$sidebar_data = $this->settings['sidebars'][ $sidebar_id ];
-		}
-
-		$enabled = ! empty( $sidebar_data['enable'] );
+	public function is_sidebar_enabled( $sidebar_id, $sidebar_data = null ) {
+		$enabled = off_canvas_sidebars_settings()->is_sidebar_enabled( $sidebar_id );
 
 		/**
 		 * Filter whether an off-canvas sidebar should be rendered.
