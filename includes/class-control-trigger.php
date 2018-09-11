@@ -131,13 +131,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		);
 		$attr = array_merge( $attr, $args['attr'] );
 
-		// Add our own classes.
-		$prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
-		$classes = array(
-			$prefix . '-trigger',
-			$prefix . '-' . $args['action'],
-			$prefix . '-' . $args['action'] . '-' . $sidebar_id,
-		);
+		// Get the default classes.
+		$classes = self::get_trigger_classes( $sidebar_id, $args['action'] );
 
 		// Optionally add extra classes.
 		if ( ! empty( $args['class'] ) ) {
@@ -181,6 +176,29 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Get the default control trigger classes.
+	 *
+	 * @since   0.5.3
+	 * @static
+	 *
+	 * @param   string  $sidebar_id  The sidebar ID.
+	 * @param   string  $action      The trigger action.
+	 * @return  array
+	 */
+	public static function get_trigger_classes( $sidebar_id, $action = 'toggle' ) {
+		$prefix = off_canvas_sidebars_settings()->get_settings( 'css_prefix' );
+
+		$classes = array(
+			'ocs-trigger',
+			$prefix . '-trigger',
+			$prefix . '-' . $action,
+			$prefix . '-' . $action . '-' . $sidebar_id,
+		);
+
+		return $classes;
 	}
 
 	/**
