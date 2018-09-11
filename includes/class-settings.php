@@ -146,6 +146,34 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Get the plugin settings.
+	 *
+	 * @since   0.5.3
+	 * @param   string  $sidebar_id  The sidebar ID.
+	 * @param   string  $key         (optional) Get a single setting by key?
+	 * @return  mixed
+	 */
+	public function get_sidebar_settings( $sidebar_id, $key = null ) {
+		$sidebars = $this->get_sidebars();
+		if ( empty( $sidebars[ $sidebar_id ] ) ) {
+			return null;
+		}
+		if ( $key ) {
+			$settings = $sidebars[ $sidebar_id ];
+			$return = $this->get_settings( $key );
+			if ( $return ) {
+				if ( ! empty( $settings['overwrite_global_settings'] ) ) {
+					return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : $return;
+				}
+				return $return;
+			} else {
+				return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
+			}
+		}
+		return $sidebars[ $sidebar_id ];
+	}
+
+	/**
 	 * Returns the default settings.
 	 *
 	 * @since   0.2.0
