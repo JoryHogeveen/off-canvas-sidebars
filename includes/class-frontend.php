@@ -505,66 +505,67 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.1.0
 	 */
 	public function add_inline_styles() {
-		if ( ! is_admin() ) {
-			$prefix = $this->settings['css_prefix'];
-			?>
-<style type="text/css">
-<?php
-if ( '' !== $this->settings['background_color_type'] ) {
-	$bgcolor = '';
-	if ( 'transparent' === $this->settings['background_color_type'] ) {
-		$bgcolor = 'transparent';
-	}
-	elseif ( 'color' === $this->settings['background_color_type'] && '' !== $this->settings['background_color'] ) {
-		$bgcolor = $this->settings['background_color'];
-	}
-?>
-	#<?php echo $prefix; ?>-site {background-color: <?php echo $bgcolor; ?>;}
-<?php
-} // End if().
-foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
-	if ( true === (bool) $sidebar_data['enable'] ) {
-		$prop = array();
-		if ( ! empty( $sidebar_data['background_color_type'] ) ) {
-			if ( 'transparent' === $sidebar_data['background_color_type'] ) {
-				$prop[] = 'background-color: transparent;';
-			}
-			elseif ( 'color' === $sidebar_data['background_color_type'] && '' !== $sidebar_data['background_color'] ) {
-				$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
-			}
-		}
-		if ( 'custom' === $sidebar_data['size'] && ! empty( $sidebar_data['size_input'] ) ) {
-			if ( in_array( $sidebar_data['location'], array( 'left', 'right' ), true ) ) {
-				$prop[] = 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
-			}
-			elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ), true ) ) {
-				$prop[] = 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
-			}
-		}
-		if ( ! empty( $sidebar_data['animation_speed'] ) ) {
-			// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
-			$speed = (int) $sidebar_data['animation_speed'];
-			$prop[] = '-webkit-transition-duration: ' . $speed . 'ms;';
-			$prop[] = '-moz-transition-duration: ' . $speed . 'ms;';
-			$prop[] = '-o-transition-duration: ' . $speed . 'ms;';
-			$prop[] = 'transition-duration: ' . $speed . 'ms;';
-		}
-		if ( ! empty( $sidebar_data['padding'] ) ) {
-			$prop[] = 'padding: ' . (int) $sidebar_data['padding'] . 'px;';
+		if ( is_admin() ) {
+			return;
 		}
 
-		if ( ! empty( $prop ) ) {
-?>
-	.ocs-slidebar.ocs-<?php echo $sidebar_id; ?> {<?php echo implode( ' ', $prop ); ?>}
-<?php
+		$prefix = $this->get_settings( 'css_prefix' );
+		$styles = '';
+
+		$bg_color_type = $this->get_settings( 'background_color_type' );
+		if ( '' !== $bg_color_type ) {
+			$bg_color = '';
+			if ( 'transparent' === $bg_color_type ) {
+				$bg_color = 'transparent';
+			}
+			elseif ( 'color' === $bg_color_type ) {
+				$bg_color = $this->get_settings( 'background_color' );
+			}
+			if ( $bg_color ) {
+				$styles .= '#' . $prefix . '-site {background-color:' . $bg_color . ';}';
+			}
 		} // End if().
-	} // End if().
-} // End foreach().
-?>
-	.<?php echo $prefix; ?>-trigger {cursor: pointer;}
-</style>
-			<?php
-		} // End if().
+
+		foreach ( $this->get_enabled_sidebars() as $sidebar_id => $sidebar_data ) {
+			$prop = array();
+			if ( ! empty( $sidebar_data['background_color_type'] ) ) {
+				if ( 'transparent' === $sidebar_data['background_color_type'] ) {
+					$prop[] = 'background-color: transparent;';
+				}
+				elseif ( 'color' === $sidebar_data['background_color_type'] && '' !== $sidebar_data['background_color'] ) {
+					$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
+				}
+			}
+			if ( 'custom' === $sidebar_data['size'] && ! empty( $sidebar_data['size_input'] ) ) {
+				if ( in_array( $sidebar_data['location'], array( 'left', 'right' ), true ) ) {
+					$prop[] = 'width: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
+				}
+				elseif ( in_array( $sidebar_data['location'], array( 'top', 'bottom' ), true ) ) {
+					$prop[] = 'height: ' . (int) $sidebar_data['size_input'] . $sidebar_data['size_input_type'] . ';';
+				}
+			}
+			if ( ! empty( $sidebar_data['animation_speed'] ) ) {
+				// http://www.w3schools.com/cssref/css3_pr_transition-duration.asp
+				$speed  = (int) $sidebar_data['animation_speed'];
+				$prop[] = '-webkit-transition-duration: ' . $speed . 'ms;';
+				$prop[] = '-moz-transition-duration: ' . $speed . 'ms;';
+				$prop[] = '-o-transition-duration: ' . $speed . 'ms;';
+				$prop[] = 'transition-duration: ' . $speed . 'ms;';
+			}
+			if ( ! empty( $sidebar_data['padding'] ) ) {
+				$prop[] = 'padding: ' . (int) $sidebar_data['padding'] . 'px;';
+			}
+
+			if ( ! empty( $prop ) ) {
+
+				$styles .= '.ocs-slidebar.ocs-' . $sidebar_id . ' {' . implode( ' ', $prop ) . '}';
+			}
+		} // End foreach().
+
+		// https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios
+		$styles .= '.' . $prefix . '-trigger {cursor: pointer;}';
+
+		echo '<style type="text/css">' . $styles . '</style>';
 	}
 
 	/**
