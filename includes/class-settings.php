@@ -130,6 +130,22 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Get the enabled plugin sidebars.
+	 *
+	 * @since   0.5.3
+	 * @return  array
+	 */
+	public function get_enabled_sidebars() {
+		$sidebars = $this->get_sidebars();
+		foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
+			if ( ! $this->is_sidebar_enabled( $sidebar_id ) ) {
+				unset( $sidebars[ $sidebar_id ] );
+			}
+		}
+		return $sidebars;
+	}
+
+	/**
 	 * Returns the default settings.
 	 *
 	 * @since   0.2.0
