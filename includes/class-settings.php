@@ -174,6 +174,27 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Check if an off-canvas sidebar should be shown.
+	 *
+	 * @todo Move to sidebar class.
+	 *
+	 * @since   0.5.3
+	 * @param   string  $sidebar_id
+	 * @param   array   $sidebar_data
+	 * @return  bool
+	 */
+	public function is_sidebar_enabled( $sidebar_id, $sidebar_data = null ) {
+		if ( ! $sidebar_data ) {
+			$sidebar_data = $this->get_sidebar_settings( $sidebar_id );
+			if ( ! $sidebar_data ) {
+				return false;
+			}
+		}
+
+		return ! empty( $sidebar_data['enable'] );
+	}
+
+	/**
 	 * Returns the default settings.
 	 *
 	 * @since   0.2.0
