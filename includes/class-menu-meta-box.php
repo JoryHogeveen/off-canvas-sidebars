@@ -124,9 +124,15 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 				</ul>
 			</div>
 			<?php if ( $off_canvas_sidebars->is_sidebar_enabled() ) { ?>
+
+				$select_all = add_query_arg( array(
+					//'ocs-tab'  => 'all',
+					'selectall' => '1',
+				) );
+				?>
 			<p class="button-controls">
 				<span class="list-controls">
-					<a href="/wordpress/wp-admin/nav-menus.php?page-tab=all&amp;selectall=1#off-canvas-control-meta-box" class="select-all"><?php echo __( 'Select All' ); ?></a>
+					<a href="<?php echo esc_attr( $select_all ); ?>#off-canvas-control-meta-box" class="select-all"><?php echo __( 'Select All' ); ?></a>
 				</span>
 				<span class="add-to-menu">
 					<input type="submit" class="button-secondary submit-add-to-menu right" value="<?php echo __( 'Add to Menu' ); ?>" name="add-off-canvas-control-menu-item" id="submit-off-canvas-control-meta-box">
