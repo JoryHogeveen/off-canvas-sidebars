@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.0
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  *
  * Credits to the Polylang plugin.
@@ -33,14 +33,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 	protected $meta_key = '_off_canvas_control_menu_item';
 
-	private $plugin_key = '';
-	private $settings = array();
+	private $plugin_key  = '';
 	private $general_labels = array();
-	private $link_classes = array(
-		'-trigger',
-		'-toggle',
-		// -toggle-
-	);
 
 	/**
 	 * Class constructor.
@@ -62,13 +56,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 */
 	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->plugin_key     = $off_canvas_sidebars->get_plugin_key();
-
-		foreach ( $this->link_classes as $key => $class ) {
-			$this->link_classes[ $key ] = $this->settings['css_prefix'] . $class;
-		}
 	}
 
 	/**
@@ -264,25 +253,24 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 			if ( ! $options ) {
 				continue;
 			}
-			$item->url = '';
-			if ( isset( $this->settings['sidebars'][ $options['off-canvas-control'] ] ) &&
-				 $this->settings['sidebars'][ $options['off-canvas-control'] ]['enable']
-			) {
+			$sidebar_id = ( isset( $options['off-canvas-control'] ) ) ? $options['off-canvas-control'] : null;
+			if ( ! $sidebar_id ) {
+				continue;
+			}
 
-				$link_classes = $this->link_classes;
-				if ( ! is_array( $link_classes ) ) {
-					$link_classes = explode( ' ', (string) $link_classes );
-				}
+			if ( off_canvas_sidebars_frontend()->is_sidebar_enabled( $sidebar_id ) ) {
+				$item->url = '';
 
-				if ( ! empty( $options['off-canvas-control'] ) ) {
-					$link_classes[] = $this->settings['css_prefix'] . '-toggle-' . $options['off-canvas-control'];
-				}
+				$link_classes = OCS_Off_Canvas_Sidebars_Control_Trigger::get_trigger_classes( $sidebar_id );
 
 				if ( ! is_array( $item->classes ) ) {
 					$item->classes = explode( ' ', $item->classes );
 				}
 
 				$item->classes = array_merge( $item->classes, $link_classes );
+			}
+			elseif ( off_canvas_sidebars_settings()->get_sidebar_settings( $sidebar_id, 'hide_control_classes' ) ) {
+				unset( $items[ $key ] );
 			}
 		}
 

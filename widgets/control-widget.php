@@ -20,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
-	private $settings = array();
-	private $general_labels = array();
 	private $widget_setting = 'off-canvas-controls';
 	private $advanced_fields = array(
 		'action',
@@ -49,16 +47,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				'description' => __( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
 		);
-		$this->load_plugin_data();
-	}
-
-	/**
-	 * Get plugin defaults.
-	 */
-	function load_plugin_data() {
-		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->settings       = $off_canvas_sidebars->get_settings();
-		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 	}
 
 	/**
@@ -68,24 +56,31 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * @param  array  $instance
 	 */
 	public function widget( $args, $instance ) {
-
-		$this->load_plugin_data();
 		$instance = $this->merge_settings( $instance );
+		$content = '';
 
-		echo $args['before_widget'];
+		$ocs = off_canvas_sidebars();
 
-		echo '<div class="off-canvas-control-wrapper"><div class="off-canvas-triggers">';
-
-		foreach ( $this->settings['sidebars'] as $sidebar_id => $sidebar_data ) {
-			if ( ! $sidebar_data['enable'] || ! $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) {
+		foreach ( $ocs->get_sidebars() as $sidebar_id => $sidebar_data ) {
+			if ( empty( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) ) {
+				continue;
+			}
+			$auto_hide = off_canvas_sidebars_settings()->get_sidebar_settings( $sidebar_id, 'hide_control_classes' );
+			if ( ! $ocs->is_sidebar_enabled( $sidebar_id ) && $auto_hide ) {
 				continue;
 			}
 			$trigger_args = $instance[ $this->widget_setting ][ $sidebar_id ];
 			$trigger_args['id'] = $sidebar_id;
-			$this->do_control_trigger( $trigger_args );
+			$content .= $this->do_control_trigger( $trigger_args );
 		};
 
-		echo '</div></div>';
+		if ( ! $content ) {
+			return;
+		}
+
+		echo $args['before_widget'];
+
+		echo '<div class="off-canvas-control-wrapper"><div class="off-canvas-triggers">' . $content . '</div></div>';
 
 		echo $args['after_widget'];
 	}
@@ -94,6 +89,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * Render a control trigger.
 	 * @since  0.5.0
 	 * @param  array  $args
+	 * @return string
 	 */
 	public function do_control_trigger( $args ) {
 		$trigger_args = array(
@@ -105,6 +101,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			//'icon'          => '', // Icon classes.
 			//'icon_location' => 'before', // before|after.
 			//'attr'          => array(), // An array of attribute keys and their values.
+			'echo'          => false,
 		);
 
 		if ( $args['button_class'] ) {
@@ -127,7 +124,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			}
 		}
 
-		the_ocs_control_trigger( $trigger_args );
+		return the_ocs_control_trigger( $trigger_args );
 	}
 
 	/**
@@ -154,6 +151,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			echo '<p>' . off_canvas_sidebars()->get_general_labels( 'no_sidebars_available' ) . '</p>';
 		} else {
 		?>
+
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
 			<b><?php esc_html_e( 'Controls', OCS_DOMAIN ); ?>:</b><br />
 			<?php
