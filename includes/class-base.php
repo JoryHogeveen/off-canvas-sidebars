@@ -28,7 +28,7 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	 * @return  mixed
 	 */
 	public function get_settings( $key ) {
-		return OCS_Off_Canvas_Sidebars_Settings::get_instance()->get_settings( $key );
+		return off_canvas_sidebars_settings()->get_settings( $key );
 	}
 
 	/**

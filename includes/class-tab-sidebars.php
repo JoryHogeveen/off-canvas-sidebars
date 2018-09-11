@@ -74,7 +74,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @since   0.5.0
 	 */
 	public function ocs_page_form_section_table_before() {
-		$css_prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
+		$css_prefix = $this->get_settings( 'css_prefix' );
 		echo '<tr class="sidebar_classes" style="display: none;"><th>' . esc_html__( 'ID & Classes', OCS_DOMAIN ) . '</th><td>';
 		echo  esc_html__( 'Sidebar ID', OCS_DOMAIN ) . ': <code>#' . $css_prefix . '-<span class="js-dynamic-id"></span></code> &nbsp; '
 		      . esc_html__( 'Trigger Classes', OCS_DOMAIN ) . ': <code>.' . $css_prefix . '-toggle-<span class="js-dynamic-id"></span></code> <code>.' . $css_prefix . '-open-<span class="js-dynamic-id"></span></code> <code>.' . $css_prefix . '-close-<span class="js-dynamic-id"></span></code>';

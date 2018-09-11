@@ -286,7 +286,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @return  array
 	 */
 	public function validate_form( $input ) {
-		return OCS_Off_Canvas_Sidebars_Settings::get_instance()->validate_form( $input );
+		return off_canvas_sidebars_settings()->validate_form( $input );
 	}
 
 } // End class().

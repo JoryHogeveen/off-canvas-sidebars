@@ -33,9 +33,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 	protected $meta_key = '_off_canvas_control_menu_item';
 
-	private $general_key = '';
 	private $plugin_key = '';
-	//private $plugin_tabs = array();
 	private $settings = array();
 	private $general_labels = array();
 	private $link_classes = array(
@@ -66,7 +64,6 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 		$off_canvas_sidebars  = off_canvas_sidebars();
 		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		$this->general_key    = $off_canvas_sidebars->get_general_key();
 		$this->plugin_key     = $off_canvas_sidebars->get_plugin_key();
 
 		foreach ( $this->link_classes as $key => $class ) {
@@ -95,16 +92,17 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 */
 	function meta_box() {
 		global $_nav_menu_placeholder; //, $nav_menu_selected_id;
-		$off_canvas_sidebars = off_canvas_sidebars();
-		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
+		$_nav_menu_placeholder = ( 0 > $_nav_menu_placeholder ) ? $_nav_menu_placeholder - 1 : -1;
+
+		$sidebars = off_canvas_sidebars_settings()->get_enabled_sidebars();
 		?>
 		<div class="off-canvas-control-meta-box posttypediv" id="off-canvas-control-meta-box">
 			<div id="tabs-panel-off-canvas-control" class="tabs-panel tabs-panel-active">
 				<ul id="off-canvas-control" class="categorychecklist form-no-clear">
 			<?php
-				foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
-					if ( $sidebar_data['enable'] ) {
-			?>
+				if ( $sidebars ) {
+					foreach ( $sidebars as $sidebar => $sidebar_data ) {
+				?>
 					<li>
 						<label class="menu-item-title">
 							<input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php echo $sidebar_data['label']; ?>
@@ -114,16 +112,16 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 						<input type="hidden" class="menu-item-title" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php echo $sidebar_data['label']; ?>">
 						<input type="hidden" class="menu-item-classes" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-classes]" value="">
 					</li>
-			<?php
+				<?php
 					}
 				}
-				if ( ! $off_canvas_sidebars->is_sidebar_enabled() ) {
+				else {
 					echo '<li>' . $this->general_labels['no_sidebars_available'] . '</li>';
 				}
 			?>
 				</ul>
 			</div>
-			<?php if ( $off_canvas_sidebars->is_sidebar_enabled() ) { ?>
+			<?php if ( $sidebars ) {
 
 				$select_all = add_query_arg( array(
 					//'ocs-tab'  => 'all',
@@ -165,10 +163,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
 		);
 		$data['controls'] = array();
-		foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
-			if ( $sidebar_data['enable'] ) {
-				$data['controls'][ $sidebar ] = $sidebar_data['label'];
-			}
+		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar => $sidebar_data ) {
+			$data['controls'][ $sidebar ] = $sidebar_data['label'];
 		}
 
 		// Get all language switcher menu items.
@@ -198,7 +194,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 * @param   int  $menu_item_db_id
 	 */
 	public function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0 ) {
-		$off_canvas_sidebars = off_canvas_sidebars();
+		$ocs = off_canvas_sidebars();
 
 		// @codingStandardsIgnoreLine
 		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#off_canvas_control' !== $_POST['menu-item-url'][ $menu_item_db_id ] )
@@ -212,14 +208,14 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 		check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );
 
 		$available_controls = array();
-		foreach ( $this->settings['sidebars'] as $sidebar => $sidebar_data ) {
+		foreach ( $ocs->get_sidebars() as $sidebar => $sidebar_data ) {
 			$available_controls[ $sidebar ] = $sidebar_data['label'];
 		}
 
 		// Auto select control when adding a new item.
 		$default_control = '';
 		if ( in_array( $_POST['menu-item-title'][ $menu_item_db_id ], $available_controls, true ) ) {
-			$default_control = $off_canvas_sidebars->get_sidebar_key_by_label( $_POST['menu-item-title'][ $menu_item_db_id ] );
+			$default_control = $ocs->get_sidebar_key_by_label( $_POST['menu-item-title'][ $menu_item_db_id ] );
 		}
 		// Default values.
 		$options = array( 'off-canvas-control' => $default_control );

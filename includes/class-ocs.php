@@ -252,7 +252,7 @@ final class OCS_Off_Canvas_Sidebars
 	 * @return  mixed
 	 */
 	public function get_settings( $key = null ) {
-		return OCS_Off_Canvas_Sidebars_Settings::get_instance()->get_settings( $key );
+		return off_canvas_sidebars_settings()->get_settings( $key );
 	}
 
 	/**

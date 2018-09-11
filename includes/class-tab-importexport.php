@@ -183,18 +183,20 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 						$settings[ $key ] = json_decode( $value, true );
 					}
 
+					$ocs_settings = off_canvas_sidebars_settings();
+
 					// Get the current settings.
-					$org_settings = off_canvas_sidebars()->get_settings();
+					$org_settings = $ocs_settings->get_settings();
 
 					// Validate and store the new settings.
-					OCS_Off_Canvas_Sidebars_Settings::get_instance()->set_settings( $settings );
-					$settings = off_canvas_sidebars()->get_settings();
+					$ocs_settings->set_settings( $settings );
+					$settings = $ocs_settings->get_settings();
 
 					// Combine the new settings with the original settings.
 					$settings = array_merge( $org_settings, $settings );
 
 					// Update database.
-					OCS_Off_Canvas_Sidebars_Settings::get_instance()->update_settings( $settings );
+					$ocs_settings->update_settings( $settings );
 
 					$ocs_import_result = 1;
 				} else {

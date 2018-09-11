@@ -239,10 +239,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'label' => '-- ' . __( 'select', OCS_DOMAIN ) . ' --',
 			),
 		);
-		foreach ( off_canvas_sidebars()->get_sidebars() as $sidebar_id => $sidebar_data ) {
-			if ( empty( $sidebar_data['enable'] ) ) {
-				continue;
-			}
+		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar_id => $sidebar_data ) {
 			$label = $sidebar_id;
 			if ( ! empty( $sidebar_data['label'] ) ) {
 				$label = $sidebar_data['label'] . ' (' . $sidebar_id . ')';
@@ -328,7 +325,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 						'value' => 'close',
 					),
 				),
-				'group'       => 'advanced',
+				'group'   => 'advanced',
 			),
 			'element' => array(
 				'type'        => 'select',
@@ -351,14 +348,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'label'       => __( 'Custom attributes', OCS_DOMAIN ),
 				'description' => __( 'key : value ; key : value', OCS_DOMAIN ),
 				'multiline'   => true,
-				'group'   => 'advanced',
+				'group'       => 'advanced',
 			),
 			'nested' => array(
 				'type'        => 'checkbox',
 				'name'        => 'nested',
 				'label'       => __( 'Nested shortcode', OCS_DOMAIN ) . '?',
 				'description' => '[ocs_trigger text="' . $strings['your_text'] . '"] ' . $strings['or'] . ' [ocs_trigger]' . $strings['your_text'] . '[/ocs_trigger]',
-				'group'   => 'advanced',
+				'group'       => 'advanced',
 			),
 		);
 

@@ -31,7 +31,6 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	protected $general_key    = '';
 	protected $plugin_key     = '';
-	protected $settings       = array();
 	protected $general_labels = array();
 	protected $capability     = 'edit_theme_options';
 	protected $request_tab    = '';
@@ -67,7 +66,6 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key    = $off_canvas_sidebars->get_general_key();
 

@@ -141,47 +141,39 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * @param  array  $instance  The widget options.
 	 */
 	public function form( $instance ) {
-		$off_canvas_sidebars = off_canvas_sidebars();
-		$this->load_plugin_data();
+		$sidebars = off_canvas_sidebars_settings()->get_enabled_sidebars();
+
 		$instance = $this->merge_settings( $instance );
 
 		$ocs = $instance[ $this->widget_setting ];
 		$field_id = $this->get_field_id( $this->widget_setting );
 		$field_name = $this->get_field_name( $this->widget_setting );
+
+		// If no sidebars enabled, no other fields available.
+		if ( ! $sidebars ) {
+			echo '<p>' . off_canvas_sidebars()->get_general_labels( 'no_sidebars_available' ) . '</p>';
+		} else {
 		?>
 		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
 			<b><?php esc_html_e( 'Controls', OCS_DOMAIN ); ?>:</b><br />
 			<?php
-			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
-				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
-					continue;
-				}
+			foreach ( $sidebars as $sidebar_id => $value ) {
 			?>
 			<span style="display: inline-block; margin-right: 10px;">
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>">
 					<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>" name="<?php echo $field_name . '[' . $sidebar_id . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'], 1 ); ?> />
-					<?php echo $this->settings['sidebars'][ $sidebar_id ]['label']; ?>
+					<?php echo $value['label']; ?>
 				</label>
 			</span>
 			<?php } ?>
 		</p>
-
-		<?php
-		// If no sidebars enabled, no other fields available.
-		if ( ! $off_canvas_sidebars->is_sidebar_enabled() ) {
-			echo '<p>' . $this->general_labels['no_sidebars_available'] . '</p>';
-		} else {
-		?>
 
 		<hr />
 
 		<div id="<?php echo $field_id; ?>_tabs" style="display: none;">
 		<?php
 			$counter = 0;
-			foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
-				if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
-					continue;
-				}
+			foreach ( $sidebars as $sidebar_id => $value ) {
 				$disabled = false;
 				$class = 'ocs-tab';
 				if ( empty( $ocs[ $sidebar_id ]['enable'] ) ) {
@@ -205,10 +197,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		<div id="<?php echo $field_id; ?>_panes">
 		<?php
 		$counter = 0;
-		foreach ( $this->settings['sidebars'] as $sidebar_id => $value ) {
-			if ( empty( $this->settings['sidebars'][ $sidebar_id ]['enable'] ) ) {
-				continue;
-			}
+		foreach ( $sidebars as $sidebar_id => $value ) {
 			$field_sidebar_id = $field_id . '_' . $sidebar_id;
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
 		?>
@@ -416,11 +405,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
-		// processes widget options to be saved
-		$instance = array();
-
-		$this->load_plugin_data();
-		$instance = $this->merge_settings( $instance );
+		// processes widget options to be saved.
+		$instance = $this->merge_settings( array() );
 
 		$ocs = $instance[ $this->widget_setting ];
 		$new_ocs = array();
@@ -493,7 +479,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	public function merge_settings( $settings ) {
 		$defaults = array();
 
-		foreach ( $this->settings['sidebars'] as $key => $value ) {
+		foreach ( off_canvas_sidebars_settings()->get_sidebars() as $key => $value ) {
 			$defaults[ $key ] = array(
 				'enable'        => 0,
 				'show_label'    => 0,
