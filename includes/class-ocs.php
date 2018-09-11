@@ -261,11 +261,43 @@ final class OCS_Off_Canvas_Sidebars
 	 * @return  array|null
 	 */
 	public function get_sidebars( $id = null ) {
-		$sidebars = $this->get_settings( 'sidebars' );
+		return off_canvas_sidebars_settings()->get_sidebars( $id );
+	}
+
+	/**
+	 * Get the enabled sidebars.
+	 * Also checks admin vs frontend for which class to use.
+	 *
+	 * @since   0.5.3
+	 * @return  array
+	 */
+	public function get_enabled_sidebars() {
+		$class = is_admin() ? off_canvas_sidebars_settings() : off_canvas_sidebars_frontend();
+		return $class->get_enabled_sidebars();
+	}
+
+	/**
+	 * Checks if an off-canvas sidebar is enabled.
+	 * Also checks admin vs frontend for which class to use.
+	 * If no $id parameter is passed it will check if any off-canvas sidebar is enabled.
+	 *
+	 * @since   0.1.0
+	 * @since   0.5.0  Optional ID parameter.
+	 * @since   0.5.3  Check admin vs frontend.
+	 * @param   string  $id  Sidebar ID.
+	 * @return  bool
+	 */
+	public function is_sidebar_enabled( $id = null ) {
+		$class = is_admin() ? off_canvas_sidebars_settings() : off_canvas_sidebars_frontend();
 		if ( $id ) {
-			return ( isset( $sidebars[ $id ] ) ) ? $sidebars[ $id ] : null;
+			return $class->is_sidebar_enabled( $id );
 		}
-		return ( isset( $sidebars ) ) ? $sidebars : null;
+		foreach ( $this->get_sidebars() as $id => $value ) {
+			if ( $class->is_sidebar_enabled( $id ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -342,28 +374,6 @@ final class OCS_Off_Canvas_Sidebars
 		foreach ( $this->get_sidebars() as $key => $value ) {
 			if ( $label === $value['label'] ) {
 				return $key;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if an off-canvas sidebar is enabled.
-	 * If no $id parameter is passed it will check if any off-canvas sidebar is enabled.
-	 *
-	 * @since   0.1.0
-	 * @since   0.5.0  Optional ID parameter.
-	 * @param   string  $id  Sidebar ID.
-	 * @return  bool
-	 */
-	public function is_sidebar_enabled( $id = null ) {
-		$sidebars = $this->get_sidebars();
-		if ( $id ) {
-			return ( ! empty( $sidebars[ $id ]['enable'] ) );
-		}
-		foreach ( $this->get_sidebars() as $key => $value ) {
-			if ( ! empty( $value['enable'] ) ) {
-				return true;
 			}
 		}
 		return false;
