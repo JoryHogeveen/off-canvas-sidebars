@@ -1,4 +1,4 @@
-=== Off-Canvas Sidebars (Slidebars) ===
+=== Off-Canvas Sidebars & Menus (Slidebars) ===
 Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
 Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobile, tablet, responsive, genesis
