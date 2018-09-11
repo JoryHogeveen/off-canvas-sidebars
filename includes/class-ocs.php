@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.2
+ * @version 0.5.3
  */
 final class OCS_Off_Canvas_Sidebars
 {
@@ -480,6 +480,7 @@ final class OCS_Off_Canvas_Sidebars
 			foreach ( $this->get_links() as $id => $link ) {
 				$icon_attr['class'] = 'dashicons ' . $link['icon'];
 				$title = '<span ' . OCS_Off_Canvas_Sidebars_Base::parse_to_html_attr( $icon_attr ) . '></span> ' . esc_html( $link['title'] );
+
 				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
 			}
 		}
