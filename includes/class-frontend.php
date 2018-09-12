@@ -447,8 +447,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
 
 		// FastClick library https://github.com/ftlabs/fastclick
-			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick' . $suffix . '.js', array(), '1.0.6', true );
 		if ( $this->get_settings( 'use_fastclick' ) ) {
+			wp_enqueue_script( 'fastclick', OCS_PLUGIN_URL . 'js/fastclick' . $suffix . '.js', array(), '1.0.6', true );
 		}
 
 		if ( 'custom-js' === $this->get_settings( 'compatibility_position_fixed' ) ) {
@@ -470,7 +470,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
 			'site_close'           => (bool) $this->get_settings( 'site_close' ),
 			'link_close'           => (bool) $this->get_settings( 'link_close' ),
-			'disable_over'         => (int)  $this->get_settings( 'disable_over' ),
+			'disable_over'         => (int) $this->get_settings( 'disable_over' ),
 			'hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
 			'scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 			'legacy_css'           => (bool) ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ),

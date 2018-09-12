@@ -57,20 +57,22 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 */
 	public function widget( $args, $instance ) {
 		$instance = $this->merge_settings( $instance );
-		$content = '';
-
-		$ocs = off_canvas_sidebars();
+		$content  = '';
+		$ocs      = off_canvas_sidebars();
 
 		foreach ( $ocs->get_sidebars() as $sidebar_id => $sidebar_data ) {
 			if ( empty( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'] ) ) {
 				continue;
 			}
+
 			$auto_hide = off_canvas_sidebars_settings()->get_sidebar_settings( $sidebar_id, 'hide_control_classes' );
 			if ( ! $ocs->is_sidebar_enabled( $sidebar_id ) && $auto_hide ) {
 				continue;
 			}
-			$trigger_args = $instance[ $this->widget_setting ][ $sidebar_id ];
+
+			$trigger_args       = $instance[ $this->widget_setting ][ $sidebar_id ];
 			$trigger_args['id'] = $sidebar_id;
+
 			$content .= $this->do_control_trigger( $trigger_args );
 		};
 
@@ -93,6 +95,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	 */
 	public function do_control_trigger( $args ) {
 		$trigger_args = array(
+			'echo'          => false,
 			'id'            => $args['id'],
 			'text'          => '', // Text to show.
 			'action'        => 'toggle', // toggle|open|close.
@@ -101,7 +104,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			//'icon'          => '', // Icon classes.
 			//'icon_location' => 'before', // before|after.
 			//'attr'          => array(), // An array of attribute keys and their values.
-			'echo'          => false,
 		);
 
 		if ( $args['button_class'] ) {
@@ -160,7 +162,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			<span style="display: inline-block; margin-right: 10px;">
 				<label for="<?php echo $field_id . '_' . $sidebar_id; ?>">
 					<input type="checkbox" id="<?php echo $field_id . '_' . $sidebar_id; ?>" name="<?php echo $field_name . '[' . $sidebar_id . '][enable]'; ?>" value="1" <?php checked( $instance[ $this->widget_setting ][ $sidebar_id ]['enable'], 1 ); ?> />
-					<?php echo $value['label']; ?>
+					<?php echo esc_html( $value['label'] ); ?>
 				</label>
 			</span>
 			<?php } ?>

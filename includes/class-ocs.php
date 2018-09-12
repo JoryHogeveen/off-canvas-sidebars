@@ -641,20 +641,22 @@ final class OCS_Off_Canvas_Sidebars
 			),
 		);
 
+		$return = $links;
+
 		if ( $link ) {
+			$return = array();
 			if ( isset( $links[ $link ] ) ) {
+				$return = $links[ $link ];
 				if ( $key ) {
+					$return = '';
 					if ( isset( $links[ $link ][ $key ] ) ) {
-						return $links[ $link ][ $key ];
+						$return = $links[ $link ][ $key ];
 					}
-					return '';
 				}
-				return $links[ $link ];
 			}
-			return array();
 		}
 
-		return $links;
+		return $return;
 	}
 
 	/**

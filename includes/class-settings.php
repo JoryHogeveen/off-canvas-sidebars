@@ -160,15 +160,15 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		}
 		if ( $key ) {
 			$settings = $sidebars[ $sidebar_id ];
-			$return = $this->get_settings( $key );
+			$return   = $this->get_settings( $key );
 			if ( $return ) {
 				if ( ! empty( $settings['overwrite_global_settings'] ) ) {
-					return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : $return;
+					$return = ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : $return;
 				}
-				return $return;
 			} else {
-				return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
+				$return = ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
 			}
+			return $return;
 		}
 		return $sidebars[ $sidebar_id ];
 	}
