@@ -159,7 +159,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	public function after_site_script() {
 		if ( ! is_admin() ) {
-			$prefix = $this->get_settings( 'css_prefix' );
+			$prefix = esc_attr( $this->get_settings( 'css_prefix' ) );
 			?>
 <script type="text/javascript">
 	(function($) {
@@ -519,7 +519,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				$bg_color = 'transparent';
 			}
 			elseif ( 'color' === $bg_color_type ) {
-				$bg_color = $this->get_settings( 'background_color' );
+				$bg_color = OCS_Off_Canvas_Sidebars_Settings::validate_color( $this->get_settings( 'background_color' ) );
 			}
 			if ( $bg_color ) {
 				$styles .= '#' . $prefix . '-site {background-color:' . $bg_color . ';}';
@@ -533,7 +533,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 					$prop[] = 'background-color: transparent;';
 				}
 				elseif ( 'color' === $sidebar_data['background_color_type'] && '' !== $sidebar_data['background_color'] ) {
-					$prop[] = 'background-color: ' . $sidebar_data['background_color'] . ';';
+					$bg_color = OCS_Off_Canvas_Sidebars_Settings::validate_color( $sidebar_data['background_color'] );
+					$prop[] = 'background-color: ' . $bg_color . ';';
 				}
 			}
 			if ( 'custom' === $sidebar_data['size'] && ! empty( $sidebar_data['size_input'] ) ) {
