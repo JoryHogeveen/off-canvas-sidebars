@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.4.0
+ * @version 0.5.3
  * @global  ocsNavControl
  * @preserve
  *
@@ -17,32 +17,46 @@ if ( 'undefined' === typeof ocsNavControl ) {
 	var ocsNavControl = {};
 }
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
-	$("input[value='#off_canvas_control'][type=text]").parent().parent().parent().parent().each( function() {
-		var $this = $(this),
-			control_type = '',
-			db_id = $this.find('.menu-item-data-db-id').val();
-		$this.addClass('off-canvas-control');
+	/**
+	 * Change/Update menu item type.
+	 * @since  0.5.3
+	 * @param  {object}  menu_item  The menu item element `.menu-item`.
+	 * @param  {string}  key        The off-canvas sidebar key.
+	 * @return {void}  Nothing.
+	 */
+	ocsNavControl.add_menu_item_type = function( menu_item, key ) {
+		var $menu_item = $( menu_item ),
+			control_type = '';
 
-		/* If control selected, then show it */
-		if ( ocsNavControl.val[ db_id ]['off-canvas-control']) {
-			var key = ocsNavControl.val[ db_id ]['off-canvas-control'];
+		if ( ! key ) {
+			var db_id = $menu_item.find('.menu-item-data-db-id').val();
+			/* If control selected, then show it */
+			if ( ocsNavControl.val[ db_id ]['off-canvas-control'] ) {
+				key = ocsNavControl.val[ db_id ]['off-canvas-control'];
+			}
+		}
+
+		if ( key ) {
 			control_type = ' <i class="item-type-off-canvas-control">(' + ocsNavControl.controls[ key ] + ')</i>';
 		}
-		$this.find('.menu-item-bar .item-type').html( ocsNavControl.strings.menu_item_type + control_type );
+		$menu_item.find('.menu-item-bar .item-type').html( ocsNavControl.strings.menu_item_type + control_type );
+	};
+
+	$("input[value='#off_canvas_control'][type=text]").parents('.menu-item').each( function() {
+		ocsNavControl.add_menu_item_type( this, false );
 	});
 
 	/* Change menu type label on selecting a controller */
 	$(document).on( 'change', '.field-off-canvas-control input', function() {
-		var key = $(this).val();
-		var control_type = ' <i class="item-type-off-canvas-control">(' + ocsNavControl.controls[ key ] + ')</i>';
-		$(this).parents('.menu-item').find('.menu-item-bar .item-type').html( ocsNavControl.strings.menu_item_type + control_type );
+		var $this = $(this);
+		ocsNavControl.add_menu_item_type( $this.parents('.menu-item'), $this.val() );
 	} );
 
 	/* Init/change menu item options */
-	$('#update-nav-menu').bind( 'click load', function(e) {
-		if ( e.target && e.target.className && -1 < e.target.className.indexOf('item-edit')) {
+	$('#update-nav-menu').bind( 'click load', function( e ) {
+		if ( e.target && e.target.className && -1 < e.target.className.indexOf('item-edit') ) {
 			$('input[value="#off_canvas_control"][type=text]').parent().parent().parent().each( function() {
 				var $this = $(this),
 					item = $this.attr('id').substring(19),
@@ -88,7 +102,7 @@ jQuery( document ).ready( function( $ ) {
 				o += '</p>';
 				$this.prepend( o );
 
-				// Of only one sidebar is available, always select its control.
+				// If only one sidebar is available, always select its control.
 				var $field_control_options = $this.children('p.field-off-canvas-control').find('input[type="radio"]');
 				if ( 1 === $field_control_options.length ) {
 					$field_control_options.prop('checked', true);
