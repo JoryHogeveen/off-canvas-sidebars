@@ -352,7 +352,7 @@ final class OCS_Off_Canvas_Sidebars
 		static $labels;
 		if ( ! $labels ) {
 			$labels = array(
-				'no_sidebars_available'      => __( 'Please enable an off-canvas sidebar', OCS_DOMAIN ),
+				'no_sidebars_available'      => esc_html__( 'Please enable an off-canvas sidebar', OCS_DOMAIN ),
 				// Translators: %s stands for the URL.
 				'compatibility_notice_theme' => sprintf( __( 'If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank">please let me know!</a>', OCS_DOMAIN ), 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues' ),
 			);
@@ -478,7 +478,9 @@ final class OCS_Off_Canvas_Sidebars
 				),
 			);
 			foreach ( $this->get_links() as $id => $link ) {
+
 				$icon_attr['class'] = 'dashicons ' . $link['icon'];
+
 				$title = '<span ' . OCS_Off_Canvas_Sidebars_Base::parse_to_html_attr( $icon_attr ) . '></span> ' . esc_html( $link['title'] );
 
 				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';

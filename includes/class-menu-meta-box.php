@@ -33,7 +33,8 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 	protected $meta_key = '_off_canvas_control_menu_item';
 
-	private $plugin_key  = '';
+	private $plugin_key = '';
+
 	private $general_labels = array();
 
 	/**
@@ -79,7 +80,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 * Meta box callback.
 	 * @since  0.1.0
 	 */
-	function meta_box() {
+	public function meta_box() {
 		global $_nav_menu_placeholder; //, $nav_menu_selected_id;
 		$_nav_menu_placeholder = ( 0 > $_nav_menu_placeholder ) ? $_nav_menu_placeholder - 1 : -1;
 
@@ -123,7 +124,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 					<a href="<?php echo esc_attr( $select_all ); ?>#off-canvas-control-meta-box" class="select-all"><?php esc_html_e( 'Select All' ); ?></a>
 				</span>
 				<span class="add-to-menu">
-					<input type="submit" class="button-secondary submit-add-to-menu right" value="<?php echo __( 'Add to Menu' ); ?>" name="add-off-canvas-control-menu-item" id="submit-off-canvas-control-meta-box">
+					<input type="submit" class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu' ); ?>" name="add-off-canvas-control-menu-item" id="submit-off-canvas-control-meta-box">
 					<span class="spinner"></span>
 				</span>
 			</p>
@@ -144,15 +145,15 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 		$suffix  = ''; //defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : OCS_PLUGIN_VERSION;
-		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array( 'jquery' ), $version );
+		wp_enqueue_script( 'off_canvas_control_nav_menu', OCS_PLUGIN_URL . '/js/nav-menu' . $suffix . '.js', array( 'jquery' ), $version, true );
 
-		$data['strings'] = array(
+		$data['controls'] = array();
+		$data['strings']  = array(
 			'show_icon'             => __( 'Show icon', OCS_DOMAIN ),
 			'icon'                  => __( 'Icon classes', OCS_DOMAIN ),
 			'menu_item_type'        => __( 'Off-Canvas Control', OCS_DOMAIN ),
 			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
 		);
-		$data['controls'] = array();
 		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar => $sidebar_data ) {
 			$data['controls'][ $sidebar ] = $sidebar_data['label'];
 		}
@@ -223,10 +224,11 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 			$options['off-canvas-control'] = '';
 
 			// If only one is available, always select it.
-			if ( ! empty( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] ) &&
-				 array_key_exists( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ], $available_controls )
+			if (
+				! empty( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] )
+				&& array_key_exists( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ], $available_controls )
 			) {
-				$options['off-canvas-control'] = strip_tags( stripslashes( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] ) );
+				$options['off-canvas-control'] = wp_strip_all_tags( stripslashes( $_POST['menu-item-off-canvas-control'][ $menu_item_db_id ] ) );
 			}
 
 			// Allow us to easily identify our nav menu item.

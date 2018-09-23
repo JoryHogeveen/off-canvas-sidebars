@@ -533,8 +533,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 					$prop[] = 'background-color: transparent;';
 				}
 				elseif ( 'color' === $sidebar_data['background_color_type'] && '' !== $sidebar_data['background_color'] ) {
-					$bg_color = OCS_Off_Canvas_Sidebars_Settings::validate_color( $sidebar_data['background_color'] );
-					$prop[] = 'background-color: ' . $bg_color . ';';
+					$prop[] = 'background-color: ' . OCS_Off_Canvas_Sidebars_Settings::validate_color( $sidebar_data['background_color'] ) . ';';
 				}
 			}
 			if ( 'custom' === $sidebar_data['size'] && ! empty( $sidebar_data['size_input'] ) ) {

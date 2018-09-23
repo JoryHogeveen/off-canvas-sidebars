@@ -105,6 +105,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			'icon_location' => 'before', // before|after.
 			'attr'          => array(), // An array of attribute keys and their values.
 		);
+
 		$args = wp_parse_args( $args, $defaults );
 
 		$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
@@ -266,7 +267,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		);
 
 		$fields = array(
-			'id' => array(
+			'id'            => array(
 				'type'        => 'select',
 				'name'        => 'id',
 				'label'       => __( 'Sidebar ID', OCS_DOMAIN ),
@@ -275,7 +276,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'required'    => true,
 				'group'       => 'basic',
 			),
-			'text' => array(
+			'text'          => array(
 				'type'        => 'text',
 				'name'        => 'text',
 				'label'       => __( 'Text', OCS_DOMAIN ),
@@ -283,7 +284,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'multiline'   => true,
 				'group'       => 'basic',
 			),
-			'icon' => array(
+			'icon'          => array(
 				'type'        => 'text',
 				'name'        => 'icon',
 				'label'       => __( 'Icon', OCS_DOMAIN ),
@@ -307,7 +308,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				),
 				'group'   => 'basic',
 			),
-			'action' => array(
+			'action'        => array(
 				'type'    => 'select',
 				'name'    => 'action',
 				'label'   => __( 'Trigger action', OCS_DOMAIN ),
@@ -327,7 +328,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				),
 				'group'   => 'advanced',
 			),
-			'element' => array(
+			'element'       => array(
 				'type'        => 'select',
 				'name'        => 'element',
 				'label'       => __( 'HTML element', OCS_DOMAIN ),
@@ -335,14 +336,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'description' => __( 'Choose wisely', OCS_DOMAIN ),
 				'group'       => 'advanced',
 			),
-			'class' => array(
+			'class'         => array(
 				'type'        => 'text',
 				'name'        => 'class',
 				'label'       => __( 'Extra classes', OCS_DOMAIN ),
 				'description' => __( 'Separate multiple classes with a space', OCS_DOMAIN ),
 				'group'       => 'advanced',
 			),
-			'attr' => array(
+			'attr'          => array(
 				'type'        => 'text',
 				'name'        => 'attr',
 				'label'       => __( 'Custom attributes', OCS_DOMAIN ),
@@ -350,7 +351,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'multiline'   => true,
 				'group'       => 'advanced',
 			),
-			'nested' => array(
+			'nested'        => array(
 				'type'        => 'checkbox',
 				'name'        => 'nested',
 				'label'       => __( 'Nested shortcode', OCS_DOMAIN ) . '?',

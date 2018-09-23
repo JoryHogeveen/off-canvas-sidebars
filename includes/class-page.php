@@ -344,7 +344,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'stuffbox postbox ' . $section['id'], $section, $page );
 
-			echo '<div id="' . $section['id'] . '" class="' . $box_classes . '">';
+			echo '<div id="' . esc_attr( $section['id'] ) . '" class="' . esc_attr( $box_classes ) . '">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">'
 				 . esc_html__( 'Toggle panel', OCS_DOMAIN ) . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
 
