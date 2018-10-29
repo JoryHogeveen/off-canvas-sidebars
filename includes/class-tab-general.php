@@ -285,7 +285,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		);
 
 		// Genesis already has before and after hooks set.
-		if ( get_template() !== 'genesis' ) {
+		if ( 'genesis' !== get_template() ) {
+			$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
+			$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank">' . $theme_hooks_wiki . '</a>';
 			// Check if the before hook is filtered. If it is this setting is not needed.
 			if ( '' === apply_filters( 'ocs_website_before_hook', '' ) ) {
 				$fields['website_before_hook'] = array(
@@ -296,6 +298,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 					'validate'    => 'remove_whitespace',
 					'section'     => $section,
 					'placeholder' => 'website_before',
+					'description' => $theme_hooks_wiki,
 				);
 			}
 			// Check if the after hook is filtered. If it is this setting is not needed.
@@ -308,6 +311,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 					'validate'    => 'remove_whitespace',
 					'section'     => $section,
 					'placeholder' => 'website_after',
+					'description' => $theme_hooks_wiki,
 				);
 			}
 		}
