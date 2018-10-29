@@ -174,7 +174,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Render all sidebars.
 	 *
 	 * @since   0.3.0
-	 * @since   0.5.x  Add actions.
+	 * @since   0.5.3  Add actions.
 	 * @access  public
 	 */
 	public function do_sidebars() {
@@ -344,7 +344,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Get container attributes
 	 *
-	 * @since   0.5.x
+	 * @since   0.5.3
 	 * @return  string
 	 */
 	public function get_container_attributes() {
