@@ -91,6 +91,15 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.5.3 =
+
+*	**Enhancement:** Don't render triggers of disabled sidebars if auto-hide is enabled. [#56](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/56)
+*	**Enhancement:** Support `wp_footer` as `website_after` hook. (Not compatible with all themes!)
+*	**Enhancement:** Filters to overwrite `website_before` and `website_after` hook priorities.
+*	**Enhancement:** Do not render inactive trigger buttons if auto-hide is enabled.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/58)
+
 = 0.5.2 =
 
 *	**Feature:** New filter: `ocs_is_sidebar_enabled` to filter whether a sidebar should be rendered or not.
