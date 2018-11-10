@@ -85,10 +85,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 
-		$before_prio = 5; // enforce early addition.
-		$after_prio  = 999999999; // enforce last addition.
+		$before_prio = 5; // Early addition.
+		$after_prio  = 50; // Late addition.
 		if ( 'wp_footer' === $after_hook ) {
-			$after_prio = -999999999; // enforce first addition.
+			$after_prio = -50; // Early addition.
 		}
 
 		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
