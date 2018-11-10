@@ -46,7 +46,7 @@ jQuery( function( $ ) {
 
 	$("input[value='#off_canvas_control'][type=text]").parents('.menu-item').each( function() {
 		ocsNavControl.add_menu_item_type( this, false );
-	});
+	} );
 
 	/* Change menu type label on selecting a controller */
 	$(document).on( 'change', '.field-off-canvas-control input', function() {
