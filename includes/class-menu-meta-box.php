@@ -246,20 +246,17 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 */
 	public function wp_get_nav_menu_items( $items ) {
 
-		if ( function_exists( 'doing_action' ) && doing_action( 'customize_register' ) || is_admin() ) {
+		if ( is_admin() || doing_action( 'customize_register' ) ) {
 			// Needed since WP 4.3, doing_action available since WP 3.9.
 			return $items;
 		}
 
 		foreach ( $items as $key => $item ) {
 			$options = get_post_meta( $item->ID, $this->meta_key, true );
-			if ( ! $options ) {
+			if ( ! $options || empty( $options['off-canvas-control'] ) ) {
 				continue;
 			}
-			$sidebar_id = ( isset( $options['off-canvas-control'] ) ) ? $options['off-canvas-control'] : null;
-			if ( ! $sidebar_id ) {
-				continue;
-			}
+			$sidebar_id = $options['off-canvas-control'];
 
 			if ( off_canvas_sidebars_frontend()->is_sidebar_enabled( $sidebar_id ) ) {
 				$item->url = '';
