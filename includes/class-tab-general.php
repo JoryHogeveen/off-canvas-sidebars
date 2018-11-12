@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_Tab
@@ -37,7 +37,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-settings';
+		$this->tab  = 'ocs-settings';
 		$this->name = esc_attr__( 'Settings', OCS_DOMAIN );
 		parent::__construct();
 
@@ -47,7 +47,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Initialize this tab.
-	 * @since   1.5.0
+	 * @since   0.5.0
 	 */
 	public function init() {
 		add_action( 'ocs_page_form_before', array( $this, 'ocs_page_form_before' ) );
@@ -55,7 +55,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 	/**
 	 * Before form fields.
-	 * @since   1.5.0
+	 * @since   0.5.0
 	 */
 	public function ocs_page_form_before() {
 		echo '<p>';
@@ -228,11 +228,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 		$fields['hide_control_classes'] = array(
 			'name'        => 'hide_control_classes',
-			'title'       => esc_attr__( 'Auto-hide control classes', OCS_DOMAIN ),
+			'title'       => esc_attr__( 'Auto-hide control triggers', OCS_DOMAIN ),
 			'callback'    => 'checkbox_option',
 			'type'        => 'checkbox',
 			'section'     => $section,
-			'label'       => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
+			'label'       => __( 'Hide off-canvas sidebar control triggers if the sidebar is disabled.', OCS_DOMAIN ),
 			'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 		);
 
@@ -266,7 +266,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section' => $section,
 			'default' => '',
 			'options' => array(
-				'default' => array(
+				'default'     => array(
 					'name'  => 'default',
 					'label' => esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#ffffff</code>',
 					'value' => '',
@@ -276,7 +276,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 					'label' => esc_html__( 'Transparent', OCS_DOMAIN ),
 					'value' => 'transparent',
 				),
-				'color' => array(
+				'color'       => array(
 					'name'  => 'color',
 					'label' => esc_html__( 'Color', OCS_DOMAIN ),
 					'value' => 'color',
@@ -285,7 +285,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		);
 
 		// Genesis already has before and after hooks set.
-		if ( get_template() !== 'genesis' ) {
+		if ( 'genesis' !== get_template() ) {
+			$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
+			$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank">' . $theme_hooks_wiki . '</a>';
 			// Check if the before hook is filtered. If it is this setting is not needed.
 			if ( '' === apply_filters( 'ocs_website_before_hook', '' ) ) {
 				$fields['website_before_hook'] = array(
@@ -296,6 +298,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 					'validate'    => 'remove_whitespace',
 					'section'     => $section,
 					'placeholder' => 'website_before',
+					'description' => $theme_hooks_wiki,
 				);
 			}
 			// Check if the after hook is filtered. If it is this setting is not needed.
@@ -308,6 +311,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 					'validate'    => 'remove_whitespace',
 					'section'     => $section,
 					'placeholder' => 'website_after',
+					'description' => $theme_hooks_wiki,
 				);
 			}
 		}
@@ -332,22 +336,22 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section'  => $section,
 			'default'  => 'none',
 			'options'  => array(
-				'none' => array(
-					'name'  => 'none',
-					'label' => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
-					'value' => 'none',
+				'none'       => array(
+					'name'        => 'none',
+					'label'       => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+					'value'       => 'none',
 					'description' => __( 'This is the default Slidebars behaviour.', OCS_DOMAIN ),
 				),
 				'legacy-css' => array(
-					'name'  => 'legacy-css',
-					'label' => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
-					'value' => 'legacy-css',
+					'name'        => 'legacy-css',
+					'label'       => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+					'value'       => 'legacy-css',
 					'description' => __( 'This is your best option if your site uses sticky menus and/or other fixed elements within the site container.', OCS_DOMAIN ),
 				),
-				'custom-js' => array(
-					'name'  => 'custom-js',
-					'label' => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
-					'value' => 'custom-js',
+				'custom-js'  => array(
+					'name'        => 'custom-js',
+					'label'       => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
+					'value'       => 'custom-js',
 					'description' => __( 'While still in development, this could fix compatibility issues with fixed elements.', OCS_DOMAIN ),
 				),
 			),
@@ -356,12 +360,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		$section = 'section_admin';
 
 		$fields['wp_editor_shortcode_rendering'] = array(
-			'name'     => 'wp_editor_shortcode_rendering',
-			'title'    => esc_attr__( 'Enable shortcode UI for the WordPress Editor?', OCS_DOMAIN ),
-			'callback' => 'checkbox_option',
-			'type'     => 'checkbox',
-			'section'  => $section,
-			'label'    => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
+			'name'        => 'wp_editor_shortcode_rendering',
+			'title'       => esc_attr__( 'Enable shortcode UI for the WordPress Editor?', OCS_DOMAIN ),
+			'callback'    => 'checkbox_option',
+			'type'        => 'checkbox',
+			'section'     => $section,
+			'label'       => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
 			'description' => __( 'This will render the shortcodes to actual HTML elements in the WP Editor.', OCS_DOMAIN ),
 		);
 

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.0
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Base
@@ -107,13 +107,91 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 *
 	 * @since   0.5.0
 	 * @param   string  $key  (optional) Get a single setting by key?
-	 * @return  array|null
+	 * @return  mixed
 	 */
 	public function get_settings( $key = null ) {
 		if ( $key ) {
 			return ( isset( $this->settings[ $key ] ) ) ? $this->settings[ $key ] : null;
 		}
 		return $this->settings;
+	}
+
+	/**
+	 * Get the plugin sidebars.
+	 *
+	 * @since   0.5.3
+	 * @return  array
+	 */
+	public function get_sidebars( $sidebar_id = null ) {
+		if ( $sidebar_id ) {
+			return $this->get_sidebar_settings( $sidebar_id );
+		}
+		return $this->get_settings( 'sidebars' );
+	}
+
+	/**
+	 * Get the enabled plugin sidebars.
+	 *
+	 * @since   0.5.3
+	 * @return  array
+	 */
+	public function get_enabled_sidebars() {
+		$sidebars = $this->get_sidebars();
+		foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
+			if ( ! $this->is_sidebar_enabled( $sidebar_id ) ) {
+				unset( $sidebars[ $sidebar_id ] );
+			}
+		}
+		return $sidebars;
+	}
+
+	/**
+	 * Get the plugin settings.
+	 *
+	 * @since   0.5.3
+	 * @param   string  $sidebar_id  The sidebar ID.
+	 * @param   string  $key         (optional) Get a single setting by key?
+	 * @return  mixed
+	 */
+	public function get_sidebar_settings( $sidebar_id, $key = null ) {
+		$sidebars = $this->get_sidebars();
+		if ( empty( $sidebars[ $sidebar_id ] ) ) {
+			return null;
+		}
+		if ( $key ) {
+			$settings = $sidebars[ $sidebar_id ];
+			$return   = $this->get_settings( $key );
+			if ( $return ) {
+				if ( ! empty( $settings['overwrite_global_settings'] ) ) {
+					$return = ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : $return;
+				}
+			} else {
+				$return = ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
+			}
+			return $return;
+		}
+		return $sidebars[ $sidebar_id ];
+	}
+
+	/**
+	 * Check if an off-canvas sidebar should be shown.
+	 *
+	 * @todo Move to sidebar class.
+	 *
+	 * @since   0.5.3
+	 * @param   string  $sidebar_id
+	 * @param   array   $sidebar_data
+	 * @return  bool
+	 */
+	public function is_sidebar_enabled( $sidebar_id, $sidebar_data = null ) {
+		if ( ! $sidebar_data ) {
+			$sidebar_data = $this->get_sidebar_settings( $sidebar_id );
+			if ( ! $sidebar_data ) {
+				return false;
+			}
+		}
+
+		return ! empty( $sidebar_data['enable'] );
 	}
 
 	/**
@@ -295,7 +373,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 				continue;
 			}
 
-			$args = array( $data[ $key ] );
+			$args     = array( $data[ $key ] );
 			$callback = null;
 
 			if ( is_callable( $field['validate'] ) || is_string( $field['validate'] ) ) {
@@ -313,8 +391,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 					case 'radio':
 						// Validate radio options.
 						$callback = 'validate_radio';
-						$args[] = array_keys( $field['options'] );
-						$args[] = $field['default'];
+						$args[]   = array_keys( $field['options'] );
+						$args[]   = $field['default'];
 						break;
 					case 'color':
 						$callback = 'validate_color';
@@ -347,7 +425,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		if ( ! is_scalar( $value ) || empty( $value ) ) {
 			return '';
 		}
-		return (string) strip_tags( $value );
+		return (string) wp_strip_all_tags( $value );
 	}
 
 	/**
@@ -376,7 +454,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  string
 	 */
 	public static function validate_radio( $value, $options, $default ) {
-		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? strip_tags( $value ) : $default;
+		return ( ! empty( $value ) && in_array( $value, $options, true ) ) ? wp_strip_all_tags( $value ) : $default;
 	}
 
 	/**
@@ -441,8 +519,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $new_id
 	 */
 	public static function migrate_sidebars_widgets( $old_id, $new_id ) {
-		$old_id = 'off-canvas-' . $old_id;
-		$new_id = 'off-canvas-' . $new_id;
+		$old_id           = 'off-canvas-' . $old_id;
+		$new_id           = 'off-canvas-' . $new_id;
 		$sidebars_widgets = wp_get_sidebars_widgets();
 
 		if ( ! empty( $sidebars_widgets[ $old_id ] ) ) {

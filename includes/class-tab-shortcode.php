@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.1
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebars_Tab
@@ -37,14 +37,14 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-shortcode';
+		$this->tab  = 'ocs-shortcode';
 		$this->name = esc_attr__( 'Shortcode', OCS_DOMAIN );
 		parent::__construct();
 	}
 
 	/**
 	 * Initialize this tab.
-	 * @since   1.5.0
+	 * @since   0.5.0
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );
@@ -81,7 +81,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		echo '<div id="section_shortcode_options" class="stuffbox postbox postbox postbox-third first">';
 
-		echo '<h3 class="hndle"><span>' . __( 'Basic options', OCS_DOMAIN ) . ':</span></h3>';
+		echo '<h3 class="hndle"><span>' . esc_html__( 'Basic options', OCS_DOMAIN ) . ':</span></h3>';
 
 		echo '<div class="inside"><table class="form-table">';
 
@@ -92,7 +92,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		echo '<div id="section_shortcode_optionaloptions" class="stuffbox postbox postbox postbox-third">';
 
-		echo '<h3 class="hndle"><span>' . __( 'Advanced options', OCS_DOMAIN ) . ':</span></h3>';
+		echo '<h3 class="hndle"><span>' . esc_html__( 'Advanced options', OCS_DOMAIN ) . ':</span></h3>';
 
 		echo '<div class="inside"><table class="form-table">';
 

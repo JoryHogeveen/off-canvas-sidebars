@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0  Refactored from single settings class.
- * @version 0.5.1
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
@@ -31,7 +31,6 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	protected $general_key    = '';
 	protected $plugin_key     = '';
-	protected $settings       = array();
 	protected $general_labels = array();
 	protected $capability     = 'edit_theme_options';
 	protected $request_tab    = '';
@@ -67,7 +66,6 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function load_plugin_data() {
 		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->settings       = $off_canvas_sidebars->get_settings();
 		$this->general_labels = $off_canvas_sidebars->get_general_labels();
 		$this->general_key    = $off_canvas_sidebars->get_general_key();
 
@@ -105,9 +103,9 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			true // load in footer.
 		);
 		wp_localize_script( 'off-canvas-sidebars-settings', 'ocsOffCanvasSidebarsSettings', array(
-			'general_key' => $this->general_key,
-			'plugin_key' => $this->plugin_key,
-			'css_prefix' => $this->settings['css_prefix'],
+			'general_key'               => $this->general_key,
+			'plugin_key'                => $this->plugin_key,
+			'css_prefix'                => $this->get_settings( 'css_prefix' ),
 			'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
 		) );
 
@@ -295,26 +293,26 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 					echo sprintf(
 						// Translators: %1$s and %2$s stands for a URL.
 						__( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank">Documentation</a> or talk about them in the <a href="%2$s" target="_blank">Support forum</a>', OCS_DOMAIN ),
-						'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/',
-						'https://github.com/JoryHogeveen/off-canvas-sidebars/issues'
+						off_canvas_sidebars()->get_links( 'docs', 'url' ),
+						off_canvas_sidebars()->get_links( 'support', 'url' )
 					);
 					?>
 				</p>
 				<hr />
 				<h4 class="inner"><?php esc_html_e( 'Do you like this plugin?', OCS_DOMAIN ); ?></h4>
-				<a class="inner" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
+				<a class="inner" href="<?php echo off_canvas_sidebars()->get_links( 'donate', 'url' ); ?>" target="_blank">
 					<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
 				</a>
 				<p class="inner">
-					<a href="https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/" target="_blank"><span class="icon dashicons dashicons-star-filled"></span><?php esc_html_e( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ); ?></a><br />
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'review', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-star-filled"></span><?php esc_html_e( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ); ?></a><br />
 					<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><span class="icon dashicons dashicons-testimonial"></span><?php esc_html_e( 'Blog about it & link to the plugin page', OCS_DOMAIN ); ?></a><br />
-					<a href="https://profiles.wordpress.org/keraweb/#content-plugins" target="_blank"><span class="icon dashicons dashicons-admin-plugins"></span><?php esc_html_e( 'Check out my other WordPress plugins', OCS_DOMAIN ); ?></a><br />
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'plugins', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-admin-plugins"></span><?php esc_html_e( 'Check out my other WordPress plugins', OCS_DOMAIN ); ?></a><br />
 				</p>
 				<hr />
 				<h4 class="inner"><?php esc_html_e( 'Want to help?', OCS_DOMAIN ); ?></h4>
 				<p class="inner">
-					<a href="https://github.com/JoryHogeveen/off-canvas-sidebars" target="_blank"><span class="icon dashicons dashicons-editor-code"></span><?php esc_html_e( 'Follow and/or contribute on GitHub', OCS_DOMAIN ); ?></a><br />
-					<a href="https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars" target="_blank"><span class="icon dashicons dashicons-translation"></span><?php esc_html_e( 'Help translating this plugin!', OCS_DOMAIN ); ?></a>
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'github', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-editor-code"></span><?php esc_html_e( 'Follow and/or contribute on GitHub', OCS_DOMAIN ); ?></a><br />
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'translate', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-translation"></span><?php esc_html_e( 'Help translating this plugin!', OCS_DOMAIN ); ?></a>
 				</p>
 				<hr />
 				<p class="ocs-link inner"><?php esc_html_e( 'Created by', OCS_DOMAIN ); ?>: <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
@@ -346,7 +344,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'stuffbox postbox ' . $section['id'], $section, $page );
 
-			echo '<div id="' . $section['id'] . '" class="' . $box_classes . '">';
+			echo '<div id="' . esc_attr( $section['id'] ) . '" class="' . esc_attr( $box_classes ) . '">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">'
 				 . esc_html__( 'Toggle panel', OCS_DOMAIN ) . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
 

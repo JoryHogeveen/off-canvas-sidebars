@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.1
- * @version 0.5.1
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sidebars_Base
@@ -105,6 +105,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			'icon_location' => 'before', // before|after.
 			'attr'          => array(), // An array of attribute keys and their values.
 		);
+
 		$args = wp_parse_args( $args, $defaults );
 
 		$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
@@ -131,13 +132,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		);
 		$attr = array_merge( $attr, $args['attr'] );
 
-		// Add our own classes.
-		$prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
-		$classes = array(
-			$prefix . '-trigger',
-			$prefix . '-' . $args['action'],
-			$prefix . '-' . $args['action'] . '-' . $sidebar_id,
-		);
+		// Get the default classes.
+		$classes = self::get_trigger_classes( $sidebar_id, $args['action'] );
 
 		// Optionally add extra classes.
 		if ( ! empty( $args['class'] ) ) {
@@ -184,12 +180,37 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	}
 
 	/**
+	 * Get the default control trigger classes.
+	 *
+	 * @since   0.5.3
+	 * @static
+	 *
+	 * @param   string  $sidebar_id  The sidebar ID.
+	 * @param   string  $action      The trigger action.
+	 * @return  array
+	 */
+	public static function get_trigger_classes( $sidebar_id, $action = 'toggle' ) {
+		$prefix = off_canvas_sidebars_settings()->get_settings( 'css_prefix' );
+
+		$classes = array(
+			'ocs-trigger',
+			$prefix . '-trigger',
+			$prefix . '-' . $action,
+			$prefix . '-' . $action . '-' . $sidebar_id,
+		);
+
+		return $classes;
+	}
+
+	/**
 	 * Get control trigger field options.
 	 *
 	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 * @todo Refactor to enable above checks?
 	 *
 	 * @since   0.5.1
+	 * @static
+	 *
 	 * @return  array {
 	 *     @type array $field_id {
 	 *         @type  string  $type
@@ -219,16 +240,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'label' => '-- ' . __( 'select', OCS_DOMAIN ) . ' --',
 			),
 		);
-		foreach ( off_canvas_sidebars()->get_sidebars() as $sidebar_id => $sidebar_data ) {
-			if ( empty( $sidebar_data['enable'] ) ) {
-				continue;
-			}
+		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar_id => $sidebar_data ) {
 			$label = $sidebar_id;
 			if ( ! empty( $sidebar_data['label'] ) ) {
 				$label = $sidebar_data['label'] . ' (' . $sidebar_id . ')';
 			}
 			$sidebars[] = array(
-				'label'  => $label,
+				'label' => $label,
 				'value' => $sidebar_id,
 			);
 		}
@@ -236,7 +254,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		$elements = array();
 		foreach ( self::$control_elements as $e ) {
 			$elements[] = array(
-				'label'  => '<' . $e . '>',
+				'label' => '<' . $e . '>',
 				'value' => $e,
 			);
 		}
@@ -245,11 +263,11 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			// Translators: [ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]
 			'your_text' => __( 'Your text', OCS_DOMAIN ),
 			// Translators: [ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]
-			'or' => __( 'or', OCS_DOMAIN ),
+			'or'        => __( 'or', OCS_DOMAIN ),
 		);
 
 		$fields = array(
-			'id' => array(
+			'id'            => array(
 				'type'        => 'select',
 				'name'        => 'id',
 				'label'       => __( 'Sidebar ID', OCS_DOMAIN ),
@@ -258,7 +276,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'required'    => true,
 				'group'       => 'basic',
 			),
-			'text' => array(
+			'text'          => array(
 				'type'        => 'text',
 				'name'        => 'text',
 				'label'       => __( 'Text', OCS_DOMAIN ),
@@ -266,7 +284,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'multiline'   => true,
 				'group'       => 'basic',
 			),
-			'icon' => array(
+			'icon'          => array(
 				'type'        => 'text',
 				'name'        => 'icon',
 				'label'       => __( 'Icon', OCS_DOMAIN ),
@@ -288,9 +306,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 						'value' => 'after',
 					),
 				),
-				'group'       => 'basic',
+				'group'   => 'basic',
 			),
-			'action' => array(
+			'action'        => array(
 				'type'    => 'select',
 				'name'    => 'action',
 				'label'   => __( 'Trigger action', OCS_DOMAIN ),
@@ -308,9 +326,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 						'value' => 'close',
 					),
 				),
-				'group'       => 'advanced',
+				'group'   => 'advanced',
 			),
-			'element' => array(
+			'element'       => array(
 				'type'        => 'select',
 				'name'        => 'element',
 				'label'       => __( 'HTML element', OCS_DOMAIN ),
@@ -318,14 +336,14 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'description' => __( 'Choose wisely', OCS_DOMAIN ),
 				'group'       => 'advanced',
 			),
-			'class' => array(
+			'class'         => array(
 				'type'        => 'text',
 				'name'        => 'class',
 				'label'       => __( 'Extra classes', OCS_DOMAIN ),
 				'description' => __( 'Separate multiple classes with a space', OCS_DOMAIN ),
 				'group'       => 'advanced',
 			),
-			'attr' => array(
+			'attr'          => array(
 				'type'        => 'text',
 				'name'        => 'attr',
 				'label'       => __( 'Custom attributes', OCS_DOMAIN ),
@@ -333,7 +351,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 				'multiline'   => true,
 				'group'       => 'advanced',
 			),
-			'nested' => array(
+			'nested'        => array(
 				'type'        => 'checkbox',
 				'name'        => 'nested',
 				'label'       => __( 'Nested shortcode', OCS_DOMAIN ) . '?',

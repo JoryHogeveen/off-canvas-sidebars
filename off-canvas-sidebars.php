@@ -3,15 +3,15 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.2
+ * @version 0.5.3
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/off-canvas-sidebars
  *
  * @wordpress-plugin
- * Plugin Name:       Off-Canvas Sidebars
+ * Plugin Name:       Off-Canvas Sidebars & Menus (Slidebars)
  * Description:       Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:        https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:           0.5.2
+ * Version:           0.5.3
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       off-canvas-sidebars
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'OCS_Off_Canvas_Sidebars' ) && ! function_exists( 'off_canvas_sidebars' ) ) {
 
-	define( 'OCS_PLUGIN_VERSION', '0.5.2' );
+	define( 'OCS_PLUGIN_VERSION', '0.5.3' );
 	define( 'OCS_DOMAIN', 'off-canvas-sidebars' );
 	define( 'OCS_FILE', __FILE__ );
 	define( 'OCS_BASENAME', plugin_basename( OCS_FILE ) );
@@ -71,7 +71,7 @@ if ( ! class_exists( 'OCS_Off_Canvas_Sidebars' ) && ! function_exists( 'off_canv
 // end if class_exists.
 } else {
 
-	// @since  1.5.1  added notice on class name conflict.
+	// @since  0.5.1  added notice on class name conflict.
 	add_action( 'admin_notices', 'off_canvas_sidebars_conflict_admin_notice' );
 	function off_canvas_sidebars_conflict_admin_notice() {
 		echo '<div class="notice-error notice is-dismissible"><p><strong>' . esc_html__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> '

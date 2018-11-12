@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.3
  */
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
@@ -28,7 +28,7 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	 * @return  mixed
 	 */
 	public function get_settings( $key ) {
-		return OCS_Off_Canvas_Sidebars_Settings::get_instance()->get_settings( $key );
+		return off_canvas_sidebars_settings()->get_settings( $key );
 	}
 
 	/**

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.1
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
@@ -51,14 +51,14 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	 * @static
 	 */
 	public static function enabled_sidebars_option() {
-		$sidebars = off_canvas_sidebars()->get_sidebars();
-		$key = off_canvas_sidebars()->get_general_key();
+		$sidebars     = off_canvas_sidebars()->get_sidebars();
+		$key          = off_canvas_sidebars()->get_general_key();
 		$prefix_name  = esc_attr( $key ) . '[sidebars]';
 		$prefix_value = $sidebars;
 		$prefix_id    = $key . '_sidebars';
 		//$prefix_classes = array( $prefix_id );
 		if ( ! empty( $sidebars ) ) {
-			$html  = '<fieldset class="checkbox">';
+			$html = '<fieldset class="checkbox">';
 
 			foreach ( $prefix_value as $sidebar => $sidebar_data ) {
 				//$classes = self::get_option_classes( $prefix_classes, 'enable' );
@@ -67,7 +67,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$html .= '</fieldset>';
 			echo $html;
 		} else {
-			$tab = '&tab=ocs-sidebars';
+			$tab  = '&tab=ocs-sidebars';
 			$link = '?page=' . esc_attr( off_canvas_sidebars()->get_plugin_key() ) . $tab;
 			echo '<a href="' . $link . '">' . esc_html__( 'Click here to add off-canvas sidebars', OCS_DOMAIN ) . '</a>';
 		}
@@ -135,10 +135,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! isset( $args['name'] ) ) {
 			return;
 		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
+		$prefixes       = self::get_option_prefixes( $args );
+		$prefix_name    = $prefixes['prefixName'];
+		$prefix_value   = $prefixes['prefixValue'];
+		$prefix_id      = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		if ( isset( $args['value'] ) ) {
@@ -149,12 +149,12 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$classes .= ' ' . $args['class'];
 		}
 
-		$html  = '<fieldset>';
+		$html = '<fieldset>';
 
 		$attr = array(
-			'name' => $prefix_name . '[' . $args['name'] . ']',
+			'name'  => $prefix_name . '[' . $args['name'] . ']',
 			'class' => $classes,
-			'id' => $prefix_id . '_' . $args['name'],
+			'id'    => $prefix_id . '_' . $args['name'],
 		);
 		if ( isset( $args['placeholder'] ) ) {
 			$attr['placeholder'] = $args['placeholder'];
@@ -163,7 +163,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! empty( $args['multiline'] ) ) {
 			$field = '<textarea ' . self::parse_to_html_attr( $attr ) . '>' . $prefix_value[ $args['name'] ] . '</textarea>';
 		} else {
-			$attr['type'] = 'text';
+			$attr['type']  = 'text';
 			$attr['value'] = $prefix_value[ $args['name'] ];
 			$field = '<input ' . self::parse_to_html_attr( $attr ) . ' />';
 		}
@@ -189,10 +189,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! isset( $args['name'] ) ) {
 			return;
 		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
+		$prefixes       = self::get_option_prefixes( $args );
+		$prefix_name    = $prefixes['prefixName'];
+		$prefix_value   = $prefixes['prefixValue'];
+		$prefix_id      = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		if ( isset( $args['value'] ) ) {
@@ -200,7 +200,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
 
-		$html  = '<fieldset class="checkbox">';
+		$html = '<fieldset class="checkbox">';
 
 		$attr = array(
 			'type'  => 'checkbox',
@@ -209,6 +209,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'id'    => $prefix_id . '_' . $args['name'],
 			'value' => 1,
 		);
+
 		$checked = checked( $prefix_value[ $args['name'] ], 1, false );
 
 		$field = '<input ' . self::parse_to_html_attr( $attr ) . $checked . ' />';
@@ -233,10 +234,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( empty( $args['name'] ) || empty( $args['options'] ) ) {
 			return;
 		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
+		$prefixes       = self::get_option_prefixes( $args );
+		$prefix_name    = $prefixes['prefixName'];
+		$prefix_value   = $prefixes['prefixValue'];
+		$prefix_id      = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		if ( isset( $args['value'] ) ) {
@@ -262,6 +263,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 				'id'    => $prefix_id . '_' . $args['name'] . '_' . $option['name'],
 				'value' => $option['value'],
 			);
+
 			$checked = checked( $prefix_value[ $args['name'] ], $option['value'], false );
 
 			$field = '<input ' . self::parse_to_html_attr( $attr ) . $checked . ' />';
@@ -269,7 +271,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			if ( isset( $option['label'] ) ) {
 				$field = '<label>' . $field . ' ' . $option['label'] . '</label>';
 			}
-			$field .= self::do_description( $option , 'span' );
+			$field .= self::do_description( $option, 'span' );
 			$field .= '<br />';
 
 			$html .= $field;
@@ -291,10 +293,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( empty( $args['name'] ) || empty( $args['options'] ) ) {
 			return;
 		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
+		$prefixes       = self::get_option_prefixes( $args );
+		$prefix_name    = $prefixes['prefixName'];
+		$prefix_value   = $prefixes['prefixValue'];
+		$prefix_id      = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		if ( isset( $args['value'] ) ) {
@@ -319,7 +321,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			if ( ! isset( $prefix_value[ $args['name'] ] ) ) {
 				$prefix_value[ $args['name'] ] = ( isset( $args['value'] ) ) ? $args['value'] : false;
 			}
-			$value = ( isset( $option['label'] ) ) ? $option['label'] : $option['value'];
+			$value    = ( isset( $option['label'] ) ) ? $option['label'] : $option['value'];
 			$selected = selected( $prefix_value[ $args['name'] ], $option['value'], false );
 			$html .= '<option value="' . esc_attr( $option['value'] ) . '" ' . $selected . '>' . esc_html( $value ) . '</option>';
 
@@ -346,10 +348,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! isset( $args['name'] ) ) {
 			return;
 		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
+		$prefixes       = self::get_option_prefixes( $args );
+		$prefix_name    = $prefixes['prefixName'];
+		$prefix_value   = $prefixes['prefixValue'];
+		$prefix_id      = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
@@ -364,7 +366,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'max'   => '',
 			'step'  => 1,
 		);
-		$html  = '<fieldset class="number">';
+		$html = '<fieldset class="number">';
 
 		$field = '<input ' . self::parse_to_html_attr( $attr ) . ' />';
 		if ( ! empty( $args['input_after'] ) ) {
@@ -391,26 +393,27 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! isset( $args['name'] ) ) {
 			return;
 		}
-		$prefixes = self::get_option_prefixes( $args );
-		$prefix_name = $prefixes['prefixName'];
-		$prefix_value = $prefixes['prefixValue'];
-		$prefix_id = $prefixes['prefixId'];
+		$prefixes       = self::get_option_prefixes( $args );
+		$prefix_name    = $prefixes['prefixName'];
+		$prefix_value   = $prefixes['prefixValue'];
+		$prefix_id      = $prefixes['prefixId'];
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] . '_type' );
 
-		$html  = '<fieldset class="radio color">';
+		$html = '<fieldset class="radio color">';
 
 		$html .= '<label><input type="radio" name="' . $prefix_name . '[' . $args['name'] . '_type]" class="' . $classes . '" id="' . $prefix_id . '_background_color_type_theme" value="" ' . checked( $prefix_value[ $args['name'] . '_type' ], '', false ) . ' /> ' . esc_html__( 'Default', OCS_DOMAIN ) . ' &nbsp; <span class="description">(' . esc_html__( 'Overwritable with CSS', OCS_DOMAIN ) . ')</span></label><br />';
 		$html .= '<label><input type="radio" name="' . $prefix_name . '[' . $args['name'] . '_type]" class="' . $classes . '" id="' . $prefix_id . '_background_color_type_transparent" value="transparent" ' . checked( $prefix_value[ $args['name'] . '_type' ], 'transparent', false ) . ' /> ' . esc_html__( 'Transparent', OCS_DOMAIN ) . '</label><br />';
 		$html .= '<label><input type="radio" name="' . $prefix_name . '[' . $args['name'] . '_type]" class="' . $classes . '" id="' . $prefix_id . '_background_color_type_color" value="color" ' . checked( $prefix_value[ $args['name'] . '_type' ], 'color', false ) . ' /> ' . esc_html__( 'Color', OCS_DOMAIN ) . '</label><br />';
 
 		$html .= '<div class="' . $prefix_id . '_' . $args['name'] . '_wrapper">';
+
 		$attr = array(
-			'type' => 'text',
+			'type'  => 'text',
 			'class' => 'color-picker ' . self::get_option_classes( $prefix_classes, $args['name'] ),
-			'id' => $prefix_id . '_' . $args['name'],
-			'name' => $prefix_name . '[' . $args['name'] . ']',
+			'id'    => $prefix_id . '_' . $args['name'],
+			'name'  => $prefix_name . '[' . $args['name'] . ']',
 			'value' => $prefix_value[ $args['name'] ],
 		);
 		$html .= '<input ' . self::parse_to_html_attr( $attr ) . ' />';
@@ -446,19 +449,19 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public static function get_option_prefixes( $args ) {
 		$settings = off_canvas_sidebars()->get_settings();
-		$key = off_canvas_sidebars()->get_general_key();
+		$key      = off_canvas_sidebars()->get_general_key();
 		if ( isset( $args['sidebar'] ) ) {
-			$prefix_name = esc_attr( $key ) . '[sidebars][' . $args['sidebar'] . ']';
-			$prefix_value = off_canvas_sidebars()->get_sidebars( $args['sidebar'] );
-			$prefix_id = $key . '_sidebars_' . $args['sidebar'];
+			$prefix_name    = esc_attr( $key ) . '[sidebars][' . $args['sidebar'] . ']';
+			$prefix_value   = off_canvas_sidebars()->get_sidebars( $args['sidebar'] );
+			$prefix_id      = $key . '_sidebars_' . $args['sidebar'];
 			$prefix_classes = array(
 				$key . '_sidebars_' . $args['sidebar'],
 				$key . '_sidebars',
 			);
 		} else {
-			$prefix_name = esc_attr( $key );
-			$prefix_value = $settings;
-			$prefix_id = $key;
+			$prefix_name    = esc_attr( $key );
+			$prefix_value   = $settings;
+			$prefix_id      = $key;
 			$prefix_classes = array(
 				$key,
 			);

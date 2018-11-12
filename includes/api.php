@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.5.2
+ * @version 0.5.3
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @api
  * @since  0.3.0
- * @param  string|array  $sidebars  (Optional) The ID of this sidebar as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
+ * @param  string|array  $sidebars  (optional) The ID(s) of the sidebar(s) as configured in: Appearances > Off-Canvas Sidebars > Sidebars.
  */
 function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
 	$instance = off_canvas_sidebars_frontend();
@@ -43,7 +43,7 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
  * @since  0.5.0  Add icon options.
  * @param  array   $atts {
  *     Required array of arguments
- *     @type  string        $id               (Required) The off-canvas sidebar ID.
+ *     @type  string        $id               (required) The off-canvas sidebar ID.
  *     @type  string        $text             The text to show. Default: ''.
  *     @type  string        $action           The trigger action. Default: `toggle`.
  *     @type  string        $element          The HTML element. Default: `button`.

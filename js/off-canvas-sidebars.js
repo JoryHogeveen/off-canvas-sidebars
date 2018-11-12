@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.0
+ * @version 0.5.3
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -27,10 +27,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 ( function( $ ) {
 
-	var $document = $(document);
-	var $window = $(window);
-	var $html = $('html');
-	var $body = $('body');
+	var $document = $(document),
+		$window = $(window),
+		$html = $('html'),
+		$body = $('body');
 
 	ocsOffCanvasSidebars.slidebarsController = false;
 	ocsOffCanvasSidebars.useAttributeSettings = false;
@@ -71,14 +71,15 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @return {string|boolean}  The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
-			var overwrite, setting;
-			var prefix = ocsOffCanvasSidebars.css_prefix;
+			var overwrite, setting,
+				prefix = ocsOffCanvasSidebars.css_prefix;
 
 			if ( 'undefined' !== typeof sidebarId ) {
 				if ( ! sidebarId && null !== sidebarId ) {
 					sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 				}
 			}
+
 			if ( sidebarId ) {
 
 				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
@@ -136,7 +137,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				obj.css("transform");
 			if ( transformMatrix ) {
 				var matrix = transformMatrix.replace(/[^0-9\-.,]/g, '').split(',');
-				var val = false;
+				var val = 0;
 				switch ( axis ) {
 					case 'x':
 						val = matrix[12] || matrix[4]; //translate x.
@@ -317,9 +318,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller = ocsOffCanvasSidebars.slidebarsController,
 			prefix = ocsOffCanvasSidebars.css_prefix,
-			sidebarElements = $( '.' + prefix + '-slidebar' );
+			$sidebarElements = $( '.' + prefix + '-slidebar' );
 
-		sidebarElements.each( function() {
+		$sidebarElements.each( function() {
 			var $this  = $( this ),
 				id     = $this.data( 'ocs-sidebar-id' ),
 				css_id = prefix + '-' + id;
@@ -462,19 +463,22 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		// Disable slidebars when the window is wider than the set width.
 		var disableOver = function() {
 			var prefix = ocsOffCanvasSidebars.css_prefix;
-			sidebarElements.each( function() {
-				var id = $( this ).data( 'ocs-sidebar-id' );
+			$sidebarElements.each( function() {
+				var id = $( this ).data( 'ocs-sidebar-id' ),
+					sidebar_id = prefix + '-' + id,
+					control_classes = '.' + prefix + '-toggle-' + id + ', .' + prefix + '-open-' + id, // @todo Close classes?
+					hide_control_classes = ocsOffCanvasSidebars._getSetting( 'hide_control_classes', sidebar_id );
 
-				if ( ! ocsOffCanvasSidebars._checkDisableOver( prefix + '-' + id ) ) {
-					if ( controller.isActiveSlidebar( prefix + '-' + id ) ) {
+				if ( ! ocsOffCanvasSidebars._checkDisableOver( sidebar_id ) ) {
+					if ( controller.isActiveSlidebar( sidebar_id ) ) {
 						controller.close();
 					}
 					// Hide control classes.
-					if ( ocsOffCanvasSidebars._getSetting( 'hide_control_classes', prefix + '-' + id ) ) {
-						$( '.' + prefix + '-toggle-' + id ).hide();
+					if ( hide_control_classes ) {
+						$( control_classes ).hide();
 					}
-				} else {
-					$( '.' + prefix + '-toggle-' + id ).show();
+				} else if ( hide_control_classes ) {
+					$( control_classes ).show();
 				}
 
 			} );

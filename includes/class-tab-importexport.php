@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.0
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Sidebars_Tab
@@ -36,7 +36,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-importexport';
+		$this->tab  = 'ocs-importexport';
 		$this->name = esc_attr__( 'Import/Export', OCS_DOMAIN );
 		parent::__construct();
 		$this->maybe_importexport_settings();
@@ -44,7 +44,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 
 	/**
 	 * Initialize this tab.
-	 * @since  1.5.0
+	 * @since  0.5.0
 	 */
 	public function init() {
 		add_filter( 'ocs_page_form_do_submit', '__return_false' );
@@ -79,16 +79,14 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 */
 	public function tab_content() {
 		$export_link = add_query_arg( 'action', 'export' );
-		$plugin_key = off_canvas_sidebars()->get_plugin_key();
+		$plugin_key  = esc_attr( off_canvas_sidebars()->get_plugin_key() );
 		?>
 		<h3><?php esc_html_e( 'Import/Export Settings', OCS_DOMAIN ); ?></h3>
-
 		<p>
-			<a class="submit button" href="<?php echo $export_link; ?>">
+			<a class="submit button" href="<?php echo esc_attr( $export_link ); ?>">
 				<?php esc_attr_e( 'Export Settings', OCS_DOMAIN ); ?>
 			</a>
 		</p>
-
 		<p>
 			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo $plugin_key; ?>-import" value="true" />
 			<?php submit_button( esc_attr__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-submit', false ); ?>
@@ -183,18 +181,20 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 						$settings[ $key ] = json_decode( $value, true );
 					}
 
+					$ocs_settings = off_canvas_sidebars_settings();
+
 					// Get the current settings.
-					$org_settings = off_canvas_sidebars()->get_settings();
+					$org_settings = $ocs_settings->get_settings();
 
 					// Validate and store the new settings.
-					OCS_Off_Canvas_Sidebars_Settings::get_instance()->set_settings( $settings );
-					$settings = off_canvas_sidebars()->get_settings();
+					$ocs_settings->set_settings( $settings );
+					$settings = $ocs_settings->get_settings();
 
 					// Combine the new settings with the original settings.
 					$settings = array_merge( $org_settings, $settings );
 
 					// Update database.
-					OCS_Off_Canvas_Sidebars_Settings::get_instance()->update_settings( $settings );
+					$ocs_settings->update_settings( $settings );
 
 					$ocs_import_result = 1;
 				} else {

@@ -1,13 +1,13 @@
-=== Off-Canvas Sidebars ===
+=== Off-Canvas Sidebars & Menus (Slidebars) ===
 Contributors: keraweb
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Off%2dCanvas%20Sidebars&item_number=JWPP%2dOCS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
-Tags: genesis, off-canvas, menus, widgets, sidebars, slidebars, jQuery, app, mobile, tablet, responsive
+Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
+Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobile, tablet, responsive, genesis
 Requires at least: 4.1
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 5.2.4
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 
-Add off-canvas sidebars containing widgets, menus or other content using the Slidebars jQuery plugin.
+Add off-canvas sidebars (Slidebars) containing widgets, menus or other content using the Slidebars jQuery plugin.
 
 == Description ==
 
@@ -15,10 +15,11 @@ This plugin will add various options to implement off-canvas sidebars in your Wo
 
 = Overview / Features =
 
-*	Add off-canvas sidebars to the left, right, top and bottom of your website
-*	Use sidebar areas (widget-ready areas), menu locations or [custom hooks](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters) to place content into the off-canvas sidebars
-*	You can add control buttons with a widget, menu item, [shortcode](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes) or with [custom code](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup)
-*	Various customisation options and settings available in the Appearances menu
+*	Add off-canvas sidebars to the left, right, top and bottom of your website.
+*	Use sidebar areas (widget-ready areas), menu locations or [custom hooks](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Actions-&-Filters) to place content into the off-canvas sidebars.
+*	You can add control buttons with a widget, menu item, [shortcode](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Shortcodes) or with [custom code](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup).
+*	Various customisation options and settings available in the Appearances menu.
+*	Extensive API for [PHP](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/PHP-API) and [JS](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/JavaScript-API).
 
 = Compatibility (IMPORTANT!) =
 
@@ -89,6 +90,15 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.5.3 =
+
+*	**Enhancement:** Don't render triggers of disabled sidebars if auto-hide is enabled. [#56](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/56)
+*	**Enhancement:** Support `wp_footer` as `website_after` hook. (Not compatible with all themes!)
+*	**Enhancement:** Filters to overwrite `website_before` and `website_after` hook priorities.
+*	**Enhancement:** Do not render inactive trigger buttons if auto-hide is enabled.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/58)
 
 = 0.5.2 =
 

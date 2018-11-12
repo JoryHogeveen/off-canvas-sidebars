@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.2
+ * @version 0.5.3
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars_Tab
@@ -37,7 +37,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @access  protected
 	 */
 	protected function __construct() {
-		$this->tab = 'ocs-sidebars';
+		$this->tab  = 'ocs-sidebars';
 		$this->name = esc_attr__( 'Sidebars', OCS_DOMAIN );
 		parent::__construct();
 
@@ -74,7 +74,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * @since   0.5.0
 	 */
 	public function ocs_page_form_section_table_before() {
-		$css_prefix = off_canvas_sidebars()->get_settings( 'css_prefix' );
+		$css_prefix = $this->get_settings( 'css_prefix' );
 		echo '<tr class="sidebar_classes" style="display: none;"><th>' . esc_html__( 'ID & Classes', OCS_DOMAIN ) . '</th><td>';
 		echo  esc_html__( 'Sidebar ID', OCS_DOMAIN ) . ': <code>#' . $css_prefix . '-<span class="js-dynamic-id"></span></code> &nbsp; '
 		      . esc_html__( 'Trigger Classes', OCS_DOMAIN ) . ': <code>.' . $css_prefix . '-toggle-<span class="js-dynamic-id"></span></code> <code>.' . $css_prefix . '-open-<span class="js-dynamic-id"></span></code> <code>.' . $css_prefix . '-close-<span class="js-dynamic-id"></span></code>';
@@ -113,7 +113,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		// Register sidebar settings.
 		foreach ( $sidebars as $sidebar => $sidebar_data ) {
 			$label = $sidebars[ $sidebar ]['label'];
-			$sep = ' &nbsp; | &nbsp; ';
+			$sep   = ' &nbsp; | &nbsp; ';
 			add_settings_section(
 				'section_sidebar_' . $sidebar,
 				$label . $sep . '<code class="js-dynamic-id">' . $sidebar . '</code>',
@@ -142,7 +142,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	public function register_sidebar_fields( $args ) {
 		$sidebar_id = str_replace( 'section_sidebar_', '', $args['id'] );
 
-		$fields = $this->get_settings_fields();
+		$fields  = $this->get_settings_fields();
 		$section = 'section_sidebar_' . $sidebar_id;
 
 		foreach ( $fields as $id => $args ) {
@@ -203,7 +203,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					array(
 						'enable' => 1,
 						'id'     => $new_sidebar_id,
-						'label'  => strip_tags( stripslashes( $input['sidebars']['_ocs_add_new'] ) ),
+						'label'  => wp_strip_all_tags( stripslashes( $input['sidebars']['_ocs_add_new'] ) ),
 					)
 				);
 			} else {
@@ -236,7 +236,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			// Not the current tab, only update `enable`.
 			if ( ! $is_request_tab ) {
 				$current[ $sidebar_id ]['enable'] = OCS_Off_Canvas_Sidebars_Settings::validate_checkbox( $sidebars[ $sidebar_id ]['enable'] );
-				$sidebars[ $sidebar_id ] = $current[ $sidebar_id ];
+				$sidebars[ $sidebar_id ]          = $current[ $sidebar_id ];
 				continue;
 			}
 
@@ -259,7 +259,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 					if ( empty( $sidebars[ $new_sidebar_id ] ) ) {
 
-						$sidebars[ $new_sidebar_id ] = $sidebars[ $sidebar_id ];
+						$sidebars[ $new_sidebar_id ]       = $sidebars[ $sidebar_id ];
 						$sidebars[ $new_sidebar_id ]['id'] = $new_sidebar_id;
 
 						unset( $sidebars[ $sidebar_id ] );
@@ -324,7 +324,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 			$new_sidebar_id = OCS_Off_Canvas_Sidebars_Settings::validate_id( $sidebar_id );
 			if ( $sidebar_id !== $new_sidebar_id ) {
-				$data['sidebars'][ $new_sidebar_id ] = $data['sidebars'][ $sidebar_id ];
+				$data['sidebars'][ $new_sidebar_id ]       = $data['sidebars'][ $sidebar_id ];
 				$data['sidebars'][ $new_sidebar_id ]['id'] = $new_sidebar_id;
 
 				unset( $data['sidebars'][ $sidebar_id ] );
@@ -364,10 +364,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'description' => __( 'IMPORTANT: Must be unique!', OCS_DOMAIN ),
 			),
 			'label' => array(
-				'name'        => 'label',
-				'title'       => esc_attr__( 'Name', OCS_DOMAIN ),
-				'callback'    => 'text_option',
-				'type'        => 'text',
+				'name'     => 'label',
+				'title'    => esc_attr__( 'Name', OCS_DOMAIN ),
+				'callback' => 'text_option',
+				'type'     => 'text',
 			),
 			'content' => array(
 				'name'     => 'content',
@@ -377,17 +377,17 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'default'  => 'sidebar',
 				'options'  => array(
 					'sidebar' => array(
-						'name' => 'sidebar',
+						'name'  => 'sidebar',
 						'label' => __( 'Sidebar', OCS_DOMAIN ) . ' &nbsp (' . __( 'Default', OCS_DOMAIN ) . ')',
 						'value' => 'sidebar',
 					),
-					'menu' => array(
-						'name' => 'menu',
+					'menu'    => array(
+						'name'  => 'menu',
 						'label' => __( 'Menu', OCS_DOMAIN ),
 						'value' => 'menu',
 					),
-					'action' => array(
-						'name' => 'action',
+					'action'  => array(
+						'name'  => 'action',
 						'label' => __( 'Custom', OCS_DOMAIN ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank">' . __( 'Action hook', OCS_DOMAIN ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
 						'value' => 'action',
 					),
@@ -402,23 +402,23 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'required' => true,
 				'default'  => 'left',
 				'options'  => array(
-					'left' => array(
-						'name' => 'left',
+					'left'   => array(
+						'name'  => 'left',
 						'label' => esc_html__( 'Left', OCS_DOMAIN ),
 						'value' => 'left',
 					),
-					'right' => array(
-						'name' => 'right',
+					'right'  => array(
+						'name'  => 'right',
 						'label' => esc_html__( 'Right', OCS_DOMAIN ),
 						'value' => 'right',
 					),
-					'top' => array(
-						'name' => 'top',
+					'top'    => array(
+						'name'  => 'top',
 						'label' => esc_html__( 'Top', OCS_DOMAIN ),
 						'value' => 'top',
 					),
 					'bottom' => array(
-						'name' => 'bottom',
+						'name'  => 'bottom',
 						'label' => esc_html__( 'Bottom', OCS_DOMAIN ),
 						'value' => 'bottom',
 					),
@@ -435,22 +435,22 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'default'     => 'default',
 				'options'     => array(
 					'default' => array(
-						'name' => 'default',
+						'name'  => 'default',
 						'label' => esc_html__( 'Default', OCS_DOMAIN ),
 						'value' => 'default',
 					),
-					'small' => array(
-						'name' => 'small',
+					'small'   => array(
+						'name'  => 'small',
 						'label' => esc_html__( 'Small', OCS_DOMAIN ),
 						'value' => 'small',
 					),
-					'large' => array(
-						'name' => 'large',
+					'large'   => array(
+						'name'  => 'large',
 						'label' => esc_html__( 'Large', OCS_DOMAIN ),
 						'value' => 'large',
 					),
-					'custom' => array(
-						'name' => 'custom',
+					'custom'  => array(
+						'name'  => 'custom',
 						'label' => esc_html__( 'Custom', OCS_DOMAIN ),
 						'value' => 'custom',
 					),
@@ -471,12 +471,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'type'        => 'radio',
 				'options'     => array(
 					'px' => array(
-						'name' => 'px',
+						'name'  => 'px',
 						'label' => 'px',
 						'value' => 'px',
 					),
-					'%' => array(
-						'name' => '%',
+					'%'  => array(
+						'name'  => '%',
 						'label' => '%',
 						'value' => '%',
 					),
@@ -484,29 +484,29 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			'sidebar_style' => array(
 				'name'     => 'style',
-				'title'    => esc_attr__( 'Style', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'title'    => esc_attr__( 'Style', OCS_DOMAIN ) . ' (' . esc_attr__( 'Animation', OCS_DOMAIN ) . ') <span class="required">*</span>',
 				'callback' => 'radio_option',
 				'type'     => 'radio',
 				'required' => true,
 				'default'  => 'push',
 				'options'  => array(
-					'push' => array(
-						'name' => 'push',
+					'push'    => array(
+						'name'  => 'push',
 						'label' => esc_html__( 'Sidebar slides and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'push',
 					),
-					'reveal' => array(
-						'name' => 'reveal',
+					'reveal'  => array(
+						'name'  => 'reveal',
 						'label' => esc_html__( 'Sidebar reveals and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'reveal',
 					),
-					'shift' => array(
-						'name' => 'shift',
+					'shift'   => array(
+						'name'  => 'shift',
 						'label' => esc_html__( 'Sidebar shifts and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'shift',
 					),
 					'overlay' => array(
-						'name' => 'overlay',
+						'name'  => 'overlay',
 						'label' => esc_html__( 'Sidebar overlays the site when opened.', OCS_DOMAIN ),
 						'value' => 'overlay',
 					),
@@ -552,7 +552,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'type'    => 'radio',
 				'default' => '',
 				'options' => array(
-					'default' => array(
+					'default'     => array(
 						'name'  => 'default',
 						'label' => esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#000000</code>',
 						'value' => '',
@@ -562,7 +562,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 						'label' => esc_html__( 'Transparent', OCS_DOMAIN ),
 						'value' => 'transparent',
 					),
-					'color' => array(
+					'color'       => array(
 						'name'  => 'color',
 						'label' => esc_html__( 'Color', OCS_DOMAIN ),
 						'value' => 'color',
@@ -602,10 +602,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			'hide_control_classes' => array(
 				'name'        => 'hide_control_classes',
-				'title'       => esc_attr__( 'Auto-hide control classes', OCS_DOMAIN ),
+				'title'       => esc_attr__( 'Auto-hide control triggers', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Hide off-canvas sidebar control classes over width specified in <strong>"Disable over"</strong>.', OCS_DOMAIN ),
+				'label'       => __( 'Hide off-canvas sidebar control triggers if the sidebar is disabled.', OCS_DOMAIN ),
 				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 			),
 			'scroll_lock' => array(
