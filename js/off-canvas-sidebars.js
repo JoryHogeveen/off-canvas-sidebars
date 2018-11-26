@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.3
+ * @version 0.5.4
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -485,14 +485,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		};
 		disableOver();
 		$window.on( 'resize', disableOver );
-
-		/**
-		 * @fixme Fix for reveal and shift styles when page does not have enough height.
-		 * @since 0.4
- 		 */
-		$window.on( 'load resize', function() {
-			ocsOffCanvasSidebars.container.css( 'min-height', $window.innerHeight() - parseInt( $html.css('margin-top'), 10 ) );
-		} );
 
 	};
 
