@@ -81,6 +81,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Block extends OCS_Off_Canvas_Sidebar
 			array(
 				'type'          => $this->type,
 				'fields'        => $this->get_fields(),
+				'groups'        => $this->get_groups(),
 				'__title'       => __( 'Off-Canvas Control', OCS_DOMAIN ),
 				'__description' => __( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
@@ -111,6 +112,17 @@ final class OCS_Off_Canvas_Sidebars_Control_Block extends OCS_Off_Canvas_Sidebar
 		}
 
 		return $attributes;
+	}
+
+	/**
+	 * Get block field groups.
+	 * @return array
+	 */
+	public function get_groups() {
+		return array(
+			'basic'    => esc_html__( 'Basic options', OCS_DOMAIN ),
+			'advanced' => esc_html__( 'Advanced options', OCS_DOMAIN ),
+		);
 	}
 
 	/**

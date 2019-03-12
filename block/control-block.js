@@ -15,6 +15,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 	ocsOffCanvasSidebarsBlock = {
 		type: 'off-canvas-sidebars/control-block',
 		fields: {},
+		groups: {},
 		__title: 'Off-Canvas Control',
 		__description: 'Trigger off-canvas sidebars'
 	};
@@ -28,6 +29,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 		BlockControls     = wp.editor.BlockControls,
 		AlignmentToolbar  = wp.editor.AlignmentToolbar,
 		InspectorControls = wp.editor.InspectorControls,
+		Panel             = wp.components.Panel,
+		PanelBody         = wp.components.PanelBody,
+		PanelRow          = wp.components.PanelRow,
 		// https://github.com/WordPress/gutenberg/tree/master/components
 		ServerSideRender  = wp.components.ServerSideRender,
 		BlockDescription  = wp.components.BlockDescription,
@@ -43,7 +47,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 	 * @returns {{}|ocsOffCanvasSidebarsBlock.fields}  The field objects.
 	 */
 	ocsOffCanvasSidebarsBlock.getFields = function() {
-		var fields = ocsOffCanvasSidebarsBlock.fields,
+		var fields   = ocsOffCanvasSidebarsBlock.fields,
 			defaults = {
 				type: 'text',
 				name: '',
@@ -69,19 +73,20 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 	 */
 	ocsOffCanvasSidebarsBlock.getInspectorControls = function( props ) {
 		var fields   = ocsOffCanvasSidebarsBlock.getFields(),
-			controls = [];
+			controls = [],
+			panels   = {};
 
 		$.each( fields, function ( key, field ) {
-			var controlParams = {},
-				control       = null;
+			var params  = {},
+				control = null;
 
 			// Set default params.
-			controlParams.label    = field.label;
-			controlParams.help     = field.description;
-			controlParams.value    = props.attributes[ field.name ];
-			controlParams.options  = field.options;
-			controlParams.required = field.required;
-			controlParams.onChange = function( value ) {
+			params.label    = field.label;
+			params.help     = field.description;
+			params.value    = props.attributes[ field.name ];
+			params.options  = field.options;
+			params.required = field.required;
+			params.onChange = function( value ) {
 				var attr = {};
 
 				attr[ field.name ] = value;
@@ -96,24 +101,59 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 					control = RadioControl;
 					break;
 				case 'checkbox':
-					control = ToggleControl;
+					control        = ToggleControl;
+					params.checked = Boolean( params.value );
 					break;
 				case 'text':
 				default:
 					if ( field.multiline ) {
-						control            = TextareaControl;
-						controlParams.rows = '2';
+						control     = TextareaControl;
+						params.rows = '2';
 					} else {
 						control = TextControl;
 					}
 					break;
 			}
 
-			controls.push( el(
+			if ( ! field.hasOwnProperty( 'group' ) ) {
+				field.group = 'advanced';
+			}
+			if ( ! panels.hasOwnProperty( field.group ) ) {
+				panels[ field.group ] = [];
+			}
+
+			panels[ field.group ].push( el(
 				control,
-				controlParams
+				params
 			) );
 		} );
+
+		for ( var name in panels ) {
+			if ( ! panels.hasOwnProperty( name ) ) {
+				continue;
+			}
+			var panelFields = panels[ name ];
+
+			if ( ! panelFields || ! panelFields.length ) {
+				continue;
+			}
+
+			var title = '';
+			if ( ocsOffCanvasSidebarsBlock.groups.hasOwnProperty( name ) ) {
+				title = ocsOffCanvasSidebarsBlock.groups[ name ];
+			} else {
+				title = name.charAt( 0 ).toUpperCase() + name.slice( 1 );
+			}
+
+			controls.push( el(
+				PanelBody,
+				{
+					title: title,
+					initialOpen: false
+				},
+				panelFields
+			) );
+		}
 
 		return controls;
 	};
