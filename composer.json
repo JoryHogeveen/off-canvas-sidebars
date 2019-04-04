@@ -2,7 +2,13 @@
 	"name": "JoryHogeveen/off-canvas-sidebars",
 	"type": "wordpress-plugin",
 	"description": "Add off-canvas sidebars using the Slidebars jQuery plugin",
-	"keywords": [],
+	"keywords": [
+		"wordpress",
+		"off-canvas-sidebars",
+		"canvas",
+		"mobile menu",
+		"slidebars"
+	],
 	"homepage": "https://github.com/JoryHogeveen/off-canvas-sidebars/",
 	"license": "GPL-2.0+",
 	"authors": [

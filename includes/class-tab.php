@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.3
+ * @version 0.5.4
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
@@ -171,7 +171,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Get a registered field.
 	 * @since   0.5.0
-	 * @param   string  $key
+	 * @param   string  $key  The field setting key.
 	 * @return  array
 	 */
 	public function get_settings_fields( $key = '' ) {
@@ -186,15 +186,16 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Get a registered field by type.
-	 * @since   0.5.0
-	 * @param   string  $type
+	 * @since   0.5.4
+	 * @param   string  $prop         The field property key.
+	 * @param   string  $value        The field property value.
 	 * @param   bool    $return_keys  Return field keys only?
 	 * @return  array
 	 */
-	public function get_settings_fields_by_type( $type = '', $return_keys = false ) {
+	public function get_settings_fields_by( $prop = '', $value = '', $return_keys = false ) {
 		$fields = $this->get_settings_fields();
 		foreach ( $fields as $key => $field ) {
-			if ( empty( $field['type'] ) || $field['type'] !== $type ) {
+			if ( empty( $field[ $prop ] ) || $field[ $prop ] !== $value ) {
 				unset( $fields[ $key ] );
 			}
 		}
@@ -205,6 +206,17 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Get a registered field by type.
+	 * @since   0.5.0
+	 * @param   string  $type
+	 * @param   bool    $return_keys  Return field keys only?
+	 * @return  array
+	 */
+	public function get_settings_fields_by_type( $type = '', $return_keys = false ) {
+		return $this->get_settings_fields_by( 'type', $type, $return_keys );
+	}
+
+	/**
 	 * Get a registered field by section.
 	 * @since   0.5.0
 	 * @param   string  $section
@@ -212,16 +224,7 @@ abstract class OCS_Off_Canvas_Sidebars_Tab extends OCS_Off_Canvas_Sidebars_Base
 	 * @return  array
 	 */
 	public function get_settings_fields_by_section( $section = '', $return_keys = false ) {
-		$fields = $this->get_settings_fields();
-		foreach ( $fields as $key => $field ) {
-			if ( empty( $field['section'] ) || $field['section'] !== $section ) {
-				unset( $fields[ $key ] );
-			}
-		}
-		if ( $return_keys ) {
-			return array_keys( $fields );
-		}
-		return $fields;
+		return $this->get_settings_fields_by( 'section', $section, $return_keys );
 	}
 
 	/**

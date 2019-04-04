@@ -522,11 +522,11 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			// @fixme See above. This only makes sure the fields gets recognized.
 			'size_input_type' => array(
-				'name'        => 'size_input_type',
-				'hidden'      => true,
-				'default'     => '%',
-				'type'        => 'radio',
-				'options'     => array(
+				'name'    => 'size_input_type',
+				'hidden'  => true,
+				'default' => '%',
+				'type'    => 'radio',
+				'options' => array(
 					'px' => array(
 						'name'  => 'px',
 						'label' => 'px',
