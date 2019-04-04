@@ -379,8 +379,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$atts['class']   = array();
 		$atts['class'][] = $prefix . '-slidebar';
 		$atts['class'][] = $prefix . '-' . $sidebar_id;
-		$atts['class'][] = 'ocs-slidebar';
-		$atts['class'][] = 'ocs-' . $sidebar_id;
+		if ( 'ocs' !== $prefix ) {
+			$atts['class'][] = 'ocs-slidebar';
+			$atts['class'][] = 'ocs-' . $sidebar_id;
+		}
 		$atts['class'][] = 'ocs-size-' . $data['size'];
 		$atts['class'][] = 'ocs-location-' . $data['location'];
 		$atts['class'][] = 'ocs-style-' . $data['style'];
