@@ -352,7 +352,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			'id'                            => $this->get_settings( 'css_prefix' ) . '-site',
 			'canvas'                        => 'container',
 			'data-ocs-site_close'           => (bool) $this->get_settings( 'site_close' ),
-			'data-ocs-disable_over'         => (int)  $this->get_settings( 'disable_over' ),
+			'data-ocs-disable_over'         => (int) $this->get_settings( 'disable_over' ),
 			'data-ocs-hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
 			'data-ocs-scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 		);
