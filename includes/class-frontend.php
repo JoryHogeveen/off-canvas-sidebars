@@ -259,7 +259,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
 				 * @param  array   $sidebar_data  The sidebar settings.
 				 */
-				apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
+				$args = apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
 
 				// Force the theme location.
 				$args['theme_location'] = 'off-canvas-' . $sidebar_id;
