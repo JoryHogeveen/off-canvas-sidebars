@@ -16,6 +16,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		general_key: 'off_canvas_sidebars_options',
 		plugin_key: 'off-canvas-sidebars-settings',
 		css_prefix: 'ocs',
+		_ocs_nonce: '',
 		__required_fields_not_set: 'Some required fields are not set!'
 	};
 }
@@ -59,6 +60,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_disable_over', 'tr' );
 				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_hide_control_classes', 'tr' );
 				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_scroll_lock', 'tr' );
+
+				$this.find( 'input.off_canvas_sidebars_options_sidebars_content' ).on( 'click ocs_init', function() {
+					var $this = $( this );
+					ocs_post_selector( sidebar_id, this, ( $this.is( ':checked' ) && 'post' === $this.val() ) );
+				} ).filter( ':checked' ).trigger( 'ocs_init' );
 			} );
 		} else {
 			ocs_show_hide_options_radio(
@@ -116,6 +122,121 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 					$( target ).slideUp( 'fast' );
 				}
 			} ).trigger( 'change' );
+		}
+
+		/**
+		 * Create a post selector with AJAX search.
+		 *
+		 * @since  0.6.0
+		 * @param  {string}         sidebar_id
+		 * @param  {string|object}  elem
+		 * @param  {boolean}        show
+		 */
+		function ocs_post_selector( sidebar_id, elem, show ) {
+			var $elem    = $( elem ),
+				$label   = $elem.parent(),
+				wrapper  = 'off_canvas_sidebars_options_sidebars_content_id_wrapper',
+				input    = 'off_canvas_sidebars_options_sidebars_content_id',
+				results  = 'off_canvas_sidebars_options_sidebars_content_id_results',
+				$wrapper = $label.parent().find( '.' + wrapper ),
+				init     = false;
+
+			if ( ! show ) {
+				$wrapper.slideUp();
+				return;
+			}
+
+			if ( ! $wrapper.length ) {
+				init = true;
+				$label.after( '<div class="' + wrapper + '"><input type="text" class="' + input + '"></div>' );
+				$wrapper = $label.parent().find( '.' + wrapper );
+			} else {
+				$wrapper.slideDown();
+			}
+
+			var $input           = $wrapper.find( '.' + input ),
+				$results         = $input.parent().find( '.' + results ),
+				$loading         = $wrapper.find( '.ocs-loading' ),
+				ajax_delay_timer = null,
+				loading_interval = null;
+
+			$input.on( 'keyup ocs_init', function() {
+				clearInterval( loading_interval );
+				clearTimeout( ajax_delay_timer );
+				if ( $loading.length ) {
+					$loading.hide();
+				}
+
+				var search = $input.val();
+
+				if ( ! search && ! init ) {
+					return;
+				}
+
+				ajax_delay_timer = setTimeout( function() {
+					var loading = '. . . ';
+
+					if ( ! $results.length ) {
+						$wrapper.append( '<div class="' + results + '"></div>' );
+						$results = $input.parent().find( '.' + results );
+					} else {
+						$results.find( '.ocs-result' ).remove();
+					}
+
+					if ( ! $loading.length ) {
+						$results.after( '<div class="ocs-loading"></div>' );
+						$loading = $wrapper.find( '.ocs-loading' );
+					}
+
+					$loading.text( loading ).show();
+
+					loading_interval = setInterval( function() {
+						if ( 20 < loading.length ) {
+							loading = '. . . ';
+						}
+						loading += '. ';
+						$loading.text( loading );
+					}, 500 );
+
+					$.post(
+						ajaxurl,
+						{
+							action: 'ocs_get_posts',
+							ocs_nonce: ocsOffCanvasSidebarsSettings._ocs_nonce,
+							ocs_search: $input.val(),
+							ocs_sidebar_id: sidebar_id
+						},
+						function( response ) {
+							clearInterval( loading_interval );
+							clearTimeout( ajax_delay_timer );
+							if ( $loading.length ) {
+								$loading.hide();
+							}
+							if ( response.hasOwnProperty( 'success' ) && response.success ) {
+								var html       = '',
+									name       = $elem.attr( 'name' ).replace( '[content]', '[content_id]' ),
+									current    = parseInt( response.data.current, 10 );
+
+								delete response.data.current;
+								for ( var id in response.data ) {
+									if ( ! response.data.hasOwnProperty( id ) ) {
+										continue;
+									}
+
+									if ( parseInt( id, 10 ) === current ) {
+										html = '<label class="ocs-current"><input type="radio" name="' + name + '" value="' + id + '" checked="checked" /> ' + response.data[ id ] + '</label>' + html;
+									} else {
+										html += '<label class="ocs-result"><input type="radio" name="' + name + '" value="' + id + '" /> ' + response.data[ id ] + '</label>';
+									}
+								}
+								$results.html( html );
+							}
+						}
+					);
+
+				}, 500 );
+
+			} ).trigger( 'ocs_init' );
 		}
 
 		// Enable the WP Color Picker.
