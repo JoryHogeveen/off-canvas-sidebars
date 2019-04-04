@@ -43,6 +43,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 		add_filter( 'ocs_settings_parse_input', array( $this, 'parse_input' ), 11, 2 );
 		add_filter( 'ocs_settings_validate_input', array( $this, 'validate_input' ), 11, 2 );
+
+		add_action( 'wp_ajax_ocs_get_posts', array( $this, 'ajax_get_posts' ) );
 	}
 
 	/**
@@ -168,6 +170,50 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 
 			add_settings_field( $id, $title, $callback, $this->tab, $section, $args );
 		}
+	}
+
+	/**
+	 * Handle AJAX get posts requests.
+	 *
+	 * @since  0.6.0
+	 */
+	public function ajax_get_posts() {
+
+		if ( ! wp_verify_nonce( $_POST['ocs_nonce'], OCS_DOMAIN ) ) {
+			wp_send_json_error();
+			die;
+		}
+
+		$current = '';
+		if ( ! empty( $_POST['ocs_sidebar_id'] ) ) {
+			$current = off_canvas_sidebars_settings()->get_sidebar_settings( $_POST['ocs_sidebar_id'], 'content_id' );
+			if ( $current ) {
+				$current = get_post( $current );
+			}
+		}
+
+		$posts = array();
+		if ( ! empty( $_POST['ocs_search'] ) ) {
+			$args  = array(
+				'orderby'   => 'title',
+				'order'     => 'ASC',
+				'post_type' => 'any',
+				's'         => $_POST['ocs_search'],
+			);
+			$posts = get_posts( $args );
+		}
+
+		$data = array( 'current' => '' );
+		if ( $current ) {
+			$data['current']      = $current->ID;
+			$data[ $current->ID ] = $current->post_title . ' [' . $current->post_type . ']';
+		}
+		foreach ( $posts as $post ) {
+			$data[ $post->ID ] = $post->post_title . ' [' . $post->post_type . ']';
+		}
+
+		wp_send_json_success( $data );
+		die;
 	}
 
 	/**
