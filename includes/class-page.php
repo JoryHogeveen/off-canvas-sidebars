@@ -95,6 +95,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			array( 'wp-color-picker' ),
 			OCS_PLUGIN_VERSION
 		);
+
 		wp_enqueue_script(
 			'off-canvas-sidebars-settings',
 			OCS_PLUGIN_URL . 'js/off-canvas-sidebars-settings.js',
@@ -102,12 +103,18 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			OCS_PLUGIN_VERSION,
 			true // load in footer.
 		);
-		wp_localize_script( 'off-canvas-sidebars-settings', 'ocsOffCanvasSidebarsSettings', array(
-			'general_key'               => $this->general_key,
-			'plugin_key'                => $this->plugin_key,
-			'css_prefix'                => $this->get_settings( 'css_prefix' ),
-			'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
-		) );
+
+		wp_localize_script(
+			'off-canvas-sidebars-settings',
+			'ocsOffCanvasSidebarsSettings',
+			array(
+				'general_key'               => $this->general_key,
+				'plugin_key'                => $this->plugin_key,
+				'css_prefix'                => $this->get_settings( 'css_prefix' ),
+				'_ocs_nonce'                => wp_create_nonce( OCS_DOMAIN ),
+				'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
+			)
+		);
 
 	}
 
