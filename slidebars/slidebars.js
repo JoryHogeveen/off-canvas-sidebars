@@ -14,7 +14,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  *
  * @since   0.4    Add scope for this reference + Add legacy CSS support (no hardware acceleration)
- * @since   0.4.2  Parse slidebar widths/heights are rounded pixels (like jQuery does) to prevent 1px differences
+ * @since   0.4.2  Parse slidebar widths/heights to rounded pixels (like jQuery does) to prevent 1px differences
  * @version 0.4.2
  * @global  slidebars
  * @preserve
