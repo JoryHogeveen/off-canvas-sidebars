@@ -16,6 +16,7 @@
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
+.ocs-credits .inside { padding: 0; margin: 0; }
 .ocs-credits .inner { padding-left: 10px; padding-right: 10px; }
 .ocs-credits h3 { font-size: 14px; line-height: 1.4; margin: 0;  padding: 8px 12px; border-bottom: 1px solid #eee; }
 
