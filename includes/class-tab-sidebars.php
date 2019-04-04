@@ -370,12 +370,13 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'type'     => 'text',
 			),
 			'content' => array(
-				'name'     => 'content',
-				'title'    => esc_attr__( 'Content', OCS_DOMAIN ),
-				'callback' => 'radio_option',
-				'type'     => 'radio',
-				'default'  => 'sidebar',
-				'options'  => array(
+				'name'        => 'content',
+				'title'       => esc_attr__( 'Content', OCS_DOMAIN ),
+				'callback'    => 'radio_option',
+				'type'        => 'radio',
+				'default'     => 'sidebar',
+				'description' => __( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', OCS_DOMAIN ),
+				'options'     => array(
 					'sidebar' => array(
 						'name'  => 'sidebar',
 						'label' => __( 'Sidebar', OCS_DOMAIN ) . ' &nbsp (' . __( 'Default', OCS_DOMAIN ) . ')',
@@ -386,13 +387,23 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 						'label' => __( 'Menu', OCS_DOMAIN ),
 						'value' => 'menu',
 					),
+					'post'    => array(
+						'name'  => 'post',
+						'label' => __( 'Post content', OCS_DOMAIN ),
+						'value' => 'post',
+					),
 					'action'  => array(
 						'name'  => 'action',
 						'label' => __( 'Custom', OCS_DOMAIN ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank">' . __( 'Action hook', OCS_DOMAIN ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
 						'value' => 'action',
 					),
 				),
-				'description' => __( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', OCS_DOMAIN ),
+			),
+			'content_id' => array(
+				'name'    => 'content_id',
+				'hidden'  => true,
+				'default' => '',
+				'type'    => 'number',
 			),
 			'location' => array(
 				'name'     => 'location',

@@ -270,6 +270,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 				break;
 
+			case 'post':
+				$content_id = $sidebar_data['content_id'];
+
+				if ( $content_id ) {
+					// @todo translate
+					echo apply_filters( 'the_content', get_post_field( 'post_content', $content_id ) );
+				}
+
+				break;
+
 			case 'action':
 			default:
 				/**
