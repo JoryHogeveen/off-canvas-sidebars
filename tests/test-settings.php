@@ -211,6 +211,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 					'enable'                    => 1,
 					'label'                     => 'Test',
 					'content'                   => 'menu',
+					'content_id'                => 0,
 					'location'                  => 'right',
 					'style'                     => 'overlay',
 					'size'                      => 'large',
@@ -246,6 +247,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 					'enable'                    => 'yes', // Parse as true (1)
 					'label'                     => 'Test <span>strip_tags test</span>',
 					'content'                   => array( 'action' ),// Invalid radio option, will return to default
+					'content_id'                => 'whoooo',
 					'location'                  => 'nope', // Invalid radio option, will return to default
 					'style'                     => false, // Invalid radio option, will return to default
 					'size'                      => 'nope', // Invalid radio option, will return to default
@@ -271,6 +273,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 			'enable'                    => 1,
 			'label'                     => 'Test strip_tags test',
 			'content'                   => 'sidebar',
+			'content_id'                => 0,
 			'location'                  => 'left',
 			'style'                     => 'push',
 			'size'                      => 'default',
@@ -308,6 +311,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 					'enable'                    => 1,
 					'label'                     => 'Test',
 					'content'                   => 'menu',
+					'content_id'                => 0,
 					'location'                  => 'right',
 					'style'                     => 'overlay',
 					'size'                      => 'large',
@@ -337,6 +341,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 					'enable'                    => 0,
 					'label'                     => 'Test rename',
 					'content'                   => 'menu',
+					'content_id'                => 0,
 					'location'                  => 'left', // update
 					'style'                     => 'push', // update
 					'size'                      => 'large',
@@ -359,6 +364,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 					'enable'                    => 1,
 					'label'                     => 'Test 2',
 					'content'                   => 'menu',
+					'content_id'                => 8,
 					'location'                  => 'right',
 					'style'                     => 'overlay',
 					'size'                      => 'large',
