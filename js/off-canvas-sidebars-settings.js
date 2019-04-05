@@ -16,7 +16,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		general_key: 'off_canvas_sidebars_options',
 		plugin_key: 'off-canvas-sidebars-settings',
 		css_prefix: 'ocs',
-		_ocs_nonce: '',
+		_nonce: '',
 		__required_fields_not_set: 'Some required fields are not set!'
 	};
 }
@@ -202,7 +202,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 						ajaxurl,
 						{
 							action: 'ocs_get_posts',
-							ocs_nonce: ocsOffCanvasSidebarsSettings._ocs_nonce,
+							ocs_nonce: ocsOffCanvasSidebarsSettings._nonce,
 							ocs_search: $input.val(),
 							ocs_sidebar_id: sidebar_id
 						},

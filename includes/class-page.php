@@ -111,7 +111,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				'general_key'               => $this->general_key,
 				'plugin_key'                => $this->plugin_key,
 				'css_prefix'                => $this->get_settings( 'css_prefix' ),
-				'_ocs_nonce'                => wp_create_nonce( OCS_DOMAIN ),
+				'_nonce'                    => wp_create_nonce( OCS_DOMAIN ),
 				'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
 			)
 		);
