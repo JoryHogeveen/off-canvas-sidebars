@@ -100,7 +100,7 @@ html, body {
 }
 
 [off-canvas*=" push"],
-[off-canvas*=" resize"] {
+[off-canvas*=" resize_push"] {
 	z-index: 1;
 }
 

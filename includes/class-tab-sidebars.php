@@ -510,10 +510,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 						'label' => esc_html__( 'Sidebar shifts and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'shift',
 					),
-					'resize'        => array(
-						'name'  => 'resize',
+					'resize_push'   => array(
+						'name'  => 'resize_push',
 						'label' => esc_html__( 'Sidebar slides and resize the site.', OCS_DOMAIN ),
-						'value' => 'resize',
+						'value' => 'resize_push',
 					),
 					'resize_reveal' => array(
 						'name'  => 'resize_reveal',

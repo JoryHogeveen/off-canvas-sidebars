@@ -44,7 +44,7 @@ slidebars = function () {
 	init = false,
 	registered = false,
 	sides = [ 'top', 'right', 'bottom', 'left' ],
-	styles = [ 'overlay', 'push', 'reveal', 'shift', 'resize', 'resize_reveal', 'resize_shift' ],
+	styles = [ 'overlay', 'push', 'reveal', 'shift', 'resize_push', 'resize_reveal', 'resize_shift' ],
 
 	/**
 	 * Get Animation Properties
@@ -62,7 +62,7 @@ slidebars = function () {
 			elements = elements.add( canvas );
 		}
 
-		if ( 'reveal' !== offCanvas[ id ].style && 'resize_reveal' !== offCanvas[ id ].style ) {
+		if ( 'reveal' !== offCanvas[ id ].style ) {
 			elements = elements.add( offCanvas[ id ].element );
 		} else if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 			// @todo, fix reveal support for top and bottom
@@ -105,11 +105,17 @@ slidebars = function () {
 			throw "Error registering Slidebar, a Slidebar with id '" + id + "' already exists.";
 		}
 
+		var resize = ( 0 === offCanvas[ id ].style.indexOf( 'resize' ) );
+		if ( resize ) {
+			style = style.replace( 'resize_', '' );
+		}
+
 		// Register the Slidebar
 		offCanvas[ id ] = {
 			'id': id,
 			'side': side,
 			'style': style,
+			'resize' : resize,
 			'element': element,
 			'active': false
 		};
@@ -229,7 +235,7 @@ slidebars = function () {
 
 				// Apply negative margins
 				var do_offset = false;
-				if ( 'reveal' !== offCanvas[ id ].style && 'resize_reveal' !== offCanvas[ id ].style ) {
+				if ( 'reveal' !== offCanvas[ id ].style ) {
 					do_offset = true;
 				} else if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 					// temp disabled style condition to enable reveal location as well for top and bottom
@@ -309,15 +315,14 @@ slidebars = function () {
 			};
 
 			var canvasSide,
-				canvasCss = {},
-				resize = ( 0 === offCanvas[ id ].style.indexOf( 'resize' ) );
+				canvasCss = {};
 
 			if ( self.legacy ) {
 				css[ offCanvas[ id ].side ] = animationProperties.amount;
 
 				if ( 'right' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 
-					if ( ! resize ) {
+					if ( ! offCanvas[ id ].resize ) {
 						// Bottom and Right animation for slidebars and the container are not the same
 						if ( 'right' === offCanvas[ id ].side ) {
 							canvasSide = 'left';
@@ -349,7 +354,7 @@ slidebars = function () {
 				animationProperties.elements.css( css );
 			}
 
-			if ( resize ) {
+			if ( offCanvas[ id ].resize ) {
 				canvasCss = {
 					'-webkit-transition': canvas.css( '-webkit-transition' ),
 					'transition': canvas.css( 'transition' )
@@ -419,8 +424,6 @@ slidebars = function () {
 			// Get animation properties
 			var animationProperties = getAnimationProperties( id );
 
-			var resize = ( 0 === offCanvas[ id ].style.indexOf( 'resize' ) );
-
 			// Apply css
 			if ( self.legacy ) {
 				var css = {};
@@ -428,7 +431,7 @@ slidebars = function () {
 				var canvasSide;
 				if ( 'right' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 
-					if ( ! resize ) {
+					if ( ! offCanvas[ id ].resize ) {
 						// Bottom and Right animation for slidebars and the container are not the same
 						if ( 'right' === offCanvas[ id ].side ) {
 							canvasSide = 'left';
@@ -464,7 +467,7 @@ slidebars = function () {
 				animationProperties.elements.css( 'transform', '' );
 			}
 
-			if ( resize ) {
+			if ( offCanvas[ id ].resize ) {
 				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 					canvas.css( 'height', '' );
 				} else {
