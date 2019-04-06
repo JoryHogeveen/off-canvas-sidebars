@@ -105,7 +105,7 @@ slidebars = function () {
 			throw "Error registering Slidebar, a Slidebar with id '" + id + "' already exists.";
 		}
 
-		var resize = ( 0 === offCanvas[ id ].style.indexOf( 'resize' ) );
+		var resize = ( 0 === style.indexOf( 'resize' ) );
 		if ( resize ) {
 			style = style.replace( 'resize_', '' );
 		}
