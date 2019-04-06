@@ -490,25 +490,40 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'required' => true,
 				'default'  => 'push',
 				'options'  => array(
-					'push'    => array(
+					'overlay'       => array(
+						'name'  => 'overlay',
+						'label' => esc_html__( 'Sidebar overlays the site when opened.', OCS_DOMAIN ),
+						'value' => 'overlay',
+					),
+					'push'          => array(
 						'name'  => 'push',
 						'label' => esc_html__( 'Sidebar slides and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'push',
 					),
-					'reveal'  => array(
+					'reveal'        => array(
 						'name'  => 'reveal',
 						'label' => esc_html__( 'Sidebar reveals and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'reveal',
 					),
-					'shift'   => array(
+					'shift'         => array(
 						'name'  => 'shift',
 						'label' => esc_html__( 'Sidebar shifts and pushes the site across when opened.', OCS_DOMAIN ),
 						'value' => 'shift',
 					),
-					'overlay' => array(
-						'name'  => 'overlay',
-						'label' => esc_html__( 'Sidebar overlays the site when opened.', OCS_DOMAIN ),
-						'value' => 'overlay',
+					'resize'        => array(
+						'name'  => 'resize',
+						'label' => esc_html__( 'Sidebar slides and resize the site.', OCS_DOMAIN ),
+						'value' => 'resize',
+					),
+					'resize_reveal' => array(
+						'name'  => 'resize_reveal',
+						'label' => esc_html__( 'Sidebar reveals and resize the site.', OCS_DOMAIN ),
+						'value' => 'resize_reveal',
+					),
+					'resize_shift'  => array(
+						'name'  => 'resize_shift',
+						'label' => esc_html__( 'Sidebar shifts and resize the site.', OCS_DOMAIN ),
+						'value' => 'resize_shift',
 					),
 				),
 			),
