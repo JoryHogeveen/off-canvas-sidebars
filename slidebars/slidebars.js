@@ -92,7 +92,7 @@ slidebars = function () {
 		}
 
 		// Return animation properties
-		return { 'elements': elements, 'amount': amount, 'duration': duration, 'size': size };
+		return { 'elements': elements, 'amount': amount, 'duration': duration, 'size': parseFloat( size.replace( 'px', '' ) ) };
 	},
 
 	/**
@@ -355,19 +355,21 @@ slidebars = function () {
 			}
 
 			if ( offCanvas[ id ].resize ) {
+				var prop = 'width';
+				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
+					prop = 'height';
+				}
+
 				canvasCss = {
 					'-webkit-transition': canvas.css( '-webkit-transition' ),
 					'transition': canvas.css( 'transition' )
 				};
-				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
-					canvasCss.height = '-=' + animationProperties.size;
-					canvasCss[ '-webkit-transition' ] += ', height ' + animationProperties.duration + 'ms';
-					canvasCss[ 'transition' ] += ', height ' + animationProperties.duration + 'ms';
-				} else {
-					canvasCss.width = '-=' + animationProperties.size;
-					canvasCss[ '-webkit-transition' ] += ', width ' + animationProperties.duration + 'ms';
-					canvasCss[ 'transition' ] += ', width ' + animationProperties.duration + 'ms';
-				}
+
+				// @todo, proper calculation when supporting multiple opened slidebars.
+				canvasCss[ prop ] = $(window)[prop]() - animationProperties.size + 'px';
+				canvasCss[ '-webkit-transition' ] += ', ' + prop + ' ' + animationProperties.duration + 'ms';
+				canvasCss[ 'transition' ] += ', ' + prop + ' ' + animationProperties.duration + 'ms';
+
 				canvas.css( canvasCss );
 			}
 
