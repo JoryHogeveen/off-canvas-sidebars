@@ -93,7 +93,7 @@ For more advanced customisations either:
 
 = 0.5.4 =
 
-*	**Compatibility:** Support the new `wp_body_open` as `website_before` hook introduced in WordPress 5.2. [#70](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/70)
+*	**Compatibility:** Support `wp_body_open` as `website_before` hook introduced in WordPress 5.2. [#70](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/70)
 *	**Enhancement:** Allow Genesis Framework hooks to be overwritten in respect for `wp_body_open`.
 *	**Enhancement:** Better use of WP core UI elements.
 *	**Enhancement:** Code quality improvements.
