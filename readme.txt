@@ -95,6 +95,7 @@ For more advanced customisations either:
 
 *	**Compatibility:** Support `wp_body_open` as `website_before` hook introduced in WordPress 5.2. [#70](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/70)
 *	**Enhancement:** Allow Genesis Framework hooks to be overwritten in respect for `wp_body_open`.
+*	**Enhancement:** Use CSS `vh` unit for canvas container min-height instead of JavaScript.
 *	**Enhancement:** Better use of WP core UI elements.
 *	**Enhancement:** Code quality improvements.
 
