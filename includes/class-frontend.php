@@ -74,8 +74,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$after_hook  = trim( $this->get_settings( 'website_after_hook' ) );
 
 		if ( 'genesis' === get_template() ) {
-			$before_hook = 'genesis_before';
-			$after_hook  = 'genesis_after';
+			if ( empty( $before_hook ) ) {
+				$before_hook = 'genesis_before';
+			}
+			if ( empty( $after_hook ) ) {
+				$after_hook = 'genesis_after';
+			}
 		} else {
 			if ( empty( $before_hook ) ) {
 				$before_hook = 'website_before';
