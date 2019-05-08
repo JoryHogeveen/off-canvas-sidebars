@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.3
+ * @version 0.5.4
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_Tab
@@ -178,6 +178,43 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			//(Themes based on the Genesis Framework are supported by default)
 		);
 
+		$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
+		$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank">' . $theme_hooks_wiki . '</a>';
+
+		$before_hook = 'website_before';
+		$after_hook  = 'website_after';
+		if ( 'genesis' === get_template() ) {
+			$before_hook = 'genesis_before';
+			$after_hook  = 'genesis_after';
+		}
+
+		// Check if the before hook is filtered. If it is this setting is not needed.
+		if ( '' === apply_filters( 'ocs_website_before_hook', '' ) ) {
+			$fields['website_before_hook'] = array(
+				'name'        => 'website_before_hook',
+				'title'       => '<code>website_before</code> ' . esc_attr__( 'hook name', OCS_DOMAIN ),
+				'callback'    => 'text_option',
+				'type'        => 'text',
+				'validate'    => 'remove_whitespace',
+				'section'     => $section,
+				'placeholder' => $before_hook,
+				'description' => $theme_hooks_wiki,
+			);
+		}
+		// Check if the after hook is filtered. If it is this setting is not needed.
+		if ( '' === apply_filters( 'ocs_website_after_hook', '' ) ) {
+			$fields['website_after_hook'] = array(
+				'name'        => 'website_after_hook',
+				'title'       => '<code>website_after</code> ' . esc_attr__( 'hook name', OCS_DOMAIN ),
+				'callback'    => 'text_option',
+				'type'        => 'text',
+				'validate'    => 'remove_whitespace',
+				'section'     => $section,
+				'placeholder' => $after_hook,
+				'description' => $theme_hooks_wiki,
+			);
+		}
+
 		/*$fields['frontend_type'] = array(
 			'title'    => esc_attr__( 'Front-end type', OCS_DOMAIN ),
 			'callback' => array( $this, 'frontend_type_option' ),
@@ -283,38 +320,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 				),
 			),
 		);
-
-		// Genesis already has before and after hooks set.
-		if ( 'genesis' !== get_template() ) {
-			$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
-			$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank">' . $theme_hooks_wiki . '</a>';
-			// Check if the before hook is filtered. If it is this setting is not needed.
-			if ( '' === apply_filters( 'ocs_website_before_hook', '' ) ) {
-				$fields['website_before_hook'] = array(
-					'name'        => 'website_before_hook',
-					'title'       => '<code>website_before</code> ' . esc_attr__( 'hook name', OCS_DOMAIN ),
-					'callback'    => 'text_option',
-					'type'        => 'text',
-					'validate'    => 'remove_whitespace',
-					'section'     => $section,
-					'placeholder' => 'website_before',
-					'description' => $theme_hooks_wiki,
-				);
-			}
-			// Check if the after hook is filtered. If it is this setting is not needed.
-			if ( '' === apply_filters( 'ocs_website_after_hook', '' ) ) {
-				$fields['website_after_hook'] = array(
-					'name'        => 'website_after_hook',
-					'title'       => '<code>website_after</code> ' . esc_attr__( 'hook name', OCS_DOMAIN ),
-					'callback'    => 'text_option',
-					'type'        => 'text',
-					'validate'    => 'remove_whitespace',
-					'section'     => $section,
-					'placeholder' => 'website_after',
-					'description' => $theme_hooks_wiki,
-				);
-			}
-		}
 
 		// https://github.com/ftlabs/fastclic
 		$fields['use_fastclick'] = array(

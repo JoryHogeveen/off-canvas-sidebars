@@ -35,6 +35,20 @@ html.ocs-scroll-lock.ocs-scroll-fixed body {
 	min-height: 100vh;
 }
 
+.admin-bar [canvas=container] {
+	min-height: -webkit-calc( 100vh - 32px );
+	min-height: -moz-calc( 100vh - 32px );
+	min-height: calc( 100vh - 32px );
+}
+
+@media screen and (max-width: 782px) {
+	.admin-bar [canvas=container] {
+		min-height: -webkit-calc( 100vh - 46px );
+		min-height: -moz-calc( 100vh - 46px );
+		min-height: calc( 100vh - 46px );
+	}
+}
+
 
 /*[canvas-fixed] {
 	-webkit-transform: translate( 0px, 0px );
