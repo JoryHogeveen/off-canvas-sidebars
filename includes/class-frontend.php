@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.3
+ * @version 0.5.4
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -74,8 +74,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$after_hook  = trim( $this->get_settings( 'website_after_hook' ) );
 
 		if ( 'genesis' === get_template() ) {
-			$before_hook = 'genesis_before';
-			$after_hook  = 'genesis_after';
+			if ( empty( $before_hook ) ) {
+				$before_hook = 'genesis_before';
+			}
+			if ( empty( $after_hook ) ) {
+				$after_hook = 'genesis_after';
+			}
 		} else {
 			if ( empty( $before_hook ) ) {
 				$before_hook = 'website_before';
@@ -373,7 +377,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			'id'                            => $this->get_settings( 'css_prefix' ) . '-site',
 			'canvas'                        => 'container',
 			'data-ocs-site_close'           => (bool) $this->get_settings( 'site_close' ),
-			'data-ocs-disable_over'         => (int)  $this->get_settings( 'disable_over' ),
+			'data-ocs-disable_over'         => (int) $this->get_settings( 'disable_over' ),
 			'data-ocs-hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
 			'data-ocs-scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 		);
@@ -500,7 +504,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
 				'scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 				'legacy_css'           => (bool) ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ),
-				'fixed_elements'       => $this->get_settings( 'fixed_elements' ),
 				'css_prefix'           => $this->get_settings( 'css_prefix' ),
 				'sidebars'             => $sidebars,
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
