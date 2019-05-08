@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.3
+ * @version 0.5.4
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -74,8 +74,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$after_hook  = trim( $this->get_settings( 'website_after_hook' ) );
 
 		if ( 'genesis' === get_template() ) {
-			$before_hook = 'genesis_before';
-			$after_hook  = 'genesis_after';
+			if ( empty( $before_hook ) ) {
+				$before_hook = 'genesis_before';
+			}
+			if ( empty( $after_hook ) ) {
+				$after_hook = 'genesis_after';
+			}
 		} else {
 			if ( empty( $before_hook ) ) {
 				$before_hook = 'website_before';
@@ -248,7 +252,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				/**
 				 * Filter nav menu args.
 				 *
-				 * Please note that the theme_location property will be overwritten!
+				 * Please note that the `theme_location` and `echo` properties will be overwritten!
 				 *
 				 * @since 0.3.0
 				 *
@@ -259,9 +263,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
 				 * @param  array   $sidebar_data  The sidebar settings.
 				 */
-				apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
+				$args = apply_filters( 'ocs_wp_nav_menu_args', $args, $sidebar_id, $sidebar_data );
 
-				// Force the set theme location.
+				// Force the theme location.
 				$args['theme_location'] = 'off-canvas-' . $sidebar_id;
 				// Force echo.
 				$args['echo'] = true;
@@ -352,7 +356,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			'id'                            => $this->get_settings( 'css_prefix' ) . '-site',
 			'canvas'                        => 'container',
 			'data-ocs-site_close'           => (bool) $this->get_settings( 'site_close' ),
-			'data-ocs-disable_over'         => (int)  $this->get_settings( 'disable_over' ),
+			'data-ocs-disable_over'         => (int) $this->get_settings( 'disable_over' ),
 			'data-ocs-hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
 			'data-ocs-scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 		);
@@ -379,8 +383,10 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$atts['class']   = array();
 		$atts['class'][] = $prefix . '-slidebar';
 		$atts['class'][] = $prefix . '-' . $sidebar_id;
-		$atts['class'][] = 'ocs-slidebar';
-		$atts['class'][] = 'ocs-' . $sidebar_id;
+		if ( 'ocs' !== $prefix ) {
+			$atts['class'][] = 'ocs-slidebar';
+			$atts['class'][] = 'ocs-' . $sidebar_id;
+		}
 		$atts['class'][] = 'ocs-size-' . $data['size'];
 		$atts['class'][] = 'ocs-location-' . $data['location'];
 		$atts['class'][] = 'ocs-style-' . $data['style'];
@@ -443,7 +449,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	public function add_styles_scripts() {
 
 		// @todo Validate and use minified files
-		$suffix = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$suffix  = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
 
 		// FastClick library https://github.com/ftlabs/fastclick
@@ -467,17 +473,21 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				$sidebars[ $sidebar_id ] = $sidebar_data;
 			}
 		}
-		wp_localize_script( 'off-canvas-sidebars', 'ocsOffCanvasSidebars', array(
-			'site_close'           => (bool) $this->get_settings( 'site_close' ),
-			'link_close'           => (bool) $this->get_settings( 'link_close' ),
-			'disable_over'         => (int) $this->get_settings( 'disable_over' ),
-			'hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
-			'scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
-			'legacy_css'           => (bool) ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ),
-			'css_prefix'           => $this->get_settings( 'css_prefix' ),
-			'sidebars'             => $sidebars,
-			'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
-		) );
+		wp_localize_script(
+			'off-canvas-sidebars',
+			'ocsOffCanvasSidebars',
+			array(
+				'site_close'           => (bool) $this->get_settings( 'site_close' ),
+				'link_close'           => (bool) $this->get_settings( 'link_close' ),
+				'disable_over'         => (int) $this->get_settings( 'disable_over' ),
+				'hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
+				'scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
+				'legacy_css'           => (bool) ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ),
+				'css_prefix'           => $this->get_settings( 'css_prefix' ),
+				'sidebars'             => $sidebars,
+				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+			)
+		);
 	}
 
 	/**
