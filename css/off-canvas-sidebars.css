@@ -4,7 +4,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.0
+ * @version 0.5.4
  * @preserve
  */
 
@@ -32,6 +32,21 @@ html.ocs-scroll-lock.ocs-scroll-fixed body {
 .ocs-initialized [canvas=container] {
 	overflow-y: hidden;
 	height: auto;
+	min-height: 100vh;
+}
+
+.admin-bar [canvas=container] {
+	min-height: -webkit-calc( 100vh - 32px );
+	min-height: -moz-calc( 100vh - 32px );
+	min-height: calc( 100vh - 32px );
+}
+
+@media screen and (max-width: 782px) {
+	.admin-bar [canvas=container] {
+		min-height: -webkit-calc( 100vh - 46px );
+		min-height: -moz-calc( 100vh - 46px );
+		min-height: calc( 100vh - 46px );
+	}
 }
 
 

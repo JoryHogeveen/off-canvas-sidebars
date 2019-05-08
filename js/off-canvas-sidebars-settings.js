@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.0
+ * @version 0.5.4
  * @global  ocsOffCanvasSidebarsSettings
  * @preserve
  */
@@ -25,20 +25,21 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 	var $document = $(document);
 	ocsOffCanvasSidebarsSettings.init = function() {
 
-		var tab = $('#ocs_tab');
-		var postbox = $('.postbox');
+		var $tab     = $( '#ocs_tab' );
+		var $postbox = $( '.postbox' );
 
 		// Close postboxes that should be closed.
-		$('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+		$( '.if-js-closed' ).removeClass( 'if-js-closed' ).addClass( 'closed' );
 		// Postboxes setup.
 		postboxes.add_postbox_toggles( ocsOffCanvasSidebarsSettings.plugin_key );
 
-
-		if ( 'ocs-sidebars' === tab.val() ) {
-			postbox.each( function() {
-				var prefix = 'off_canvas_sidebars_options_sidebars_',
-					sidebar_id = $(this).attr('id').replace('section_sidebar_', ''),
-					sidebar_prefix = prefix + sidebar_id;
+		if ( 'ocs-sidebars' === $tab.val() ) {
+			$postbox.each( function() {
+				var $this                   = $( this ),
+					prefix                  = 'off_canvas_sidebars_options_sidebars_',
+					sidebar_id              = $this.attr( 'id' ).replace( 'section_sidebar_', '' ),
+					sidebar_prefix          = prefix + sidebar_id,
+					global_settings_trigger = '.' + sidebar_prefix + '_overwrite_global_settings';
 
 				ocs_show_hide_options_radio(
 					'.' + sidebar_prefix + '_background_color_type',
@@ -53,11 +54,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 					'label'
 				);
 
-				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_site_close', 'tr' );
-				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_link_close', 'tr' );
-				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_disable_over', 'tr' );
-				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_hide_control_classes', 'tr' );
-				ocs_show_hide_options( '.' + sidebar_prefix + '_overwrite_global_settings', '.' + sidebar_prefix + '_scroll_lock', 'tr' );
+				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_site_close', 'tr' );
+				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_link_close', 'tr' );
+				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_disable_over', 'tr' );
+				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_hide_control_classes', 'tr' );
+				ocs_show_hide_options( global_settings_trigger, '.' + sidebar_prefix + '_scroll_lock', 'tr' );
 			} );
 		} else {
 			ocs_show_hide_options_radio(
@@ -80,14 +81,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			if ( parent ) {
 				target = $( target ).closest( parent );
 			}
-			if ( ! $( trigger ).is(':checked') ) {
-				$( target ).slideUp('fast');
+			if ( ! $( trigger ).is( ':checked' ) ) {
+				$( target ).slideUp( 'fast' );
 			}
-			$( trigger ).change( function() {
-				if ( $(this).is(':checked') ) {
-					$( target ).slideDown('fast');
+			$( trigger ).on( 'change', function() {
+				if ( $( this ).is( ':checked' ) ) {
+					$( target ).slideDown( 'fast' );
 				} else {
-					$( target ).slideUp('fast');
+					$( target ).slideUp( 'fast' );
 				}
 			} );
 		}
@@ -106,28 +107,28 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			}
 			if ( parent ) {
 				parent += ', ' + parent + ' + br';
-				target = $( target ).closest( parent );
+				target  = $( target ).closest( parent );
 			}
 			$( trigger ).change( function() {
 				if ( 0 <= $.inArray( $( trigger + ':checked' ).val(), compare ) ) {
-					$( target ).slideDown('fast');
+					$( target ).slideDown( 'fast' );
 				} else {
-					$( target ).slideUp('fast');
+					$( target ).slideUp( 'fast' );
 				}
 			} ).trigger( 'change' );
 		}
 
 		// Enable the WP Color Picker.
-		$('input.color-picker').wpColorPicker();
+		$( 'input.color-picker' ).wpColorPicker();
 
 		// Validate required fields.
-		$('input.required').each( function() {
-			var $this = $(this);
+		$( 'input.required' ).each( function() {
+			var $this = $( this );
 			$this.on( 'change', function() {
 				if ( ! $this.val() ) {
-					$this.parents('tr').addClass('form-invalid');
+					$this.parents( 'tr' ).addClass( 'form-invalid' );
 				} else {
-					$this.parents('tr').removeClass('form-invalid');
+					$this.parents( 'tr' ).removeClass( 'form-invalid' );
 				}
 			} );
 		} );
@@ -137,8 +138,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			var valid = true;
 			//var errors = {};
 			$( 'input.required', this ).each( function() {
-				if ( ! $(this).val() ) {
-					$(this).trigger('change');
+				var $this = $( this );
+				if ( ! $this.val() ) {
+					$this.trigger( 'change' );
 					valid = false;
 				}
 			} );
@@ -148,83 +150,84 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			}
 		} );
 
-		if ( 'ocs-sidebars' === tab.val() ) {
+		if ( 'ocs-sidebars' === $tab.val() ) {
 
 			// Half opacity for closed disabled sidebars.
 			// @todo Use classes instead of CSS.
-			postbox.each( function() {
-				var sidebar = this,
-					$sidebar = $( sidebar ),
+			$postbox.each( function() {
+				var sidebar     = this,
+					$sidebar    = $( sidebar ),
 					$dynamic_id = $( '.js-dynamic-id', sidebar );
 
 				// Dynamic sidebar ID.
 				if ( $dynamic_id.length ) {
 					var $dynamic_id_input = $( 'input.off_canvas_sidebars_options_sidebars_id', sidebar );
 					$dynamic_id.text( $dynamic_id_input.val() );
-					$('.sidebar_classes').show();
-					$dynamic_id_input.on('keyup', function() {
-						$dynamic_id.text( $(this).val() );
+					$( '.sidebar_classes' ).show();
+					$dynamic_id_input.on( 'keyup', function() {
+						$dynamic_id.text( $( this ).val() );
 					} );
 				}
 
-				$sidebar.css({'border-left':'5px solid #eee'});
-				if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is(':checked') ) {
-					if ( $sidebar.hasClass('closed') ) {
-						$sidebar.css('opacity', '0.75');
+				$sidebar.css( { 'border-left': '5px solid #eee' } );
+				if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is( ':checked' ) ) {
+					if ( $sidebar.hasClass( 'closed' ) ) {
+						$sidebar.css( 'opacity', '0.75' );
 					}
-					$sidebar.css('border-left-color','#ffb900');
+					$sidebar.css( 'border-left-color', '#ffb900' );
 				} else {
-					$sidebar.css('border-left-color','#46b450');
+					$sidebar.css( 'border-left-color', '#46b450' );
 				}
 				$( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).on( 'change', function() {
-					if ( ! $(this).is(':checked') ) {
-						$sidebar.css('border-left-color','#ffb900');
-						if ( $sidebar.hasClass('closed') ) {
-							$sidebar.css('opacity', '0.75');
+					if ( ! $( this ).is( ':checked' ) ) {
+						$sidebar.css( 'border-left-color','#ffb900' );
+						if ( $sidebar.hasClass( 'closed' ) ) {
+							$sidebar.css( 'opacity', '0.75' );
 						} else {
-							$sidebar.css('opacity', '');
+							$sidebar.css( 'opacity', '' );
 						}
 					} else {
-						$sidebar.css('border-left-color','#46b450');
-						$sidebar.css('opacity', '');
+						$sidebar.css( 'border-left-color','#46b450' );
+						$sidebar.css( 'opacity', '' );
 					}
 				} );
-				$sidebar.on('click', function() {
-					if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is(':checked') && $sidebar.hasClass('closed') ) {
-						$sidebar.css('opacity', '0.75');
+				$sidebar.on( 'click', function() {
+					if ( ! $( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).is( ':checked' ) && $sidebar.hasClass( 'closed' ) ) {
+						$sidebar.css( 'opacity', '0.75' );
 					} else {
-						$sidebar.css('opacity', '');
+						$sidebar.css( 'opacity', '' );
 					}
 				} );
 			} );
 
 			// Hide options when set to delete.
 			$document.on( 'change', '.off_canvas_sidebars_options_sidebars_delete', function() {
-				var $this = $(this),
-					sidebar = $this.parents('.postbox'),
+				var $this    = $(this),
+					sidebar  = $this.parents('.postbox'),
 					$sidebar = $( sidebar );
 
-				if ( $this.is(':checked') ) {
-					var parent_row = $this.parents('tr');
+				if ( $this.is( ':checked' ) ) {
+					var parent_row = $this.parents( 'tr' );
 					$( 'tr', sidebar ).hide( 'fast', function() {
 						$( 'tr', sidebar ).each(function(){
-							if ( $(this).is( parent_row ) ) {
-								$(this).show( 'fast' );
+							var $this = $( this );
+							if ( $this.is( parent_row ) ) {
+								$this.show( 'fast' );
 							}
 						});
 					} );
-					$sidebar.css('opacity', '0.5');
-					$sidebar.css('border-left-color','#dc3232');
+					$sidebar.css( 'opacity', '0.5' );
+					$sidebar.css( 'border-left-color', '#dc3232' );
 				} else {
-					$sidebar.css('opacity', '');
+					$sidebar.css( 'opacity', '' );
 					$( 'tr', sidebar ).show( 'fast' );
-					$('input.off_canvas_sidebars_options_sidebars_enable', sidebar).trigger('change');
+					$( 'input.off_canvas_sidebars_options_sidebars_enable', sidebar ).trigger( 'change' );
 				}
 			} );
 
 		}
 
-		if ( 'ocs-shortcode' === tab.val() ) {
+		if ( 'ocs-shortcode' === $tab.val() ) {
 
 			var fields = [ 'id', 'text', 'icon', 'icon_location', 'action', 'element', 'class', 'attr', 'nested' ];
 
@@ -256,7 +259,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			for ( var field in field_data ) {
 				if ( 'undefined' !== typeof field_data[ field ] ) {
 					if ( 'text' !== field && 'nested' !== field ) {
-						if ( field_data[ field ].is(':checked') ) {
+						if ( field_data[ field ].is( ':checked' ) ) {
 							shortcode_str += ' ' + field + '="1"';
 						} else if ( field_data[ field ].val().length ) {
 							shortcode_str += ' ' + field + '="' + field_data[ field ].val().replace( /(\r\n|\n|\r)/gm, '' ) + '"';
@@ -271,7 +274,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 			}
 
 			// Add panel text.
-			if ( field_data.nested.is(':checked') ) {
+			if ( field_data.nested.is( ':checked' ) ) {
 				shortcode_str += ']' + field_data.text.val() + '[/' + shortcode + ']';
 			} else {
 				if ( field_data.text.val().length ) {
@@ -280,7 +283,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				shortcode_str += ']';
 			}
 
-			$('textarea#ocs_shortcode').val( shortcode_str );
+			$( 'textarea#ocs_shortcode' ).val( shortcode_str );
 
 			create_shortcode_preview( field_data );
 		}
@@ -294,14 +297,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 */
 		function create_shortcode_preview( field_data ) {
 
-			var element = ( field_data.element.val() ) ? field_data.element.val() : 'button',
+			var element    = ( field_data.element.val() ) ? field_data.element.val() : 'button',
 				attributes = ( field_data.attr.val() ) ? attrStringToObject( field_data.attr.val() ) : {},
-				prefix = ocsOffCanvasSidebarsSettings.css_prefix,
-				action = ( field_data.action.val() ) ? field_data.action.val() : 'toggle',
-				classes = prefix + '-trigger ' + prefix + '-' + action,
-				text = field_data.text.val(),
-				icon = field_data.icon.val(),
-				html = '';
+				prefix     = ocsOffCanvasSidebarsSettings.css_prefix,
+				action     = ( field_data.action.val() ) ? field_data.action.val() : 'toggle',
+				classes    = prefix + '-trigger ' + prefix + '-' + action,
+				text       = field_data.text.val(),
+				icon       = field_data.icon.val(),
+				html       = '';
 
 			if ( field_data.id.val() ) {
 				classes += ' ' + prefix + '-' + action + '-' + field_data.id.val();
@@ -355,7 +358,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * @return {object}  The attribute object.
 		 */
 		function attrHTMLToObject( attrString ) {
-			var arr = attrString.trim().split( '" ' ),
+			var arr  = attrString.trim().split( '" ' ),
 				atts = {};
 			for ( var key in arr ) {
 				if ( arr.hasOwnProperty( key ) ) {
@@ -379,7 +382,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 * @return {object}  The attribute object.
 		 */
 		function attrStringToObject( attrString ) {
-			var arr = attrString.split( ';' ),
+			var arr  = attrString.split( ';' ),
 				atts = {};
 			for ( var key in arr ) {
 				if ( arr.hasOwnProperty( key ) ) {
@@ -443,7 +446,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		 */
 		function getAttr( s, a, f ) {
 			var n = new RegExp( a + '=\"([^\"]+)\"', 'g' ).exec( s );
-			if ( true === f && !n && -1 === s.indexOf( a + '="' ) ) {
+			if ( true === f && ! n && -1 === s.indexOf( a + '="' ) ) {
 				// Attribute does not exist
 				return false;
 			}

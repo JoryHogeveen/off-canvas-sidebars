@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.3
+ * @version 0.5.4
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebars_Tab
@@ -72,14 +72,14 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	public function tab_content() {
 
 		?>
-		<div id="section_shortcode" class="stuffbox postbox">
+		<div id="section_shortcode" class="postbox">
 			<h3 class="hndle"><span><?php esc_html_e( 'Shortcode', OCS_DOMAIN ); ?>:</span></h3>
 			<div class="inside">
 				<textarea id="ocs_shortcode" class="widefat">[ocs_trigger id=""]</textarea>
 			</div></div>
 		<?php
 
-		echo '<div id="section_shortcode_options" class="stuffbox postbox postbox postbox-third first">';
+		echo '<div id="section_shortcode_options" class="postbox postbox postbox-third first">';
 
 		echo '<h3 class="hndle"><span>' . esc_html__( 'Basic options', OCS_DOMAIN ) . ':</span></h3>';
 
@@ -90,7 +90,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		echo '</table></div></div>';
 
-		echo '<div id="section_shortcode_optionaloptions" class="stuffbox postbox postbox postbox-third">';
+		echo '<div id="section_shortcode_optionaloptions" class="postbox postbox postbox-third">';
 
 		echo '<h3 class="hndle"><span>' . esc_html__( 'Advanced options', OCS_DOMAIN ) . ':</span></h3>';
 
@@ -110,7 +110,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		echo '</table></div></div>';
 		?>
-		<div id="section_shortcode_preview" class="stuffbox postbox postbox-third">
+		<div id="section_shortcode_preview" class="postbox postbox-third">
 			<h3 class="hndle"><span><?php esc_html_e( 'Preview', OCS_DOMAIN ); ?>:</span></h3>
 			<div class="inside">
 				<div id="ocs_shortcode_preview"></div>

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.3
+ * @version 0.5.4
  */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
@@ -330,6 +330,26 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				background: #f5f5f5;
 				border: 1px solid #eee;
 				padding: 10px;
+			}
+
+			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab {
+				border-color: #000;
+				background: #191f25;
+			}
+			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab:hover {
+				background: #32373c;
+			}
+			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab.active {
+				background: #50626f;
+				border-bottom-color: #191f25;
+			}
+			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab.disabled {
+				color: #aaa;
+				background: #000;
+			}
+			.dark-mode #<?php echo $field_id; ?>_panes {
+				border-color: #191f25;
+				background: #23282d;
 			}
 		</style>
 		<script type="text/javascript">

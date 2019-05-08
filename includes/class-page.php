@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0  Refactored from single settings class.
- * @version 0.5.3
+ * @version 0.5.4
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
@@ -95,6 +95,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			array( 'wp-color-picker' ),
 			OCS_PLUGIN_VERSION
 		);
+
 		wp_enqueue_script(
 			'off-canvas-sidebars-settings',
 			OCS_PLUGIN_URL . 'js/off-canvas-sidebars-settings.js',
@@ -102,12 +103,17 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			OCS_PLUGIN_VERSION,
 			true // load in footer.
 		);
-		wp_localize_script( 'off-canvas-sidebars-settings', 'ocsOffCanvasSidebarsSettings', array(
-			'general_key'               => $this->general_key,
-			'plugin_key'                => $this->plugin_key,
-			'css_prefix'                => $this->get_settings( 'css_prefix' ),
-			'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
-		) );
+
+		wp_localize_script(
+			'off-canvas-sidebars-settings',
+			'ocsOffCanvasSidebarsSettings',
+			array(
+				'general_key'               => $this->general_key,
+				'plugin_key'                => $this->plugin_key,
+				'css_prefix'                => $this->get_settings( 'css_prefix' ),
+				'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
+			)
+		);
 
 	}
 
@@ -284,7 +290,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	protected function do_page_sidebar() {
 		?>
 	<div class="ocs-sidebar">
-		<div class="ocs-credits">
+		<div class="ocs-credits stuffbox">
 			<h3 class="hndle"><?php echo esc_html__( 'Off-Canvas Sidebars', OCS_DOMAIN ) . ' ' . OCS_PLUGIN_VERSION; ?></h3>
 			<div class="inside">
 				<h4 class="inner"><?php esc_html_e( 'Need support?', OCS_DOMAIN ); ?></h4>
@@ -342,7 +348,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		}
 
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
-			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'stuffbox postbox ' . $section['id'], $section, $page );
+			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'postbox ' . $section['id'], $section, $page );
 
 			echo '<div id="' . esc_attr( $section['id'] ) . '" class="' . esc_attr( $box_classes ) . '">';
 			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">'
