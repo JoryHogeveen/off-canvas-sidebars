@@ -3,9 +3,9 @@ Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
 Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobile, tablet, responsive, genesis
 Requires at least: 4.1
-Tested up to: 5.0
+Tested up to: 5.2
 Requires PHP: 5.2.4
-Stable tag: 0.5.3
+Stable tag: 0.5.4
 
 Add off-canvas sidebars (Slidebars) containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -25,7 +25,7 @@ This plugin will add various options to implement off-canvas sidebars in your Wo
 
 The structure of your theme is of great importance for this plugin. Please read the [installation guide](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup) carefully!!
 
-This plugin should work with most themes and plugins although I can't be sure for all use-cases. At this point it's still a 0.x version...
+This plugin should work with most themes and plugins although I can't be sure for all use-cases. Also note that at this point it's still a 0.x version...
 If the plugin does not work for your theme, please let me know through the support and add a plugins and themes list and I will take a look!
 
 **Fixed elements (like sticky menu's)**  
@@ -33,7 +33,7 @@ There are known issues with fixed elements and Slidebars. [Click here for more i
 I've created two possible solutions for this:
 
 1. Legacy CSS solution. Use basic CSS2 positioning instead of CSS3 transform with hardware acceleration.
-2. JavaScript solution. It is slower but still allows the use of hardware acceleration.
+2. JavaScript solution. It is slower but still allows the use of hardware acceleration for animations.
 
 = It's not working! / I found a bug! =
 
@@ -90,6 +90,15 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.5.4 =
+
+*	**Compatibility:** Support the new `wp_body_open` as `website_before` hook introduced in WordPress 5.2. [#70](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/70)
+*	**Enhancement:** Allow Genesis Framework hooks to be overwritten in respect for `wp_body_open`.
+*	**Enhancement:** Better use of WP core UI elements.
+*	**Enhancement:** Code quality improvements.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/71)
 
 = 0.5.3 =
 
