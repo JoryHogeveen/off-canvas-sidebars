@@ -159,7 +159,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
 
-		$window.trigger( 'ocs_before', this );
+		$window.trigger( 'ocs_before', [ this ] );
 
 		// Slidebars constructor.
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
@@ -174,14 +174,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			$html.addClass( 'ocs-legacy' );
 		}
 
-		$window.trigger( 'ocs_loaded', this );
+		$window.trigger( 'ocs_loaded', [ this ] );
 
 		// Initialize slidebars.
 		ocsOffCanvasSidebars.slidebarsController.init();
 
 		$html.addClass( 'ocs-initialized' );
 
-		$window.trigger( 'ocs_initialized', this );
+		$window.trigger( 'ocs_initialized', [ this ] );
 
 		/**
 		 * Compatibility with WP Admin Bar.
@@ -289,7 +289,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			ocsOffCanvasSidebars.setupTriggers();
 		}
 
-		$window.trigger( 'ocs_after', this );
+		$window.trigger( 'ocs_after', [ this ] );
 	};
 
 	/**
