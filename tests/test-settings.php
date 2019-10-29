@@ -77,7 +77,8 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 			'background_color'             => '#123456123', // Invalid color, will be trimmed
 			'website_before_hook'          => array(), // Invalid value, will return empty
 			'website_after_hook'           => array(), // Invalid value, will return empty
-			'use_fastclick'                => true, // Parse as int version (1)
+			'use_fastclick'                => true, // Parse as int (1)
+			'gutenberg_control_block'      => 3, // Parse as int (1)
 			'compatibility_position_fixed' => 'legacy-css-yay', // Invalid radio option, will return to default
 		);
 
@@ -94,6 +95,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 				'website_before_hook'          => '',
 				'website_after_hook'           => '',
 				'use_fastclick'                => 1,
+				'gutenberg_control_block'      => 1,
 				'compatibility_position_fixed' => 'none',
 			)
 		);
