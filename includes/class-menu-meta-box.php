@@ -68,7 +68,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	public function add_meta_box() {
 		add_meta_box(
 			$this->plugin_key . '-meta-box',
-			esc_html__( 'Off-Canvas Control', OCS_DOMAIN ),
+			esc_html__( 'Off-Canvas Trigger', OCS_DOMAIN ),
 			array( $this, 'meta_box' ),
 			'nav-menus',
 			'side',
@@ -151,7 +151,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 		$data['strings']  = array(
 			'show_icon'             => __( 'Show icon', OCS_DOMAIN ),
 			'icon'                  => __( 'Icon classes', OCS_DOMAIN ),
-			'menu_item_type'        => __( 'Off-Canvas Control', OCS_DOMAIN ),
+			'menu_item_type'        => __( 'Off-Canvas Trigger', OCS_DOMAIN ),
 			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
 		);
 		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar => $sidebar_data ) {
