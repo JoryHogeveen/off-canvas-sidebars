@@ -21,7 +21,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 	};
 }
 
-( function ( registerBlockType ) {
+( function ( registerBlockType, $ ) {
 
 	var __ = wp.i18n.__,
 		el = wp.element.createElement,
@@ -204,4 +204,4 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 
 	} );
 
-} ( wp.blocks.registerBlockType ) );
+} ( wp.blocks.registerBlockType, jQuery ) );
