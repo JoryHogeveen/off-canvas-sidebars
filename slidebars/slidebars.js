@@ -105,6 +105,7 @@ slidebars = function () {
 			throw "Error registering Slidebar, a Slidebar with id '" + id + "' already exists.";
 		}
 
+		// Parse resize style
 		var resize = ( 0 === style.indexOf( 'resize' ) );
 		if ( resize ) {
 			style = style.replace( 'resize_', '' );
@@ -351,7 +352,11 @@ slidebars = function () {
 
 			} else {
 				css.transform = 'translate(' + animationProperties.amount + ')';
-				animationProperties.elements.css( css );
+				if ( offCanvas[ id ].resize ) {
+					animationProperties.elements.not( canvas ).css( css );
+				} else {
+					animationProperties.elements.css( css );
+				}
 			}
 
 			if ( offCanvas[ id ].resize ) {
