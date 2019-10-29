@@ -58,7 +58,7 @@ slidebars = function () {
 		duration = parseFloat( offCanvas[ id ].element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
 
 		// Elements to animate
-		if ( 'overlay' !== offCanvas[ id ].style ) {
+		if ( ! offCanvas[ id ].resize && 'overlay' !== offCanvas[ id ].style ) {
 			elements = elements.add( canvas );
 		}
 
@@ -352,11 +352,7 @@ slidebars = function () {
 
 			} else {
 				css.transform = 'translate(' + animationProperties.amount + ')';
-				if ( offCanvas[ id ].resize ) {
-					animationProperties.elements.not( canvas ).css( css );
-				} else {
-					animationProperties.elements.css( css );
-				}
+				animationProperties.elements.css( css );
 			}
 
 			if ( offCanvas[ id ].resize ) {
