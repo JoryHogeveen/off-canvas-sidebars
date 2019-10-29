@@ -374,6 +374,16 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'description' => __( 'This will render the shortcodes to actual HTML elements in the WP Editor.', OCS_DOMAIN ),
 		);
 
+		$fields['gutenberg_control_block'] = array(
+			'name'        => 'gutenberg_control_block',
+			'title'       => esc_attr__( 'Enable Gutenberg Block', OCS_DOMAIN ),
+			'callback'    => 'checkbox_option',
+			'type'        => 'checkbox',
+			'section'     => $section,
+			'label'       => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/51" target="_blank">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
+			'description' => __( 'This will add a control trigger block in the Gutenberg editor.', OCS_DOMAIN ),
+		);
+
 		return $fields;
 	}
 

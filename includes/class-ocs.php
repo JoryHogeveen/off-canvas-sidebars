@@ -148,11 +148,13 @@ final class OCS_Off_Canvas_Sidebars
 			// Register the widget.
 			add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 
-			// Register Gutenberg block.
-			OCS_Off_Canvas_Sidebars_Control_Block::get_instance();
-
 			// Load menu-meta-box option.
 			OCS_Off_Canvas_Sidebars_Menu_Meta_Box::get_instance();
+
+			if ( $this->get_settings( 'gutenberg_control_block' ) ) {
+				// Register Gutenberg block.
+				OCS_Off_Canvas_Sidebars_Control_Block::get_instance();
+			}
 
 		} else {
 
