@@ -26,13 +26,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 	var __ = wp.i18n.__,
 		el = wp.element.createElement,
 
-		BlockControls     = wp.editor.BlockControls,
-		AlignmentToolbar  = wp.editor.AlignmentToolbar,
+		// https://github.com/WordPress/gutenberg/tree/master/components
+		//BlockControls     = wp.editor.BlockControls,
+		//AlignmentToolbar  = wp.editor.AlignmentToolbar,
 		InspectorControls = wp.editor.InspectorControls,
 		Panel             = wp.components.Panel,
 		PanelBody         = wp.components.PanelBody,
 		PanelRow          = wp.components.PanelRow,
-		// https://github.com/WordPress/gutenberg/tree/master/components
 		ServerSideRender  = wp.components.ServerSideRender,
 		BlockDescription  = wp.components.BlockDescription,
 		TextControl       = wp.components.TextControl,
@@ -58,7 +58,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 				multiline: false,
 			};
 
-		$.each( fields, function ( key, field ) {
+		$.each( fields, function( key, field ) {
 			fields[ key ] = $.extend( {}, defaults, field );
 		} );
 
@@ -76,7 +76,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 			controls = [],
 			panels   = {};
 
-		$.each( fields, function ( key, field ) {
+		$.each( fields, function( key, field ) {
 			var params  = {},
 				control = null;
 
