@@ -168,7 +168,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsBlock ) {
 		icon: 'editor-contract',
 		category: 'layout',
 		supports: {
-			align: true
+			align: true,
+			customClassName: false // Included in the block attributes.
 		},
 		keywords: [
 			'Canvas',
