@@ -137,30 +137,32 @@ final class OCS_Off_Canvas_Sidebars_Control_Block extends OCS_Off_Canvas_Sidebar
 
 	/**
 	 * Render block.
-	 * @param  array  $atts
+	 * @param  array  $args
 	 * @return string
 	 */
-	public function render( $atts ) {
+	public function render( $args ) {
 
-		if ( $atts['align'] ) {
-			$align = $atts['align'];
+		if ( ! empty( $args['align'] ) ) {
+			$align = $args['align'];
 			switch ( $align ) {
+				case 'full':
+				case 'wide':
 				case 'center':
 				case 'right':
 				case 'left':
 					$align = 'align' . $align;
 					break;
 			}
-			if ( empty( $atts['class'] ) ) {
-				$atts['class'] = array();
+			if ( empty( $args['class'] ) ) {
+				$args['class'] = array();
 			}
-			$atts['class']   = (array) $atts['class'];
-			$atts['class'][] = $align;
+			$args['class']   = (array) $args['class'];
+			$args['class'][] = $align;
 		}
-		unset( $atts['align'] );
+		unset( $args['align'] );
 
-		$atts['echo'] = false;
-		return the_ocs_control_trigger( $atts );
+		$args['echo'] = false;
+		return the_ocs_control_trigger( $args );
 	}
 
 	/**
