@@ -82,7 +82,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Block extends OCS_Off_Canvas_Sidebar
 				'type'          => $this->type,
 				'fields'        => $this->get_fields(),
 				'groups'        => $this->get_groups(),
-				'__title'       => __( 'Off-Canvas Control', OCS_DOMAIN ),
+				'__title'       => __( 'Off-Canvas Trigger', OCS_DOMAIN ),
 				'__description' => __( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
 		);
