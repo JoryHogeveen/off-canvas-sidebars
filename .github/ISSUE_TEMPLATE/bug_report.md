@@ -26,6 +26,8 @@ If applicable, add screenshots to help explain your problem.
   - Other plugins installed:
   - Theme:
   - Browser:
+  - URL of where the bug occurs:
+  - Location of hook placement (header.php and footer.php)
 
 ## Additional context
 Add any other context about the problem here.
