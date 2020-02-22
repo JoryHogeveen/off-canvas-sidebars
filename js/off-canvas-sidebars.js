@@ -41,6 +41,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	ocsOffCanvasSidebars.init = function() {
 
+		if ( ! $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length || ( 'undefined' === typeof slidebars ) ) {
+			ocsOffCanvasSidebars.debug( 'Container or Slidebars not found, init stopped' );
+			return false;
+		}
+
 		/**
 		 * Validate the disable_over setting ( using _getSetting() ).
 		 * Internal function, do not overwrite.
@@ -166,7 +171,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
 
 		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
-			return;
+			ocsOffCanvasSidebars.debug( 'Cannot initialize Slidebars' );
+			return false;
 		}
 
 		// Legacy CSS mode?
@@ -291,13 +297,15 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		}
 
 		$window.trigger( 'ocs_after', [ this ] );
+
+		return true;
 	};
 
 	/**
 	 * Set the default settings for sidebars if they are not found.
 	 * @since  0.3.0
 	 * @param  {string}  sidebarId  The sidebar ID.
-	 * @return {null}  Nothing.
+	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
 
@@ -315,12 +323,17 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Setup automatic trigger handling.
 	 * @since  0.3.0
-	 * @return {null}  Nothing.
+	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller       = ocsOffCanvasSidebars.slidebarsController,
 			prefix           = ocsOffCanvasSidebars.css_prefix,
 			$sidebarElements = $( '.' + prefix + '-slidebar' );
+
+		if ( ! $sidebarElements.length ) {
+			ocsOffCanvasSidebars.debug( 'No sidebars found' );
+			return false;
+		}
 
 		$sidebarElements.each( function() {
 			var $this  = $( this ),
@@ -518,6 +531,15 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		data[ prop ]              = value;
 
 		$( elem ).css( data );
+	};
+
+	/**
+	 * @param {string} message
+	 */
+	ocsOffCanvasSidebars.debug = function( message ) {
+		if ( ocsOffCanvasSidebars._debug ) {
+			console.log( 'Off-Canvas Sidebars: ' + message );
+		}
 	};
 
 	if ( ocsOffCanvasSidebars.late_init ) {
