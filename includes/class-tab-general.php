@@ -175,7 +175,15 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'label'       => __( 'Let this plugin add the necessary elements on the front-end.', OCS_DOMAIN ),
 			'description' => '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup" target="_blank">'
 			                 . __( 'Read this to setup your theme!', OCS_DOMAIN ) . '</a>',
-			//(Themes based on the Genesis Framework are supported by default)
+		);
+
+		$fields['late_init'] = array(
+			'title'       => esc_attr__( 'Late init', OCS_DOMAIN ),
+			'name'        => 'late_init',
+			'callback'    => 'checkbox_option',
+			'type'        => 'checkbox',
+			'section'     => $section,
+			'label'       => __( 'Wait for window to be loaded before initializing Off-Canvas Sidebars.', OCS_DOMAIN ),
 		);
 
 		$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );

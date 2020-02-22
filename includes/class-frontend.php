@@ -477,6 +477,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			'off-canvas-sidebars',
 			'ocsOffCanvasSidebars',
 			array(
+				'late_init'            => (bool) $this->get_settings( 'late_init' ),
 				'site_close'           => (bool) $this->get_settings( 'site_close' ),
 				'link_close'           => (bool) $this->get_settings( 'link_close' ),
 				'disable_over'         => (int) $this->get_settings( 'disable_over' ),

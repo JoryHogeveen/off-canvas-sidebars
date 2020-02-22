@@ -46,6 +46,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	protected $default_settings = array(
 		'db_version'                    => '0',
 		'enable_frontend'               => 1,
+		'late_init'                     => 0,
 		'frontend_type'                 => 'action',
 		'site_close'                    => 1,
 		'link_close'                    => 1,

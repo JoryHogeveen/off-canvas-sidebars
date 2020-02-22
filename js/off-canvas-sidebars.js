@@ -13,6 +13,7 @@
 
 if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	var ocsOffCanvasSidebars = {
+		late_init: false,
 		site_close: true,
 		link_close: true,
 		disable_over: false,
@@ -519,7 +520,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		$( elem ).css( data );
 	};
 
-	if ( $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length && ( 'undefined' !== typeof slidebars ) ) {
+	if ( ocsOffCanvasSidebars.late_init ) {
+		$window.load( ocsOffCanvasSidebars.init );
+	} else {
 		ocsOffCanvasSidebars.init();
 	}
 
