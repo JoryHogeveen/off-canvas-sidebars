@@ -138,11 +138,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		ocsOffCanvasSidebars._getTranslateAxis = function( obj, axis ) {
 			obj = $( obj );
 
-			var transformMatrix = obj.css( "-webkit-transform" )
-				|| obj.css( "-moz-transform" )
-				|| obj.css( "-ms-transform" )
-				|| obj.css( "-o-transform" )
-				|| obj.css( "transform" );
+			var transformMatrix = obj.css( '-webkit-transform' )
+				|| obj.css( '-moz-transform' )
+				|| obj.css( '-ms-transform' )
+				|| obj.css( '-o-transform' )
+				|| obj.css( 'transform' );
 			if ( transformMatrix ) {
 				var matrix = transformMatrix.replace( /[^0-9\-.,]/g, '' ).split( ',' ),
 					val    = 0;
@@ -312,11 +312,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		if ( 'undefined' === typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] ) {
 			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
 				'overwrite_global_settings': false,
-				"site_close": ocsOffCanvasSidebars.site_close,
-				"disable_over": ocsOffCanvasSidebars.disable_over,
-				"hide_control_classes": ocsOffCanvasSidebars.hide_control_classes,
-				"scroll_lock": ocsOffCanvasSidebars.scroll_lock
-			}
+				'site_close': ocsOffCanvasSidebars.site_close,
+				'disable_over': ocsOffCanvasSidebars.disable_over,
+				'hide_control_classes': ocsOffCanvasSidebars.hide_control_classes,
+				'scroll_lock': ocsOffCanvasSidebars.scroll_lock
+			};
 		}
 	};
 
