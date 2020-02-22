@@ -520,7 +520,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		$prefix = $this->get_settings( 'css_prefix' );
-		$styles = '';
+		$css = '';
 
 		$bg_color_type = $this->get_settings( 'background_color_type' );
 		if ( '' !== $bg_color_type ) {
@@ -532,7 +532,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				$bg_color = OCS_Off_Canvas_Sidebars_Settings::validate_color( $this->get_settings( 'background_color' ) );
 			}
 			if ( $bg_color ) {
-				$styles .= '#' . $prefix . '-site {background-color:' . $bg_color . ';}';
+				$css .= '#' . $prefix . '-site {background-color:' . $bg_color . ';}';
 			}
 		} // End if().
 
@@ -567,15 +567,13 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 
 			if ( ! empty( $prop ) ) {
-
-				$styles .= '.ocs-slidebar.ocs-' . $sidebar_id . ' {' . implode( ' ', $prop ) . '}';
+				$css .= '.ocs-slidebar.ocs-' . $sidebar_id . ' {' . implode( ' ', $prop ) . '}';
 			}
 		} // End foreach().
 
-		// https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios
-		$styles .= '.' . $prefix . '-trigger {cursor: pointer;}';
-
-		echo '<style type="text/css">' . $styles . '</style>';
+		if ( $css ) {
+			echo '<style type="text/css">' . $css . '</style>';
+		}
 	}
 
 	/**

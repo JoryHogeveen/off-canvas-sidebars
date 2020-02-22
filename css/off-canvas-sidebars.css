@@ -73,6 +73,10 @@ html.ocs-scroll-lock.ocs-scroll-fixed body {
 	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 }
 
+
+/* https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios */
+.ocs-trigger {cursor: pointer;}
+
 /* @todo fix support for top and bottom */
 [off-canvas*=" top"][off-canvas*=" reveal"],
 [off-canvas*=" top"][off-canvas*=" shift"],
