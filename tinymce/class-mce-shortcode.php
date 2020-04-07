@@ -42,22 +42,11 @@ final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebar
 		}*/
 
 		if ( 'true' === get_user_option( 'rich_editing' ) ) {
-			add_action( 'admin_init', array( $this, 'admin_init' ) );
 			add_action( 'media_buttons', array( $this, 'media_buttons' ), 20 );
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
 			add_filter( 'tiny_mce_before_init', array( $this, 'mce_inline_css' ) );
 			add_action( 'after_wp_tiny_mce', array( $this, 'print_scripts' ) );
-		}
-	}
-
-	/**
-	 * Admin init callback.
-	 *
-	 * @since 0.6
-	 */
-	public function admin_init() {
-		if ( self::is_gutenberg_page() ) {
-			add_filter( 'admin_head', array( $this, 'print_scripts' ) );
+			add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 		}
 	}
 
@@ -137,6 +126,17 @@ final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebar
 </script>
 <?php
 		$done = true;
+	}
+
+	/**
+	 * Admin print scripts callback.
+	 *
+	 * @since 0.6
+	 */
+	public function admin_print_scripts() {
+		if ( self::is_gutenberg_page() ) {
+			add_filter( 'admin_head', array( $this, 'print_scripts' ) );
+		}
 	}
 
 	/**
