@@ -40,10 +40,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$this->default_actions();
 		}
 
-		// Dúh..
-		//add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
-		//add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 
 		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
@@ -489,21 +486,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);
-	}
-
-	/**
-	 * Add necessary inline scripts.
-	 *
-	 * @since   0.1.0
-	 */
-	public function add_inline_scripts() {
-		if ( ! is_admin() ) {
-			?>
-<script type="text/javascript">
-
-</script>
-			<?php
-		}
 	}
 
 	/**

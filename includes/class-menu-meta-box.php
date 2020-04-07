@@ -31,11 +31,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 */
 	protected static $_instance = null;
 
+	/**
+	 * @var string
+	 */
 	protected $meta_key = '_off_canvas_control_menu_item';
-
-	private $plugin_key = '';
-
-	private $general_labels = array();
 
 	/**
 	 * Class constructor.
@@ -43,22 +42,10 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 * @access private
 	 */
 	private function __construct() {
-		//add_action( 'admin_init', array( $this, 'load_settings' ) );
-		add_action( 'init', array( $this, 'load_plugin_data' ) );
 		add_action( 'admin_init', array( $this, 'add_meta_box' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'wp_update_nav_menu_item' ), 10, 2 );
 		add_filter( 'wp_get_nav_menu_items', array( $this, 'wp_get_nav_menu_items' ), 20 ); // after the customizer menus
-	}
-
-	/**
-	 * Get plugin data.
-	 * @since  0.1.0
-	 */
-	public function load_plugin_data() {
-		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		$this->plugin_key     = $off_canvas_sidebars->get_plugin_key();
 	}
 
 	/**
@@ -67,7 +54,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 	 */
 	public function add_meta_box() {
 		add_meta_box(
-			$this->plugin_key . '-meta-box',
+			off_canvas_sidebars()->get_plugin_key() . '-meta-box',
 			esc_html__( 'Off-Canvas Trigger', OCS_DOMAIN ),
 			array( $this, 'meta_box' ),
 			'nav-menus',
@@ -106,7 +93,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 					}
 				}
 				else {
-					echo '<li>' . $this->general_labels['no_sidebars_available'] . '</li>';
+					echo '<li>' . off_canvas_sidebars()->get_general_labels( 'no_sidebars_available' ) . '</li>';
 				}
 			?>
 				</ul>
@@ -152,7 +139,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 			'show_icon'             => __( 'Show icon', OCS_DOMAIN ),
 			'icon'                  => __( 'Icon classes', OCS_DOMAIN ),
 			'menu_item_type'        => __( 'Off-Canvas Trigger', OCS_DOMAIN ),
-			'no_sidebars_available' => $this->general_labels['no_sidebars_available'],
+			'no_sidebars_available' => off_canvas_sidebars()->get_general_labels( 'no_sidebars_available' ),
 		);
 		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar => $sidebar_data ) {
 			$data['controls'][ $sidebar ] = $sidebar_data['label'];
