@@ -57,6 +57,27 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * @todo Move?
+	 * @since 0.6
+	 * @return bool
+	 */
+	public static function is_gutenberg_page() {
+		if ( function_exists( 'is_gutenberg_page' ) ) {
+			// The Gutenberg plugin is on.
+			return is_gutenberg_page();
+		}
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) ) {
+			// Gutenberg page on 5+.
+			return $current_screen->is_block_editor();
+		}
+		return false;
+	}
+
+	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
 	 * @since   0.5.0
