@@ -15,6 +15,7 @@
 /* @fixme Fix overlay issues with shift and reveal on pages not that don't have full height, currently done in JS window resize. */
 html,
 html.ocs-initialized {
+	overflow: hidden;
 	overflow-y: auto;
 	height: auto;
 }
@@ -28,9 +29,10 @@ html.ocs-scroll-lock.ocs-scroll-fixed {
 html.ocs-scroll-lock.ocs-scroll-fixed body {
 	position: relative;
 }
+body,
 [canvas=container],
 .ocs-initialized [canvas=container] {
-	overflow-y: hidden;
+	overflow: initial; /* Reset Slidebars param for position sticky */
 	height: auto;
 	min-height: 100vh;
 }
