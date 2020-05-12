@@ -175,8 +175,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 		$ocs = off_canvas_sidebars();
 
 		// @codingStandardsIgnoreLine
-		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#off_canvas_control' !== $_POST['menu-item-url'][ $menu_item_db_id ] )
+		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#off_canvas_control' !== $_POST['menu-item-url'][ $menu_item_db_id ] ) {
 			return;
+		}
 
 		// Security check since 'wp_update_nav_menu_item' can be called from outside WP admin.
 		if ( ! current_user_can( 'edit_theme_options' ) ) {

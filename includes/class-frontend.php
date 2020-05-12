@@ -503,7 +503,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		$prefix = $this->get_settings( 'css_prefix' );
-		$css = '';
+		$css    = '';
 
 		$bg_color_type = $this->get_settings( 'background_color_type' );
 		if ( '' !== $bg_color_type ) {

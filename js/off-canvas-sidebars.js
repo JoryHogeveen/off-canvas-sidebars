@@ -50,8 +50,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Validate the disable_over setting ( using _getSetting() ).
 		 * Internal function, do not overwrite.
 		 * @since  0.3.0
-		 * @param  {string}   sidebarId  The sidebar ID.
-		 * @return {boolean}  disableOver status.
+		 * @param  {string}  sidebarId  The sidebar ID.
+		 * @return {boolean} disableOver status.
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check       = true,
@@ -74,11 +74,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @param  {string|boolean|null}  sidebarId  The sidebar ID.
 		 *                                           Pass `false` to check for an active slidebar.
 		 *                                           Pass `null` or no value for only the global setting.
-		 * @return {string|boolean}  The setting or false.
+		 * @return {string|boolean} The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
-			var overwrite, setting,
-				prefix = ocsOffCanvasSidebars.css_prefix;
+			var overwrite,
+				prefix  = ocsOffCanvasSidebars.css_prefix,
+				setting = false;
 
 			if ( 'undefined' !== typeof sidebarId ) {
 				if ( ! sidebarId && null !== sidebarId ) {
@@ -92,10 +93,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					sidebarId = sidebarId.replace( prefix + '-', '' );
 					if ( ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings ) {
 						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
-						if ( setting ) {
-							return setting;
-						} else {
-							return false;
+						if ( ! setting ) {
+							setting = false;
 						}
 					}
 
@@ -106,34 +105,34 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					overwrite = sidebarElement.attr( 'data-ocs-overwrite_global_settings' );
 					if ( overwrite ) {
 						setting = sidebarElement.attr( 'data-ocs-' + key );
-						if ( 'undefined' !== typeof setting ) {
-							return setting;
-						} else {
-							return false;
+						if ( 'undefined' === typeof setting ) {
+							setting = false;
 						}
 					}
 				}
+
+				return setting;
 			}
 
 			if ( ocsOffCanvasSidebars.hasOwnProperty( key ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
-				return ocsOffCanvasSidebars[ key ];
+				setting = ocsOffCanvasSidebars[ key ];
 			}
 			// Fallback/Overwrite to enable global settings from available attributes.
 			else {
 				setting = $( '#' + prefix + '-site' ).attr( 'data-ocs-' + key );
-				if ( 'undefined' !== typeof setting ) {
-					return setting;
+				if ( 'undefined' === typeof setting ) {
+					setting = false;
 				}
 			}
 
-			return false;
+			return setting;
 		};
 
 		/**
 		 * Get the value from the transform axis of an element.
 		 * @param  {string|object}  obj   The element.
 		 * @param  {string}         axis  The axis to get.
-		 * @returns {number|float|null}  The axis value or null.
+		 * @return {number|float|null} The axis value or null.
 		 */
 		ocsOffCanvasSidebars._getTranslateAxis = function( obj, axis ) {
 			obj = $( obj );
@@ -506,7 +505,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Get all fixed elements within the canvas container.
 	 * @since  0.4.0
-	 * @return {object}  A jQuery selection of fixed elements.
+	 * @return {object} A jQuery selection of fixed elements.
 	 */
 	ocsOffCanvasSidebars.getFixedElements = function() {
 		return $( '#' + ocsOffCanvasSidebars.css_prefix + '-site *' ).filter( function() {
@@ -520,7 +519,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 * @param  {object}         elem   The element.
 	 * @param  {string}         prop   The CSS property.
 	 * @param  {string|number}  value  The CSS property value.
-	 * @return {null}  Nothing.
+	 * @return {null} Nothing.
 	 */
 	ocsOffCanvasSidebars.cssCompat = function( elem, prop, value ) {
 		var data = {};
@@ -534,7 +533,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	};
 
 	/**
-	 * @param {string} message
+	 * @param  {string} message Debug message.
+	 * @return {null} Nothing.
 	 */
 	ocsOffCanvasSidebars.debug = function( message ) {
 		if ( ocsOffCanvasSidebars._debug ) {

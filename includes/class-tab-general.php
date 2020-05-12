@@ -178,12 +178,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		);
 
 		$fields['late_init'] = array(
-			'title'       => esc_attr__( 'Late init', OCS_DOMAIN ),
-			'name'        => 'late_init',
-			'callback'    => 'checkbox_option',
-			'type'        => 'checkbox',
-			'section'     => $section,
-			'label'       => __( 'Wait for window to be loaded before initializing Off-Canvas Sidebars.', OCS_DOMAIN ),
+			'title'    => esc_attr__( 'Late init', OCS_DOMAIN ),
+			'name'     => 'late_init',
+			'callback' => 'checkbox_option',
+			'type'     => 'checkbox',
+			'section'  => $section,
+			'label'    => __( 'Wait for window to be loaded before initializing Off-Canvas Sidebars.', OCS_DOMAIN ),
 		);
 
 		$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
