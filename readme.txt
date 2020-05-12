@@ -5,7 +5,7 @@ Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobi
 Requires at least: 4.1
 Tested up to: 5.4
 Requires PHP: 5.2.4
-Stable tag: 0.5.4
+Stable tag: 0.5.5
 
 Add off-canvas sidebars (Slidebars) containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -91,6 +91,17 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.5.5 =
+
+*	**Compatibility**: Changed the CSS to be compatible with `position: sticky;` elements. [#83](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/83)
+*	**Compatibility**: Fix default before and after widget args. Widget element changed to `<div>` instead of `<li>`. [#88](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/88)
+*	**Enhancement**: Late init option. [#81](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/81)
+*	**Enhancement**: Allow minimum value of 0 for numeric settings.
+*	**Fix**: Gutenberg notice that OCS couldn't be initialized.
+*	**UI**: Rename control elements to triggers (uniform names).
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/84)
+
 = 0.5.4 =
 
 *	**Compatibility:** Support `wp_body_open` as `website_before` hook introduced in WordPress 5.2. [#70](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/70)
@@ -128,7 +139,7 @@ Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebar
 *	**Feature:** Add icon options in control trigger API and shortcode.
 *	**Feature:** Enhance widget UI with advanced options for control triggers. [#27](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/27)
 *	**Enhancement:** Setting page JS and UI enhancements.
-*	**Enhancement:** Use data attributes to conform [W3C HTML5 specifications](http://www.w3.org/TR/html5/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes). [#50](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/50) 
+*	**Enhancement:** Use data attributes to conform [W3C HTML5 specifications](http://www.w3.org/TR/html5/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes). [#50](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/50)
 *	**Enhancement:** Add support links on plugins overview page.
 *	**Refactoring:** Separate classes for tabs, page and settings/validation. Enhances plugin option validation. [#38](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/38)
 *	**Refactoring:** Global OCS_DOMAIN constant.
@@ -138,7 +149,7 @@ Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebar
 
 = 0.4.2 =
 
-*	**Enhancement:** Keep scrollbar visible when scroll lock is active. [#44](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/44) & [PR #45](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/45) 
+*	**Enhancement:** Keep scrollbar visible when scroll lock is active. [#44](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/44) & [PR #45](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/45)
 *	**Enhancement:** (Slidebars library) Make sure that percentage based widths are rounded to actual pixels to prevent 1px differences on display.
 *	**Fix:** PHP Notice on `fixed_elements` key.
 *	**Compatibility:** Tested with WordPress 4.9
