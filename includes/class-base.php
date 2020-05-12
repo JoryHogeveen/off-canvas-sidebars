@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.3
+ * @version 0.5.5
  */
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
@@ -58,7 +58,7 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * @todo Move?
-	 * @since 0.6
+	 * @since 0.5.5
 	 * @return bool
 	 */
 	public static function is_gutenberg_page() {

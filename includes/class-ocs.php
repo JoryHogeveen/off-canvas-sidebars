@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.3
+ * @version 0.5.5
  */
 final class OCS_Off_Canvas_Sidebars
 {
@@ -366,6 +366,8 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Returns a sidebar key based on its label.
 	 *
+	 * @todo Deprecate this.
+	 *
 	 * @since   0.1.0
 	 * @param   string  $label
 	 * @return  string  $key
@@ -383,7 +385,8 @@ final class OCS_Off_Canvas_Sidebars
 	 * Register slidebar sidebars.
 	 * Also checks if theme is based on the Genesis Framework.
 	 *
-	 * @since   0.1.0
+	 * @since  0.1.0
+	 * @since  0.5.5  Added default widget before and after params.
 	 */
 	public function register_sidebars() {
 		$sidebars = $this->get_sidebars();

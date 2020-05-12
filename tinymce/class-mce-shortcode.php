@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
  * @since   0.5.2  Renamed from `OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator`.
- * @version 0.5.2
+ * @version 0.5.5
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebars_Base
@@ -131,7 +131,7 @@ final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebar
 	/**
 	 * Admin print scripts callback.
 	 *
-	 * @since 0.6
+	 * @since 0.5.5
 	 */
 	public function admin_print_scripts() {
 		if ( self::is_gutenberg_page() ) {
