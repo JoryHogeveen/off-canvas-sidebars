@@ -398,10 +398,10 @@ final class OCS_Off_Canvas_Sidebars
 						'class'       => 'off-canvas-sidebar',
 						'name'        => __( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label'],
 						'description' => __( 'This is a widget area that is used for off-canvas widgets.', OCS_DOMAIN ),
-						//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
-						//'after_widget'  => '</div></div></section>',
-						//'before_title'  => '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
-						//'after_title'   => '</h3></div>',
+						//'before_widget' => '<section id="%1$s" class="widget %2$s">',
+						//'after_widget'  => '</section>',
+						//'before_title'  => '',
+						//'after_title'   => '',
 					);
 
 					/**
@@ -426,6 +426,10 @@ final class OCS_Off_Canvas_Sidebars
 					if ( function_exists( 'genesis_register_sidebar' ) ) {
 						genesis_register_sidebar( $args );
 					} else {
+						if ( ! isset( $args['before_widget'] ) && ! isset( $args['after_widget'] ) ) {
+							$args['before_widget'] = '<div id="%1$s" class="widget %2$s">';
+							$args['after_widget']  = '</div>';
+						}
 						register_sidebar( $args );
 					}
 				}
