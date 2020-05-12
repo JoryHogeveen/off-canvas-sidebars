@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.3
+ * @version 0.5.5
  */
 final class OCS_Off_Canvas_Sidebars
 {
@@ -366,6 +366,8 @@ final class OCS_Off_Canvas_Sidebars
 	/**
 	 * Returns a sidebar key based on its label.
 	 *
+	 * @todo Deprecate this.
+	 *
 	 * @since   0.1.0
 	 * @param   string  $label
 	 * @return  string  $key
@@ -383,7 +385,8 @@ final class OCS_Off_Canvas_Sidebars
 	 * Register slidebar sidebars.
 	 * Also checks if theme is based on the Genesis Framework.
 	 *
-	 * @since   0.1.0
+	 * @since  0.1.0
+	 * @since  0.5.5  Added default widget before and after params.
 	 */
 	public function register_sidebars() {
 		$sidebars = $this->get_sidebars();
@@ -398,10 +401,10 @@ final class OCS_Off_Canvas_Sidebars
 						'class'       => 'off-canvas-sidebar',
 						'name'        => __( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label'],
 						'description' => __( 'This is a widget area that is used for off-canvas widgets.', OCS_DOMAIN ),
-						//'before_widget' => '<section id="%1$s" class="widget %2$s"><div class="widget-wrap"><div class="inner">',
-						//'after_widget'  => '</div></div></section>',
-						//'before_title'  => '<div class="widget-title-wrapper widgettitlewrapper"><h3 class="widget-title widgettitle">',
-						//'after_title'   => '</h3></div>',
+						//'before_widget' => '<section id="%1$s" class="widget %2$s">',
+						//'after_widget'  => '</section>',
+						//'before_title'  => '',
+						//'after_title'   => '',
 					);
 
 					/**
@@ -426,6 +429,10 @@ final class OCS_Off_Canvas_Sidebars
 					if ( function_exists( 'genesis_register_sidebar' ) ) {
 						genesis_register_sidebar( $args );
 					} else {
+						if ( ! isset( $args['before_widget'] ) && ! isset( $args['after_widget'] ) ) {
+							$args['before_widget'] = '<div id="%1$s" class="widget %2$s">';
+							$args['after_widget']  = '</div>';
+						}
 						register_sidebar( $args );
 					}
 				}

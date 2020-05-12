@@ -4,7 +4,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.4
+ * @version 0.5.5
  * @preserve
  */
 
@@ -15,6 +15,7 @@
 /* @fixme Fix overlay issues with shift and reveal on pages not that don't have full height, currently done in JS window resize. */
 html,
 html.ocs-initialized {
+	overflow: hidden;
 	overflow-y: auto;
 	height: auto;
 }
@@ -28,9 +29,10 @@ html.ocs-scroll-lock.ocs-scroll-fixed {
 html.ocs-scroll-lock.ocs-scroll-fixed body {
 	position: relative;
 }
+body,
 [canvas=container],
 .ocs-initialized [canvas=container] {
-	overflow-y: hidden;
+	overflow: initial; /* Reset Slidebars param for position sticky */
 	height: auto;
 	min-height: 100vh;
 }
@@ -72,6 +74,10 @@ html.ocs-scroll-lock.ocs-scroll-fixed body {
 	-o-transition: -o-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
 }
+
+
+/* https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios */
+.ocs-trigger {cursor: pointer;}
 
 /* @todo fix support for top and bottom */
 [off-canvas*=" top"][off-canvas*=" reveal"],

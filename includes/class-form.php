@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.3
+ * @version 0.5.5
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
@@ -341,6 +341,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	 * Render number option.
 	 * @since   0.1.0
 	 * @since   0.4.0  Moved to this class.
+	 * @since   0.5.5  Changed min attr to 0 (was 1).
 	 * @static
 	 * @param   array  $args
 	 */
@@ -362,7 +363,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'class' => $classes,
 			'id'    => $prefix_id . '_' . $args['name'],
 			'value' => $prefix_value[ $args['name'] ],
-			'min'   => 1,
+			'min'   => 0,
 			'max'   => '',
 			'step'  => 1,
 		);

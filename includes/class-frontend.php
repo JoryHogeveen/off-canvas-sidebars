@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.4
+ * @version 0.5.5
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -40,10 +40,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$this->default_actions();
 		}
 
-		// Dúh..
-		//add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
-		//add_action( 'wp_footer', array( $this, 'add_inline_scripts' ), 999999999 ); // enforce last addition
 		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 
 		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
@@ -477,6 +474,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			'off-canvas-sidebars',
 			'ocsOffCanvasSidebars',
 			array(
+				'late_init'            => (bool) $this->get_settings( 'late_init' ),
 				'site_close'           => (bool) $this->get_settings( 'site_close' ),
 				'link_close'           => (bool) $this->get_settings( 'link_close' ),
 				'disable_over'         => (int) $this->get_settings( 'disable_over' ),
@@ -488,21 +486,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);
-	}
-
-	/**
-	 * Add necessary inline scripts.
-	 *
-	 * @since   0.1.0
-	 */
-	public function add_inline_scripts() {
-		if ( ! is_admin() ) {
-			?>
-<script type="text/javascript">
-
-</script>
-			<?php
-		}
 	}
 
 	/**
@@ -520,7 +503,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		$prefix = $this->get_settings( 'css_prefix' );
-		$styles = '';
+		$css    = '';
 
 		$bg_color_type = $this->get_settings( 'background_color_type' );
 		if ( '' !== $bg_color_type ) {
@@ -532,7 +515,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				$bg_color = OCS_Off_Canvas_Sidebars_Settings::validate_color( $this->get_settings( 'background_color' ) );
 			}
 			if ( $bg_color ) {
-				$styles .= '#' . $prefix . '-site {background-color:' . $bg_color . ';}';
+				$css .= '#' . $prefix . '-site {background-color:' . $bg_color . ';}';
 			}
 		} // End if().
 
@@ -567,15 +550,13 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 
 			if ( ! empty( $prop ) ) {
-
-				$styles .= '.ocs-slidebar.ocs-' . $sidebar_id . ' {' . implode( ' ', $prop ) . '}';
+				$css .= '.ocs-slidebar.ocs-' . $sidebar_id . ' {' . implode( ' ', $prop ) . '}';
 			}
 		} // End foreach().
 
-		// https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios
-		$styles .= '.' . $prefix . '-trigger {cursor: pointer;}';
-
-		echo '<style type="text/css">' . $styles . '</style>';
+		if ( $css ) {
+			echo '<style type="text/css">' . $css . '</style>';
+		}
 	}
 
 	/**

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.3
+ * @version 0.5.5
  */
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
@@ -54,6 +54,27 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 			$str = implode( ' ', $array );
 		}
 		return $str;
+	}
+
+	/**
+	 * @todo Move?
+	 * @since 0.5.5
+	 * @return bool
+	 */
+	public static function is_gutenberg_page() {
+		if ( function_exists( 'is_gutenberg_page' ) ) {
+			// The Gutenberg plugin is on.
+			return is_gutenberg_page();
+		}
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) ) {
+			// Gutenberg page on 5+.
+			return $current_screen->is_block_editor();
+		}
+		return false;
 	}
 
 	/**

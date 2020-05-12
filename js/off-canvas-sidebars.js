@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.4
+ * @version 0.5.5
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -13,6 +13,7 @@
 
 if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	var ocsOffCanvasSidebars = {
+		late_init: false,
 		site_close: true,
 		link_close: true,
 		disable_over: false,
@@ -40,12 +41,17 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	ocsOffCanvasSidebars.init = function() {
 
+		if ( ! $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length || ( 'undefined' === typeof slidebars ) ) {
+			ocsOffCanvasSidebars.debug( 'Container or Slidebars not found, init stopped' );
+			return false;
+		}
+
 		/**
 		 * Validate the disable_over setting ( using _getSetting() ).
 		 * Internal function, do not overwrite.
 		 * @since  0.3.0
-		 * @param  {string}   sidebarId  The sidebar ID.
-		 * @return {boolean}  disableOver status.
+		 * @param  {string}  sidebarId  The sidebar ID.
+		 * @return {boolean} disableOver status.
 		 */
 		ocsOffCanvasSidebars._checkDisableOver = function( sidebarId ) {
 			var check       = true,
@@ -68,11 +74,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @param  {string|boolean|null}  sidebarId  The sidebar ID.
 		 *                                           Pass `false` to check for an active slidebar.
 		 *                                           Pass `null` or no value for only the global setting.
-		 * @return {string|boolean}  The setting or false.
+		 * @return {string|boolean} The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
-			var overwrite, setting,
-				prefix = ocsOffCanvasSidebars.css_prefix;
+			var overwrite,
+				prefix  = ocsOffCanvasSidebars.css_prefix,
+				setting = false;
 
 			if ( 'undefined' !== typeof sidebarId ) {
 				if ( ! sidebarId && null !== sidebarId ) {
@@ -86,10 +93,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					sidebarId = sidebarId.replace( prefix + '-', '' );
 					if ( ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings ) {
 						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
-						if ( setting ) {
-							return setting;
-						} else {
-							return false;
+						if ( ! setting ) {
+							setting = false;
 						}
 					}
 
@@ -100,43 +105,43 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					overwrite = sidebarElement.attr( 'data-ocs-overwrite_global_settings' );
 					if ( overwrite ) {
 						setting = sidebarElement.attr( 'data-ocs-' + key );
-						if ( 'undefined' !== typeof setting ) {
-							return setting;
-						} else {
-							return false;
+						if ( 'undefined' === typeof setting ) {
+							setting = false;
 						}
 					}
 				}
+
+				return setting;
 			}
 
 			if ( ocsOffCanvasSidebars.hasOwnProperty( key ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
-				return ocsOffCanvasSidebars[ key ];
+				setting = ocsOffCanvasSidebars[ key ];
 			}
 			// Fallback/Overwrite to enable global settings from available attributes.
 			else {
 				setting = $( '#' + prefix + '-site' ).attr( 'data-ocs-' + key );
-				if ( 'undefined' !== typeof setting ) {
-					return setting;
+				if ( 'undefined' === typeof setting ) {
+					setting = false;
 				}
 			}
 
-			return false;
+			return setting;
 		};
 
 		/**
 		 * Get the value from the transform axis of an element.
 		 * @param  {string|object}  obj   The element.
 		 * @param  {string}         axis  The axis to get.
-		 * @returns {number|float|null}  The axis value or null.
+		 * @return {number|float|null} The axis value or null.
 		 */
 		ocsOffCanvasSidebars._getTranslateAxis = function( obj, axis ) {
 			obj = $( obj );
 
-			var transformMatrix = obj.css( "-webkit-transform" )
-				|| obj.css( "-moz-transform" )
-				|| obj.css( "-ms-transform" )
-				|| obj.css( "-o-transform" )
-				|| obj.css( "transform" );
+			var transformMatrix = obj.css( '-webkit-transform' )
+				|| obj.css( '-moz-transform' )
+				|| obj.css( '-ms-transform' )
+				|| obj.css( '-o-transform' )
+				|| obj.css( 'transform' );
 			if ( transformMatrix ) {
 				var matrix = transformMatrix.replace( /[^0-9\-.,]/g, '' ).split( ',' ),
 					val    = 0;
@@ -159,13 +164,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
 
-		$window.trigger( 'ocs_before', this );
+		$window.trigger( 'ocs_before', [ this ] );
 
 		// Slidebars constructor.
 		ocsOffCanvasSidebars.slidebarsController = new slidebars();
 
 		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
-			return;
+			ocsOffCanvasSidebars.debug( 'Cannot initialize Slidebars' );
+			return false;
 		}
 
 		// Legacy CSS mode?
@@ -174,14 +180,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			$html.addClass( 'ocs-legacy' );
 		}
 
-		$window.trigger( 'ocs_loaded', this );
+		$window.trigger( 'ocs_loaded', [ this ] );
 
 		// Initialize slidebars.
 		ocsOffCanvasSidebars.slidebarsController.init();
 
 		$html.addClass( 'ocs-initialized' );
 
-		$window.trigger( 'ocs_initialized', this );
+		$window.trigger( 'ocs_initialized', [ this ] );
 
 		/**
 		 * Compatibility with WP Admin Bar.
@@ -289,37 +295,44 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			ocsOffCanvasSidebars.setupTriggers();
 		}
 
-		$window.trigger( 'ocs_after', this );
+		$window.trigger( 'ocs_after', [ this ] );
+
+		return true;
 	};
 
 	/**
 	 * Set the default settings for sidebars if they are not found.
 	 * @since  0.3.0
 	 * @param  {string}  sidebarId  The sidebar ID.
-	 * @return {null}  Nothing.
+	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
 
 		if ( 'undefined' === typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] ) {
 			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
 				'overwrite_global_settings': false,
-				"site_close": ocsOffCanvasSidebars.site_close,
-				"disable_over": ocsOffCanvasSidebars.disable_over,
-				"hide_control_classes": ocsOffCanvasSidebars.hide_control_classes,
-				"scroll_lock": ocsOffCanvasSidebars.scroll_lock
-			}
+				'site_close': ocsOffCanvasSidebars.site_close,
+				'disable_over': ocsOffCanvasSidebars.disable_over,
+				'hide_control_classes': ocsOffCanvasSidebars.hide_control_classes,
+				'scroll_lock': ocsOffCanvasSidebars.scroll_lock
+			};
 		}
 	};
 
 	/**
 	 * Setup automatic trigger handling.
 	 * @since  0.3.0
-	 * @return {null}  Nothing.
+	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.setupTriggers = function() {
 		var controller       = ocsOffCanvasSidebars.slidebarsController,
 			prefix           = ocsOffCanvasSidebars.css_prefix,
 			$sidebarElements = $( '.' + prefix + '-slidebar' );
+
+		if ( ! $sidebarElements.length ) {
+			ocsOffCanvasSidebars.debug( 'No sidebars found' );
+			return false;
+		}
 
 		$sidebarElements.each( function() {
 			var $this  = $( this ),
@@ -492,7 +505,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Get all fixed elements within the canvas container.
 	 * @since  0.4.0
-	 * @return {object}  A jQuery selection of fixed elements.
+	 * @return {object} A jQuery selection of fixed elements.
 	 */
 	ocsOffCanvasSidebars.getFixedElements = function() {
 		return $( '#' + ocsOffCanvasSidebars.css_prefix + '-site *' ).filter( function() {
@@ -506,7 +519,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 * @param  {object}         elem   The element.
 	 * @param  {string}         prop   The CSS property.
 	 * @param  {string|number}  value  The CSS property value.
-	 * @return {null}  Nothing.
+	 * @return {null} Nothing.
 	 */
 	ocsOffCanvasSidebars.cssCompat = function( elem, prop, value ) {
 		var data = {};
@@ -519,7 +532,19 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		$( elem ).css( data );
 	};
 
-	if ( $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length && ( 'undefined' !== typeof slidebars ) ) {
+	/**
+	 * @param  {string} message Debug message.
+	 * @return {null} Nothing.
+	 */
+	ocsOffCanvasSidebars.debug = function( message ) {
+		if ( ocsOffCanvasSidebars._debug ) {
+			console.log( 'Off-Canvas Sidebars: ' + message );
+		}
+	};
+
+	if ( ocsOffCanvasSidebars.late_init ) {
+		$window.load( ocsOffCanvasSidebars.init );
+	} else {
 		ocsOffCanvasSidebars.init();
 	}
 

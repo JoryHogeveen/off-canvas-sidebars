@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.4
+ * @version 0.5.5
  */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
@@ -41,7 +41,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	public function __construct() {
 		parent::__construct(
 			'Off-Canvas-Control',
-			__( 'Off-Canvas Control', OCS_DOMAIN ),
+			__( 'Off-Canvas Trigger', OCS_DOMAIN ),
 			array(
 				'classname'   => 'off_canvas_control',
 				'description' => __( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
