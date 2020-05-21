@@ -493,12 +493,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars' . $suffix . '.css', array(), $version );
 		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars' . $suffix . '.js', array( 'jquery', 'slidebars' ), $version, true );
 
-		$sidebars = array();
-		foreach ( $this->get_enabled_sidebars() as $sidebar_id => $sidebar_data ) {
-			if ( ! empty( $sidebar_data['enable'] ) ) {
-				$sidebars[ $sidebar_id ] = $sidebar_data;
-			}
-		}
 		wp_localize_script(
 			'off-canvas-sidebars',
 			'ocsOffCanvasSidebars',
@@ -511,7 +505,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 				'legacy_css'           => (bool) ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ),
 				'css_prefix'           => $this->get_settings( 'css_prefix' ),
-				'sidebars'             => $sidebars,
+				'sidebars'             => $this->get_enabled_sidebars(),
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);
