@@ -77,38 +77,33 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @return {string|boolean} The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
-			var overwrite,
-				prefix  = ocsOffCanvasSidebars.css_prefix,
+			var prefix  = ocsOffCanvasSidebars.css_prefix,
 				setting = false;
 
-			if ( 'undefined' !== typeof sidebarId ) {
-				if ( ! sidebarId && null !== sidebarId ) {
-					sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
-				}
+			if ( 'undefined' !== typeof sidebarId && null !== sidebarId && ! sidebarId ) {
+				sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 			}
 
 			if ( sidebarId ) {
+				setting = null;
 
 				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 					sidebarId = sidebarId.replace( prefix + '-', '' );
-					if ( ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings ) {
-						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
-						if ( ! setting ) {
-							setting = false;
+					if ( ocsOffCanvasSidebars.sidebars.hasOwnProperty( sidebarId ) ) {
+						var sidebar = ocsOffCanvasSidebars.sidebars[ sidebarId ];
+						if ( sidebar.hasOwnProperty( key ) ) {
+							setting = sidebar[ key ];
 						}
 					}
 
-				// Fallback/Overwrite to enable sidebar settings from available attributes.
+				// Fallback to settings from available attributes.
 				} else {
-					var sidebarElement = $( '#' + sidebarId );
+					setting = $( '#' + sidebarId ).attr( 'data-ocs-' + key );
+				}
 
-					overwrite = sidebarElement.attr( 'data-ocs-overwrite_global_settings' );
-					if ( overwrite ) {
-						setting = sidebarElement.attr( 'data-ocs-' + key );
-						if ( 'undefined' === typeof setting ) {
-							setting = false;
-						}
-					}
+				// Fallback to global settings.
+				if ( null === setting || 'undefined' === typeof setting ) {
+					setting = ocsOffCanvasSidebars._getSetting( key, null );
 				}
 
 				return setting;
