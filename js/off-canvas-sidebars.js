@@ -401,11 +401,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Close all sidebars.
 		$document.on( 'touchend click', '.' + prefix + '-close--all', function( e ) {
-			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
-				e.preventDefault();
-				e.stopPropagation();
-				controller.close();
-			}
+			e.preventDefault();
+			e.stopPropagation();
+			controller.close();
 		} );
 
 		/**
