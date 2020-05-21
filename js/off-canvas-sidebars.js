@@ -302,15 +302,19 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
+		var defaults = {
+			'overwrite_global_settings': false,
+			'site_close': ocsOffCanvasSidebars._getSetting( 'site_close' ),
+			'disable_over': ocsOffCanvasSidebars._getSetting( 'disable_over' ),
+			'hide_control_classes': ocsOffCanvasSidebars._getSetting( 'hide_control_classes' ),
+			'scroll_lock': ocsOffCanvasSidebars._getSetting( 'scroll_lock' )
+		};
 
 		if ( 'undefined' === typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] ) {
-			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
-				'overwrite_global_settings': false,
-				'site_close': ocsOffCanvasSidebars.site_close,
-				'disable_over': ocsOffCanvasSidebars.disable_over,
-				'hide_control_classes': ocsOffCanvasSidebars.hide_control_classes,
-				'scroll_lock': ocsOffCanvasSidebars.scroll_lock
-			};
+			ocsOffCanvasSidebars.sidebars[ sidebarId ] = defaults;
+		} else if ( ! ocsOffCanvasSidebars._getSetting( 'overwrite_global_settings', sidebarId ) ) {
+			// Overwrite with default values.
+			$.extend( ocsOffCanvasSidebars.sidebars[ sidebarId ], defaults );
 		}
 	};
 
