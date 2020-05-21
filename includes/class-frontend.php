@@ -183,7 +183,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		// Add content before the off-canvas sidebars.
 		do_action( 'ocs_sidebars_before' );
 
-		$sidebars = off_canvas_sidebars_settings()->get_sidebars();
+		$sidebars = $this->get_enabled_sidebars();
 		if ( ! empty( $sidebars ) ) {
 			foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
 				$this->do_sidebar( $sidebar_id );
@@ -202,7 +202,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $sidebar_id
 	 */
 	public function do_sidebar( $sidebar_id ) {
-		$sidebar_data = off_canvas_sidebars_settings()->get_sidebar_settings( $sidebar_id );
+		$sidebar_data = $this->get_sidebar_settings( $sidebar_id );
 		if ( empty( $sidebar_data ) ) {
 			return;
 		}
@@ -317,6 +317,35 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		}
 		return $sidebars;
+	}
+
+	/**
+	 * Get the plugin settings.
+	 *
+	 * @since   0.5.x
+	 * @param   string  $sidebar_id  The sidebar ID.
+	 * @param   string  $key         (optional) Get a single setting by key?
+	 * @return  mixed
+	 */
+	public function get_sidebar_settings( $sidebar_id, $key = null ) {
+		$sidebars = $this->get_enabled_sidebars();
+		if ( empty( $sidebars[ $sidebar_id ] ) ) {
+			return null;
+		}
+		$settings = $sidebars[ $sidebar_id ];
+
+		/**
+		 * Filter whether an off-canvas sidebar should be rendered.
+		 * @since   0.5.x
+		 * @param   array   $settings
+		 * @param   string  $sidebar_id
+		 * @return  array
+		 */
+		$settings = apply_filters( 'ocs_get_sidebar_settings', $settings, $sidebar_id );
+		if ( $key ) {
+			return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
+		}
+		return $settings;
 	}
 
 	/**
