@@ -378,9 +378,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'class' => $classes,
 			'id'    => $prefix_id . '_' . $args['name'],
 			'value' => $prefix_value[ $args['name'] ],
-			'min'   => 0,
-			'max'   => '',
-			'step'  => 1,
+			'min'   => isset( $args['min'] ) ? $args['min'] : 0,
+			'max'   => isset( $args['max'] ) ? $args['max'] : '',
+			'step'  => isset( $args['step'] ) ? $args['step'] : 0,
 		);
 		if ( ! empty( $args['readonly'] ) ) {
 			$attr['readonly'] = 'readonly';
