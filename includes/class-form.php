@@ -198,6 +198,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$prefix_value[ $args['name'] ] = $args['value'];
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
+		if ( ! empty( $args['class'] ) ) {
+			$classes .= ' ' . $args['class'];
+		}
 
 		$attr = array(
 			'type'  => 'checkbox',
@@ -246,6 +249,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$prefix_value[ $args['name'] ] = $args['default'];
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
+		if ( ! empty( $args['class'] ) ) {
+			$classes .= ' ' . $args['class'];
+		}
 
 		$html = '';
 
@@ -308,6 +314,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$prefix_value[ $args['name'] ] = $args['default'];
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
+		if ( ! empty( $args['class'] ) ) {
+			$classes .= ' ' . $args['class'];
+		}
 
 		$attr = array(
 			'name'  => $prefix_name . '[' . $args['name'] . ']',
@@ -359,6 +368,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		$prefix_classes = $prefixes['prefixClasses'];
 
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
+		if ( ! empty( $args['class'] ) ) {
+			$classes .= ' ' . $args['class'];
+		}
 
 		$attr = array(
 			'type'  => 'number',
