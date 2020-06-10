@@ -149,8 +149,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$classes .= ' ' . $args['class'];
 		}
 
-		$html = '<fieldset>';
-
 		$attr = array(
 			'name'  => $prefix_name . '[' . $args['name'] . ']',
 			'class' => $classes,
@@ -171,11 +169,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			$field = '<label>' . $field . ' ' . $args['label'] . '</label>';
 		}
 
-		$html .= $field;
+		$html = $field . self::do_description( $args );
 
-		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
+		echo self::wrap_fieldset( $html, $args );
 	}
 
 	/**
@@ -200,8 +196,6 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
 
-		$html = '<fieldset class="checkbox">';
-
 		$attr = array(
 			'type'  => 'checkbox',
 			'name'  => $prefix_name . '[' . $args['name'] . ']',
@@ -216,11 +210,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( isset( $args['label'] ) ) {
 			$field = '<label>' . $field . ' ' . $args['label'] . '</label>';
 		}
-		$html .= $field;
 
-		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
+		$html = $field . self::do_description( $args );
+
+		echo self::wrap_fieldset( $html, $args, array( 'class' => 'checkbox' ) );
 	}
 
 	/**
@@ -248,7 +241,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
 
-		$html = '<fieldset class="radio">';
+		$html = '';
 
 		foreach ( $args['options'] as $option ) {
 
@@ -279,8 +272,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		} // End foreach().
 
 		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
+
+		echo self::wrap_fieldset( $html, $args, array( 'class' => 'radio' ) );
 	}
 
 	/**
@@ -307,15 +300,13 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		}
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] );
 
-		$html = '<fieldset class="select">';
-
 		$attr = array(
 			'name'  => $prefix_name . '[' . $args['name'] . ']',
 			'class' => $classes,
 			'id'    => $prefix_id . '_' . $args['name'],
 		);
 
-		$html .= '<select ' . self::parse_to_html_attr( $attr ) . ' >';
+		$html = '<select ' . self::parse_to_html_attr( $attr ) . ' >';
 
 		foreach ( $args['options'] as $option ) {
 			if ( ! isset( $prefix_value[ $args['name'] ] ) ) {
@@ -333,8 +324,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		}
 
 		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
+
+		echo self::wrap_fieldset( $html, $args, array( 'class' => 'select' ) );
 	}
 
 	/**
@@ -376,11 +367,10 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( isset( $args['label'] ) ) {
 			$field = '<label>' . $field . ' ' . $args['label'] . '</label>';
 		}
-		$html .= $field;
 
-		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
-		echo $html;
+		$html = $field . self::do_description( $args );
+
+		echo self::wrap_fieldset( $html, $args, array( 'class' => 'number' ) );
 	}
 
 	/**
@@ -438,6 +428,28 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			return '<' . $elem . ' class="description">' . $args['description'] . '</' . $elem . '>';
 		}
 		return '';
+	}
+
+	/**
+	 * Wrap field in fieldset.
+	 *
+	 * @param   string  $html
+	 * @param   array   $args
+	 * @param   array   $attr
+	 * @return  string
+	 */
+	public static function wrap_fieldset( $html, $args, $attr = array() ) {
+		if ( ! isset( $args['fieldset'] ) || ! empty( $args['fieldset'] ) ) {
+			if ( is_string( $args['fieldset'] ) ) {
+				$class = array( $args['fieldset'] );
+				if ( ! empty( $attr['class'] ) ) {
+					$class[] = $attr['class'];
+				}
+				$attr['class'] = $class;
+			}
+			return '<fieldset ' . self::parse_to_html_attr( $attr ) . '>' . $html . '</fieldset>';
+		}
+		return $html;
 	}
 
 	/**
