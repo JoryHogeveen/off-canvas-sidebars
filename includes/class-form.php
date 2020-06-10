@@ -157,6 +157,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		if ( isset( $args['placeholder'] ) ) {
 			$attr['placeholder'] = $args['placeholder'];
 		}
+		if ( ! empty( $args['readonly'] ) ) {
+			$attr['readonly'] = 'readonly';
+		}
 
 		if ( ! empty( $args['multiline'] ) ) {
 			$field = '<textarea ' . self::parse_to_html_attr( $attr ) . '>' . $prefix_value[ $args['name'] ] . '</textarea>';
@@ -203,6 +206,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'id'    => $prefix_id . '_' . $args['name'],
 			'value' => 1,
 		);
+		if ( ! empty( $args['readonly'] ) ) {
+			$attr['readonly'] = 'readonly';
+		}
 
 		$checked = checked( $prefix_value[ $args['name'] ], 1, false );
 
@@ -256,6 +262,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 				'id'    => $prefix_id . '_' . $args['name'] . '_' . $option['name'],
 				'value' => $option['value'],
 			);
+			if ( ! empty( $args['readonly'] ) || ! empty( $option['readonly'] ) ) {
+				$attr['readonly'] = 'readonly';
+			}
 
 			$checked = checked( $prefix_value[ $args['name'] ], $option['value'], false );
 
@@ -305,6 +314,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'class' => $classes,
 			'id'    => $prefix_id . '_' . $args['name'],
 		);
+		if ( ! empty( $args['readonly'] ) ) {
+			$attr['readonly'] = 'readonly';
+		}
 
 		$html = '<select ' . self::parse_to_html_attr( $attr ) . ' >';
 
@@ -358,7 +370,9 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			'max'   => '',
 			'step'  => 1,
 		);
-		$html = '<fieldset class="number">';
+		if ( ! empty( $args['readonly'] ) ) {
+			$attr['readonly'] = 'readonly';
+		}
 
 		$field = '<input ' . self::parse_to_html_attr( $attr ) . ' />';
 		if ( ! empty( $args['input_after'] ) ) {
