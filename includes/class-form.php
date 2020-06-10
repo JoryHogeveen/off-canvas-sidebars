@@ -400,6 +400,37 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Render hook option (text field for hook name and number field for priority.
+	 * @since   0.5.6
+	 * @static
+	 * @param   array  $args
+	 */
+	public static function hook_option( $args ) {
+		if ( ! isset( $args['name'] ) ) {
+			return;
+		}
+
+		$input_args = $args;
+		unset( $input_args['description'] );
+		$input_args['fieldset'] = false;
+
+		$hook = self::text_option( $input_args );
+
+		$input_args['name'] .= '_priority';
+		$input_args['label'] = __( 'Priority' );
+		if ( isset( $input_args['priority'] ) ) {
+			$input_args['placeholder'] = $input_args['priority'];
+		}
+		$input_args['class'] = 'small-text';
+		$input_args['min']   = '';
+		$priority = self::number_option( $input_args );
+
+		$html = $hook . $priority . self::do_description( $args );
+
+		echo self::wrap_fieldset( $html, $args, array( 'class' => 'hook' ) );
+	}
+
+	/**
 	 * Render color option.
 	 * @since   0.1.0
 	 * @since   0.4.0  Moved to this class.
