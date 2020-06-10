@@ -57,6 +57,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		'background_color'              => '',
 		'website_before_hook'           => 'website_before',
 		'website_after_hook'            => 'website_after',
+		'website_before_hook_priority'  => '',
+		'website_after_hook_priority'   => '',
 		'use_fastclick'                 => 0,
 		'compatibility_position_fixed'  => 'none',
 		'wp_editor_shortcode_rendering' => 0,

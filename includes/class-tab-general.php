@@ -201,12 +201,18 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			$fields['website_before_hook'] = array(
 				'name'        => 'website_before_hook',
 				'title'       => '<code>website_before</code> ' . esc_attr__( 'hook name', OCS_DOMAIN ),
-				'callback'    => 'text_option',
+				'callback'    => 'hook_option',
 				'type'        => 'text',
 				'validate'    => 'remove_whitespace',
 				'section'     => $section,
 				'placeholder' => $before_hook,
 				'description' => $theme_hooks_wiki,
+			);
+			$fields['website_before_hook_priority'] = array(
+				'name'    => 'website_before_hook_priority',
+				'hidden'  => true,
+				'default' => '',
+				'type'    => 'number',
 			);
 		}
 		// Check if the after hook is filtered. If it is this setting is not needed.
@@ -214,12 +220,18 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			$fields['website_after_hook'] = array(
 				'name'        => 'website_after_hook',
 				'title'       => '<code>website_after</code> ' . esc_attr__( 'hook name', OCS_DOMAIN ),
-				'callback'    => 'text_option',
+				'callback'    => 'hook_option',
 				'type'        => 'text',
 				'validate'    => 'remove_whitespace',
 				'section'     => $section,
 				'placeholder' => $after_hook,
 				'description' => $theme_hooks_wiki,
+			);
+			$fields['website_after_hook_priority'] = array(
+				'name'    => 'website_after_hook_priority',
+				'hidden'  => true,
+				'default' => '',
+				'type'    => 'number',
 			);
 		}
 
