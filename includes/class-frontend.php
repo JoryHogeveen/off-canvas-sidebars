@@ -314,6 +314,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the enabled plugin sidebars.
 	 *
 	 * @since   0.5.3
+	 * @since   0.5.x  Overwrite from global settings.
 	 * @return  array
 	 */
 	public function get_enabled_sidebars() {
@@ -321,6 +322,12 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
 			if ( ! $this->is_sidebar_enabled( $sidebar_id ) ) {
 				unset( $sidebars[ $sidebar_id ] );
+			} elseif ( empty( $sidebar_data['overwrite_global_settings'] ) ) {
+				// Get global settings with the same key.
+				$settings = off_canvas_sidebars_settings()->get_settings();
+				$settings = array_intersect_key( $settings, $sidebar_data );
+				// Overwrite sidebar settings with global settings.
+				$sidebars[ $sidebar_id ] = array_merge( $sidebar_data, $settings );
 			}
 		}
 		return $sidebars;
