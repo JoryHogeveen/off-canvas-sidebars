@@ -423,6 +423,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		}
 		$input_args['class'] = 'small-text';
 		$input_args['min']   = '';
+
 		$priority = self::number_option( $input_args );
 
 		$html = $hook . $priority . self::do_description( $args );
