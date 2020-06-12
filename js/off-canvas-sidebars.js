@@ -312,7 +312,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			'scroll_lock': ocsOffCanvasSidebars._getSetting( 'scroll_lock' )
 		};
 
-		if ( 'undefined' === typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] ) {
+		if ( ! ocsOffCanvasSidebars.sidebars.hasOwnProperty( sidebarId ) ) {
 			ocsOffCanvasSidebars.sidebars[ sidebarId ] = defaults;
 		} else if ( ! ocsOffCanvasSidebars._getSetting( 'overwrite_global_settings', sidebarId ) ) {
 			// Overwrite with default values.
