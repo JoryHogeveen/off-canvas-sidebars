@@ -161,10 +161,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		$window.trigger( 'ocs_before', [ this ] );
 
-		// Slidebars constructor.
-		ocsOffCanvasSidebars.slidebarsController = new slidebars();
+		if ( ! ocsOffCanvasSidebars.slidebarsController ) {
+			// Slidebars constructor.
+			ocsOffCanvasSidebars.slidebarsController = new slidebars();
+		}
 
-		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
+		if ( ! ocsOffCanvasSidebars.slidebarsController ) {
 			ocsOffCanvasSidebars.debug( 'Cannot initialize Slidebars' );
 			return false;
 		}
@@ -177,8 +179,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		$window.trigger( 'ocs_loaded', [ this ] );
 
-		// Initialize slidebars.
-		ocsOffCanvasSidebars.slidebarsController.init();
+		// Initialize Slidebars. Will exit if needed.
+		ocsOffCanvasSidebars.slidebarsController.reinit();
 
 		$html.addClass( 'ocs-initialized' );
 

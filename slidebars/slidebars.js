@@ -127,6 +127,32 @@ slidebars = function () {
 
 	this.legacy = false;
 
+	/**
+	 * Is initialized?
+	 *
+	 * @returns {boolean}
+	 */
+	this.initialized = function () {
+		return init;
+	};
+
+	/**
+	 * Re-initialize.
+	 *
+	 * @returns {boolean}
+	 */
+	this.reinit = function ( callback ) {
+		if ( this.initialized() ) {
+			this.exit();
+		}
+		this.init( callback );
+	};
+
+	/**
+	 * Initialize Slidebars.
+	 *
+	 * @param callback
+	 */
 	this.init = function ( callback ) {
 		// Check if Slidebars has been initialized
 		if ( init ) {
@@ -167,6 +193,11 @@ slidebars = function () {
 		}
 	};
 
+	/**
+	 * Exit Slidebars.
+	 *
+	 * @param callback
+	 */
 	this.exit = function ( callback ) {
 		// Check if Slidebars has been initialized
 		if ( ! init ) {
