@@ -59,6 +59,17 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 			color = '#dc3232';
 		}
 
+		var style = 'min-width: 250px; background: #fff; color: #000; border: 5px solid ' + color +  '; box-shadow: 0 0 15px; text-align: center; padding: 15px;';
+		popup = '<div style="' + style + '">' + popup + '</div>';
+
+		ocsSetupValidate.popup( popup );
+	};
+
+	ocsSetupValidate.popup = function( content ) {
+		var style = 'background: rgba(0,0,0,0.5); position: fixed; display: flex; height: 100%; width: 100%; top: 0; left: 0; z-index: 9999999; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center;';
+
+		$('#ocs-setup-validate-result').remove();
+		$body.append( '<div id="ocs-setup-validate-result" style="' + style + '">' + content + '</div>' );
 	};
 
 	ocsSetupValidate.log = function( message ) {
