@@ -483,7 +483,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  string
 	 */
 	public static function validate_numeric( $value ) {
-		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
+		return ( ! empty( $value ) && is_numeric( $value ) ) ? $value : '';
 	}
 
 	/**
