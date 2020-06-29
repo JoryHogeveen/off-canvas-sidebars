@@ -48,6 +48,14 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 	 * Add validation hooks.
 	 */
 	public function run_validation() {
+		add_action( 'ocs_container_after', array( $this, 'action_ocs_container_after' ) );
+	}
+
+	/**
+	 * Add element to validate after_site hook.
+	 */
+	public function action_ocs_container_after() {
+		echo '<div id="ocs_validate_website_after"></div>';
 	}
 
 	/**
