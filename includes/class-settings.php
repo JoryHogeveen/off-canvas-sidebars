@@ -370,6 +370,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			}
 			$key = $field['name'];
 
+			// Remove non-setting fields.
+			if ( 'help' === $field['type'] ) {
+				unset( $data[ $key ] );
+			}
+
 			if ( ! isset( $data[ $key ] ) ) {
 				continue;
 			}
