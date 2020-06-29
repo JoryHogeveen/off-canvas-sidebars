@@ -13,9 +13,10 @@
  * @package Off_Canvas_Sidebars
  * @author  Jory Hogeveen <info@keraweb.nl>
  *
- * @since   0.4    Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @since   0.4.0  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
  * @since   0.4.2  Parse slidebar widths/heights to rounded pixels (like jQuery does) to prevent 1px differences
- * @version 0.4.2
+ * @since   0.6.0  Add resize styles
+ * @version 0.6.0
  * @global  slidebars
  * @preserve
  */
@@ -43,7 +44,7 @@ slidebars = function () {
 	init = false,
 	registered = false,
 	sides = [ 'top', 'right', 'bottom', 'left' ],
-	styles = [ 'reveal', 'push', 'overlay', 'shift' ],
+	styles = [ 'overlay', 'push', 'reveal', 'shift', 'resize_push', 'resize_reveal', 'resize_shift' ],
 
 	/**
 	 * Get Animation Properties
@@ -57,16 +58,14 @@ slidebars = function () {
 		duration = parseFloat( offCanvas[ id ].element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
 
 		// Elements to animate
-		if ( 'reveal' === offCanvas[ id ].style || 'push' === offCanvas[ id ].style || 'shift' === offCanvas[ id ].style ) {
+		if ( ! offCanvas[ id ].resize && 'overlay' !== offCanvas[ id ].style ) {
 			elements = elements.add( canvas );
 		}
 
-		// @todo, fix reveal support for top and bottom
-		if ( 'reveal' === offCanvas[ id ].style && ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) ) {
+		if ( 'reveal' !== offCanvas[ id ].style ) {
 			elements = elements.add( offCanvas[ id ].element );
-		}
-
-		if ( 'push' === offCanvas[ id ].style || 'overlay' === offCanvas[ id ].style || 'shift' === offCanvas[ id ].style ) {
+		} else if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
+			// @todo, fix reveal support for top and bottom
 			elements = elements.add( offCanvas[ id ].element );
 		}
 
@@ -93,7 +92,7 @@ slidebars = function () {
 		}
 
 		// Return animation properties
-		return { 'elements': elements, 'amount': amount, 'duration': duration };
+		return { 'elements': elements, 'amount': amount, 'duration': duration, 'size': parseFloat( size.replace( 'px', '' ) ) };
 	},
 
 	/**
@@ -106,11 +105,18 @@ slidebars = function () {
 			throw "Error registering Slidebar, a Slidebar with id '" + id + "' already exists.";
 		}
 
+		// Parse resize style
+		var resize = ( 0 === style.indexOf( 'resize' ) );
+		if ( resize ) {
+			style = style.replace( 'resize_', '' );
+		}
+
 		// Register the Slidebar
 		offCanvas[ id ] = {
 			'id': id,
 			'side': side,
 			'style': style,
+			'resize' : resize,
 			'element': element,
 			'active': false
 		};
@@ -261,13 +267,14 @@ slidebars = function () {
 
 				// Apply negative margins
 				var do_offset = false;
-				if ( 'push' === offCanvas[ id ].style || 'overlay' === offCanvas[ id ].style || 'shift' === offCanvas[ id ].style ) {
+				if ( 'reveal' !== offCanvas[ id ].style ) {
 					do_offset = true;
-				} else if ( 'reveal' === offCanvas[ id ].style && ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) ) {
+				} else if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
 					// temp disabled style condition to enable reveal location as well for top and bottom
 					// @todo, fix reveal support for top and bottom, current result is behaviour similar to push.
 					do_offset = true;
 				}
+
 				if ( do_offset ) {
 					offCanvas[ id ].element.css( 'margin-' + offCanvas[ id ].side, '-' + offset );
 
@@ -339,28 +346,34 @@ slidebars = function () {
 				'transition-duration': animationProperties.duration + 'ms'
 			};
 
+			var canvasSide,
+				canvasCss = {};
+
 			if ( self.legacy ) {
 				css[ offCanvas[ id ].side ] = animationProperties.amount;
 
-				var canvasSide;
 				if ( 'right' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
-					// Bottom and Right animation for slidebars and the container are not the same
-					if ( 'right' === offCanvas[ id ].side ) {
-						canvasSide = 'left';
-					} else if ( 'bottom' === offCanvas[ id ].side ) {
-						canvasSide = 'top';
+
+					if ( ! offCanvas[ id ].resize ) {
+						// Bottom and Right animation for slidebars and the container are not the same
+						if ( 'right' === offCanvas[ id ].side ) {
+							canvasSide = 'left';
+						} else if ( 'bottom' === offCanvas[ id ].side ) {
+							canvasSide = 'top';
+						}
+						canvasCss = {
+							'-webkit-transition-duration': animationProperties.duration + 'ms',
+							'-moz-transition-duration': animationProperties.duration + 'ms',
+							'-o-transition-duration': animationProperties.duration + 'ms',
+							'transition-duration': animationProperties.duration + 'ms'
+						};
+						canvasCss[ canvasSide ] = '-=' + animationProperties.amount;
+						// Move container
+						if ( 'overlay' !== offCanvas[ id ].style ) {
+							canvas.css( canvasCss );
+						}
 					}
-					var canvasCss = {
-						'-webkit-transition-duration': animationProperties.duration + 'ms',
-						'-moz-transition-duration': animationProperties.duration + 'ms',
-						'-o-transition-duration': animationProperties.duration + 'ms',
-						'transition-duration': animationProperties.duration + 'ms'
-					};
-					canvasCss[ canvasSide ] = '-' + animationProperties.amount;
-					// Move container
-					if ( 'overlay' !== offCanvas[ id ].style ) {
-						canvas.css( canvasCss );
-					}
+
 					// Open slidebar
 					animationProperties.elements.not( canvas ).css( css );
 				} else {
@@ -371,6 +384,25 @@ slidebars = function () {
 			} else {
 				css.transform = 'translate(' + animationProperties.amount + ')';
 				animationProperties.elements.css( css );
+			}
+
+			if ( offCanvas[ id ].resize ) {
+				var prop = 'width';
+				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
+					prop = 'height';
+				}
+
+				canvasCss = {
+					'-webkit-transition': canvas.css( '-webkit-transition' ),
+					'transition': canvas.css( 'transition' )
+				};
+
+				// @todo, proper calculation when supporting multiple opened slidebars.
+				canvasCss[ prop ] = $(window)[prop]() - animationProperties.size + 'px';
+				canvasCss[ '-webkit-transition' ] += ', ' + prop + ' ' + animationProperties.duration + 'ms';
+				canvasCss[ 'transition' ] += ', ' + prop + ' ' + animationProperties.duration + 'ms';
+
+				canvas.css( canvasCss );
 			}
 
 			// Transition completed
@@ -432,14 +464,17 @@ slidebars = function () {
 
 				var canvasSide;
 				if ( 'right' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
-					// Bottom and Right animation for slidebars and the container are not the same
-					if ( 'right' === offCanvas[ id ].side ) {
-						canvasSide = 'left';
-					} else if ( 'bottom' === offCanvas[ id ].side ) {
-						canvasSide = 'top';
+
+					if ( ! offCanvas[ id ].resize ) {
+						// Bottom and Right animation for slidebars and the container are not the same
+						if ( 'right' === offCanvas[ id ].side ) {
+							canvasSide = 'left';
+						} else if ( 'bottom' === offCanvas[ id ].side ) {
+							canvasSide = 'top';
+						}
+						// Reset container
+						canvas.css( canvasSide, '' );
 					}
-					// Reset container
-					canvas.css( canvasSide, '' );
 
 					// Close slidebar
 					animationProperties.elements.not( canvas ).css( offCanvas[ id ].side, '' );
@@ -466,6 +501,14 @@ slidebars = function () {
 				animationProperties.elements.css( 'transform', '' );
 			}
 
+			if ( offCanvas[ id ].resize ) {
+				if ( 'top' === offCanvas[ id ].side || 'bottom' === offCanvas[ id ].side ) {
+					canvas.css( 'height', '' );
+				} else {
+					canvas.css( 'width', '' );
+				}
+			}
+
 			// Transition completetion
 			setTimeout( function () {
 				// Remove transition duration
@@ -473,7 +516,10 @@ slidebars = function () {
 					'-webkit-transition-duration': '',
 					'-moz-transition-duration': '',
 					'-o-transition-duration': '',
-					'transition-duration': ''
+					'transition-duration': '',
+					// Resize.
+					'-webkit-transition': '',
+					'transition': ''
 				} );
 
 				// Hide the Slidebar

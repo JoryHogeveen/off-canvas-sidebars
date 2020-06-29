@@ -49,7 +49,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 				);
 				ocs_show_hide_options_radio(
 					'.' + sidebar_prefix + '_location',
-					'#' + sidebar_prefix + '_style_reveal, #' + sidebar_prefix + '_style_shift',
+					'#' + sidebar_prefix + '_style_reveal, #' + sidebar_prefix + '_style_shift, #' + sidebar_prefix + '_style_resize_push, #' + sidebar_prefix + '_style_resize_reveal, #' + sidebar_prefix + '_style_resize_shift',
 					[ 'left', 'right' ],
 					'label'
 				);

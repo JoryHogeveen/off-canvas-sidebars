@@ -83,7 +83,11 @@ body,
 [off-canvas*=" top"][off-canvas*=" reveal"],
 [off-canvas*=" top"][off-canvas*=" shift"],
 [off-canvas*=" bottom"][off-canvas*=" reveal"],
-[off-canvas*=" bottom"][off-canvas*=" shift"] {
+[off-canvas*=" bottom"][off-canvas*=" shift"],
+[off-canvas*=" top"][off-canvas*=" resize_reveal"],
+[off-canvas*=" top"][off-canvas*=" resize_shift"],
+[off-canvas*=" bottom"][off-canvas*=" resize_reveal"],
+[off-canvas*=" bottom"][off-canvas*=" resize_shift"] {
 	z-index: 1;
 }
 
