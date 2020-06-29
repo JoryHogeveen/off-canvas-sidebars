@@ -26,6 +26,39 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 	var $body = $( 'body' );
 
 	ocsSetupValidate.run = function() {
+
+		var errors  = [],
+			popup   = '',
+			correct = false,
+			color;
+
+		if ( ! $body.children( '[canvas]' ).length ) {
+			errors.push( ocsSetupValidate.messages.error_website_before );
+		}
+		if ( ! $body.children( '#ocs_validate_website_after' ).length ) {
+			errors.push( ocsSetupValidate.messages.error_website_after );
+		}
+
+		// Do notice.
+		if ( ! errors.length ) {
+			correct = true;
+			popup = ocsSetupValidate.messages.hooks_correct;
+			ocsSetupValidate.log( ocsSetupValidate.messages.hooks_correct );
+		} else {
+			$.each( errors, function( i, m ) {
+				i = i+1;
+				popup += '<li>' + i + ': ' + m + '</li>';
+				ocsSetupValidate.log( m );
+			} );
+			popup = '<ul style="list-style: none;">' + popup + '</ul>';
+		}
+
+		if ( correct ) {
+			color = '#46b450';
+		} else {
+			color = '#dc3232';
+		}
+
 	};
 
 	ocsSetupValidate.log = function( message ) {
