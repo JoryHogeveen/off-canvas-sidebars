@@ -61,30 +61,51 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Get the hook to open the website wrapper.
+	 *
+	 * @since  0.5.6
+	 * @return string
+	 */
+	public function get_website_before_hook() {
+		$before_hook = trim( $this->get_settings( 'website_before_hook' ) );
+
+		if ( empty( $before_hook ) ) {
+			if ( 'genesis' === get_template() ) {
+				$before_hook = 'genesis_before';
+			} else {
+				$before_hook = 'website_before';
+			}
+		}
+
+		return trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
+	}
+
+	/**
+	 * Get the hook to close the website wrapper.
+	 *
+	 * @since  0.5.6
+	 * @return string
+	 */
+	public function get_website_after_hook() {
+		$after_hook = trim( $this->get_settings( 'website_after_hook' ) );
+
+		if ( empty( $after_hook ) ) {
+			if ( 'genesis' === get_template() ) {
+				$after_hook = 'genesis_after';
+			} else {
+				$after_hook = 'website_after';
+			}
+		}
+
+		return trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
+	}
+
+	/**
 	 * Add default actions
 	 *
 	 * @since   0.1.0
 	 */
 	private function default_actions() {
-
-		$before_hook = trim( $this->get_settings( 'website_before_hook' ) );
-		$after_hook  = trim( $this->get_settings( 'website_after_hook' ) );
-
-		if ( 'genesis' === get_template() ) {
-			if ( empty( $before_hook ) ) {
-				$before_hook = 'genesis_before';
-			}
-			if ( empty( $after_hook ) ) {
-				$after_hook = 'genesis_after';
-			}
-		} else {
-			if ( empty( $before_hook ) ) {
-				$before_hook = 'website_before';
-			}
-			if ( empty( $after_hook ) ) {
-				$after_hook = 'website_after';
-			}
-		}
 
 		$before_prio = $this->get_settings( 'website_before_hook_priority' );
 		$after_prio  = $this->get_settings( 'website_after_hook_priority' );
@@ -102,8 +123,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
 		$after_prio  = apply_filters( 'ocs_website_after_hook_priority', $after_prio );
 
-		$before_hook = trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
-		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
+		$before_hook = $this->get_website_before_hook();
+		$after_hook  = $this->get_website_after_hook();
 
 		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
 		add_action( $after_hook, array( $this, 'after_site' ), $after_prio );
