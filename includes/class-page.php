@@ -31,7 +31,6 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	protected $general_key    = '';
 	protected $plugin_key     = '';
-	protected $general_labels = array();
 	protected $capability     = 'edit_theme_options';
 	protected $request_tab    = '';
 	protected $tab            = 'ocs-settings';
@@ -51,23 +50,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			$this->set_current_tab( $_GET['tab'] );
 		}
 		// @codingStandardsIgnoreEnd
-		$this->plugin_key = off_canvas_sidebars()->get_plugin_key();
-		$this->register_tabs();
-
-		add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_menu', array( $this, 'add_admin_menus' ), 15 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles_scripts' ) );
-	}
-
-	/**
-	 * Get plugin data.
-	 * @since   0.1.0
-	 */
-	public function load_plugin_data() {
-		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		$this->general_key    = $off_canvas_sidebars->get_general_key();
+		$this->plugin_key  = off_canvas_sidebars()->get_plugin_key();
+		$this->general_key = off_canvas_sidebars()->get_general_key();
 
 		/**
 		 * Change the capability for the OCS settings.
@@ -76,6 +60,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		 * @return string
 		 */
 		$this->capability = apply_filters( 'ocs_settings_capability', $this->capability );
+
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_menu', array( $this, 'add_admin_menus' ), 15 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles_scripts' ) );
 	}
 
 	/**
@@ -207,6 +195,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 * @since   0.1.0
 	 */
 	public function register_settings() {
+
+		$this->register_tabs();
 
 		$tab = $this->get_current_tab();
 		if ( $tab ) {
