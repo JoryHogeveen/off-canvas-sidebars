@@ -385,6 +385,16 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	}
 
 	/**
+	 * Check if the current user has access to the plugin settings page.
+	 *
+	 * @since  0.5.6
+	 * @return bool
+	 */
+	public function has_access() {
+		return current_user_can( $this->capability );
+	}
+
+	/**
 	 * Class Instance.
 	 * Ensures only one instance of this class is loaded or can be loaded.
 	 *
