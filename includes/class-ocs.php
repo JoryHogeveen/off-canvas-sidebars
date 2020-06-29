@@ -135,8 +135,6 @@ final class OCS_Off_Canvas_Sidebars
 
 			$this->maybe_db_update();
 
-			$this->general_labels = $this->get_general_labels();
-
 			// Register the widget.
 			add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 
