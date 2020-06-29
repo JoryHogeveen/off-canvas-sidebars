@@ -450,7 +450,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 
 		$classes = self::get_option_classes( $prefix_classes, $args['name'] . '_type' );
 
-		$html = '<fieldset class="radio color">';
+		$html = '';
 
 		$html .= '<label><input type="radio" name="' . $prefix_name . '[' . $args['name'] . '_type]" class="' . $classes . '" id="' . $prefix_id . '_background_color_type_theme" value="" ' . checked( $prefix_value[ $args['name'] . '_type' ], '', false ) . ' /> ' . esc_html__( 'Default', OCS_DOMAIN ) . ' &nbsp; <span class="description">(' . esc_html__( 'Overwritable with CSS', OCS_DOMAIN ) . ')</span></label><br />';
 		$html .= '<label><input type="radio" name="' . $prefix_name . '[' . $args['name'] . '_type]" class="' . $classes . '" id="' . $prefix_id . '_background_color_type_transparent" value="transparent" ' . checked( $prefix_value[ $args['name'] . '_type' ], 'transparent', false ) . ' /> ' . esc_html__( 'Transparent', OCS_DOMAIN ) . '</label><br />';
@@ -468,8 +468,42 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		$html .= '<input ' . self::parse_to_html_attr( $attr ) . ' />';
 		$html .= '</div>';
 
-		$html .= self::do_description( $args );
-		$html .= '</fieldset>';
+		$html = $html . self::do_description( $args );
+
+		echo self::wrap_fieldset( $html, $args, array( 'class' => 'radio color' ) );
+	}
+
+	/**
+	 * Render button.
+	 * @since   0.5.6
+	 * @static
+	 * @param   array   $args
+	 * @param   string  $elem
+	 * @return  string
+	 */
+	public static function do_button( $args, $elem = 'a' ) {
+		$defaults = array(
+			'link'   => '#',
+			'target' => '',
+			'class'  => 'button',
+			'label'  => '',
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$attr = array(
+			'class' => $args['class'],
+			'href'  => $args['link'],
+		);
+		if ( $args['target'] ) {
+			$attr['target'] = $args['target'];
+			$attr['rel']    = 'noopener noreferrer';
+		}
+
+		$field = '<a ' . self::parse_to_html_attr( $attr ) . '>' . $args['label'] . '</a>';
+
+		$html = $field . self::do_description( $args );
+
 		echo $html;
 	}
 
