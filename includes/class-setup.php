@@ -69,6 +69,23 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
 
 		wp_enqueue_script( 'off-canvas-sidebars-setup-validate', OCS_PLUGIN_URL . 'js/setup-validate' . $suffix . '.js', array( 'jquery' ), $version, true );
+
+		$before_hook = off_canvas_sidebars_frontend()->get_website_before_hook();
+		$after_hook  = off_canvas_sidebars_frontend()->get_website_after_hook();
+
+		wp_localize_script(
+			'off-canvas-sidebars-setup-validate',
+			'ocsSetupValidate',
+			array(
+				'messages'     => array(
+					'error_website_before' => sprintf( __( '%s is not fired', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> hook' ),
+					'error_website_after'  => sprintf( __( '%s is not fired', OCS_DOMAIN ), '<code>"' . $after_hook . '"</code> hook' ),
+					'hooks_correct'        => sprintf( __( 'Theme hooks %s are working!', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> and <code>"' . $after_hook . '"</code>' ),
+				),
+				'css_prefix' => $this->get_settings( 'css_prefix' ),
+				'_debug'     => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+			)
+		);
 	}
 
 	/**

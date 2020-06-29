@@ -13,6 +13,11 @@
 
 if ( 'undefined' === typeof ocsSetupValidate ) {
 	var ocsSetupValidate = {
+		messages: {
+			error_website_before: '<code>website_before</code> hook is not correct.',
+			error_website_after: '<code>website_after</code> hook is not correct.',
+			hooks_correct: 'Theme hooks setup correct!'
+		}
 	};
 }
 
