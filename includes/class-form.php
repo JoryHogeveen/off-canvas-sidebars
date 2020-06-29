@@ -532,7 +532,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public static function wrap_fieldset( $html, $args, $attr = array() ) {
 		if ( ! isset( $args['fieldset'] ) || ! empty( $args['fieldset'] ) ) {
-			if ( is_string( $args['fieldset'] ) ) {
+			if ( ! empty( $args['fieldset'] ) && is_string( $args['fieldset'] ) ) {
 				$class = array( $args['fieldset'] );
 				if ( ! empty( $attr['class'] ) ) {
 					$class[] = $attr['class'];
