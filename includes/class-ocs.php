@@ -85,14 +85,6 @@ final class OCS_Off_Canvas_Sidebars
 	protected $general_key = 'off_canvas_sidebars_options';
 
 	/**
-	 * Plugin settings.
-	 *
-	 * @var    array
-	 * @since  0.1.0
-	 */
-	protected $general_labels = array();
-
-	/**
 	 * Class registry
 	 *
 	 * @since  0.5.2
@@ -226,7 +218,7 @@ final class OCS_Off_Canvas_Sidebars
 	public function compatibility_notice() {
 		if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
 			$class   = 'error notice is-dismissible';
-			$message = '<strong>' . __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> ' . $this->general_labels['compatibility_notice_theme'];
+			$message = '<strong>' . __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> ' . $this->get_general_labels( 'compatibility_notice_theme' );
 			$ignore  = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', OCS_DOMAIN ) . '</span></a>';
 			$script  = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e) {e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
 			echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
