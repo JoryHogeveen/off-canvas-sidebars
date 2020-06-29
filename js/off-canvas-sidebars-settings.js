@@ -17,7 +17,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 		plugin_key: 'off-canvas-sidebars-settings',
 		css_prefix: 'ocs',
 		_nonce: '',
-		__required_fields_not_set: 'Some required fields are not set!'
+		__required_fields_not_set: 'Some required fields are not set!',
+		__search: 'Search',
 	};
 }
 
@@ -148,7 +149,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 			if ( ! $wrapper.length ) {
 				init = true;
-				$label.after( '<div class="' + wrapper + '"><input type="text" class="' + input + '"></div>' );
+				$label.after( '<div class="' + wrapper + '"><input type="text" class="' + input + '" placeholder="' + ocsOffCanvasSidebarsSettings.__search + '"></div>' );
 				$wrapper = $label.parent().find( '.' + wrapper );
 			} else {
 				$wrapper.slideDown();
