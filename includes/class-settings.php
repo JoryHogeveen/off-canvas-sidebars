@@ -76,6 +76,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		'enable'                    => 0,
 		'label'                     => '',
 		'content'                   => 'sidebar',
+		'content_id'                => 0,
 		'location'                  => 'left',
 		'style'                     => 'push',
 		'size'                      => 'default',

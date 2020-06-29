@@ -299,6 +299,27 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 				break;
 
+			case 'post':
+				$post_id = ( isset( $sidebar_data['content_id'] ) ) ? $sidebar_data['content_id'] : 0;
+				// @todo translate
+
+				/**
+				 * Overwrite sidebar content post ID.
+				 *
+				 * @since 0.6.0
+				 *
+				 * @param  int     $post_id       The post ID.
+				 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+				 * @param  array   $sidebar_data  The sidebar settings.
+				 */
+				$post_id = apply_filters( 'ocs_sidebar_content_post_id', $post_id, $sidebar_id, $sidebar_data );
+
+				if ( $post_id ) {
+					echo apply_filters( 'the_content', get_post_field( 'post_content', $post_id ) );
+				}
+
+				break;
+
 			case 'action':
 			default:
 				/**

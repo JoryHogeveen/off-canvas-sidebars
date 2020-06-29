@@ -44,6 +44,8 @@
 .off-canvas-sidebars-settings .icon { font-size: 1.3em; vertical-align: middle; text-decoration: none; }
 .off-canvas-sidebars-settings .icon:first-child {margin-right: 5px;}
 
+.off_canvas_sidebars_options_sidebars_content_id_wrapper { margin-top: .5em; margin-left: 1.5em; }
+
 @media only screen and (min-width: 850px) {
 	.off-canvas-sidebars-settings {
 		margin-right: 300px;
