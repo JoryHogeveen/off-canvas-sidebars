@@ -149,7 +149,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 
 			if ( ! $wrapper.length ) {
 				init = true;
-				$label.after( '<div class="' + wrapper + '"><input type="text" class="' + input + '" placeholder="' + ocsOffCanvasSidebarsSettings.__search + '"></div>' );
+				$label.append( '<div class="' + wrapper + '"><input type="text" class="' + input + '" placeholder="' + ocsOffCanvasSidebarsSettings.__search + '"></div>' );
 				$wrapper = $label.parent().find( '.' + wrapper );
 			} else {
 				$wrapper.slideDown();
