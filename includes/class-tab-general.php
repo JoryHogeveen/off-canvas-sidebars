@@ -61,7 +61,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		echo '<p>';
 		echo sprintf(
 			// Translators: %s stands for a URL.
-			__( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank">click here for documentation.</a>', OCS_DOMAIN ),
+			__( 'You can add the control buttons with a widget, menu item or with custom code, <a href="%s" target="_blank" rel="noopener noreferrer">click here for documentation.</a>', OCS_DOMAIN ),
 			'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup'
 		);
 		echo '</p>';
@@ -179,7 +179,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'type'        => 'checkbox',
 			'section'     => $section,
 			'label'       => __( 'Let this plugin add the necessary elements on the front-end.', OCS_DOMAIN ),
-			'description' => '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup" target="_blank">'
+			'description' => '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup" target="_blank" rel="noopener noreferrer">'
 			                 . __( 'Read this to setup your theme!', OCS_DOMAIN ) . '</a>',
 		);
 
@@ -193,7 +193,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		);
 
 		$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
-		$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank">' . $theme_hooks_wiki . '</a>';
+		$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank" rel="noopener noreferrer">' . $theme_hooks_wiki . '</a>';
 
 		$before_hook = 'website_before';
 		$after_hook  = 'website_after';
