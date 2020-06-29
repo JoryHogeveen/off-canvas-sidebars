@@ -49,6 +49,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function run_validation() {
 		add_action( 'ocs_container_after', array( $this, 'action_ocs_container_after' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}
 
 	/**
@@ -56,6 +57,18 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function action_ocs_container_after() {
 		echo '<div id="ocs_validate_website_after"></div>';
+	}
+
+	/**
+	 * Add validation scripts.
+	 */
+	public function enqueue_assets( ) {
+
+		// @todo Validate and use minified files
+		$suffix  = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		$version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : OCS_PLUGIN_VERSION;
+
+		wp_enqueue_script( 'off-canvas-sidebars-setup-validate', OCS_PLUGIN_URL . 'js/setup-validate' . $suffix . '.js', array( 'jquery' ), $version, true );
 	}
 
 	/**
