@@ -212,7 +212,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * @return  array
 	 */
 	public function get_default_sidebar_settings() {
-		return $this->default_sidebar_settings;
+		static $settings;
+		if ( $settings ) {
+			return $settings;
+		}
+		$settings = apply_filters( 'ocs_default_sidebar_settings', $this->default_sidebar_settings );
+		return $settings;
 	}
 
 	/**
