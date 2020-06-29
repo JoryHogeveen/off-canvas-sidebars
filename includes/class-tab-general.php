@@ -77,12 +77,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 	public function register_settings() {
 		parent::register_settings();
 
-		add_settings_section(
+		/*add_settings_section(
 			'section_general',
 			esc_attr__( 'Global Settings', OCS_DOMAIN ),
 			array( $this, 'register_section_fields' ),
 			$this->tab
-		);
+		);*/
 		add_settings_section(
 			'section_setup',
 			esc_attr__( 'Theme Setup Settings', OCS_DOMAIN ),
@@ -160,15 +160,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 
 		$fields = array();
 
-		$section = 'section_general';
-
-		$fields['sidebars'] = array(
-			'title'    => esc_attr__( 'Enable Sidebars', OCS_DOMAIN ),
-			'name'     => 'sidebars',
-			'callback' => 'enabled_sidebars_option',
-			'validate' => false,
-			'section'  => $section,
-		);
+		//$section = 'section_general';
 
 		$section = 'section_setup';
 
@@ -178,18 +170,9 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'callback'    => 'checkbox_option',
 			'type'        => 'checkbox',
 			'section'     => $section,
-			'label'       => __( 'Let this plugin add the necessary elements on the front-end.', OCS_DOMAIN ),
+			'label'       => __( 'Let this plugin add the necessary elements on the front-end.', OCS_DOMAIN ) . ' (' . __( 'Recommended', OCS_DOMAIN ) . ')',
 			'description' => '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/theme-setup" target="_blank" rel="noopener noreferrer">'
 			                 . __( 'Read this to setup your theme!', OCS_DOMAIN ) . '</a>',
-		);
-
-		$fields['late_init'] = array(
-			'title'    => esc_attr__( 'Late init', OCS_DOMAIN ),
-			'name'     => 'late_init',
-			'callback' => 'checkbox_option',
-			'type'     => 'checkbox',
-			'section'  => $section,
-			'label'    => __( 'Wait for window to be loaded before initializing Off-Canvas Sidebars.', OCS_DOMAIN ),
 		);
 
 		$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
@@ -252,17 +235,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section'  => $section,
 		);*/
 
-		$fields['css_prefix'] = array(
-			'name'        => 'css_prefix',
-			'title'       => esc_attr__( 'CSS Prefix', OCS_DOMAIN ),
-			'callback'    => 'text_option',
-			'validate'    => 'validate_id',
-			'type'        => 'text',
-			'section'     => $section,
-			'label'       => __( 'Default', OCS_DOMAIN ) . ': <code>ocs</code>',
-			'placeholder' => 'ocs',
-		);
-
 		$fields['_setup_validate'] = array(
 			'title'       => esc_attr__( 'Validation', OCS_DOMAIN ),
 			'type'        => 'help',
@@ -274,7 +246,64 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section'     => $section,
 		);
 
+		$fields['css_prefix'] = array(
+			'name'        => 'css_prefix',
+			'title'       => esc_attr__( 'CSS Prefix', OCS_DOMAIN ),
+			'callback'    => 'text_option',
+			'validate'    => 'validate_id',
+			'type'        => 'text',
+			'section'     => $section,
+			'label'       => __( 'Default', OCS_DOMAIN ) . ': <code>ocs</code>',
+			'placeholder' => 'ocs',
+		);
+
+		$fields['late_init'] = array(
+			'title'    => esc_attr__( 'Late init', OCS_DOMAIN ),
+			'name'     => 'late_init',
+			'callback' => 'checkbox_option',
+			'type'     => 'checkbox',
+			'section'  => $section,
+			'label'    => __( 'Wait for window to be loaded before initializing Off-Canvas Sidebars.', OCS_DOMAIN ),
+		);
+
+		$fields['compatibility_position_fixed'] = array(
+			'name'     => 'compatibility_position_fixed',
+			'title'    => esc_attr__( 'Compatibility for fixed elements', OCS_DOMAIN ),
+			'callback' => 'radio_option',
+			'type'     => 'radio',
+			'section'  => $section,
+			'default'  => 'none',
+			'options'  => array(
+				'none'       => array(
+					'name'        => 'none',
+					'label'       => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+					'value'       => 'none',
+					'description' => __( 'This is the default Slidebars behaviour.', OCS_DOMAIN ),
+				),
+				'legacy-css' => array(
+					'name'        => 'legacy-css',
+					'label'       => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
+					'value'       => 'legacy-css',
+					'description' => __( 'This is your best option if your site uses sticky menus and/or other fixed elements within the site container.', OCS_DOMAIN ),
+				),
+				'custom-js'  => array(
+					'name'        => 'custom-js',
+					'label'       => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
+					'value'       => 'custom-js',
+					'description' => __( 'While still in development, this could fix compatibility issues with fixed elements.', OCS_DOMAIN ),
+				),
+			),
+		);
+
 		$section = 'section_frontend';
+
+		$fields['sidebars'] = array(
+			'title'    => esc_attr__( 'Enabled Sidebars', OCS_DOMAIN ),
+			'name'     => 'sidebars',
+			'callback' => 'enabled_sidebars_option',
+			'validate' => false,
+			'section'  => $section,
+		);
 
 		$fields['site_close'] = array(
 			'name'        => 'site_close',
@@ -377,35 +406,6 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			                 . '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
 		);
 
-		$fields['compatibility_position_fixed'] = array(
-			'name'     => 'compatibility_position_fixed',
-			'title'    => esc_attr__( 'Compatibility for fixed elements', OCS_DOMAIN ),
-			'callback' => 'radio_option',
-			'type'     => 'radio',
-			'section'  => $section,
-			'default'  => 'none',
-			'options'  => array(
-				'none'       => array(
-					'name'        => 'none',
-					'label'       => __( 'No', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
-					'value'       => 'none',
-					'description' => __( 'This is the default Slidebars behaviour.', OCS_DOMAIN ),
-				),
-				'legacy-css' => array(
-					'name'        => 'legacy-css',
-					'label'       => __( 'Legacy CSS solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Use basic CSS positioning instead of CSS3 transform with hardware acceleration', OCS_DOMAIN ) . ')',
-					'value'       => 'legacy-css',
-					'description' => __( 'This is your best option if your site uses sticky menus and/or other fixed elements within the site container.', OCS_DOMAIN ),
-				),
-				'custom-js'  => array(
-					'name'        => 'custom-js',
-					'label'       => __( 'JavaScript solution', OCS_DOMAIN ) . ' &nbsp; (' . __( 'Experimental', OCS_DOMAIN ) . ')',
-					'value'       => 'custom-js',
-					'description' => __( 'While still in development, this could fix compatibility issues with fixed elements.', OCS_DOMAIN ),
-				),
-			),
-		);
-
 		$section = 'section_admin';
 
 		$fields['wp_editor_shortcode_rendering'] = array(
@@ -414,7 +414,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'callback'    => 'checkbox_option',
 			'type'        => 'checkbox',
 			'section'     => $section,
-			'label'       => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
+			'label'       => __( 'Yes', OCS_DOMAIN ) . ' (<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues/32" target="_blank" rel="noopener noreferrer">' . __( 'Experimental', OCS_DOMAIN ) . '</a>)',
 			'description' => __( 'This will render the shortcodes to actual HTML elements in the WP Editor.', OCS_DOMAIN ),
 		);
 
