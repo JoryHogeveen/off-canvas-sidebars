@@ -118,8 +118,8 @@ html, body {
 	-webkit-transform: translate( 0px, 0px );
 	    -ms-transform: translate( 0px, 0px );
 	        transform: translate( 0px, 0px );
-	-webkit-transition: -webkit-transform 300ms;
-	        transition:         transform 300ms;
+	-webkit-transition: -webkit-transform 300ms, -webkit-filter 300ms;
+	        transition:         transform 300ms, filter 300ms;
 	-webkit-backface-visibility: hidden; /* Prevents flickering, may be removed if experiencing problems with fixed background images in Chrome. */
 }
 
