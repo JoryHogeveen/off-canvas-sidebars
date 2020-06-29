@@ -92,6 +92,7 @@ final class OCS_Off_Canvas_Sidebars
 	 */
 	private $classes = array(
 		'Base'             => 'includes/class-base.php',
+		'Setup'            => 'includes/class-setup.php',
 		'Control_Trigger'  => 'includes/class-control-trigger.php',
 		'Form'             => 'includes/class-form.php',
 		'Frontend'         => 'includes/class-frontend.php',
@@ -183,6 +184,9 @@ final class OCS_Off_Canvas_Sidebars
 
 		// Register the enabled sidebars.
 		$this->register_sidebars();
+
+		// Load the setup validator.
+		OCS_Off_Canvas_Sidebars_Setup::get_instance();
 
 		if ( is_admin() ) {
 
