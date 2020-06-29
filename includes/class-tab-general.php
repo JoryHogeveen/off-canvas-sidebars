@@ -84,6 +84,12 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			$this->tab
 		);
 		add_settings_section(
+			'section_setup',
+			esc_attr__( 'Theme Setup Settings', OCS_DOMAIN ),
+			array( $this, 'register_section_fields' ),
+			$this->tab
+		);
+		add_settings_section(
 			'section_frontend',
 			esc_attr__( 'Frontend Settings', OCS_DOMAIN ),
 			array( $this, 'register_section_fields' ),
@@ -164,7 +170,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'section'  => $section,
 		);
 
-		$section = 'section_frontend';
+		$section = 'section_setup';
 
 		$fields['enable_frontend'] = array(
 			'title'       => esc_attr__( 'Enable front-end', OCS_DOMAIN ),
@@ -256,6 +262,19 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'label'       => __( 'Default', OCS_DOMAIN ) . ': <code>ocs</code>',
 			'placeholder' => 'ocs',
 		);
+
+		$fields['_setup_validate'] = array(
+			'title'       => esc_attr__( 'Validation', OCS_DOMAIN ),
+			'type'        => 'help',
+			'callback'    => 'do_button',
+			'link'        => add_query_arg( 'ocs-setup-validate', 1, get_bloginfo( 'url' ) ),
+			'target'      => '_blank',
+			'label'       => esc_attr__( 'Validate hooks setup', OCS_DOMAIN ),
+			'description' => esc_attr__( 'Only validates if the hooks are fired, not if they are correctly placed.', OCS_DOMAIN ),
+			'section'     => $section,
+		);
+
+		$section = 'section_frontend';
 
 		$fields['site_close'] = array(
 			'name'        => 'site_close',
