@@ -23,6 +23,10 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 	ocsSetupValidate.run = function() {
 	};
 
+	ocsSetupValidate.log = function( message ) {
+		console.log( 'Off-Canvas Sidebars Setup Validator: ' + message );
+	};
+
 	ocsSetupValidate.run();
 
 } ( jQuery ) );
