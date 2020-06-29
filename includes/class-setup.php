@@ -30,6 +30,13 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 	protected static $_instance = null;
 
 	/**
+	 * Get parameter to trigger validator.
+	 *
+	 * @var string
+	 */
+	protected $param = 'ocs-setup-validate';
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since   0.5.6
@@ -39,7 +46,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! OCS_Off_Canvas_Sidebars_Page::get_instance()->has_access() ) {
 			return;
 		}
-		if ( isset( $_GET['ocs-setup-validate'] ) ) {
+		if ( isset( $_GET[ $this->param ] ) ) {
 			$this->run_validation();
 		}
 	}
@@ -86,6 +93,19 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 				'_debug'     => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);
+	}
+
+	/**
+	 * Get validator link.
+	 *
+	 * @param  string  $url
+	 * @return string
+	 */
+	public function get_validator_link( $url = '' ) {
+		if ( ! $url ) {
+			$url = get_bloginfo( 'url' );
+		}
+		return add_query_arg( $this->param, 1, $url );
 	}
 
 	/**

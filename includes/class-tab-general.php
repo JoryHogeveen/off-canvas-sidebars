@@ -267,7 +267,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'title'       => esc_attr__( 'Validation', OCS_DOMAIN ),
 			'type'        => 'help',
 			'callback'    => 'do_button',
-			'link'        => add_query_arg( 'ocs-setup-validate', 1, get_bloginfo( 'url' ) ),
+			'link'        => OCS_Off_Canvas_Sidebars_Setup::get_instance()->get_validator_link(),
 			'target'      => '_blank',
 			'label'       => esc_attr__( 'Validate hooks setup', OCS_DOMAIN ),
 			'description' => esc_attr__( 'Only validates if the hooks are fired, not if they are correctly placed.', OCS_DOMAIN ),
