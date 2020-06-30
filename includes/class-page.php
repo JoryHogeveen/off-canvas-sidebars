@@ -313,7 +313,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 						// Translators: %1$s stands for "Documentation" and %2$s stands for a "Support forum", both are links.
 						esc_html__( 'If you are having problems with this plugin, checkout plugin %1$s or talk about them in the %2$s', OCS_DOMAIN ),
 						'<a href="' . off_canvas_sidebars()->get_links( 'docs', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Documentation', OCS_DOMAIN ) . '</a>',
-						'<a href="' . off_canvas_sidebars()->get_links( 'support', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Support forum', OCS_DOMAIN ) . '</a>',
+						'<a href="' . off_canvas_sidebars()->get_links( 'support', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Support forum', OCS_DOMAIN ) . '</a>'
 					);
 					?>
 				</p>
