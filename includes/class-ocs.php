@@ -220,8 +220,8 @@ final class OCS_Off_Canvas_Sidebars
 	public function compatibility_notice() {
 		if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
 			$class   = 'error notice is-dismissible';
-			$message = '<strong>' . __( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> ' . $this->get_general_labels( 'compatibility_notice_theme' );
-			$ignore  = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', OCS_DOMAIN ) . '</span></a>';
+			$message = '<strong>' . esc_html__( 'Off-Canvas Sidebars', 'off-canvas-sidebars' ) . ':</strong> ' . $this->get_general_labels( 'compatibility_notice_theme' );
+			$ignore  = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . esc_html__( 'Dismiss this notice.', OCS_DOMAIN ) . '</span></a>';
 			$script  = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e) {e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
 			echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
 		}
@@ -347,8 +347,8 @@ final class OCS_Off_Canvas_Sidebars
 		if ( ! $labels ) {
 			$labels = array(
 				'no_sidebars_available'      => esc_html__( 'Please enable an off-canvas sidebar', OCS_DOMAIN ),
-				// Translators: %s stands for the URL.
-				'compatibility_notice_theme' => sprintf( __( 'If this plugin is not working as it should then your theme might not be compatible with this plugin, <a href="%s" target="_blank" rel="noopener noreferrer">please let me know!</a>', OCS_DOMAIN ), 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues' ),
+				'compatibility_notice_theme' => esc_html__( 'If this plugin is not working as it should then your theme might not be compatible with this plugin', OCS_DOMAIN )
+				                                . '. <a href="https://github.com/JoryHogeveen/off-canvas-sidebars/issues" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Please let me know!', OCS_DOMAIN ) . '</a>',
 			);
 		}
 		if ( $key ) {
@@ -393,8 +393,8 @@ final class OCS_Off_Canvas_Sidebars
 					$args = array(
 						//'id'            => 'off-canvas-' . $sidebar_id,
 						'class'       => 'off-canvas-sidebar',
-						'name'        => __( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label'],
-						'description' => __( 'This is a widget area that is used for off-canvas widgets.', OCS_DOMAIN ),
+						'name'        => esc_html__( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label'],
+						'description' => esc_html__( 'This is a widget area that is used for off-canvas widgets.', OCS_DOMAIN ),
 						//'before_widget' => '<section id="%1$s" class="widget %2$s">',
 						//'after_widget'  => '</section>',
 						//'before_title'  => '',
@@ -435,7 +435,7 @@ final class OCS_Off_Canvas_Sidebars
 
 					register_nav_menu(
 						'off-canvas-' . $sidebar_id,
-						__( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label']
+						esc_html__( 'Off Canvas', OCS_DOMAIN ) . ': ' . $sidebars[ $sidebar_id ]['label']
 					);
 				} // End if().
 			} // End if().
@@ -453,7 +453,7 @@ final class OCS_Off_Canvas_Sidebars
 	 */
 	public function filter_plugin_action_links( $links, $file ) {
 		if ( OCS_BASENAME === $file ) {
-			$settings_link = '<a href="' . admin_url( 'themes.php?page=' . $this->plugin_key ) . '">' . esc_attr__( 'Settings', OCS_DOMAIN ) . '</a>';
+			$settings_link = '<a href="' . admin_url( 'themes.php?page=' . $this->plugin_key ) . '">' . esc_html__( 'Settings', OCS_DOMAIN ) . '</a>';
 			array_unshift( $links, $settings_link );
 		}
 		return $links;
@@ -520,7 +520,7 @@ final class OCS_Off_Canvas_Sidebars
 				foreach ( $settings['sidebars'] as $sidebar_id => $sidebar_data ) {
 					if ( empty( $sidebar_data['label'] ) ) {
 						// @codingStandardsIgnoreLine - Label is new
-						$settings['sidebars'][ $sidebar_id ]['label'] = __( ucfirst( $sidebar_id ), OCS_DOMAIN );
+						$settings['sidebars'][ $sidebar_id ]['label'] = esc_html__( ucfirst( $sidebar_id ), OCS_DOMAIN );
 						// Location is new. In older versions the location was the sidebar_id (left or right)
 						$settings['sidebars'][ $sidebar_id ]['location'] = $sidebar_id;
 						if ( isset( $sidebar_data['width'] ) ) {
@@ -589,56 +589,56 @@ final class OCS_Off_Canvas_Sidebars
 
 		$links = array(
 			'support'   => array(
-				'title'       => __( 'Support', OCS_DOMAIN ),
-				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Support', OCS_DOMAIN ),
+				'description' => esc_html__( 'Need support?', OCS_DOMAIN ),
 				'icon'        => 'dashicons-sos',
 				'url'         => 'https://wordpress.org/support/plugin/off-canvas-sidebars/',
 			),
 			'slack'     => array(
-				'title'       => __( 'Slack', OCS_DOMAIN ),
-				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Slack', OCS_DOMAIN ),
+				'description' => esc_html__( 'Quick help via Slack', OCS_DOMAIN ),
 				'icon'        => 'dashicons-format-chat',
 				'url'         => 'https://keraweb.slack.com/messages/plugin-ocs/',
 			),
 			'review'    => array(
-				'title'       => __( 'Review', OCS_DOMAIN ),
-				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Review', OCS_DOMAIN ),
+				'description' => esc_html__( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
 				'icon'        => 'dashicons-star-filled',
 				'url'         => 'https://wordpress.org/support/plugin/off-canvas-sidebars/reviews/',
 			),
 			'translate' => array(
-				'title'       => __( 'Translate', OCS_DOMAIN ),
-				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Translate', OCS_DOMAIN ),
+				'description' => esc_html__( 'Help translating this plugin!', OCS_DOMAIN ),
 				'icon'        => 'dashicons-translation',
 				'url'         => 'https://translate.wordpress.org/projects/wp-plugins/off-canvas-sidebars',
 			),
 			'issue'     => array(
-				'title'       => __( 'Report issue', OCS_DOMAIN ),
-				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Report issue', OCS_DOMAIN ),
+				'description' => esc_html__( 'Have ideas or a bug report?', OCS_DOMAIN ),
 				'icon'        => 'dashicons-lightbulb',
 				'url'         => 'https://github.com/JoryHogeveen/off-canvas-sidebars/issues',
 			),
 			'docs'      => array(
-				'title'       => __( 'Documentation', OCS_DOMAIN ),
-				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Documentation', OCS_DOMAIN ),
+				'description' => esc_html__( 'Documentation', OCS_DOMAIN ),
 				'icon'        => 'dashicons-book-alt',
 				'url'         => 'https://github.com/JoryHogeveen/off-canvas-sidebars/wiki',
 			),
 			'github'    => array(
-				'title'       => __( 'GitHub', OCS_DOMAIN ),
-				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'title'       => esc_html__( 'GitHub', OCS_DOMAIN ),
+				'description' => esc_html__( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
 				'icon'        => 'dashicons-editor-code',
 				'url'         => 'https://github.com/JoryHogeveen/off-canvas-sidebars/tree/dev',
 			),
 			'donate'    => array(
-				'title'       => __( 'Donate', OCS_DOMAIN ),
-				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Donate', OCS_DOMAIN ),
+				'description' => esc_html__( 'Buy me a coffee!', OCS_DOMAIN ),
 				'icon'        => 'dashicons-smiley',
 				'url'         => 'https://www.keraweb.nl/donate.php?for=off-canvas-sidebars',
 			),
 			'plugins'   => array(
-				'title'       => __( 'Plugins', OCS_DOMAIN ),
-				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Plugins', OCS_DOMAIN ),
+				'description' => esc_html__( 'Check out my other WordPress plugins', OCS_DOMAIN ),
 				'icon'        => 'dashicons-admin-plugins',
 				'url'         => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),

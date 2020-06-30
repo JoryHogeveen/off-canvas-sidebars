@@ -99,7 +99,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				'general_key'               => $this->general_key,
 				'plugin_key'                => $this->plugin_key,
 				'css_prefix'                => $this->get_settings( 'css_prefix' ),
-				'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
+				'__required_fields_not_set' => esc_html__( 'Some required fields are not set!', OCS_DOMAIN ),
 			)
 		);
 
@@ -111,8 +111,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function add_admin_menus() {
 		add_theme_page(
-			esc_attr__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
-			esc_attr__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
+			esc_html__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
+			esc_html__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
 			$this->capability,
 			$this->plugin_key,
 			array( $this, 'options_page' )
@@ -287,10 +287,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				<p class="inner">
 					<?php
 					echo sprintf(
-						// Translators: %1$s and %2$s stands for a URL.
-						__( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank" rel="noopener noreferrer">Documentation</a> or talk about them in the <a href="%2$s" target="_blank" rel="noopener noreferrer">Support forum</a>', OCS_DOMAIN ),
-						off_canvas_sidebars()->get_links( 'docs', 'url' ),
-						off_canvas_sidebars()->get_links( 'support', 'url' )
+						// Translators: %1$s stands for "Documentation" and %2$s stands for a "Support forum", both are links.
+						esc_html__( 'If you are having problems with this plugin, checkout plugin %1$s or talk about them in the %2$s', OCS_DOMAIN ),
+						'<a href="' . off_canvas_sidebars()->get_links( 'docs', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Documentation', OCS_DOMAIN ) . '</a>',
+						'<a href="' . off_canvas_sidebars()->get_links( 'support', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Support forum', OCS_DOMAIN ) . '</a>',
 					);
 					?>
 				</p>

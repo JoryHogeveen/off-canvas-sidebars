@@ -136,9 +136,9 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 		$data['controls'] = array();
 		$data['strings']  = array(
-			'show_icon'             => __( 'Show icon', OCS_DOMAIN ),
-			'icon'                  => __( 'Icon classes', OCS_DOMAIN ),
-			'menu_item_type'        => __( 'Off-Canvas Trigger', OCS_DOMAIN ),
+			'show_icon'             => esc_html__( 'Show icon', OCS_DOMAIN ),
+			'icon'                  => esc_html__( 'Icon classes', OCS_DOMAIN ),
+			'menu_item_type'        => esc_html__( 'Off-Canvas Trigger', OCS_DOMAIN ),
 			'no_sidebars_available' => off_canvas_sidebars()->get_general_labels( 'no_sidebars_available' ),
 		);
 		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar => $sidebar_data ) {

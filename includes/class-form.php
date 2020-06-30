@@ -417,7 +417,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		$hook = self::text_option( $input_args );
 
 		$input_args['name'] .= '_priority';
-		$input_args['label'] = __( 'Priority' );
+		$input_args['label'] = esc_html__( 'Priority' );
 		if ( isset( $input_args['priority'] ) ) {
 			$input_args['placeholder'] = $input_args['priority'];
 		}

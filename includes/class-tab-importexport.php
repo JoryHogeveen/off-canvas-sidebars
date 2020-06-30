@@ -37,7 +37,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 */
 	protected function __construct() {
 		$this->tab  = 'ocs-importexport';
-		$this->name = esc_attr__( 'Import/Export', OCS_DOMAIN );
+		$this->name = esc_html__( 'Import/Export', OCS_DOMAIN );
 		parent::__construct();
 		$this->maybe_importexport_settings();
 	}
@@ -89,7 +89,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		</p>
 		<p>
 			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo $plugin_key; ?>-import" value="true" />
-			<?php submit_button( esc_attr__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-submit', false ); ?>
+			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-submit', false ); ?>
 			<input type="file" name="<?php echo $plugin_key; ?>-import-file" id="<?php echo $plugin_key; ?>-import-file" />
 		</p>
 		<?php
@@ -134,15 +134,15 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 			switch ( $get['ocs_import_result'] ) {
 				case 1:
 					$result_class = 'updated';
-					$ocs_import_result = esc_attr__( 'Settings Imported', OCS_DOMAIN );
+					$ocs_import_result = esc_html__( 'Settings Imported', OCS_DOMAIN );
 					break;
 				case 2:
 					$result_class = 'error';
-					$ocs_import_result = esc_attr__( 'Invalid Settings File', OCS_DOMAIN );
+					$ocs_import_result = esc_html__( 'Invalid Settings File', OCS_DOMAIN );
 					break;
 				case 3:
 					$result_class = 'error';
-					$ocs_import_result = esc_attr__( 'No Settings File Selected', OCS_DOMAIN );
+					$ocs_import_result = esc_html__( 'No Settings File Selected', OCS_DOMAIN );
 					break;
 			}
 
