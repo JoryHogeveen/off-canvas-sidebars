@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.5
+ * @version 0.5.6
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -70,6 +70,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Internal function, do not overwrite.
 		 *
 		 * @since  0.3.0
+		 * @since  0.5.6  Fixed issues with global param overwrites.
 		 * @param  {string}               key        The setting key to look for.
 		 * @param  {string|boolean|null}  sidebarId  The sidebar ID.
 		 *                                           Pass `false` to check for an active slidebar.
@@ -300,6 +301,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Set the default settings for sidebars if they are not found.
 	 * @since  0.3.0
+	 * @since  0.5.6  Fixed issues with global param overwrites.
 	 * @param  {string}  sidebarId  The sidebar ID.
 	 * @return {boolean} Success
 	 */

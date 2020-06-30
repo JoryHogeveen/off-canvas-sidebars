@@ -54,6 +54,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Add validation hooks.
+	 * @since  0.5.6
 	 */
 	public function run_validation() {
 		add_action( 'ocs_container_after', array( $this, 'action_ocs_container_after' ) );
@@ -62,6 +63,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Add element to validate after_site hook.
+	 * @since  0.5.6
 	 */
 	public function action_ocs_container_after() {
 		echo '<div id="ocs_validate_website_after"></div>';
@@ -69,6 +71,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * Add validation scripts.
+	 * @since  0.5.6
 	 */
 	public function enqueue_assets() {
 
@@ -107,8 +110,9 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Get validator link.
 	 *
-	 * @param  string  $url
-	 * @return string
+	 * @since   0.5.6
+	 * @param   string  $url
+	 * @return  string
 	 */
 	public function get_validator_link( $url = '' ) {
 		if ( ! $url ) {

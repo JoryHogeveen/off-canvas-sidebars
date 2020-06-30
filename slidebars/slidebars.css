@@ -10,7 +10,9 @@
  * Modified by: Jory Hogeveen
  * Version numbers below are related to Off-Canvas Sidebars, not Slidebars.
  *
- * @since  0.4  Enhance location selectors, added quotes.
+ * @version  0.5.6
+ * @since    0.4.0  Enhance location selectors, added quotes.
+ * @since    0.5.6  Added filter transition to canvas container.
  */
 
 /**

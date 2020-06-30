@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.5
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -335,7 +335,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the enabled plugin sidebars.
 	 *
 	 * @since   0.5.3
-	 * @since   0.5.x  Overwrite from global settings.
+	 * @since   0.5.6  Overwrite from global settings.
 	 * @return  array
 	 */
 	public function get_enabled_sidebars() {
@@ -357,7 +357,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Get the plugin settings.
 	 *
-	 * @since   0.5.x
+	 * @since   0.5.6
 	 * @param   string  $sidebar_id  The sidebar ID.
 	 * @param   string  $key         (optional) Get a single setting by key?
 	 * @return  mixed
@@ -371,7 +371,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		/**
 		 * Filter whether an off-canvas sidebar should be rendered.
-		 * @since   0.5.x
+		 * @since   0.5.6
 		 * @param   array   $settings
 		 * @param   string  $sidebar_id
 		 * @return  array

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
- * @version 0.5.5
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
@@ -354,6 +354,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	 * @since   0.1.0
 	 * @since   0.4.0  Moved to this class.
 	 * @since   0.5.5  Changed min attr to 0 (was 1).
+	 * @since   0.5.6  Option to pass `min`, `max` and `step` params.
 	 * @static
 	 * @param   array  $args
 	 */
@@ -525,6 +526,8 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Wrap field in fieldset.
 	 *
+	 * @since   0.5.6
+	 * @static
 	 * @param   string  $html
 	 * @param   array   $args
 	 * @param   array   $attr

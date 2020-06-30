@@ -14,9 +14,10 @@
  * @package Off_Canvas_Sidebars
  * @author  Jory Hogeveen <info@keraweb.nl>
  *
- * @since   0.4    Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @version 0.5.6
+ * @since   0.4.0  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
  * @since   0.4.2  Parse slidebar widths/heights to rounded pixels (like jQuery does) to prevent 1px differences
- * @version 0.4.2
+ * @since   0.5.6  Added `initialized` and `reinit` methods.
  * @global  slidebars
  * @preserve
  */

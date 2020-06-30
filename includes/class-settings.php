@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.5
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Base
@@ -152,7 +152,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the plugin settings.
 	 *
 	 * @since   0.5.3
-	 * @since   0.5.x  Do not overwrite from global settings.
+	 * @since   0.5.6  Do not overwrite from global settings.
 	 * @param   string  $sidebar_id  The sidebar ID.
 	 * @param   string  $key         (optional) Get a single setting by key?
 	 * @return  mixed
@@ -194,6 +194,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Returns the default settings.
 	 *
 	 * @since   0.2.0
+	 * @since   0.5.6  Added filter.
 	 * @return  array
 	 */
 	public function get_default_settings() {
@@ -209,6 +210,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Returns the default sidebar_settings.
 	 *
 	 * @since   0.2.0
+	 * @since   0.5.6  Added filter.
 	 * @return  array
 	 */
 	public function get_default_sidebar_settings() {
