@@ -25,6 +25,12 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 
 	var $body = $( 'body' );
 
+	/**
+	 * Run validation.
+	 *
+	 * @since  0.5.6
+	 * @return {null} Nothing.
+	 */
 	ocsSetupValidate.run = function() {
 
 		var errors  = [],
@@ -65,6 +71,13 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 		ocsSetupValidate.popup( popup );
 	};
 
+	/**
+	 * Show popup.
+	 *
+	 * @since  0.5.6
+	 * @param  {string}  content  The popup content.
+	 * @return {null} Nothing.
+	 */
 	ocsSetupValidate.popup = function( content ) {
 		var style = 'background: rgba(0,0,0,0.5); position: fixed; display: flex; height: 100%; width: 100%; top: 0; left: 0; z-index: 9999999; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center;';
 
@@ -72,6 +85,13 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 		$body.append( '<div id="ocs-setup-validate-result" style="' + style + '">' + content + '</div>' );
 	};
 
+	/**
+	 * Log message in browser console.
+	 *
+	 * @since  0.5.6
+	 * @param  {string}  message  The message.
+	 * @return {null} Nothing.
+	 */
 	ocsSetupValidate.log = function( message ) {
 		console.log( 'Off-Canvas Sidebars Setup Validator: ' + message );
 	};
