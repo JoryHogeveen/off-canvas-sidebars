@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-semi */
 ;/**
  * Slidebars - A jQuery Framework for Off-Canvas Menus and Sidebars
  * Version: 2.0.2
@@ -19,10 +20,11 @@
  * @global  slidebars
  * @preserve
  */
+/* eslint-enable no-extra-semi */
 
 var slidebars;
 
-(function($) {
+( function( $ ) {
 
 slidebars = function () {
 
@@ -632,4 +634,4 @@ slidebars = function () {
 	$( window ).on( 'resize', this.css.bind( this ) );
 };
 
-}(jQuery));
+} ( jQuery ) );
