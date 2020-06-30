@@ -107,6 +107,9 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	private function default_actions() {
 
+		$before_hook = $this->get_website_before_hook();
+		$after_hook  = $this->get_website_after_hook();
+
 		$before_prio = $this->get_settings( 'website_before_hook_priority' );
 		$after_prio  = $this->get_settings( 'website_after_hook_priority' );
 
@@ -122,9 +125,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 
 		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
 		$after_prio  = apply_filters( 'ocs_website_after_hook_priority', $after_prio );
-
-		$before_hook = $this->get_website_before_hook();
-		$after_hook  = $this->get_website_after_hook();
 
 		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
 		add_action( $after_hook, array( $this, 'after_site' ), $after_prio );
