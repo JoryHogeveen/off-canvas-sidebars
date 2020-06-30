@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.3
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars_Tab
@@ -38,7 +38,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 */
 	protected function __construct() {
 		$this->tab  = 'ocs-sidebars';
-		$this->name = esc_attr__( 'Sidebars', OCS_DOMAIN );
+		$this->name = esc_html__( 'Sidebars', OCS_DOMAIN );
 		parent::__construct();
 
 		add_filter( 'ocs_settings_parse_input', array( $this, 'parse_input' ), 11, 2 );
@@ -64,7 +64,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		?>
 	<p>
 	<?php esc_html_e( 'Add a new sidebar', OCS_DOMAIN ); ?> <input name="<?php echo esc_attr( $this->key ) . '[sidebars][_ocs_add_new]'; ?>" value="" type="text" placeholder="<?php esc_html_e( 'Name', OCS_DOMAIN ); ?>" />
-	<?php submit_button( __( 'Add sidebar', OCS_DOMAIN ), 'primary', 'submit', false ); ?>
+	<?php submit_button( esc_html__( 'Add sidebar', OCS_DOMAIN ), 'primary', 'submit', false ); ?>
 	</p>
 		<?php
 	}
@@ -211,7 +211,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					$new_sidebar_id . '_duplicate_id',
 					esc_attr( 'ocs_duplicate_id' ),
 					// Translators: %s stands for a sidebar ID.
-					sprintf( __( 'The ID %s already exists! Sidebar not added.', OCS_DOMAIN ), '<code>' . $new_sidebar_id . '</code>' )
+					sprintf( esc_html__( 'The ID %s already exists! Sidebar not added.', OCS_DOMAIN ), '<code>' . $new_sidebar_id . '</code>' )
 				);
 			}
 		}
@@ -273,7 +273,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 							esc_attr( 'ocs_duplicate_id' ),
 							sprintf(
 								// Translators: %s stands for a sidebar ID.
-								__( 'The ID %s already exists! The ID is not changed.', OCS_DOMAIN ),
+								esc_html__( 'The ID %s already exists! The ID is not changed.', OCS_DOMAIN ),
 								'<code>' . $new_sidebar_id . '</code>'
 							)
 						);
@@ -351,52 +351,52 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 		return array(
 			'enable' => array(
 				'name'     => 'enable',
-				'title'    => esc_attr__( 'Enable', OCS_DOMAIN ),
+				'title'    => esc_html__( 'Enable', OCS_DOMAIN ),
 				'callback' => 'checkbox_option',
 				'type'     => 'checkbox',
 			),
 			'id' => array(
 				'name'        => 'id',
-				'title'       => esc_attr__( 'ID', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'title'       => esc_html__( 'ID', OCS_DOMAIN ) . ' <span class="required">*</span>',
 				'callback'    => 'text_option',
 				'type'        => 'text',
 				'required'    => true,
-				'description' => __( 'IMPORTANT: Must be unique!', OCS_DOMAIN ),
+				'description' => esc_html__( 'IMPORTANT: Must be unique!', OCS_DOMAIN ),
 			),
 			'label' => array(
 				'name'     => 'label',
-				'title'    => esc_attr__( 'Name', OCS_DOMAIN ),
+				'title'    => esc_html__( 'Name', OCS_DOMAIN ),
 				'callback' => 'text_option',
 				'type'     => 'text',
 			),
 			'content' => array(
-				'name'     => 'content',
-				'title'    => esc_attr__( 'Content', OCS_DOMAIN ),
-				'callback' => 'radio_option',
-				'type'     => 'radio',
-				'default'  => 'sidebar',
-				'options'  => array(
+				'name'        => 'content',
+				'title'       => esc_html__( 'Content', OCS_DOMAIN ),
+				'callback'    => 'radio_option',
+				'type'        => 'radio',
+				'default'     => 'sidebar',
+				'description' => esc_html__( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', OCS_DOMAIN ),
+				'options'     => array(
 					'sidebar' => array(
 						'name'  => 'sidebar',
-						'label' => __( 'Sidebar', OCS_DOMAIN ) . ' &nbsp (' . __( 'Default', OCS_DOMAIN ) . ')',
+						'label' => esc_html__( 'Sidebar', OCS_DOMAIN ) . ' &nbsp (' . esc_html__( 'Default', OCS_DOMAIN ) . ')',
 						'value' => 'sidebar',
 					),
 					'menu'    => array(
 						'name'  => 'menu',
-						'label' => __( 'Menu', OCS_DOMAIN ),
+						'label' => esc_html__( 'Menu', OCS_DOMAIN ),
 						'value' => 'menu',
 					),
 					'action'  => array(
 						'name'  => 'action',
-						'label' => __( 'Custom', OCS_DOMAIN ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank">' . __( 'Action hook', OCS_DOMAIN ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
+						'label' => esc_html__( 'Custom', OCS_DOMAIN ) . ' &nbsp; (<a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Action hook', OCS_DOMAIN ) . '</a>: <code>ocs_custom_content_sidebar_<span class="js-dynamic-id"></span></code> )',
 						'value' => 'action',
 					),
 				),
-				'description' => __( 'Keep in mind that WordPress has menu and text widgets by default, the "sidebar" object is your best option in most cases.', OCS_DOMAIN ),
 			),
 			'location' => array(
 				'name'     => 'location',
-				'title'    => esc_attr__( 'Location', OCS_DOMAIN ) . ' <span class="required">*</span>',
+				'title'    => esc_html__( 'Location', OCS_DOMAIN ) . ' <span class="required">*</span>',
 				'callback' => 'radio_option',
 				'type'     => 'radio',
 				'required' => true,
@@ -428,10 +428,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			// @todo Auto handler for radio options with a custom field.
 			'size' => array(
 				'name'        => 'size',
-				'title'       => esc_attr__( 'Size', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Size', OCS_DOMAIN ),
 				'callback'    => 'sidebar_size',
 				'type'        => 'radio',
-				'description' => __( 'You can overwrite this with CSS', OCS_DOMAIN ),
+				'description' => esc_html__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'default'     => 'default',
 				'options'     => array(
 					'default' => array(
@@ -462,6 +462,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'hidden'  => true,
 				'default' => '',
 				'type'    => 'number',
+				'min'     => 0,
 			),
 			// @fixme See above. This only makes sure the fields gets recognized.
 			'size_input_type' => array(
@@ -484,7 +485,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			'sidebar_style' => array(
 				'name'     => 'style',
-				'title'    => esc_attr__( 'Style', OCS_DOMAIN ) . ' (' . esc_attr__( 'Animation', OCS_DOMAIN ) . ') <span class="required">*</span>',
+				'title'    => esc_html__( 'Style', OCS_DOMAIN ) . ' (' . esc_html__( 'Animation', OCS_DOMAIN ) . ') <span class="required">*</span>',
 				'callback' => 'radio_option',
 				'type'     => 'radio',
 				'required' => true,
@@ -514,36 +515,38 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			'animation_speed' => array(
 				'name'        => 'animation_speed',
-				'title'       => esc_attr__( 'Animation speed', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Animation speed', OCS_DOMAIN ),
 				'callback'    => 'number_option',
 				'type'        => 'number',
 				'description' =>
-					__( 'Set the animation speed for showing and hiding this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>300ms</code>.<br>' .
-					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
+					esc_html__( 'Set the animation speed for showing and hiding this sidebar.', OCS_DOMAIN )
+					. '<br>' . esc_html__( 'Default', OCS_DOMAIN ) . ': <code>300ms</code>.<br>' .
+					esc_html__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>ms</code>',
+				'min'         => 0,
 			),
 			'padding' => array(
 				'name'        => 'padding',
-				'title'       => esc_attr__( 'Padding', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Padding', OCS_DOMAIN ),
 				'callback'    => 'number_option',
 				'type'        => 'number',
 				'description' =>
-					__( 'Add CSS padding (in pixels) to this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'none', OCS_DOMAIN ) . '.<br>' .
-					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
+					esc_html__( 'Add CSS padding (in pixels) to this sidebar.', OCS_DOMAIN )
+					. '<br>' . esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'none', OCS_DOMAIN ) . '.<br>' .
+					esc_html__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
+				'min'         => 0,
 			),
 			// @todo Auto handler for radio options with a custom field
 			'background_color' => array(
 				'name'        => 'background_color',
-				'title'       => esc_attr__( 'Background color', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Background color', OCS_DOMAIN ),
 				'callback'    => 'color_option',
 				'type'        => 'color',
 				'description' =>
-					__( 'Choose a background color for this sidebar.', OCS_DOMAIN )
-					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>#000000</code>.<br>' .
-					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
+					esc_html__( 'Choose a background color for this sidebar.', OCS_DOMAIN )
+					. '<br>' . esc_html__( 'Default', OCS_DOMAIN ) . ': <code>#000000</code>.<br>' .
+					esc_html__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 			),
 			// @fixme See above. This only makes sure the fields gets recognized.
 			'background_color_type' => array(
@@ -571,54 +574,55 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			),
 			'overwrite_global_settings' => array(
 				'name'     => 'overwrite_global_settings',
-				'title'    => esc_attr__( 'Overwrite global settings', OCS_DOMAIN ),
+				'title'    => esc_html__( 'Overwrite global settings', OCS_DOMAIN ),
 				'callback' => 'checkbox_option',
 				'type'     => 'checkbox',
 			),
 			'site_close' => array(
 				'name'        => 'site_close',
-				'title'       => esc_attr__( 'Close sidebar when clicking on the site', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Close sidebar when clicking on the site', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable', OCS_DOMAIN ) . '.',
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
+				'label'       => esc_html__( 'Enable', OCS_DOMAIN ) . '.',
+				'description' => esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'enabled', OCS_DOMAIN ) . '.',
 			),
 			'link_close' => array(
 				'name'        => 'link_close',
-				'title'       => esc_attr__( 'Close sidebar when clicking on a link', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Close sidebar when clicking on a link', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable', OCS_DOMAIN ) . '.',
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'enabled', OCS_DOMAIN ) . '.',
+				'label'       => esc_html__( 'Enable', OCS_DOMAIN ) . '.',
+				'description' => esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'enabled', OCS_DOMAIN ) . '.',
 			),
 			'disable_over' => array(
 				'name'        => 'disable_over',
-				'title'       => esc_attr__( 'Disable over', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Disable over', OCS_DOMAIN ),
 				'callback'    => 'number_option',
 				'type'        => 'number',
-				'label'       => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
-				'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
+				'label'       => esc_html__( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
+				'description' => esc_html__( 'Leave blank to disable.', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
+				'min'         => 0,
 			),
 			'hide_control_classes' => array(
 				'name'        => 'hide_control_classes',
-				'title'       => esc_attr__( 'Auto-hide control triggers', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Auto-hide control triggers', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Hide off-canvas sidebar control triggers if the sidebar is disabled.', OCS_DOMAIN ),
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
+				'label'       => esc_html__( 'Hide off-canvas sidebar control triggers if the sidebar is disabled.', OCS_DOMAIN ),
+				'description' => esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'disabled', OCS_DOMAIN ) . '.',
 			),
 			'scroll_lock' => array(
 				'name'        => 'scroll_lock',
-				'title'       => esc_attr__( 'Scroll lock', OCS_DOMAIN ),
+				'title'       => esc_html__( 'Scroll lock', OCS_DOMAIN ),
 				'callback'    => 'checkbox_option',
 				'type'        => 'checkbox',
-				'label'       => __( 'Prevent site content scrolling whilst a off-canvas sidebar is open.', OCS_DOMAIN ),
-				'description' => __( 'Default', OCS_DOMAIN ) . ': ' . __( 'disabled', OCS_DOMAIN ) . '.',
+				'label'       => esc_html__( 'Prevent site content scrolling whilst a off-canvas sidebar is open.', OCS_DOMAIN ),
+				'description' => esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'disabled', OCS_DOMAIN ) . '.',
 			),
 			'sidebar_delete' => array(
 				'name'     => 'delete',
-				'title'    => esc_attr__( 'Delete sidebar', OCS_DOMAIN ),
+				'title'    => esc_html__( 'Delete sidebar', OCS_DOMAIN ),
 				'callback' => 'checkbox_option',
 				'type'     => 'checkbox',
 				'value'    => 0,

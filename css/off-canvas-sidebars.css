@@ -4,7 +4,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.5
+ * @version 0.5.6
  * @preserve
  */
 
@@ -69,10 +69,10 @@ body,
 	-ms-transform: none;
 	-o-transform: none;
 	transform: none;
-	-webkit-transition: -webkit-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
-	-moz-transition: -moz-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
-	-o-transition: -o-transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
-	transition: transform 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms;
+	-webkit-transition: -webkit-transform 300ms, -webkit-filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+	-moz-transition: -moz-transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+	-o-transition: -o-transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+	transition: transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
 }
 
 

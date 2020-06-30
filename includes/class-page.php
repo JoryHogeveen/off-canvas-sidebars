@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0  Refactored from single settings class.
- * @version 0.5.4
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
@@ -29,13 +29,35 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	protected static $_instance = null;
 
-	protected $general_key    = '';
-	protected $plugin_key     = '';
-	protected $general_labels = array();
-	protected $capability     = 'edit_theme_options';
-	protected $request_tab    = '';
-	protected $tab            = 'ocs-settings';
-	protected $tabs           = array();
+	/**
+	 * @var string
+	 */
+	protected $general_key = '';
+
+	/**
+	 * @var string
+	 */
+	protected $plugin_key = '';
+
+	/**
+	 * @var string
+	 */
+	protected $capability = 'edit_theme_options';
+
+	/**
+	 * @var string
+	 */
+	protected $request_tab = '';
+
+	/**
+	 * @var string
+	 */
+	protected $tab = 'ocs-settings';
+
+	/**
+	 * @var array
+	 */
+	protected $tabs = array();
 
 	/**
 	 * @since   0.1.0
@@ -51,23 +73,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			$this->set_current_tab( $_GET['tab'] );
 		}
 		// @codingStandardsIgnoreEnd
-		$this->plugin_key = off_canvas_sidebars()->get_plugin_key();
-		$this->register_tabs();
-
-		add_action( 'admin_init', array( $this, 'load_plugin_data' ) );
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_menu', array( $this, 'add_admin_menus' ), 15 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles_scripts' ) );
-	}
-
-	/**
-	 * Get plugin data.
-	 * @since   0.1.0
-	 */
-	public function load_plugin_data() {
-		$off_canvas_sidebars  = off_canvas_sidebars();
-		$this->general_labels = $off_canvas_sidebars->get_general_labels();
-		$this->general_key    = $off_canvas_sidebars->get_general_key();
+		$this->plugin_key  = off_canvas_sidebars()->get_plugin_key();
+		$this->general_key = off_canvas_sidebars()->get_general_key();
 
 		/**
 		 * Change the capability for the OCS settings.
@@ -76,6 +83,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		 * @return string
 		 */
 		$this->capability = apply_filters( 'ocs_settings_capability', $this->capability );
+
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_menu', array( $this, 'add_admin_menus' ), 15 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles_scripts' ) );
 	}
 
 	/**
@@ -111,7 +122,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				'general_key'               => $this->general_key,
 				'plugin_key'                => $this->plugin_key,
 				'css_prefix'                => $this->get_settings( 'css_prefix' ),
-				'__required_fields_not_set' => __( 'Some required fields are not set!', OCS_DOMAIN ),
+				'__required_fields_not_set' => esc_html__( 'Some required fields are not set!', OCS_DOMAIN ),
 			)
 		);
 
@@ -123,8 +134,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public function add_admin_menus() {
 		add_theme_page(
-			esc_attr__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
-			esc_attr__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
+			esc_html__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
+			esc_html__( 'Off-Canvas Sidebars', OCS_DOMAIN ),
 			$this->capability,
 			$this->plugin_key,
 			array( $this, 'options_page' )
@@ -207,6 +218,8 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 * @since   0.1.0
 	 */
 	public function register_settings() {
+
+		$this->register_tabs();
 
 		$tab = $this->get_current_tab();
 		if ( $tab ) {
@@ -297,31 +310,31 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				<p class="inner">
 					<?php
 					echo sprintf(
-						// Translators: %1$s and %2$s stands for a URL.
-						__( 'If you are having problems with this plugin, checkout plugin <a href="%1$s" target="_blank">Documentation</a> or talk about them in the <a href="%2$s" target="_blank">Support forum</a>', OCS_DOMAIN ),
-						off_canvas_sidebars()->get_links( 'docs', 'url' ),
-						off_canvas_sidebars()->get_links( 'support', 'url' )
+						// Translators: %1$s stands for "Documentation" and %2$s stands for a "Support forum", both are links.
+						esc_html__( 'If you are having problems with this plugin, checkout plugin %1$s or talk about them in the %2$s', OCS_DOMAIN ),
+						'<a href="' . off_canvas_sidebars()->get_links( 'docs', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Documentation', OCS_DOMAIN ) . '</a>',
+						'<a href="' . off_canvas_sidebars()->get_links( 'support', 'url' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Support forum', OCS_DOMAIN ) . '</a>'
 					);
 					?>
 				</p>
 				<hr />
 				<h4 class="inner"><?php esc_html_e( 'Do you like this plugin?', OCS_DOMAIN ); ?></h4>
-				<a class="inner" href="<?php echo off_canvas_sidebars()->get_links( 'donate', 'url' ); ?>" target="_blank">
+				<a class="inner" href="<?php echo off_canvas_sidebars()->get_links( 'donate', 'url' ); ?>" target="_blank" rel="noopener noreferrer">
 					<img alt="PayPal - The safer, easier way to pay online!" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif">
 				</a>
 				<p class="inner">
-					<a href="<?php echo off_canvas_sidebars()->get_links( 'review', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-star-filled"></span><?php esc_html_e( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ); ?></a><br />
-					<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank"><span class="icon dashicons dashicons-testimonial"></span><?php esc_html_e( 'Blog about it & link to the plugin page', OCS_DOMAIN ); ?></a><br />
-					<a href="<?php echo off_canvas_sidebars()->get_links( 'plugins', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-admin-plugins"></span><?php esc_html_e( 'Check out my other WordPress plugins', OCS_DOMAIN ); ?></a><br />
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'review', 'url' ); ?>" target="_blank" rel="noopener noreferrer"><span class="icon dashicons dashicons-star-filled"></span><?php esc_html_e( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ); ?></a><br />
+					<a href="https://wordpress.org/plugins/off-canvas-sidebars/" target="_blank" rel="noopener noreferrer"><span class="icon dashicons dashicons-testimonial"></span><?php esc_html_e( 'Blog about it & link to the plugin page', OCS_DOMAIN ); ?></a><br />
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'plugins', 'url' ); ?>" target="_blank" rel="noopener noreferrer"><span class="icon dashicons dashicons-admin-plugins"></span><?php esc_html_e( 'Check out my other WordPress plugins', OCS_DOMAIN ); ?></a><br />
 				</p>
 				<hr />
 				<h4 class="inner"><?php esc_html_e( 'Want to help?', OCS_DOMAIN ); ?></h4>
 				<p class="inner">
-					<a href="<?php echo off_canvas_sidebars()->get_links( 'github', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-editor-code"></span><?php esc_html_e( 'Follow and/or contribute on GitHub', OCS_DOMAIN ); ?></a><br />
-					<a href="<?php echo off_canvas_sidebars()->get_links( 'translate', 'url' ); ?>" target="_blank"><span class="icon dashicons dashicons-translation"></span><?php esc_html_e( 'Help translating this plugin!', OCS_DOMAIN ); ?></a>
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'github', 'url' ); ?>" target="_blank" rel="noopener noreferrer"><span class="icon dashicons dashicons-editor-code"></span><?php esc_html_e( 'Follow and/or contribute on GitHub', OCS_DOMAIN ); ?></a><br />
+					<a href="<?php echo off_canvas_sidebars()->get_links( 'translate', 'url' ); ?>" target="_blank" rel="noopener noreferrer"><span class="icon dashicons dashicons-translation"></span><?php esc_html_e( 'Help translating this plugin!', OCS_DOMAIN ); ?></a>
 				</p>
 				<hr />
-				<p class="ocs-link inner"><?php esc_html_e( 'Created by', OCS_DOMAIN ); ?>: <a href="https://profiles.wordpress.org/keraweb/" target="_blank" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
+				<p class="ocs-link inner"><?php esc_html_e( 'Created by', OCS_DOMAIN ); ?>: <a href="https://profiles.wordpress.org/keraweb/" target="_blank" rel="noopener noreferrer" title="Keraweb - Jory Hogeveen"><!--<img src="' . plugins_url( '../images/logo-keraweb.png', __FILE__ ) . '" title="Keraweb - Jory Hogeveen" alt="Keraweb - Jory Hogeveen" />-->Keraweb (Jory Hogeveen)</a></p>
 			</div>
 		</div>
 	</div>
@@ -392,6 +405,16 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 			echo '<a class="nav-tab' . esc_attr( $active ) . '" href="?page=' . esc_attr( $this->plugin_key ) . '&amp;tab=' . esc_attr( $tab_key ) . '">' . esc_html( $tab->name ) . '</a>';
 		}
 		echo '</h1>';
+	}
+
+	/**
+	 * Check if the current user has access to the plugin settings page.
+	 *
+	 * @since  0.5.6
+	 * @return bool
+	 */
+	public function has_access() {
+		return current_user_can( $this->capability );
 	}
 
 	/**

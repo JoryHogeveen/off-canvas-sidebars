@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.5
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -61,42 +61,70 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Get the hook to open the website wrapper.
+	 *
+	 * @since  0.5.6
+	 * @return string
+	 */
+	public function get_website_before_hook() {
+		$before_hook = trim( $this->get_settings( 'website_before_hook' ) );
+
+		if ( empty( $before_hook ) ) {
+			if ( 'genesis' === get_template() ) {
+				$before_hook = 'genesis_before';
+			} else {
+				$before_hook = 'website_before';
+			}
+		}
+
+		return trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
+	}
+
+	/**
+	 * Get the hook to close the website wrapper.
+	 *
+	 * @since  0.5.6
+	 * @return string
+	 */
+	public function get_website_after_hook() {
+		$after_hook = trim( $this->get_settings( 'website_after_hook' ) );
+
+		if ( empty( $after_hook ) ) {
+			if ( 'genesis' === get_template() ) {
+				$after_hook = 'genesis_after';
+			} else {
+				$after_hook = 'website_after';
+			}
+		}
+
+		return trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
+	}
+
+	/**
 	 * Add default actions
 	 *
 	 * @since   0.1.0
 	 */
 	private function default_actions() {
 
-		$before_hook = trim( $this->get_settings( 'website_before_hook' ) );
-		$after_hook  = trim( $this->get_settings( 'website_after_hook' ) );
+		$before_hook = $this->get_website_before_hook();
+		$after_hook  = $this->get_website_after_hook();
 
-		if ( 'genesis' === get_template() ) {
-			if ( empty( $before_hook ) ) {
-				$before_hook = 'genesis_before';
-			}
-			if ( empty( $after_hook ) ) {
-				$after_hook = 'genesis_after';
-			}
-		} else {
-			if ( empty( $before_hook ) ) {
-				$before_hook = 'website_before';
-			}
-			if ( empty( $after_hook ) ) {
-				$after_hook = 'website_after';
-			}
+		$before_prio = $this->get_settings( 'website_before_hook_priority' );
+		$after_prio  = $this->get_settings( 'website_after_hook_priority' );
+
+		if ( ! is_numeric( $before_prio ) ) {
+			$before_prio = 5; // Early addition.
 		}
-
-		$before_prio = 5; // Early addition.
-		$after_prio  = 50; // Late addition.
-		if ( 'wp_footer' === $after_hook ) {
-			$after_prio = -50; // Early addition.
+		if ( ! is_numeric( $after_prio ) ) {
+			$after_prio = 50; // Late addition.
+			if ( 'wp_footer' === $after_hook ) {
+				$after_prio = -50; // Early addition (before scripts).
+			}
 		}
 
 		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
 		$after_prio  = apply_filters( 'ocs_website_after_hook_priority', $after_prio );
-
-		$before_hook = trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
-		$after_hook  = trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
 
 		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
 		add_action( $after_hook, array( $this, 'after_site' ), $after_prio );
@@ -183,7 +211,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		// Add content before the off-canvas sidebars.
 		do_action( 'ocs_sidebars_before' );
 
-		$sidebars = off_canvas_sidebars_settings()->get_sidebars();
+		$sidebars = $this->get_enabled_sidebars();
 		if ( ! empty( $sidebars ) ) {
 			foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
 				$this->do_sidebar( $sidebar_id );
@@ -202,7 +230,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @param   string  $sidebar_id
 	 */
 	public function do_sidebar( $sidebar_id ) {
-		$sidebar_data = off_canvas_sidebars_settings()->get_sidebar_settings( $sidebar_id );
+		$sidebar_data = $this->get_sidebar_settings( $sidebar_id );
 		if ( empty( $sidebar_data ) ) {
 			return;
 		}
@@ -307,6 +335,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the enabled plugin sidebars.
 	 *
 	 * @since   0.5.3
+	 * @since   0.5.6  Overwrite from global settings.
 	 * @return  array
 	 */
 	public function get_enabled_sidebars() {
@@ -314,9 +343,44 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		foreach ( $sidebars as $sidebar_id => $sidebar_data ) {
 			if ( ! $this->is_sidebar_enabled( $sidebar_id ) ) {
 				unset( $sidebars[ $sidebar_id ] );
+			} elseif ( empty( $sidebar_data['overwrite_global_settings'] ) ) {
+				// Get global settings with the same key.
+				$settings = off_canvas_sidebars_settings()->get_settings();
+				$settings = array_intersect_key( $settings, $sidebar_data );
+				// Overwrite sidebar settings with global settings.
+				$sidebars[ $sidebar_id ] = array_merge( $sidebar_data, $settings );
 			}
 		}
 		return $sidebars;
+	}
+
+	/**
+	 * Get the plugin settings.
+	 *
+	 * @since   0.5.6
+	 * @param   string  $sidebar_id  The sidebar ID.
+	 * @param   string  $key         (optional) Get a single setting by key?
+	 * @return  mixed
+	 */
+	public function get_sidebar_settings( $sidebar_id, $key = null ) {
+		$sidebars = $this->get_enabled_sidebars();
+		if ( empty( $sidebars[ $sidebar_id ] ) ) {
+			return null;
+		}
+		$settings = $sidebars[ $sidebar_id ];
+
+		/**
+		 * Filter whether an off-canvas sidebar should be rendered.
+		 * @since   0.5.6
+		 * @param   array   $settings
+		 * @param   string  $sidebar_id
+		 * @return  array
+		 */
+		$settings = apply_filters( 'ocs_get_sidebar_settings', $settings, $sidebar_id );
+		if ( $key ) {
+			return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
+		}
+		return $settings;
 	}
 
 	/**
@@ -464,12 +528,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars' . $suffix . '.css', array(), $version );
 		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars' . $suffix . '.js', array( 'jquery', 'slidebars' ), $version, true );
 
-		$sidebars = array();
-		foreach ( $this->get_enabled_sidebars() as $sidebar_id => $sidebar_data ) {
-			if ( ! empty( $sidebar_data['enable'] ) ) {
-				$sidebars[ $sidebar_id ] = $sidebar_data;
-			}
-		}
 		wp_localize_script(
 			'off-canvas-sidebars',
 			'ocsOffCanvasSidebars',
@@ -482,7 +540,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'scroll_lock'          => (bool) $this->get_settings( 'scroll_lock' ),
 				'legacy_css'           => (bool) ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ),
 				'css_prefix'           => $this->get_settings( 'css_prefix' ),
-				'sidebars'             => $sidebars,
+				'sidebars'             => $this->get_enabled_sidebars(),
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);

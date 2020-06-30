@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.5.3
+ * @version 0.5.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,7 +60,7 @@ function the_ocs_off_canvas_sidebar( $sidebars = '' ) {
 function the_ocs_control_trigger( $atts, $content = '' ) {
 
 	if ( empty( $atts['id'] ) ) {
-		return __( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
+		return esc_html__( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
 	}
 
 	$atts = shortcode_atts( array(

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.1
- * @version 0.5.3
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sidebars_Base
@@ -91,7 +91,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	public static function render( $sidebar_id, $args = array() ) {
 
 		if ( empty( $sidebar_id ) ) {
-			return __( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
+			return esc_html__( 'No Off-Canvas Sidebar ID provided.', 'off-canvas-sidebars' );
 		}
 
 		$sidebar_id = (string) $sidebar_id;
@@ -111,7 +111,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		$args['attr'] = off_canvas_sidebars_parse_attr_string( $args['attr'] );
 
 		if ( in_array( $args['element'], self::$unsupported_elements, true ) ) {
-			return '<span class="error">' . __( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
+			return '<span class="error">' . esc_html__( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
 		}
 
 		$singleton = false;
@@ -237,7 +237,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		$sidebars = array(
 			array(
 				'value' => '',
-				'label' => '-- ' . __( 'select', OCS_DOMAIN ) . ' --',
+				'label' => '-- ' . esc_html__( 'select', OCS_DOMAIN ) . ' --',
 			),
 		);
 		foreach ( off_canvas_sidebars_settings()->get_enabled_sidebars() as $sidebar_id => $sidebar_data ) {
@@ -261,48 +261,48 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 
 		$strings = array(
 			// Translators: [ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]
-			'your_text' => __( 'Your text', OCS_DOMAIN ),
+			'your_text' => esc_html__( 'Your text', OCS_DOMAIN ),
 			// Translators: [ocs_trigger text="Your text"] or [ocs_trigger]Your text[/ocs_trigger]
-			'or'        => __( 'or', OCS_DOMAIN ),
+			'or'        => esc_html__( 'or', OCS_DOMAIN ),
 		);
 
 		$fields = array(
 			'id'            => array(
 				'type'        => 'select',
 				'name'        => 'id',
-				'label'       => __( 'Sidebar ID', OCS_DOMAIN ),
+				'label'       => esc_html__( 'Sidebar ID', OCS_DOMAIN ),
 				'options'     => $sidebars,
-				'description' => __( '(Required) The off-canvas sidebar ID', OCS_DOMAIN ),
+				'description' => esc_html__( '(Required) The off-canvas sidebar ID', OCS_DOMAIN ),
 				'required'    => true,
 				'group'       => 'basic',
 			),
 			'text'          => array(
 				'type'        => 'text',
 				'name'        => 'text',
-				'label'       => __( 'Text', OCS_DOMAIN ),
-				'description' => __( 'Limited HTML allowed', OCS_DOMAIN ),
+				'label'       => esc_html__( 'Text', OCS_DOMAIN ),
+				'description' => esc_html__( 'Limited HTML allowed', OCS_DOMAIN ),
 				'multiline'   => true,
 				'group'       => 'basic',
 			),
 			'icon'          => array(
 				'type'        => 'text',
 				'name'        => 'icon',
-				'label'       => __( 'Icon', OCS_DOMAIN ),
+				'label'       => esc_html__( 'Icon', OCS_DOMAIN ),
 				// Translators: %s stands for <code>dashicons</code>.
-				'description' => __( 'The icon classes.', OCS_DOMAIN ) . ' ' . sprintf( __( 'Do not forget the base icon class like %s', OCS_DOMAIN ), '<code>dashicons</code>' ),
+				'description' => esc_html__( 'The icon classes.', OCS_DOMAIN ) . ' ' . sprintf( esc_html__( 'Do not forget the base icon class like %s', OCS_DOMAIN ), '<code>dashicons</code>' ),
 				'group'       => 'basic',
 			),
 			'icon_location' => array(
 				'type'    => 'select',
 				'name'    => 'icon_location',
-				'label'   => __( 'Icon location', OCS_DOMAIN ),
+				'label'   => esc_html__( 'Icon location', OCS_DOMAIN ),
 				'options' => array(
 					array(
-						'label' => __( 'Before', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
+						'label' => esc_html__( 'Before', OCS_DOMAIN ) . ' (' . esc_html__( 'Default', OCS_DOMAIN ) . ')',
 						'value' => '',
 					),
 					array(
-						'label' => __( 'After', OCS_DOMAIN ),
+						'label' => esc_html__( 'After', OCS_DOMAIN ),
 						'value' => 'after',
 					),
 				),
@@ -311,18 +311,18 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			'action'        => array(
 				'type'    => 'select',
 				'name'    => 'action',
-				'label'   => __( 'Trigger action', OCS_DOMAIN ),
+				'label'   => esc_html__( 'Trigger action', OCS_DOMAIN ),
 				'options' => array(
 					array(
-						'label' => __( 'Toggle', OCS_DOMAIN ) . ' (' . __( 'Default', OCS_DOMAIN ) . ')',
+						'label' => esc_html__( 'Toggle', OCS_DOMAIN ) . ' (' . esc_html__( 'Default', OCS_DOMAIN ) . ')',
 						'value' => '',
 					),
 					array(
-						'label' => __( 'Open', OCS_DOMAIN ),
+						'label' => esc_html__( 'Open', OCS_DOMAIN ),
 						'value' => 'open',
 					),
 					array(
-						'label' => __( 'Close', OCS_DOMAIN ),
+						'label' => esc_html__( 'Close', OCS_DOMAIN ),
 						'value' => 'close',
 					),
 				),
@@ -331,30 +331,30 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			'element'       => array(
 				'type'        => 'select',
 				'name'        => 'element',
-				'label'       => __( 'HTML element', OCS_DOMAIN ),
+				'label'       => esc_html__( 'HTML element', OCS_DOMAIN ),
 				'options'     => $elements,
-				'description' => __( 'Choose wisely', OCS_DOMAIN ),
+				'description' => esc_html__( 'Choose wisely', OCS_DOMAIN ),
 				'group'       => 'advanced',
 			),
 			'class'         => array(
 				'type'        => 'text',
 				'name'        => 'class',
-				'label'       => __( 'Extra classes', OCS_DOMAIN ),
-				'description' => __( 'Separate multiple classes with a space', OCS_DOMAIN ),
+				'label'       => esc_html__( 'Extra classes', OCS_DOMAIN ),
+				'description' => esc_html__( 'Separate multiple classes with a space', OCS_DOMAIN ),
 				'group'       => 'advanced',
 			),
 			'attr'          => array(
 				'type'        => 'text',
 				'name'        => 'attr',
-				'label'       => __( 'Custom attributes', OCS_DOMAIN ),
-				'description' => __( 'key : value ; key : value', OCS_DOMAIN ),
+				'label'       => esc_html__( 'Custom attributes', OCS_DOMAIN ),
+				'description' => esc_html__( 'key : value ; key : value', OCS_DOMAIN ),
 				'multiline'   => true,
 				'group'       => 'advanced',
 			),
 			'nested'        => array(
 				'type'        => 'checkbox',
 				'name'        => 'nested',
-				'label'       => __( 'Nested shortcode', OCS_DOMAIN ) . '?',
+				'label'       => esc_html__( 'Nested shortcode', OCS_DOMAIN ) . '?',
 				'description' => '[ocs_trigger text="' . $strings['your_text'] . '"] ' . $strings['or'] . ' [ocs_trigger]' . $strings['your_text'] . '[/ocs_trigger]',
 				'group'       => 'advanced',
 			),

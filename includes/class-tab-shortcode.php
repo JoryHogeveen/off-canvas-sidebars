@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.4
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Tab Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebars_Tab
@@ -38,7 +38,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 	 */
 	protected function __construct() {
 		$this->tab  = 'ocs-shortcode';
-		$this->name = esc_attr__( 'Shortcode', OCS_DOMAIN );
+		$this->name = esc_html__( 'Shortcode', OCS_DOMAIN );
 		parent::__construct();
 	}
 
@@ -102,7 +102,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Shortcode extends OCS_Off_Canvas_Sidebar
 			// Add select option to the `element` field.
 			array_unshift( $fields['element']['options'], array(
 				'value' => '',
-				'label' => ' - ' . __( 'Select', OCS_DOMAIN ) . ' - ',
+				'label' => ' - ' . esc_html__( 'Select', OCS_DOMAIN ) . ' - ',
 			) );
 		}
 

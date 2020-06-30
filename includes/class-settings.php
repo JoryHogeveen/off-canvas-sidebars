@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.5
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Base
@@ -57,6 +57,8 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		'background_color'              => '',
 		'website_before_hook'           => 'website_before',
 		'website_after_hook'            => 'website_after',
+		'website_before_hook_priority'  => '',
+		'website_after_hook_priority'   => '',
 		'use_fastclick'                 => 0,
 		'compatibility_position_fixed'  => 'none',
 		'wp_editor_shortcode_rendering' => 0,
@@ -150,6 +152,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the plugin settings.
 	 *
 	 * @since   0.5.3
+	 * @since   0.5.6  Do not overwrite from global settings.
 	 * @param   string  $sidebar_id  The sidebar ID.
 	 * @param   string  $key         (optional) Get a single setting by key?
 	 * @return  mixed
@@ -161,15 +164,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		}
 		if ( $key ) {
 			$settings = $sidebars[ $sidebar_id ];
-			$return   = $this->get_settings( $key );
-			if ( $return ) {
-				if ( ! empty( $settings['overwrite_global_settings'] ) ) {
-					$return = ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : $return;
-				}
-			} else {
-				$return = ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
-			}
-			return $return;
+			return ( isset( $settings[ $key ] ) ) ? $settings[ $key ] : null;
 		}
 		return $sidebars[ $sidebar_id ];
 	}
@@ -199,20 +194,32 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Returns the default settings.
 	 *
 	 * @since   0.2.0
+	 * @since   0.5.6  Added filter.
 	 * @return  array
 	 */
 	public function get_default_settings() {
-		return $this->default_settings;
+		static $settings;
+		if ( $settings ) {
+			return $settings;
+		}
+		$settings = apply_filters( 'ocs_default_settings', $this->default_settings );
+		return $settings;
 	}
 
 	/**
 	 * Returns the default sidebar_settings.
 	 *
 	 * @since   0.2.0
+	 * @since   0.5.6  Added filter.
 	 * @return  array
 	 */
 	public function get_default_sidebar_settings() {
-		return $this->default_sidebar_settings;
+		static $settings;
+		if ( $settings ) {
+			return $settings;
+		}
+		$settings = apply_filters( 'ocs_default_sidebar_settings', $this->default_sidebar_settings );
+		return $settings;
 	}
 
 	/**
@@ -314,7 +321,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 
 		// @todo Enhance saving validation.
 		if ( ! has_filter( 'ocs_settings_validate_input' ) || ! OCS_Off_Canvas_Sidebars_Page::get_instance()->get_request_tab() ) {
-			wp_die( __( 'Something went wrong, please try again', OCS_DOMAIN ) );
+			wp_die( esc_html__( 'Something went wrong, please try again', OCS_DOMAIN ) );
 		}
 
 		/**
@@ -365,6 +372,11 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 			}
 			$key = $field['name'];
 
+			// Remove non-setting fields.
+			if ( 'help' === $field['type'] ) {
+				unset( $data[ $key ] );
+			}
+
 			if ( ! isset( $data[ $key ] ) ) {
 				continue;
 			}
@@ -388,6 +400,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 					case 'number':
 						// Numeric values, not integers!
 						$callback = 'validate_numeric';
+						$defaults = array(
+							'min'  => null,
+							'max'  => null,
+							'step' => null,
+						);
+						$args[]   = shortcode_atts( $defaults, $field );
 						break;
 					case 'radio':
 						// Validate radio options.
@@ -474,11 +492,31 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Validates numeric values, used by validate_input().
 	 *
 	 * @since   0.2.2
+	 * @since   0.5.6  Number field args.
 	 * @param   mixed  $value
+	 * @param   array  $args
 	 * @return  string
 	 */
-	public static function validate_numeric( $value ) {
-		return ( ! empty( $value ) && is_numeric( $value ) ) ? (string) absint( $value ) : '';
+	public static function validate_numeric( $value, $args = array() ) {
+		if ( empty( $value ) || ! is_numeric( $value ) ) {
+			return '';
+		}
+		if ( is_numeric( $args['min'] ) ) {
+			if ( '0' === (string) $args['min'] ) {
+				$value = abs( $value );
+			} elseif ( $args['min'] > $value ) {
+				return '';
+			}
+		}
+		if ( is_numeric( $args['max'] ) && $args['max'] < $value ) {
+			return '';
+		}
+		if ( is_numeric( $args['step'] ) ) {
+			$decimals = strlen( substr( strrchr( $args['step'], '.' ), 1 ) );
+		} else {
+			$decimals = 0;
+		}
+		return self::trim_decimals( number_format( $value, $decimals, '.', '' ), '.' );
 	}
 
 	/**
@@ -510,6 +548,28 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	public static function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( ' ', '', (string) $value ) : '';
+	}
+
+	/**
+	 * Trim trailing 0 decimals from numbers.
+	 *
+	 * @since  0.5.6
+	 * @param  string  $value
+	 * @param  string  $dot
+	 * @return string
+	 */
+	public static function trim_decimals( $value, $dot ) {
+		$parts = explode( $dot, $value );
+
+		if ( isset( $parts[1] ) ) {
+			$parts[1] = rtrim( $parts[1], '0' );
+
+			if ( empty( $parts[1] ) ) {
+				unset( $parts[1] );
+			}
+		}
+
+		return implode( $dot, $parts );
 	}
 
 	/**

@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-semi */
 ;/**
  * Slidebars - A jQuery Framework for Off-Canvas Menus and Sidebars
  * Version: 2.0.2
@@ -13,16 +14,18 @@
  * @package Off_Canvas_Sidebars
  * @author  Jory Hogeveen <info@keraweb.nl>
  *
- * @since   0.4    Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @version 0.5.6
+ * @since   0.4.0  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
  * @since   0.4.2  Parse slidebar widths/heights to rounded pixels (like jQuery does) to prevent 1px differences
- * @version 0.4.2
+ * @since   0.5.6  Added `initialized` and `reinit` methods.
  * @global  slidebars
  * @preserve
  */
+/* eslint-enable no-extra-semi */
 
 var slidebars;
 
-(function($) {
+( function( $ ) {
 
 slidebars = function () {
 
@@ -127,6 +130,32 @@ slidebars = function () {
 
 	this.legacy = false;
 
+	/**
+	 * Is initialized?
+	 *
+	 * @returns {boolean}
+	 */
+	this.initialized = function () {
+		return init;
+	};
+
+	/**
+	 * Re-initialize.
+	 *
+	 * @returns {boolean}
+	 */
+	this.reinit = function ( callback ) {
+		if ( this.initialized() ) {
+			this.exit();
+		}
+		this.init( callback );
+	};
+
+	/**
+	 * Initialize Slidebars.
+	 *
+	 * @param callback
+	 */
 	this.init = function ( callback ) {
 		// Check if Slidebars has been initialized
 		if ( init ) {
@@ -167,6 +196,11 @@ slidebars = function () {
 		}
 	};
 
+	/**
+	 * Exit Slidebars.
+	 *
+	 * @param callback
+	 */
 	this.exit = function ( callback ) {
 		// Check if Slidebars has been initialized
 		if ( ! init ) {
@@ -601,4 +635,4 @@ slidebars = function () {
 	$( window ).on( 'resize', this.css.bind( this ) );
 };
 
-}(jQuery));
+} ( jQuery ) );

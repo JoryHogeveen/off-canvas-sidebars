@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package Off_Canvas_Sidebars
  * @since   0.4.0
  * @since   0.5.2  Renamed from `OCS_Off_Canvas_Sidebars_Editor_Shortcode_Generator`.
- * @version 0.5.5
+ * @version 0.5.6
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebars_Base
@@ -153,7 +153,7 @@ final class OCS_Off_Canvas_Sidebars_Mce_Shortcode extends OCS_Off_Canvas_Sidebar
 
 		$fields['advanced_options'] = array(
 			'type' => 'container',
-			'html' => '<b style="font-weight: 600 !important;">' . __( 'Advanced options', OCS_DOMAIN ) . ':</b>',
+			'html' => '<b style="font-weight: 600 !important;">' . esc_html__( 'Advanced options', OCS_DOMAIN ) . ':</b>',
 		);
 		$fields = array_merge( $fields, OCS_Off_Canvas_Sidebars_Control_Trigger::get_fields_by_group( 'advanced' ) );
 

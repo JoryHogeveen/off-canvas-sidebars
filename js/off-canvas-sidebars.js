@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.5
+ * @version 0.5.6
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -70,6 +70,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * Internal function, do not overwrite.
 		 *
 		 * @since  0.3.0
+		 * @since  0.5.6  Fixed issues with global param overwrites.
 		 * @param  {string}               key        The setting key to look for.
 		 * @param  {string|boolean|null}  sidebarId  The sidebar ID.
 		 *                                           Pass `false` to check for an active slidebar.
@@ -77,38 +78,33 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @return {string|boolean} The setting or false.
 		 */
 		ocsOffCanvasSidebars._getSetting = function( key, sidebarId ) {
-			var overwrite,
-				prefix  = ocsOffCanvasSidebars.css_prefix,
+			var prefix  = ocsOffCanvasSidebars.css_prefix,
 				setting = false;
 
-			if ( 'undefined' !== typeof sidebarId ) {
-				if ( ! sidebarId && null !== sidebarId ) {
-					sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
-				}
+			if ( 'undefined' !== typeof sidebarId && null !== sidebarId && ! sidebarId ) {
+				sidebarId = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 			}
 
 			if ( sidebarId ) {
+				setting = null;
 
 				if ( ! $.isEmptyObject( ocsOffCanvasSidebars.sidebars ) && ! ocsOffCanvasSidebars.useAttributeSettings ) {
 					sidebarId = sidebarId.replace( prefix + '-', '' );
-					if ( ocsOffCanvasSidebars.sidebars[ sidebarId ].overwrite_global_settings ) {
-						setting = ocsOffCanvasSidebars.sidebars[ sidebarId ][ key ];
-						if ( ! setting ) {
-							setting = false;
+					if ( ocsOffCanvasSidebars.sidebars.hasOwnProperty( sidebarId ) ) {
+						var sidebar = ocsOffCanvasSidebars.sidebars[ sidebarId ];
+						if ( sidebar.hasOwnProperty( key ) ) {
+							setting = sidebar[ key ];
 						}
 					}
 
-				// Fallback/Overwrite to enable sidebar settings from available attributes.
+				// Fallback to settings from available attributes.
 				} else {
-					var sidebarElement = $( '#' + sidebarId );
+					setting = $( '#' + sidebarId ).attr( 'data-ocs-' + key );
+				}
 
-					overwrite = sidebarElement.attr( 'data-ocs-overwrite_global_settings' );
-					if ( overwrite ) {
-						setting = sidebarElement.attr( 'data-ocs-' + key );
-						if ( 'undefined' === typeof setting ) {
-							setting = false;
-						}
-					}
+				// Fallback to global settings.
+				if ( null === setting || 'undefined' === typeof setting ) {
+					setting = ocsOffCanvasSidebars._getSetting( key, null );
 				}
 
 				return setting;
@@ -166,10 +162,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		$window.trigger( 'ocs_before', [ this ] );
 
-		// Slidebars constructor.
-		ocsOffCanvasSidebars.slidebarsController = new slidebars();
+		if ( ! ocsOffCanvasSidebars.slidebarsController ) {
+			// Slidebars constructor.
+			ocsOffCanvasSidebars.slidebarsController = new slidebars();
+		}
 
-		if ( false === ocsOffCanvasSidebars.slidebarsController ) {
+		if ( ! ocsOffCanvasSidebars.slidebarsController ) {
 			ocsOffCanvasSidebars.debug( 'Cannot initialize Slidebars' );
 			return false;
 		}
@@ -182,8 +180,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		$window.trigger( 'ocs_loaded', [ this ] );
 
-		// Initialize slidebars.
-		ocsOffCanvasSidebars.slidebarsController.init();
+		// Initialize Slidebars. Will exit if needed.
+		ocsOffCanvasSidebars.slidebarsController.reinit();
 
 		$html.addClass( 'ocs-initialized' );
 
@@ -303,19 +301,24 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	/**
 	 * Set the default settings for sidebars if they are not found.
 	 * @since  0.3.0
+	 * @since  0.5.6  Fixed issues with global param overwrites.
 	 * @param  {string}  sidebarId  The sidebar ID.
 	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.setSidebarDefaultSettings = function( sidebarId ) {
+		var defaults = {
+			'overwrite_global_settings': false,
+			'site_close': ocsOffCanvasSidebars._getSetting( 'site_close' ),
+			'disable_over': ocsOffCanvasSidebars._getSetting( 'disable_over' ),
+			'hide_control_classes': ocsOffCanvasSidebars._getSetting( 'hide_control_classes' ),
+			'scroll_lock': ocsOffCanvasSidebars._getSetting( 'scroll_lock' )
+		};
 
-		if ( 'undefined' === typeof ocsOffCanvasSidebars.sidebars[ sidebarId ] ) {
-			ocsOffCanvasSidebars.sidebars[ sidebarId ] = {
-				'overwrite_global_settings': false,
-				'site_close': ocsOffCanvasSidebars.site_close,
-				'disable_over': ocsOffCanvasSidebars.disable_over,
-				'hide_control_classes': ocsOffCanvasSidebars.hide_control_classes,
-				'scroll_lock': ocsOffCanvasSidebars.scroll_lock
-			};
+		if ( ! ocsOffCanvasSidebars.sidebars.hasOwnProperty( sidebarId ) ) {
+			ocsOffCanvasSidebars.sidebars[ sidebarId ] = defaults;
+		} else if ( ! ocsOffCanvasSidebars._getSetting( 'overwrite_global_settings', sidebarId ) ) {
+			// Overwrite with default values.
+			$.extend( ocsOffCanvasSidebars.sidebars[ sidebarId ], defaults );
 		}
 	};
 
@@ -402,11 +405,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Close all sidebars.
 		$document.on( 'touchend click', '.' + prefix + '-close--all', function( e ) {
-			if ( ocsOffCanvasSidebars._getSetting( 'site_close', false ) ) {
-				e.preventDefault();
-				e.stopPropagation();
-				controller.close();
-			}
+			e.preventDefault();
+			e.stopPropagation();
+			controller.close();
 		} );
 
 		/**
@@ -441,9 +442,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
-			$( '[canvas]' ).addClass( prefix + '-close--all' );
+			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
+				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
+			}
 			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id );
-			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', false ) ) {
+			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ) ) {
 				$html.addClass( 'ocs-scroll-lock' );
 				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
 					var scrollTop = $html.scrollTop();
@@ -457,7 +460,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
-			$( '[canvas]' ).removeClass( prefix + '-close--all' );
+			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
 			var scrollTop = false;
 			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
 				scrollTop = true;

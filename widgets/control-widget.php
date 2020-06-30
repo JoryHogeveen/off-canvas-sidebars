@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.5
+ * @version 0.5.6
  */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
@@ -41,10 +41,10 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	public function __construct() {
 		parent::__construct(
 			'Off-Canvas-Control',
-			__( 'Off-Canvas Trigger', OCS_DOMAIN ),
+			esc_html__( 'Off-Canvas Trigger', OCS_DOMAIN ),
 			array(
 				'classname'   => 'off_canvas_control',
-				'description' => __( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
+				'description' => esc_html__( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
 		);
 	}
@@ -255,7 +255,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				</p>
 				<p>
 					<select id="<?php echo $field_sidebar_id; ?>_element" name="<?php echo $field_sidebar_name . '[element]'; ?>">
-						<option value=""><?php echo 'div (' . __( 'Default', OCS_DOMAIN ) . ')'; ?></option>
+						<option value=""><?php echo 'div (' . esc_html__( 'Default', OCS_DOMAIN ) . ')'; ?></option>
 						<?php
 							$elements = array( /*'div',*/ 'button', 'span', 'a', 'b', 'strong', 'i', 'em', 'img' );
 							foreach ( $elements as $element ) {
