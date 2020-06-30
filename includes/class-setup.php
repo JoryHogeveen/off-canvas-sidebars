@@ -70,7 +70,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 	/**
 	 * Add validation scripts.
 	 */
-	public function enqueue_assets( ) {
+	public function enqueue_assets() {
 
 		// @todo Validate and use minified files
 		$suffix  = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
@@ -85,15 +85,18 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 			'off-canvas-sidebars-setup-validate',
 			'ocsSetupValidate',
 			array(
-				'messages'     => array(
+				'messages'   => array(
+					// Translators: %s stands for the hook name.
 					'error_website_before' => sprintf( esc_html__( '%s is not fired', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> hook' ),
+					// Translators: %s stands for the hook name.
 					'error_website_after'  => sprintf( esc_html__( '%s is not fired', OCS_DOMAIN ), '<code>"' . $after_hook . '"</code> hook' ),
 					'error_canvas_child'   => esc_html__( 'Website canvas container is not a direct child of the HTML body tag.', OCS_DOMAIN ),
 					'error_canvas_empty'   => esc_html__( 'Website canvas container is empty.', OCS_DOMAIN ),
 					'error_sidebars_child' => esc_html__( 'Off-Canvas Sidebars are not direct children of the HTML body tag.', OCS_DOMAIN ),
 					'errors_found'         => esc_html__( 'Errors found!', OCS_DOMAIN ),
 					'hooks_incorrect'      => esc_html__( 'Please check your hooks and priorities.', OCS_DOMAIN ),
-					'hooks_correct'        => sprintf( esc_html__( 'Theme hooks %s are working!', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> and <code>"' . $after_hook . '"</code>' ),
+					// Translators: %s stands for the hook names.
+					'hooks_correct'        => sprintf( esc_html__( 'Theme hooks %s are working!', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> &amp; <code>"' . $after_hook . '"</code>' ),
 				),
 				'css_prefix' => $this->get_settings( 'css_prefix' ),
 				'_debug'     => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),

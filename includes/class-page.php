@@ -29,12 +29,35 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	protected static $_instance = null;
 
-	protected $general_key    = '';
-	protected $plugin_key     = '';
-	protected $capability     = 'edit_theme_options';
-	protected $request_tab    = '';
-	protected $tab            = 'ocs-settings';
-	protected $tabs           = array();
+	/**
+	 * @var string
+	 */
+	protected $general_key = '';
+
+	/**
+	 * @var string
+	 */
+	protected $plugin_key = '';
+
+	/**
+	 * @var string
+	 */
+	protected $capability = 'edit_theme_options';
+
+	/**
+	 * @var string
+	 */
+	protected $request_tab = '';
+
+	/**
+	 * @var string
+	 */
+	protected $tab = 'ocs-settings';
+
+	/**
+	 * @var array
+	 */
+	protected $tabs = array();
 
 	/**
 	 * @since   0.1.0
