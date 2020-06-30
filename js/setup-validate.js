@@ -16,7 +16,12 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 		messages: {
 			error_website_before: '<code>website_before</code> hook is not correct.',
 			error_website_after: '<code>website_after</code> hook is not correct.',
-			hooks_correct: 'Theme hooks setup correct!'
+			error_canvas_child: 'Website canvas container is not a direct child of the HTML body tag.',
+			error_canvas_empty: 'Website canvas container is empty.',
+			error_sidebars_child: 'Off-Canvas Sidebars are not direct children of the HTML body tag.',
+			errors_found: 'Errors found!',
+			hooks_incorrect: 'Please check your hooks and priorities.',
+			hooks_correct: 'Theme hooks are working!'
 		}
 	};
 }
@@ -38,11 +43,18 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 			correct = false,
 			color;
 
-		if ( ! $body.children( '[canvas]' ).length ) {
+		if ( ! $( '[canvas]' ).length ) {
 			errors.push( ocsSetupValidate.messages.error_website_before );
+		} else if ( ! $body.children( '[canvas]' ).length ) {
+			errors.push( ocsSetupValidate.messages.error_canvas_child );
+		} else if ( $body.children( '[canvas]' ).is( ':empty' ) ) {
+			errors.push( ocsSetupValidate.messages.error_canvas_empty );
 		}
-		if ( ! $body.children( '#ocs_validate_website_after' ).length ) {
+
+		if ( ! $( '#ocs_validate_website_after' ).length ) {
 			errors.push( ocsSetupValidate.messages.error_website_after );
+		} else if ( ! $body.children( '#ocs_validate_website_after' ).length ) {
+			errors.push( ocsSetupValidate.messages.error_sidebars_child );
 		}
 
 		// Do notice.
@@ -57,6 +69,7 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 				ocsSetupValidate.log( m );
 			} );
 			popup = '<ul style="list-style: none;">' + popup + '</ul>';
+			popup = '<b>' + ocsSetupValidate.messages.errors_found + '</b>' + popup + ocsSetupValidate.messages.hooks_incorrect;
 		}
 
 		if ( correct ) {

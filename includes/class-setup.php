@@ -87,6 +87,11 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 				'messages'     => array(
 					'error_website_before' => sprintf( __( '%s is not fired', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> hook' ),
 					'error_website_after'  => sprintf( __( '%s is not fired', OCS_DOMAIN ), '<code>"' . $after_hook . '"</code> hook' ),
+					'error_canvas_child'   => __( 'Website canvas container is not a direct child of the HTML body tag.', OCS_DOMAIN ),
+					'error_canvas_empty'   => __( 'Website canvas container is empty.', OCS_DOMAIN ),
+					'error_sidebars_child' => __( 'Off-Canvas Sidebars are not direct children of the HTML body tag.', OCS_DOMAIN ),
+					'errors_found'         => __( 'Errors found!', OCS_DOMAIN ),
+					'hooks_incorrect'      => __( 'Please check your hooks and priorities.', OCS_DOMAIN ),
 					'hooks_correct'        => sprintf( __( 'Theme hooks %s are working!', OCS_DOMAIN ), '<code>"' . $before_hook . '"</code> and <code>"' . $after_hook . '"</code>' ),
 				),
 				'css_prefix' => $this->get_settings( 'css_prefix' ),
