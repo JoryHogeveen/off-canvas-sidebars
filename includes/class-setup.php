@@ -46,6 +46,7 @@ final class OCS_Off_Canvas_Sidebars_Setup extends OCS_Off_Canvas_Sidebars_Base
 		if ( ! OCS_Off_Canvas_Sidebars_Page::get_instance()->has_access() ) {
 			return;
 		}
+		// @codingStandardsIgnoreLine
 		if ( isset( $_GET[ $this->param ] ) ) {
 			$this->run_validation();
 		}
