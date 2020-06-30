@@ -97,6 +97,7 @@ For more advanced customisations either:
 *	**Feature:** Basic theme hook setup validator. [#95](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/95)
 *	**Enhancement:** Reorder settings page fields.
 *	**Enhancement:** Improve Slidebars init and allow reinit.
+*	**Enhancement:** Added `ocs_default_settings` and `ocs_default_sidebar_settings` filters.
 *	**Fix:** Make sure sidebars correctly overwrite global settings. [#91](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/91)
 *	**Fix:** Escape all translated strings for HTML.
 *	**Fix:** Add `rel="noopener noreferrer"` to all links that open in a new tab.
