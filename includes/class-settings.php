@@ -398,6 +398,12 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 					case 'number':
 						// Numeric values, not integers!
 						$callback = 'validate_numeric';
+						$defaults = array(
+							'min'  => null,
+							'max'  => null,
+							'step' => null,
+						);
+						$args[]   = shortcode_atts( $defaults, $field );
 						break;
 					case 'radio':
 						// Validate radio options.
@@ -484,11 +490,31 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 * Validates numeric values, used by validate_input().
 	 *
 	 * @since   0.2.2
+	 * @since   0.5.6  Number field args.
 	 * @param   mixed  $value
+	 * @param   array  $args
 	 * @return  string
 	 */
-	public static function validate_numeric( $value ) {
-		return ( ! empty( $value ) && is_numeric( $value ) ) ? $value : '';
+	public static function validate_numeric( $value, $args = array() ) {
+		if ( empty( $value ) || ! is_numeric( $value ) ) {
+			return '';
+		}
+		if ( is_numeric( $args['min'] ) ) {
+			if ( '0' === (string) $args['min'] ) {
+				$value = abs( $value );
+			} elseif ( $args['min'] > $value ) {
+				return '';
+			}
+		}
+		if ( is_numeric( $args['max'] ) && $args['max'] < $value ) {
+			return '';
+		}
+		if ( is_numeric( $args['step'] ) ) {
+			$decimals = strlen( substr( strrchr( $args['step'], '.' ), 1 ) );
+		} else {
+			$decimals = 0;
+		}
+		return self::trim_decimals( number_format( $value, $decimals, '.', '' ), '.' );
 	}
 
 	/**
@@ -520,6 +546,28 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 	 */
 	public static function remove_whitespace( $value ) {
 		return ( ! empty( $value ) ) ? str_replace( ' ', '', (string) $value ) : '';
+	}
+
+	/**
+	 * Trim trailing 0 decimals from numbers.
+	 *
+	 * @since  0.5.6
+	 * @param  string  $value
+	 * @param  string  $dot
+	 * @return string
+	 */
+	public static function trim_decimals( $value, $dot ) {
+		$parts = explode( $dot, $value );
+
+		if ( isset( $parts[1] ) ) {
+			$parts[1] = rtrim( $parts[1], '0' );
+
+			if ( empty( $parts[1] ) ) {
+				unset( $parts[1] );
+			}
+		}
+
+		return implode( $dot, $parts );
 	}
 
 	/**

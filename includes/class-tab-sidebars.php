@@ -462,6 +462,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'hidden'  => true,
 				'default' => '',
 				'type'    => 'number',
+				'min'     => 0,
 			),
 			// @fixme See above. This only makes sure the fields gets recognized.
 			'size_input_type' => array(
@@ -522,6 +523,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': <code>300ms</code>.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>ms</code>',
+				'min'         => 0,
 			),
 			'padding' => array(
 				'name'        => 'padding',
@@ -533,6 +535,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 					. '<br>' . __( 'Default', OCS_DOMAIN ) . ': ' . __( 'none', OCS_DOMAIN ) . '.<br>' .
 					__( 'You can overwrite this with CSS', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
+				'min'         => 0,
 			),
 			// @todo Auto handler for radio options with a custom field
 			'background_color' => array(
@@ -599,6 +602,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 				'label'       => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
 				'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
 				'input_after' => '<code>px</code>',
+				'min'         => 0,
 			),
 			'hide_control_classes' => array(
 				'name'        => 'hide_control_classes',

@@ -334,6 +334,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'label'       => __( 'Disable off-canvas sidebars over specified screen width.', OCS_DOMAIN ),
 			'description' => __( 'Leave blank to disable.', OCS_DOMAIN ),
 			'input_after' => '<code>px</code>',
+			'min'         => 0,
 		);
 
 		$fields['hide_control_classes'] = array(

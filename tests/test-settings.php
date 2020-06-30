@@ -259,7 +259,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 					'overwrite_global_settings' => '', // Parse as false (0)
 					'site_close'                => '505', // Parse as true (1)
 					'link_close'                => 600, // Parse as true (1)
-					'disable_over'              => '500.60', // Parse as int string
+					'disable_over'              => '500.60', // Parse as int string, rounded up.
 					'hide_control_classes'      => true, // Parse as true (1)
 					'scroll_lock'               => false, // Parse as false (0)
 				),
@@ -284,7 +284,7 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 			'overwrite_global_settings' => 0,
 			'site_close'                => 1,
 			'link_close'                => 1,
-			'disable_over'              => '500',
+			'disable_over'              => '501',
 			'hide_control_classes'      => 1,
 			'scroll_lock'               => 0,
 		);
