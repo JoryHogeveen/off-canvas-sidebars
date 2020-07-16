@@ -30,21 +30,21 @@ html.ocs-scroll-lock.ocs-scroll-fixed body {
 	position: relative;
 }
 body,
-[canvas=container],
-.ocs-initialized [canvas=container] {
+[data-canvas=container],
+.ocs-initialized [data-canvas=container] {
 	overflow: initial; /* Reset Slidebars param for position sticky */
 	height: auto;
 	min-height: 100vh;
 }
 
-.admin-bar [canvas=container] {
+.admin-bar [data-canvas=container] {
 	min-height: -webkit-calc( 100vh - 32px );
 	min-height: -moz-calc( 100vh - 32px );
 	min-height: calc( 100vh - 32px );
 }
 
 @media screen and (max-width: 782px) {
-	.admin-bar [canvas=container] {
+	.admin-bar [data-canvas=container] {
 		min-height: -webkit-calc( 100vh - 46px );
 		min-height: -moz-calc( 100vh - 46px );
 		min-height: calc( 100vh - 46px );
@@ -52,7 +52,7 @@ body,
 }
 
 
-/*[canvas-fixed] {
+/*[data-canvas-fixed] {
 	-webkit-transform: translate( 0px, 0px );
 	-moz-transform: translate( 0px, 0px );
 	-ms-transform: translate( 0px, 0px );
@@ -61,9 +61,9 @@ body,
 	-webkit-backface-visibility: hidden;
 }*/
 
-.ocs-legacy [canvas] {top: 0; right: 0; bottom: 0; left: 0;}
-.ocs-legacy [canvas],
-.ocs-legacy [off-canvas] {
+.ocs-legacy [data-canvas] {top: 0; right: 0; bottom: 0; left: 0;}
+.ocs-legacy [data-canvas],
+.ocs-legacy [data-off-canvas] {
 	-webkit-transform: none;
 	-moz-transform: none;
 	-ms-transform: none;
@@ -80,10 +80,10 @@ body,
 .ocs-trigger {cursor: pointer;}
 
 /* @todo fix support for top and bottom */
-[off-canvas*=" top"][off-canvas*=" reveal"],
-[off-canvas*=" top"][off-canvas*=" shift"],
-[off-canvas*=" bottom"][off-canvas*=" reveal"],
-[off-canvas*=" bottom"][off-canvas*=" shift"] {
+[data-off-canvas*=" top"][data-off-canvas*=" reveal"],
+[data-off-canvas*=" top"][data-off-canvas*=" shift"],
+[data-off-canvas*=" bottom"][data-off-canvas*=" reveal"],
+[data-off-canvas*=" bottom"][data-off-canvas*=" shift"] {
 	z-index: 1;
 }
 

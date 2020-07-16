@@ -158,7 +158,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		};
 
-		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
+		ocsOffCanvasSidebars.container = $( '[data-canvas=container]' );
 
 		$window.trigger( 'ocs_before', [ this ] );
 

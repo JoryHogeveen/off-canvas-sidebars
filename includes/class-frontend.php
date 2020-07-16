@@ -415,7 +415,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	public function get_container_attributes() {
 		$atts = array(
 			'id'                            => $this->get_settings( 'css_prefix' ) . '-site',
-			'canvas'                        => 'container',
+			'data-canvas'                   => 'container',
 			'data-ocs-site_close'           => (bool) $this->get_settings( 'site_close' ),
 			'data-ocs-disable_over'         => (int) $this->get_settings( 'disable_over' ),
 			'data-ocs-hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
@@ -466,7 +466,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar_id, $data );
 
 		// Slidebars 2.0
-		$atts['off-canvas'] = array(
+		$atts['data-off-canvas'] = array(
 			$prefix . '-' . $sidebar_id, // ID.
 			$data['location'], // Location.
 			$data['style'], // Animation style.
