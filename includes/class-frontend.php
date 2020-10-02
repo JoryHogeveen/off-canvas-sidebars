@@ -459,7 +459,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 *
 		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 		 *
-		 * @param  array   $classes       Classes
+		 * @param  array   $classes       Sidebar classes.
 		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
 		 * @param  array   $sidebar_data  The sidebar settings.
 		 */
@@ -482,6 +482,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$atts['data-ocs-hide_control_classes']      = (int) $data['hide_control_classes'];
 			$atts['data-ocs-scroll_lock']               = (int) $data['scroll_lock'];
 		}
+
+		/**
+		 * Filter the attributes for a sidebar.
+		 *
+		 * @since  0.x
+		 *
+		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
+		 *
+		 * @param  array   $atts          Sidebar attributes.
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
+		 */
+		$atts = apply_filters( 'ocs_sidebar_attributes', $atts, $sidebar_id, $data );
 
 		return self::parse_to_html_attr( $atts );
 	}
