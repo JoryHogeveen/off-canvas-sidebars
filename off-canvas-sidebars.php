@@ -52,7 +52,7 @@ if ( ! class_exists( 'OCS_Off_Canvas_Sidebars' ) && ! function_exists( 'off_canv
 	define( 'OCS_PLUGIN_URL', plugin_dir_url( OCS_FILE ) );
 
 	// Include main class file.
-	require_once( OCS_PLUGIN_DIR . 'includes/class-ocs.php' );
+	require_once OCS_PLUGIN_DIR . 'includes/class-ocs.php';
 
 	/**
 	 * Main instance of Off-Canvas Sidebars.
