@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.6
+ * @version 0.5.7
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -428,7 +428,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		} );
 
 		// Close Slidebars when clicking on a link within a slidebar.
-		/*$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
+		/*$( '[data-off-canvas] a' ).on( 'touchend click', function( e ) {
 			e.preventDefault();
 			e.stopPropagation();
 

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.6
+ * @version 0.5.7
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -242,7 +242,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		/**
 		 * Change the sidebar element.
 		 *
-		 * @since 0.x
+		 * @since 0.5.7
 		 *
 		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
 		 * @param  array   $sidebar_data  The sidebar settings.
@@ -496,7 +496,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		/**
 		 * Filter the attributes for a sidebar.
 		 *
-		 * @since  0.x
+		 * @since  0.5.7
 		 *
 		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 		 *
