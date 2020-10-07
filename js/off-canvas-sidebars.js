@@ -39,6 +39,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	ocsOffCanvasSidebars._touchmove           = false;
 	ocsOffCanvasSidebars._toolbar             = ( $body.hasClass( 'admin-bar' ) ) ? $( '#wpadminbar' ) : null;
 
+	// Prevent swipe events to be seen as a click (bug in some browsers).
+	$document.on( 'touchmove', function() {
+		ocsOffCanvasSidebars._touchmove = true;
+	} );
+	$document.on( 'touchstart', function() {
+		ocsOffCanvasSidebars._touchmove = false;
+	} );
+
 	ocsOffCanvasSidebars.init = function() {
 
 		if ( ! $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length || ( 'undefined' === typeof slidebars ) ) {
@@ -311,14 +319,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 				$window.trigger( 'slidebar_event', [ e.type, slidebar ] );
 			}
-		} );
-
-		// Prevent swipe events to be seen as a click (bug in some browsers).
-		$document.on( 'touchmove', function() {
-			ocsOffCanvasSidebars._touchmove = true;
-		} );
-		$document.on( 'touchstart', function() {
-			ocsOffCanvasSidebars._touchmove = false;
 		} );
 
 		// Validate type, this could be changed with the hooks.
