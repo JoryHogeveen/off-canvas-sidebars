@@ -140,10 +140,10 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 	 * }
 	 */
 	public function register_sidebar_fields( $args ) {
-		$sidebar_id = str_replace( 'section_sidebar_', '', $args['id'] );
+		$section    = $args['id'];
+		$sidebar_id = str_replace( 'section_sidebar_', '', $section );
 
 		$fields  = $this->get_settings_fields();
-		$section = 'section_sidebar_' . $sidebar_id;
 
 		foreach ( $fields as $id => $args ) {
 

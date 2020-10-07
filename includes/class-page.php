@@ -362,7 +362,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 			add_meta_box(
 				$section['id'],
-				$section[ 'title' ],
+				$section['title'],
 				array( $this, 'do_settings_section' ),
 				$this->general_key,
 				$this->tab,
