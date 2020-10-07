@@ -452,7 +452,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		} );
 
 		// Add close class to canvas container when Slidebar is opened.
-		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
+		$( controller.events ).on( 'closed', function ( e, sidebar_id ) {
 			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
 			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
 		} );
