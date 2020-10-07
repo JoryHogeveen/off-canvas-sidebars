@@ -343,18 +343,17 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
-	 * Print out the settings fields for a particular settings section.
+	 * Print out the settings fields for a particular settings section using the WP post boxes UI.
 	 *
 	 * @since   0.1.0
+	 * @since   0.5.7  Use the meta boxes functions.
 	 *
 	 * @global  array  $wp_settings_sections  Array of settings sections.
-	 * @global  array  $wp_settings_fields    Array of settings fields and their pages/sections.
 	 *
 	 * @param   string  $page     Slug title of the admin page who's settings fields you want to show.
-	 * param    string  $section  Slug title of the settings section who's fields you want to show.
 	 */
 	protected function do_settings_sections( $page ) {
-		global $wp_settings_sections, $wp_settings_fields;
+		global $wp_settings_sections;
 
 		if ( ! isset( $wp_settings_sections[ $page ] ) ) {
 			return;
@@ -378,10 +377,19 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		do_meta_boxes( $this->general_key, $this->tab, $page );
 	}
 
+	/**
+	 * Add the section meta box content.
+	 *
+	 * @since  0.5.7
+	 *
+	 * @param string $page The current page.
+	 * @param array  $box  The settings section box.
+	 */
 	public function do_settings_section( $page, $box ) {
 		$section = $box['args']['section'];
 
 		if ( $section['callback'] ) {
+			// Call the settings section callback.
 			call_user_func( $section['callback'], $section );
 		}
 
