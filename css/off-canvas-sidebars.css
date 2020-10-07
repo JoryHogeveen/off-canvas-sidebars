@@ -16,20 +16,17 @@
 html,
 html.ocs-initialized {
 	overflow: hidden;
-	overflow-y: auto;
-	height: auto;
 }
-html.ocs-scroll-lock {
+body {
+	position: relative;
+	overflow: hidden;
+	overflow-y: auto;
+	height: 100vh;
+}
+html.ocs-scroll-lock body {
 	overflow-y: hidden;
 }
-html.ocs-scroll-lock.ocs-scroll-fixed {
-	position: fixed;
-	overflow-y: scroll;
-}
-html.ocs-scroll-lock.ocs-scroll-fixed body {
-	position: relative;
-}
-body,
+
 [data-canvas=container],
 .ocs-initialized [data-canvas=container] {
 	overflow: initial; /* Reset Slidebars param for position sticky */
