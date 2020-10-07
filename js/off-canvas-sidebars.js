@@ -475,11 +475,21 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
+			var sidebar    = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
+				scrollLock = ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id );
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
 				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
 			}
-			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id );
-			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ) ) {
+			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+
+			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
+			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
+				if ( 'left' === sidebar.side || 'right' === sidebar.side ) {
+					scrollLock = true;
+				}
+			}
+
+			if ( scrollLock ) {
 				$html.addClass( 'ocs-scroll-lock' );
 				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
 					var scrollTop = $html.scrollTop();
@@ -567,6 +577,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		data[ prop ]              = value;
 
 		$( elem ).css( data );
+	};
+
+	/**
+	 * @return {boolean} Is it a touch device?
+	 */
+	ocsOffCanvasSidebars.is_touch = function() {
+		return ( 0 < navigator.maxTouchPoints );
 	};
 
 	/**
