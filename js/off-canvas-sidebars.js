@@ -37,7 +37,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	ocsOffCanvasSidebars.useAttributeSettings = false;
 	ocsOffCanvasSidebars.container            = false;
 	ocsOffCanvasSidebars._touchmove           = false;
-	ocsOffCanvasSidebars._toolbar             = $body.hasClass( 'admin-bar' );
+	ocsOffCanvasSidebars._toolbar             = ( $body.hasClass( 'admin-bar' ) ) ? $( '#wpadminbar' ) : null;
 
 	ocsOffCanvasSidebars.init = function() {
 
@@ -190,31 +190,50 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		/**
 		 * Compatibility with WP Admin Bar.
 		 * @since  0.4
+		 * @since  0.5.7  Changed to event triggers isntead of page load.
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
-			$window.on( 'load', function() {
-				// Offset top = admin bar height.
-				var bodyOffset = $body.offset(),
-					$sidebars = $( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' );
 
-				$sidebars.each( function() {
-					var $this = $( this );
-					// Apply top offset on load. Not for bottom sidebars.
-					if ( ! $this.hasClass( 'ocs-location-bottom' ) ) {
-						$this.css( 'margin-top', '+=' + bodyOffset.top );
+			$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening', function( e, sidebar_id ) {
+				if ( 'fixed' !== ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
+					return;
+				}
+				var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+
+				// Apply top offset on load. Not for bottom sidebars.
+				if ( 'bottom' !== slidebar.side ) {
+					var offset        = $body.offset().top,
+						currentOffset = parseInt( slidebar.element.data( 'admin-bar-offset-top' ), 10 ),
+						prop          = 'padding-top';
+
+					if ( ! currentOffset ) {
+						currentOffset = 0;
 					}
-				} );
 
-				// css event is triggers after resize.
-				$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'css', function() {
-					$sidebars.each( function() {
-						var $this = $( this );
-						// Apply top offset on css reset. Only for top sidebars.
-						if ( $this.hasClass( 'ocs-location-top' ) ) {
-							$this.css( 'margin-top', '+=' + bodyOffset.top );
+					if ( offset ) {
+						if ( 'top' === slidebar.side ) {
+							prop = 'margin-top';
 						}
-					} );
-				} );
+						slidebar.element.css( prop, '+=' + ( offset - currentOffset ) ).data( 'admin-bar-offset-top', offset );
+					}
+				}
+			} );
+
+			$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'closed', function( e, sidebar_id ) {
+				var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+
+				// Apply top offset on load. Not for bottom sidebars.
+				if ( 'bottom' !== slidebar.side ) {
+					var prop   = 'padding-top',
+						offset = slidebar.element.data( 'admin-bar-offset-top' );
+					if ( offset ) {
+						if ( 'top' === slidebar.side ) {
+							prop = 'margin-top';
+						}
+						slidebar.element.css( prop, '-=' + offset ).data( 'admin-bar-offset-top', 0 );
+					}
+				}
+
 			} );
 		}
 
