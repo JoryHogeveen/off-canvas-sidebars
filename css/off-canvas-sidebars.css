@@ -76,6 +76,18 @@ html.ocs-scroll-lock body {
 /* https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios */
 .ocs-trigger {cursor: pointer;}
 
+/* Do not scroll canvas container when scrolling off-canvas */
+[data-off-canvas] {
+	overscroll-behavior: contain;
+	-ms-scroll-chaining: none;
+}
+
+/* Viewport fix */
+[data-off-canvas*=" left"],
+[data-off-canvas*=" right"] {
+	height: 100vh;
+}
+
 /* @todo fix support for top and bottom */
 [data-off-canvas*=" top"][data-off-canvas*=" reveal"],
 [data-off-canvas*=" top"][data-off-canvas*=" shift"],
