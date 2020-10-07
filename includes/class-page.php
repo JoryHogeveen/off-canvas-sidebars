@@ -361,36 +361,39 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 		}
 
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
-			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'postbox ' . $section['id'], $section, $page );
-
-			echo '<div id="' . esc_attr( $section['id'] ) . '" class="' . esc_attr( $box_classes ) . '">';
-			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">'
-				 . esc_html__( 'Toggle panel', OCS_DOMAIN ) . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
-
-			if ( $section['title'] ) {
-				echo '<h3 class="hndle"><span>' . $section['title'] . '</span></h3>';
-			}
-
-			if ( $section['callback'] ) {
-				call_user_func( $section['callback'], $section );
-			}
-
-			echo '<div class="inside">';
-
-			do_action( 'ocs_page_form_section_before', $section, $page );
-
-			if ( isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
-				echo '<table class="form-table">';
-				do_action( 'ocs_page_form_section_table_before', $section, $page );
-				do_settings_fields( $page, $section['id'] );
-				do_action( 'ocs_page_form_section_table_after', $section, $page );
-				echo '</table>';
-			}
-
-			do_action( 'ocs_page_form_section_after', $section, $page );
-
-			echo '</div></div>';
+			add_meta_box(
+				$section['id'],
+				$section[ 'title' ],
+				array( $this, 'do_settings_section' ),
+				$this->general_key,
+				$this->tab,
+				'default',
+				array(
+					'page'    => $page,
+					'section' => $section,
+				)
+			);
 		}
+
+		do_meta_boxes( $this->general_key, $this->tab, $page );
+	}
+
+	public function do_settings_section( $page, $box ) {
+		$section = $box['args']['section'];
+
+		if ( $section['callback'] ) {
+			call_user_func( $section['callback'], $section );
+		}
+
+		do_action( 'ocs_page_form_section_before', $section, $page );
+
+		echo '<table class="form-table">';
+		do_action( 'ocs_page_form_section_table_before', $section, $page );
+		do_settings_fields( $page, $section['id'] );
+		do_action( 'ocs_page_form_section_table_after', $section, $page );
+		echo '</table>';
+
+		do_action( 'ocs_page_form_section_after', $section, $page );
 	}
 
 	/**
