@@ -481,13 +481,34 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id );
 			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ) ) {
 				$html.addClass( 'ocs-scroll-lock' );
+				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
+					var scrollTop = $html.scrollTop();
+					// Subtract current scroll top.
+					$body.css( { 'top': '-=' + scrollTop } );
+					$html.data( 'ocs-scroll-fixed', scrollTop );
+					$html.addClass( 'ocs-scroll-fixed' );
+				}
 			}
 		} );
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'closed', function ( e, sidebar_id ) {
 			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
+			var scrollTop = false;
+			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
+				scrollTop = true;
+			}
 			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
+			if ( scrollTop ) {
+				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
+				// Append stored scroll top.
+				$body.css( { 'top': '+=' + scrollTop } );
+				$html.removeAttr( 'ocs-scroll-fixed' );
+				// Trigger slidebars css reset since position fixed changes the element heights.
+				ocsOffCanvasSidebars.slidebarsController.css();
+				// Apply original scroll position.
+				$html.scrollTop( scrollTop );
+			}
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
