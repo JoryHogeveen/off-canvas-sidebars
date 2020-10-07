@@ -220,47 +220,61 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		/**
 		 * Fix position issues for fixed elements on slidebar animations.
+		 * @todo Move this to the Slidebars script.
 		 * @since  0.4.0
  		 */
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
-			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
-			var duration = parseFloat( slidebar.element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
+			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
+				duration = parseFloat( slidebar.element.css( 'transitionDuration' ) ) * 1000;
 			if ( 'top' === slidebar.side || 'bottom' === slidebar.side ) {
 				var elements = ocsOffCanvasSidebars.getFixedElements();
-				elements.attr( { 'canvas-fixed': 'fixed' } );
 
 				// Legacy mode (only needed for location: top).
 				// @todo, temp apply for reveal aswell
-				if ( ocsOffCanvasSidebars.legacy_css && 'top' === slidebar.side && ( 'overlay' !== slidebar.style && 'reveal' !== slidebar.style  ) ) {
-					var offset;
-					// @todo, temp apply for reveal, should be 0
-					//if ( 'reveal' === slidebar.style ) {
-						//offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
-					//} else {
-						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
-					//}
+				if ( ocsOffCanvasSidebars.legacy_css ) {
+					if ( 'top' === slidebar.side && ( 'overlay' !== slidebar.style && 'reveal' !== slidebar.style ) ) {
+						var offset = slidebar.element.height();
+						// @todo, temp apply for reveal, should be 0
+						/*if ( 'reveal' === slidebar.style ) {
+							offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
+						} else {
+							offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
+						}*/
 
-					//Compatibility with WP Admin Bar.
-					// @todo, condition for setting
-					if ( ocsOffCanvasSidebars._toolbar ) {
-						offset += $body.offset().top;
+						//Compatibility with WP Admin Bar.
+						// @todo, condition for setting
+						if ( ocsOffCanvasSidebars._toolbar ) {
+							var toolbarOffset = $body.offset().top;
+							if ( 'fixed' !== $( '#wpadminbar' ).css( 'position' ) ) {
+								var scrollTop = $html.scrollTop();
+								if ( toolbarOffset > scrollTop ) {
+									toolbarOffset -= $html.scrollTop();
+								} else {
+									toolbarOffset = 0;
+								}
+							}
+							offset += toolbarOffset;
+						}
+
+						if ( offset ) {
+							elements.each( function() {
+								var $this = $( this );
+								// Set animation.
+								if ( 'opening' === e.type ) {
+									ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
+									$this.css( 'top', '+=' + offset ).data( 'ocs-offset-top', offset );
+								}
+								// Remove animation.
+								else if ( 'closing' === e.type ) {
+									$this.css( 'top', '-=' + $this.data( 'ocs-offset-top' ) );
+									setTimeout( function() {
+										ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
+									}, duration );
+								}
+							} );
+						}
 					}
 
-					elements.each( function() {
-						var $this = $( this );
-						// Set animation.
-						if ( 'opening' === e.type ) {
-							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
-							$this.css( 'top', parseInt( $this.css( 'top' ).replace( 'px', '' ), 10 ) + offset + 'px' );
-						}
-						// Remove animation.
-						else if ( 'closing' === e.type ) {
-							$this.css( 'top', parseInt( $this.css( 'top' ).replace( 'px', '' ), 10 ) - offset + 'px' );
-							setTimeout( function() {
-								ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
-							}, duration );
-						}
-					} );
 				}
 				// Normal mode (only sets a transition for use in fixed-scrolltop.js).
 				else {
