@@ -247,7 +247,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
 		 * @param  array   $sidebar_data  The sidebar settings.
 		 */
-		$element = apply_filters( 'ocs_sidebar_element', 'div', $sidebar_id, $sidebar_data );
+		$element = esc_attr( apply_filters( 'ocs_sidebar_element', 'div', $sidebar_id, $sidebar_data ) );
 
 		echo '<' . $element . ' ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
 
