@@ -12,34 +12,37 @@
  * Slidebar CSS overwrites
  */
 
-/* @fixme Fix overlay issues with shift and reveal on pages not that don't have full height, currently done in JS window resize. */
 html,
 html.ocs-initialized {
 	overflow: hidden;
-}
-body {
-	position: relative;
-	overflow: hidden;
 	overflow-y: auto;
-	height: 100vh;
-}
-html.ocs-scroll-lock body {
-	overflow-y: hidden;
 }
 
+body,
 [data-canvas=container],
 .ocs-initialized [data-canvas=container] {
 	overflow: initial; /* Reset Slidebars param for position sticky */
 	height: auto;
-	min-height: 100vh;
 }
 
+/* Scroll lock */
+html.ocs-scroll-lock {
+	overflow-y: hidden;
+}
+html.ocs-scroll-lock.ocs-scroll-fixed {
+	position: fixed;
+	overflow-y: scroll;
+}
+html.ocs-scroll-lock.ocs-scroll-fixed body {
+	position: relative;
+}
+
+/* Admin bar compatibility. */
 .admin-bar [data-canvas=container] {
 	min-height: -webkit-calc( 100vh - 32px );
 	min-height: -moz-calc( 100vh - 32px );
 	min-height: calc( 100vh - 32px );
 }
-
 @media screen and (max-width: 782px) {
 	.admin-bar [data-canvas=container] {
 		min-height: -webkit-calc( 100vh - 46px );
@@ -48,16 +51,7 @@ html.ocs-scroll-lock body {
 	}
 }
 
-
-/*[data-canvas-fixed] {
-	-webkit-transform: translate( 0px, 0px );
-	-moz-transform: translate( 0px, 0px );
-	-ms-transform: translate( 0px, 0px );
-	-o-transform: translate( 0px, 0px );
-	transform: translate( 0px, 0px );
-	-webkit-backface-visibility: hidden;
-}*/
-
+/* Legacy CSS animations */
 .ocs-legacy [data-canvas] {top: 0; right: 0; bottom: 0; left: 0;}
 .ocs-legacy [data-canvas],
 .ocs-legacy [data-off-canvas] {
@@ -72,7 +66,6 @@ html.ocs-scroll-lock body {
 	transition: transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
 }
 
-
 /* https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios */
 .ocs-trigger {cursor: pointer;}
 
@@ -80,12 +73,6 @@ html.ocs-scroll-lock body {
 [data-off-canvas] {
 	overscroll-behavior: contain;
 	-ms-scroll-chaining: none;
-}
-
-/* Viewport fix */
-[data-off-canvas*=" left"],
-[data-off-canvas*=" right"] {
-	height: 100vh;
 }
 
 /* @todo fix support for top and bottom */
