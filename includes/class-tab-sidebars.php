@@ -116,7 +116,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Sidebars extends OCS_Off_Canvas_Sidebars
 			$sep   = ' &nbsp; | &nbsp; ';
 			add_settings_section(
 				'section_sidebar_' . $sidebar,
-				$label . $sep . '<code class="js-dynamic-id">' . $sidebar . '</code>',
+				'<span>' . $label . $sep . '<code class="js-dynamic-id">' . $sidebar . '</code></span>',
 				array( $this, 'register_sidebar_fields' ),
 				$this->tab
 			);
