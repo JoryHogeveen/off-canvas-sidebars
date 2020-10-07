@@ -264,7 +264,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						// @todo, condition for setting
 						if ( ocsOffCanvasSidebars._toolbar ) {
 							var toolbarOffset = $body.offset().top;
-							if ( 'fixed' !== $( '#wpadminbar' ).css( 'position' ) ) {
+							if ( 'fixed' !== ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
 								var scrollTop = $html.scrollTop();
 								if ( toolbarOffset > scrollTop ) {
 									toolbarOffset -= $html.scrollTop();
