@@ -23,6 +23,7 @@ body,
 .ocs-initialized [data-canvas=container] {
 	overflow: initial; /* Reset Slidebars param for position sticky */
 	height: auto;
+	min-height: 100vh;
 }
 
 /* Scroll lock */
