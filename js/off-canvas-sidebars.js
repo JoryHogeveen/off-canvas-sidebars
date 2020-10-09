@@ -501,7 +501,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				if ( ! $body.css( 'top' ) ) {
 					$body.css( 'top', '' );
 				}
-				$html.removeAttr( 'ocs-scroll-fixed' );
+				$html.data( 'ocs-scroll-fixed', 0 );
 				// Trigger slidebars css reset since position fixed changes the element heights.
 				ocsOffCanvasSidebars.slidebarsController.css();
 				// Apply original scroll position.
