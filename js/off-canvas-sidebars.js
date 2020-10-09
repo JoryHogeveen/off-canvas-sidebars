@@ -206,12 +206,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				if ( 'fixed' !== ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
 					return;
 				}
-				var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+				var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
 
 				// Apply top offset on load. Not for bottom sidebars.
-				if ( 'bottom' !== slidebar.side ) {
-					var offset        = $body.offset().top,
-						currentOffset = parseInt( slidebar.element.data( 'admin-bar-offset-top' ), 10 ),
+				if ( 'bottom' !== sidebar.side ) {
+					var offset        = $html.offset().top,
+						currentOffset = parseInt( sidebar.element.data( 'admin-bar-offset-top' ), 10 ),
 						prop          = 'padding-top';
 
 					if ( ! currentOffset ) {
@@ -219,26 +219,26 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					}
 
 					if ( offset ) {
-						if ( 'top' === slidebar.side ) {
+						if ( 'top' === sidebar.side ) {
 							prop = 'margin-top';
 						}
-						slidebar.element.css( prop, '+=' + ( offset - currentOffset ) ).data( 'admin-bar-offset-top', offset );
+						sidebar.element.css( prop, '+=' + ( offset - currentOffset ) ).data( 'admin-bar-offset-top', offset );
 					}
 				}
 			} );
 
 			$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'closed', function( e, sidebar_id ) {
-				var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+				var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
 
 				// Apply top offset on load. Not for bottom sidebars.
-				if ( 'bottom' !== slidebar.side ) {
+				if ( 'bottom' !== sidebar.side ) {
 					var prop   = 'padding-top',
-						offset = slidebar.element.data( 'admin-bar-offset-top' );
+						offset = sidebar.element.data( 'admin-bar-offset-top' );
 					if ( offset ) {
-						if ( 'top' === slidebar.side ) {
+						if ( 'top' === sidebar.side ) {
 							prop = 'margin-top';
 						}
-						slidebar.element.css( prop, '-=' + offset ).data( 'admin-bar-offset-top', 0 );
+						sidebar.element.css( prop, '-=' + offset ).data( 'admin-bar-offset-top', 0 );
 					}
 				}
 
@@ -251,21 +251,21 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @since  0.4.0
  		 */
 		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
-			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
+			var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
 				duration = parseFloat( slidebar.element.css( 'transitionDuration' ) ) * 1000;
-			if ( 'top' === slidebar.side || 'bottom' === slidebar.side ) {
+			if ( 'top' === sidebar.side || 'bottom' === sidebar.side ) {
 				var elements = ocsOffCanvasSidebars.getFixedElements();
 
 				// Legacy mode (only needed for location: top).
 				// @todo, temp apply for reveal aswell
 				if ( ocsOffCanvasSidebars.legacy_css ) {
-					if ( 'top' === slidebar.side && ( 'overlay' !== slidebar.style && 'reveal' !== slidebar.style ) ) {
-						var offset = slidebar.element.height();
+					if ( 'top' === sidebar.side && ( 'overlay' !== sidebar.style && 'reveal' !== sidebar.style ) ) {
+						var offset = sidebar.element.height();
 						// @todo, temp apply for reveal, should be 0
-						/*if ( 'reveal' === slidebar.style ) {
-							offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
+						/*if ( 'reveal' === sidebar.style ) {
+							offset = 0; //parseInt( sidebar.element.css( 'height' ).replace('px', '') );
 						} else {
-							offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
+							offset = parseInt( sidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
 						}*/
 
 						//Compatibility with WP Admin Bar.
@@ -274,21 +274,18 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						}
 
 						if ( offset ) {
-							elements.each( function() {
-								var $this = $( this );
-								// Set animation.
-								if ( 'opening' === e.type ) {
-									ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
-									$this.css( 'top', '+=' + offset ).data( 'ocs-offset-top', offset );
-								}
-								// Remove animation.
-								else if ( 'closing' === e.type ) {
-									$this.css( 'top', '-=' + $this.data( 'ocs-offset-top' ) );
-									setTimeout( function() {
-										ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
-									}, duration );
-								}
-							} );
+							// Set animation.
+							if ( 'opening' === e.type ) {
+								ocsOffCanvasSidebars.cssCompat( elements, 'transition', 'top ' + duration + 'ms' );
+								elements.css( 'top', '+=' + offset ).data( 'ocs-offset-top', offset );
+							}
+							// Remove animation.
+							else if ( 'closing' === e.type ) {
+								elements.css( 'top', '-=' + elements.data( 'ocs-offset-top' ) ).data( 'ocs-offset-top', 0 );
+								setTimeout( function() {
+									ocsOffCanvasSidebars.cssCompat( elements, 'transition', '' );
+								}, duration );
+							}
 						}
 					}
 
