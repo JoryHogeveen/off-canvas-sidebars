@@ -13,19 +13,15 @@
 
 ( function( $ ) {
 
-	var $window = $(window);
-	var $body = $('body');
+	var $window = $(window),
+		$body = $('body');
 
 	$window.on( 'ocs_initialized', function () {
 
-		var prefix = ocsOffCanvasSidebars.css_prefix;
+		ocsOffCanvasSidebars.debug('start fixed-scrolltop.js');
 
-		if ( ocsOffCanvasSidebars._debug ) {
-			console.log('start fixed-scrolltop.js');
-		}
-
-		var curScrollTopElements;
-		var scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
+		var curScrollTopElements,
+			scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
 		if ( 'auto' !== ocs_site.css('overflow-y') ) {
 			scrollTarget = $window;
 		}
@@ -47,8 +43,8 @@
 			// Bottom slidebars.
 			if ( ( 'bottom' === slidebar.side && 'overlay' !== slidebar.style ) && ( 'opening' === eventType || 'closing' === eventType ) ) {
 				curScrollTopElements.each( function() {
-					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
-					var offset = slidebar.element.height();
+					var px = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' ),
+						offset = slidebar.element.height();
 					if ( 'opening' === eventType ) {
 						px += offset;
 					} else if ( 'closing' === eventType ) {
@@ -61,13 +57,13 @@
 
 		ocsOffCanvasSidebars.scrollTopFixed = function() {
 			if ( curScrollTopElements.length ) {
-				var scrollTop = scrollTarget.scrollTop(),
-				    winHeight = $window.height(),
-				    gblOffset = $body.offset(),
-				    conOffset = ocs_site.offset(),
-				    conHeight = ocs_site.outerHeight();
+				var scrollTop     = scrollTarget.scrollTop(),
+				    winHeight     = $window.height(),
+				    gblOffset     = $body.offset(),
+				    conOffset     = ocs_site.offset(),
+				    conHeight     = ocs_site.outerHeight(),
+					activeSidebar = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 
-				var activeSidebar = ocsOffCanvasSidebars.slidebarsController.getActiveSlidebar();
 				if ( activeSidebar ) {
 					var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( activeSidebar );
 					if ( 'top' === sidebar.side ) { //|| 'bottom' === sidebar.side
