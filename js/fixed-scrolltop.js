@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.2
- * @version 0.4.2
+ * @version 0.5.7
  * @global  ocsOffCanvasSidebars
  * @preserve
  */

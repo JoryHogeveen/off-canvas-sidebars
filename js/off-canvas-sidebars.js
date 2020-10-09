@@ -47,6 +47,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		ocsOffCanvasSidebars._touchmove = false;
 	} );
 
+	/**
+	 * Initialize Off-Canvas Sidebars.
+	 * @return {boolean}
+	 */
 	ocsOffCanvasSidebars.init = function() {
 
 		if ( ! $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length || ( 'undefined' === typeof slidebars ) ) {
