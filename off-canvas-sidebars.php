@@ -11,7 +11,7 @@
  * Plugin Name:       Off-Canvas Sidebars & Menus (Slidebars)
  * Description:       Add off-canvas sidebars using the Slidebars jQuery plugin
  * Plugin URI:        https://wordpress.org/plugins/off-canvas-sidebars/
- * Version:           0.5.7
+ * Version:           0.5.7-rc2
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       off-canvas-sidebars
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'OCS_Off_Canvas_Sidebars' ) && ! function_exists( 'off_canvas_sidebars' ) ) {
 
-	define( 'OCS_PLUGIN_VERSION', '0.5.7' );
+	define( 'OCS_PLUGIN_VERSION', '0.5.7-rc2' );
 	define( 'OCS_DOMAIN', 'off-canvas-sidebars' );
 	define( 'OCS_FILE', __FILE__ );
 	define( 'OCS_BASENAME', plugin_basename( OCS_FILE ) );
