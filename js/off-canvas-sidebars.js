@@ -462,8 +462,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 		// Add close class to canvas container when Slidebar is opened.
 		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
-			var sidebar    = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
-				scrollLock = ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id );
+			var sidebar     = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
+				scrollLock  = ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ),
+				scrollFixed = ( $html[0].scrollHeight > $html[0].clientHeight ),
+				scrollTop   = $html.scrollTop();
+
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
 				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
 			}
@@ -472,14 +475,14 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
 			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
 				if ( 'overlay' !== sidebar.style && ( 'left' === sidebar.side || 'right' === sidebar.side ) ) {
-					scrollLock = true;
+					scrollLock  = true;
+					scrollFixed = true;
 				}
 			}
 
 			if ( scrollLock ) {
 				$html.addClass( 'ocs-scroll-lock' );
-				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
-					var scrollTop = $html.scrollTop();
+				if ( scrollFixed ) {
 					// Subtract current scroll top.
 					$body.css( { 'top': '-=' + scrollTop } );
 					$html.data( 'ocs-scroll-fixed', scrollTop );
