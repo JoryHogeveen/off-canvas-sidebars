@@ -202,11 +202,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
 
-			$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening', function( e, sidebar_id ) {
+			ocsOffCanvasSidebars.events.add_action( 'opening', 'ocs_toolbar', function( e, sidebar_id, sidebar ) {
 				if ( 'fixed' !== ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
 					return;
 				}
-				var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
 
 				// Apply top offset on load. Not for bottom sidebars.
 				if ( 'bottom' !== sidebar.side ) {
@@ -227,9 +226,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 			} );
 
-			$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'closed', function( e, sidebar_id ) {
-				var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
-
+			ocsOffCanvasSidebars.events.add_action( 'closed', 'ocs_toolbar', function( e, sidebar_id, sidebar ) {
 				// Apply top offset on load. Not for bottom sidebars.
 				if ( 'bottom' !== sidebar.side ) {
 					var prop   = 'padding-top',
@@ -250,9 +247,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @todo Move this to the Slidebars script.
 		 * @since  0.4.0
  		 */
-		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
-			var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
-				duration = parseFloat( slidebar.element.css( 'transitionDuration' ) ) * 1000;
+		ocsOffCanvasSidebars.events.add_action( 'opening opened closing closed', 'ocs_fixed_compat', function( e, sidebar_id, sidebar ) {
+			var duration = parseFloat( sidebar.element.css( 'transitionDuration' ) ) * 1000;
 			if ( 'top' === sidebar.side || 'bottom' === sidebar.side ) {
 				var elements = ocsOffCanvasSidebars.getFixedElements();
 
@@ -301,6 +297,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						ocsOffCanvasSidebars.cssCompat( elements, 'transition', '' );
 					}
 				}
+
+				// @todo convert to action based event.
 				$window.trigger( 'slidebar_event', [ e.type, sidebar ] );
 			}
 		} );
@@ -488,6 +486,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 					     .addClass( 'ocs-scroll-fixed' );
 				}
 			}
+
+			ocsOffCanvasSidebars.events.do_action( 'opening', [ e, sidebar_id, sidebar ] );
+		} );
+
+		/**
+		 * Sidebar opened and closing actions.
+		 */
+		$( controller.events ).on( 'opened closing', function ( e, sidebar_id ) {
+			var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
 		} );
 
 		/**
@@ -512,6 +520,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				// Apply original scroll position.
 				$html.scrollTop( scrollTop );
 			}
+
+			ocsOffCanvasSidebars.events.do_action( 'closed', [ e, sidebar_id, sidebar ] );
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
@@ -570,6 +580,74 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		data[ prop ]              = value;
 
 		$( elem ).css( data );
+	};
+
+	/**
+	 * Event handler.
+	 * @since  0.5.7
+	 */
+	ocsOffCanvasSidebars.events = {
+		/**
+		 * Run event actions.
+		 * @param {string} event  The event name.
+		 * @param {mixed}  params The parameters.
+		 */
+		do_action: function( event, params ) {
+			if ( ! ocsOffCanvasSidebars.events[ event ] ) {
+				return;
+			}
+			ocsOffCanvasSidebars.events[ event ].forEach( function( actions, priority ) {
+				Object.values( actions ).forEach( function( callback, name ) {
+					callback.apply( null, params );
+				} );
+			} );
+		},
+		/**
+		 * Add new event action.
+		 * @param {string}   event    The event name.
+		 * @param {string}   name     The action name.
+		 * @param {callable} callback The action callback.
+		 * @param {int}      priority The order/priority value.
+		 */
+		add_action: function ( event, name, callback, priority ) {
+			if ( Array.isArray( event ) ) {
+				event.forEach( function( event ) {
+					ocsOffCanvasSidebars.events.add_action( event, name, callback, priority );
+				} );
+				return;
+			}
+			if ( ! priority ) {
+				priority = 10;
+			}
+			if ( ! ocsOffCanvasSidebars.events.hasOwnProperty( event ) ) {
+				ocsOffCanvasSidebars.events[ event ] = [];
+			}
+			if ( 'object' !== typeof ocsOffCanvasSidebars.events[ event ][ priority ] ) {
+				ocsOffCanvasSidebars.events[ event ][ priority ] = {};
+			}
+			ocsOffCanvasSidebars.events[ event ][ priority ][ name ] = callback;
+		},
+		/**
+		 * Remove event action.
+		 * @param {string}   event    The event name.
+		 * @param {string}   name     The action name.
+		 * @param {int}      priority The order/priority value.
+		 */
+		remove_action: function ( event, name, priority ) {
+			if ( Array.isArray( event ) ) {
+				event.forEach( function( event ) {
+					ocsOffCanvasSidebars.events.remove_action( event, name, priority );
+				} );
+				return;
+			}
+			if ( ! priority ) {
+				priority = 10;
+			}
+			if ( ! ocsOffCanvasSidebars.events[ event ] || ! ocsOffCanvasSidebars.events[ event ][ priority ] ) {
+				return;
+			}
+			delete ocsOffCanvasSidebars.events[ event ][ priority ][ name ];
+		}
 	};
 
 	/**
