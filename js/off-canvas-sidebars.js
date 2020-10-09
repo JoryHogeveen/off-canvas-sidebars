@@ -292,19 +292,16 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 				// Normal mode (only sets a transition for use in fixed-scrolltop.js).
 				else {
-					elements.each( function() {
-						var $this = $( this );
-						//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
-						//console.log( curVal );
-						if ( 'opening' === e.type || 'closing' === e.type ) {
-							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'transform ' + duration + 'ms' );
-							//$( this ).css('transform', 'translate( 0px, ' + curVal + slidebar.element.height() + 'px )' );
-						} else if ( 'opened' === e.type || 'closed' === e.type ) {
-							ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
-						}
-					} );
+					//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
+					//console.log( curVal );
+					if ( 'opening' === e.type || 'closing' === e.type ) {
+						ocsOffCanvasSidebars.cssCompat( elements, 'transition', 'transform ' + duration + 'ms' );
+						//$( this ).css('transform', 'translate( 0px, ' + curVal + sidebar.element.height() + 'px )' );
+					} else if ( 'opened' === e.type || 'closed' === e.type ) {
+						ocsOffCanvasSidebars.cssCompat( elements, 'transition', '' );
+					}
 				}
-				$window.trigger( 'slidebar_event', [ e.type, slidebar ] );
+				$window.trigger( 'slidebar_event', [ e.type, sidebar ] );
 			}
 		} );
 
