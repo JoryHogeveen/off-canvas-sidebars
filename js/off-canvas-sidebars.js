@@ -49,7 +49,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 	/**
 	 * Initialize Off-Canvas Sidebars.
-	 * @return {boolean}
+	 * @return {boolean} Success.
 	 */
 	ocsOffCanvasSidebars.init = function() {
 
@@ -593,14 +593,18 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	ocsOffCanvasSidebars.events = {
 		/**
 		 * Run event actions.
-		 * @param {string} event  The event name.
-		 * @param {mixed}  params The parameters.
+		 * @param  {string}  event   The event name.
+		 * @param  {mixed}   params  The parameters.
+		 * @return {void} Nothing.
 		 */
 		do_action: function( event, params ) {
 			if ( ! ocsOffCanvasSidebars.events[ event ] ) {
 				return;
 			}
 			ocsOffCanvasSidebars.events[ event ].forEach( function( actions, priority ) {
+				if ( 'object' !== typeof actions ) {
+					return true;
+				}
 				Object.values( actions ).forEach( function( callback, name ) {
 					callback.apply( null, params );
 				} );
@@ -608,10 +612,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		},
 		/**
 		 * Add new event action.
-		 * @param {string}   event    The event name.
-		 * @param {string}   name     The action name.
-		 * @param {callable} callback The action callback.
-		 * @param {int}      priority The order/priority value.
+		 * @param  {string}    event     The event name.
+		 * @param  {string}    name      The action name.
+		 * @param  {callable}  callback  The action callback.
+		 * @param  {int}       priority  The order/priority value.
+		 * @return {void} Nothing.
 		 */
 		add_action: function ( event, name, callback, priority ) {
 			if ( Array.isArray( event ) ) {
@@ -633,9 +638,10 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		},
 		/**
 		 * Remove event action.
-		 * @param {string}   event    The event name.
-		 * @param {string}   name     The action name.
-		 * @param {int}      priority The order/priority value.
+		 * @param  {string}   event     The event name.
+		 * @param  {string}   name      The action name.
+		 * @param  {int}      priority  The order/priority value.
+		 * @return {void} Nothing.
 		 */
 		remove_action: function ( event, name, priority ) {
 			if ( Array.isArray( event ) ) {
