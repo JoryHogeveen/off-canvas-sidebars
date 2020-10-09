@@ -51,6 +51,12 @@ html.ocs-scroll-lock.ocs-scroll-fixed body {
 		min-height: calc( 100vh - 46px );
 	}
 }
+@media screen and (max-width: 600px) {
+	html.ocs-sidebar-active #wpadminbar {
+		display: none;
+		height: 0;
+	}
+}
 
 /* Legacy CSS animations */
 .ocs-legacy [data-canvas] {top: 0; right: 0; bottom: 0; left: 0;}
