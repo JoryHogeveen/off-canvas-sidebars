@@ -508,7 +508,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
 				scrollTop = true;
 			}
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
 			if ( scrollTop ) {
 				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
 				// Append stored scroll top.
