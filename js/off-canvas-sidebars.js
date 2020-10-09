@@ -484,7 +484,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
 			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
-				if ( 'left' === sidebar.side || 'right' === sidebar.side ) {
+				if ( 'overlay' !== sidebar.style && ( 'left' === sidebar.side || 'right' === sidebar.side ) ) {
 					scrollLock = true;
 				}
 			}
