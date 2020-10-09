@@ -460,7 +460,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			} );
 		} );*/
 
-		// Add close class to canvas container when Slidebar is opened.
+		/**
+		 * Sidebar opening actions.
+		 */
 		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
 			var sidebar     = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
 				scrollLock  = ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ),
@@ -484,23 +486,26 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				$html.addClass( 'ocs-scroll-lock' );
 				if ( scrollFixed ) {
 					// Subtract current scroll top.
-					$body.css( { 'top': '-=' + scrollTop } );
-					$html.data( 'ocs-scroll-fixed', scrollTop );
-					$html.addClass( 'ocs-scroll-fixed' );
+					$body.css( 'top', '-=' + scrollTop );
+					$html.data( 'ocs-scroll-fixed', scrollTop )
+					     .addClass( 'ocs-scroll-fixed' );
 				}
 			}
 		} );
 
-		// Add close class to canvas container when Slidebar is opened.
+		/**
+		 * Sidebar closed actions.
+		 */
 		$( controller.events ).on( 'closed', function ( e, sidebar_id ) {
 			var sidebar   = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
 				scrollTop = $html.hasClass( 'ocs-scroll-fixed' );
+
 			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
 			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
 			if ( scrollTop ) {
 				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
 				// Append stored scroll top.
-				$body.css( { 'top': '+=' + scrollTop } );
+				$body.css( 'top', '+=' + scrollTop );
 				if ( ! $body.css( 'top' ) ) {
 					$body.css( 'top', '' );
 				}
