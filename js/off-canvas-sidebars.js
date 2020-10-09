@@ -269,18 +269,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						}*/
 
 						//Compatibility with WP Admin Bar.
-						// @todo, condition for setting
-						if ( ocsOffCanvasSidebars._toolbar ) {
-							var toolbarOffset = $body.offset().top;
-							if ( 'fixed' !== ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
-								var scrollTop = $html.scrollTop();
-								if ( toolbarOffset > scrollTop ) {
-									toolbarOffset -= $html.scrollTop();
-								} else {
-									toolbarOffset = 0;
-								}
-							}
-							offset += toolbarOffset;
+						if ( ocsOffCanvasSidebars._toolbar && 'fixed' === ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
+							offset += $html.offset().top;
 						}
 
 						if ( offset ) {
