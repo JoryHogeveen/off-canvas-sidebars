@@ -47,6 +47,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				'description' => esc_html__( 'Trigger off-canvas sidebars', OCS_DOMAIN ),
 			)
 		);
+
+		add_action( 'admin_head', 'OCS_Off_Canvas_Sidebars_Control_Widget::print_inline_assets' );
 	}
 
 	/**
@@ -154,7 +156,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		} else {
 		?>
 
-		<p id="<?php echo $field_id . '_sidebar_enable'; ?>">
+		<div id="<?php echo $field_id ?>" data-instance='<?php echo wp_json_encode( $instance ); ?>'>
+
+		<p id="<?php echo $field_id . '_sidebar_enable'; ?>" class="ocs-sidebar-enable">
 			<b><?php esc_html_e( 'Controls', OCS_DOMAIN ); ?>:</b><br />
 			<?php
 			foreach ( $sidebars as $sidebar_id => $value ) {
@@ -170,7 +174,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		<hr />
 
-		<div id="<?php echo $field_id; ?>_tabs" style="display: none;">
+		<div id="<?php echo $field_id; ?>_tabs" class="ocs-tabs" style="display: none;">
 		<?php
 			$counter = 0;
 			foreach ( $sidebars as $sidebar_id => $value ) {
@@ -194,14 +198,19 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		?>
 		</div>
 
-		<div id="<?php echo $field_id; ?>_panes">
+		<div id="<?php echo $field_id; ?>_panes" class="ocs-panes">
 		<?php
-		$counter = 0;
+		$first = false;
 		foreach ( $sidebars as $sidebar_id => $value ) {
 			$field_sidebar_id = $field_id . '_' . $sidebar_id;
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
+			$autohide = 'autohide-js';
+			if ( ! $first && ! empty( $ocs[ $sidebar_id ]['enable'] ) ) {
+				$autohide = '';
+				$first = true;
+			}
 		?>
-		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane <?php echo ( $counter ) ? 'autohide-js' : ''; ?>">
+		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane <?php echo $autohide; ?>">
 			<h4><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>_show_label" name="<?php echo $field_sidebar_name . '[show_label]'; ?>" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
@@ -287,132 +296,20 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 
 		<p>
 			<label><?php esc_html_e( 'Preview', OCS_DOMAIN ); ?>:</label>
-			<div id="<?php echo $this->id; ?>-preview" class="<?php echo $this->id_base; ?>-preview">
+			<div id="<?php echo $this->id; ?>-preview" class="ocs-preview">
 				<?php $this->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance ); ?>
 			</div>
 		</p>
 
-		<style type="text/css">
-			#<?php echo $field_id; ?>_tabs {
-				clear: both;
-				width: 100%;
-				overflow: hidden;
-			}
-			#<?php echo $field_id; ?>_tabs .ocs-tab {
-				cursor: pointer;
-				float: left;
-				padding: 5px 8px;
-				border: solid 1px #aaa;
-				background: #e8e8e8;
-			}
-			#<?php echo $field_id; ?>_tabs .ocs-tab:hover {
-				background: #f5f5f5;
-			}
-			#<?php echo $field_id; ?>_tabs .ocs-tab.active {
-				background: #fafafa;
-				border-bottom-color: #fafafa;
-			}
-			#<?php echo $field_id; ?>_tabs .ocs-tab.disabled {
-				display: none;
-				color: #aaa;
-				cursor: default;
-				background: #ddd;
-			}
-			#<?php echo $field_id; ?>_panes {
-				padding: 10px;
-				border: 1px solid #ccc;
-				background: #fafafa;
-			}
-			#<?php echo $field_id; ?>_panes h4 {
-				margin: .33em 0;;
-			}
-			#<?php echo $this->id; ?>-preview {
-				background: #f5f5f5;
-				border: 1px solid #eee;
-				padding: 10px;
-			}
-
-			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab {
-				border-color: #000;
-				background: #191f25;
-			}
-			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab:hover {
-				background: #32373c;
-			}
-			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab.active {
-				background: #50626f;
-				border-bottom-color: #191f25;
-			}
-			.dark-mode #<?php echo $field_id; ?>_tabs .ocs-tab.disabled {
-				color: #aaa;
-				background: #000;
-			}
-			.dark-mode #<?php echo $field_id; ?>_panes {
-				border-color: #191f25;
-				background: #23282d;
-			}
-		</style>
-		<script type="text/javascript">
+		<script type="text/javascript" id="">
 		<!--
 			( function( $ ) {
-				<?php foreach ( $ocs as $sidebar_id => $value ) { ?>
-				gocs_show_hide_options(
-					'#<?php echo $field_id . '_' . $sidebar_id; ?>_show_label',
-					'.<?php echo $field_id . '_' . $sidebar_id; ?>_label'
-				);
-				gocs_show_hide_options(
-					'#<?php echo $field_id . '_' . $sidebar_id; ?>_show_icon',
-					'.<?php echo $field_id . '_' . $sidebar_id; ?>_icon, .<?php echo $field_id . '_' . $sidebar_id; ?>_icon_location'
-				);
-				gocs_show_hide_options(
-					'#<?php echo $field_id . '_' . $sidebar_id; ?>_advanced_toggle',
-					'#<?php echo $field_id . '_' . $sidebar_id; ?>_advanced'
-				);
-				<?php } ?>
-
-				$( '#<?php echo $field_id; ?>_panes .autohide-js' ).hide();
-				$( '#<?php echo $field_id; ?>_tabs' ).show();
-				$( '#<?php echo $field_id; ?>_tabs .ocs-tab' ).each( function() {
-					var $this = $(this);
-					$this.on( 'click', function() {
-						if ( ! $this.hasClass('disabled') ) {
-							var $target = $( '#' + $this.attr('id').replace( '_tab', '_pane' ) );
-							$( '#<?php echo $field_id; ?>_panes .ocs-pane' ).not( $target ).slideUp('fast');
-							$target.slideDown('fast');
-							$( '#<?php echo $field_id; ?>_tabs .ocs-tab' ).not( $this ).removeClass('active');
-							$this.addClass('active');
-						}
-					} );
-				} );
-
-				$( '#<?php echo $field_id . '_sidebar_enable'; ?> input' ).on( 'change', function() {
-					var $this = $(this);
-						pre   = $this.attr('id');
-					if ( $this.is(':checked') ) {
-						$( '#' + pre + '_tab' ).removeClass('disabled').trigger('click');
-					} else {
-						$( '#' + pre + '_tab' ).addClass('disabled');
-						$( '#' + pre + '_pane' ).slideUp('fast');
-					}
-				} );
-
-				function gocs_show_hide_options( trigger, target ) {
-					var $trigger = $( trigger ),
-						$target = $( target );
-					if ( ! $trigger.is(':checked') ) {
-						$target.slideUp('fast');
-					}
-					$trigger.bind( 'change', function() {
-						if ( $(this).is(':checked') ) {
-							$target.slideDown('fast');
-						} else {
-							$target.slideUp('fast');
-						}
-					} ).trigger('change');
-				}
+				ocs_init_widget_settings( '#<?php echo $field_id ?>' );
 			} ) ( jQuery );
 		-->
 		</script>
+
+		</div>
 		<?php
 		} // End if().
 	}
@@ -553,5 +450,151 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			return null;
 		}
 		return $val;
+	}
+
+	/**
+	 * Add elements to the <head> of admin pages.
+	 *
+	 * @since   1.3.1
+	 * @access  public
+	 * @return  void
+	 */
+	public static function print_inline_assets() {
+
+		if ( doing_action( 'admin_head' ) ) {
+			$screen = get_current_screen();
+			if ( ! $screen || 'widgets' !== $screen->base ) {
+				return;
+			}
+		}
+
+		?>
+		<style type="text/css">
+			.widget .ocs-tabs {
+				clear: both;
+				width: 100%;
+				overflow: hidden;
+			}
+			.widget .ocs-tabs .ocs-tab {
+				cursor: pointer;
+				float: left;
+				padding: 5px 8px;
+				border: solid 1px #aaa;
+				background: #e8e8e8;
+			}
+			.widget .ocs-tabs .ocs-tab:hover {
+				background: #f5f5f5;
+			}
+			.widget .ocs-tabs .ocs-tab.active {
+				background: #fafafa;
+				border-bottom-color: #fafafa;
+			}
+			.widget .ocs-tabs .ocs-tab.disabled {
+				display: none;
+				color: #aaa;
+				cursor: default;
+				background: #ddd;
+			}
+			.widget .ocs-panes {
+				padding: 10px;
+				border: 1px solid #ccc;
+				background: #fafafa;
+			}
+			.widget .ocs-panes h4 {
+				margin: .33em 0;;
+			}
+			.widget .ocs-preview {
+				background: #f5f5f5;
+				border: 1px solid #eee;
+				padding: 10px;
+			}
+
+			.dark-mode .widget .ocs-tabs .ocs-tab {
+				border-color: #000;
+				background: #191f25;
+			}
+			.dark-mode .widget .ocs-tabs .ocs-tab:hover {
+				background: #32373c;
+			}
+			.dark-mode .widget .ocs-tabs .ocs-tab.active {
+				background: #50626f;
+				border-bottom-color: #191f25;
+			}
+			.dark-mode .widget .ocs-tabs .ocs-tab.disabled {
+				color: #aaa;
+				background: #000;
+			}
+			.dark-mode .widget .ocs-panes {
+				border-color: #191f25;
+				background: #23282d;
+			}
+		</style>
+		<script type="text/javascript">
+			<!--
+			function ocs_init_widget_settings( widget ) {
+				var $        = jQuery,
+					$widget  = $( widget ),
+					field_id = $widget.attr( 'id' ),
+					sidebars = <?php echo wp_json_encode( off_canvas_sidebars_settings()->get_sidebars() ) ?>;
+
+				$.each( sidebars, function( sidebar_id, sidebar_data ) {
+					show_hide_options(
+						'#' + field_id + '_' + sidebar_id + '_show_label',
+						'.' + field_id + '_' + sidebar_id + '_label'
+					);
+					show_hide_options(
+						'#' + field_id + '_' + sidebar_id + '_show_icon',
+						'.' + field_id + '_' + sidebar_id + '_icon, .' + field_id + '_' + sidebar_id + '_icon_location'
+					);
+					show_hide_options(
+						'#' + field_id + '_' + sidebar_id + '_advanced_toggle',
+						'#' + field_id + '_' + sidebar_id + '_advanced'
+					);
+				} );
+
+				$widget.find( '.ocs-panes .autohide-js' ).hide();
+				$widget.find( '.ocs-tabs' ).show();
+				$widget.find( '.ocs-tabs .ocs-tab' ).each( function() {
+					var $this = $(this);
+					$this.on( 'click', function() {
+						if ( ! $this.hasClass('disabled') ) {
+							var $target = $( '#' + $this.attr('id').replace( '_tab', '_pane' ) );
+							$( '.ocs-panes .ocs-pane' ).not( $target ).slideUp('fast');
+							$target.slideDown('fast');
+							$( '.ocs-tabs .ocs-tab' ).not( $this ).removeClass('active');
+							$this.addClass('active');
+						}
+					} );
+				} );
+
+				$widget.find( '.ocs-sidebar-enable input' ).on( 'change', function() {
+					var $this    = $(this),
+						selector = $this.attr('id');
+					if ( $this.is(':checked') ) {
+						$( '#' + selector + '_tab' ).removeClass('disabled').trigger('click');
+					} else {
+						$( '#' + selector + '_tab' ).addClass('disabled');
+						$( '#' + selector + '_pane' ).slideUp('fast');
+					}
+				} );
+
+				function show_hide_options( trigger, target ) {
+					var $trigger = $( trigger ),
+						$target = $( target );
+					if ( ! $trigger.is(':checked') ) {
+						$target.slideUp('fast');
+					}
+					$trigger.bind( 'change', function() {
+						if ( $(this).is(':checked') ) {
+							$target.slideDown('fast');
+						} else {
+							$target.slideUp('fast');
+						}
+					} ).trigger('change');
+				}
+			}
+			-->
+		</script>
+		<?php
 	}
 }
