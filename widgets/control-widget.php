@@ -157,7 +157,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		} else {
 		?>
 
-		<div id="<?php echo $field_id ?>" data-instance='<?php echo wp_json_encode( $instance ); ?>'>
+		<div id="<?php echo $field_id; ?>" data-instance='<?php echo wp_json_encode( $instance ); ?>'>
 
 		<p id="<?php echo $field_id; ?>-sidebar_enable" class="ocs-sidebar-enable">
 			<b><?php esc_html_e( 'Controls', OCS_DOMAIN ); ?>:</b><br />
@@ -203,12 +203,12 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		<?php
 		$first = false;
 		foreach ( $sidebars as $sidebar_id => $value ) {
-			$field_sidebar_id = $field_id . '_' . $sidebar_id;
+			$field_sidebar_id   = $field_id . '_' . $sidebar_id;
 			$field_sidebar_name = $field_name . '[' . $sidebar_id . ']';
-			$autohide = 'autohide-js';
+			$autohide           = 'autohide-js';
 			if ( ! $first && ! empty( $ocs[ $sidebar_id ]['enable'] ) ) {
 				$autohide = '';
-				$first = true;
+				$first    = true;
 			}
 		?>
 		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane <?php echo $autohide; ?>">
@@ -305,7 +305,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		<script type="text/javascript" id="">
 		<!--
 			( function( $ ) {
-				ocs_init_widget_settings( '#<?php echo $field_id ?>' );
+				ocs_init_widget_settings( '#<?php echo $field_id; ?>' );
 			} ) ( jQuery );
 		-->
 		</script>
@@ -536,7 +536,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				var $        = jQuery,
 					$widget  = $( widget ),
 					field_id = $widget.attr( 'id' ),
-					sidebars = <?php echo wp_json_encode( off_canvas_sidebars_settings()->get_sidebars() ) ?>;
+					sidebars = <?php echo wp_json_encode( off_canvas_sidebars_settings()->get_sidebars() ); ?>;
 
 				$.each( sidebars, function( sidebar_id, sidebar_data ) {
 					show_hide_options(
