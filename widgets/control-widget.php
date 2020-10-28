@@ -49,6 +49,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 		);
 
 		add_action( 'admin_head', 'OCS_Off_Canvas_Sidebars_Control_Widget::print_inline_assets' );
+		add_action( 'customize_controls_print_styles', 'OCS_Off_Canvas_Sidebars_Control_Widget::print_inline_assets' );
 	}
 
 	/**
