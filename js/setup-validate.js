@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.6
- * @version 0.5.6
+ * @version 0.5.7
  * @global  ocsNavControl
  * @preserve
  */
@@ -43,11 +43,11 @@ if ( 'undefined' === typeof ocsSetupValidate ) {
 			correct = false,
 			color;
 
-		if ( ! $( '[canvas]' ).length ) {
+		if ( ! $( '[data-canvas]' ).length ) {
 			errors.push( ocsSetupValidate.messages.error_website_before );
-		} else if ( ! $body.children( '[canvas]' ).length ) {
+		} else if ( ! $body.children( '[data-canvas]' ).length ) {
 			errors.push( ocsSetupValidate.messages.error_canvas_child );
-		} else if ( $body.children( '[canvas]' ).is( ':empty' ) ) {
+		} else if ( $body.children( '[data-canvas]' ).is( ':empty' ) ) {
 			errors.push( ocsSetupValidate.messages.error_canvas_empty );
 		}
 

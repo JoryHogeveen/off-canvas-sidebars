@@ -3,9 +3,9 @@ Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
 Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobile, tablet, responsive, genesis
 Requires at least: 4.1
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.2.4
-Stable tag: 0.5.6
+Stable tag: 0.5.7
 
 Add off-canvas sidebars (Slidebars) containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -90,6 +90,20 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.5.7 =
+
+*	**Enhancement:** Improved compatibility with the toolbar and fixed elements (legacy CSS mode).
+*	**Enhancement:** Update to data attributes.
+*	**Enhancement:** New filter `ocs_sidebar_attributes`.
+*	**Enhancement:** New filter `ocs_sidebar_element`.
+*	**Enhancement:** Added event action manager.
+*	**Enhancement:** Do not add the same triggers again on reinit.
+*	**Enhancement:** Load widget admin assets in site head instead of each widget separately.
+*	**UI** Use WP meta box functions for setting pages to enhance UI compatibility.
+*	**Fix:** Set slidebars script to plugin version to prevent browser cache issues.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/99)
 
 = 0.5.6 =
 

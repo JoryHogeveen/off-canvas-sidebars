@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0  Refactored from single settings class.
- * @version 0.5.6
+ * @version 0.5.7
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
@@ -343,54 +343,65 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 
 	/**
 	 * This function is similar to the function in the Settings API, only the output HTML is changed.
-	 * Print out the settings fields for a particular settings section.
+	 * Print out the settings fields for a particular settings section using the WP post boxes UI.
 	 *
 	 * @since   0.1.0
+	 * @since   0.5.7  Use the meta boxes functions.
 	 *
 	 * @global  array  $wp_settings_sections  Array of settings sections.
-	 * @global  array  $wp_settings_fields    Array of settings fields and their pages/sections.
 	 *
 	 * @param   string  $page     Slug title of the admin page who's settings fields you want to show.
-	 * param    string  $section  Slug title of the settings section who's fields you want to show.
 	 */
 	protected function do_settings_sections( $page ) {
-		global $wp_settings_sections, $wp_settings_fields;
+		global $wp_settings_sections;
 
 		if ( ! isset( $wp_settings_sections[ $page ] ) ) {
 			return;
 		}
 
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
-			$box_classes = apply_filters( 'ocs_page_form_section_box_classes', 'postbox ' . $section['id'], $section, $page );
-
-			echo '<div id="' . esc_attr( $section['id'] ) . '" class="' . esc_attr( $box_classes ) . '">';
-			echo '<button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text">'
-				 . esc_html__( 'Toggle panel', OCS_DOMAIN ) . '</span><span class="toggle-indicator" aria-hidden="true"></span></button>';
-
-			if ( $section['title'] ) {
-				echo '<h3 class="hndle"><span>' . $section['title'] . '</span></h3>';
-			}
-
-			if ( $section['callback'] ) {
-				call_user_func( $section['callback'], $section );
-			}
-
-			echo '<div class="inside">';
-
-			do_action( 'ocs_page_form_section_before', $section, $page );
-
-			if ( isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
-				echo '<table class="form-table">';
-				do_action( 'ocs_page_form_section_table_before', $section, $page );
-				do_settings_fields( $page, $section['id'] );
-				do_action( 'ocs_page_form_section_table_after', $section, $page );
-				echo '</table>';
-			}
-
-			do_action( 'ocs_page_form_section_after', $section, $page );
-
-			echo '</div></div>';
+			add_meta_box(
+				$section['id'],
+				$section['title'],
+				array( $this, 'do_settings_section' ),
+				$this->general_key,
+				$this->tab,
+				'default',
+				array(
+					'page'    => $page,
+					'section' => $section,
+				)
+			);
 		}
+
+		do_meta_boxes( $this->general_key, $this->tab, $page );
+	}
+
+	/**
+	 * Add the section meta box content.
+	 *
+	 * @since  0.5.7
+	 *
+	 * @param string $page The current page.
+	 * @param array  $box  The settings section box.
+	 */
+	public function do_settings_section( $page, $box ) {
+		$section = $box['args']['section'];
+
+		if ( $section['callback'] ) {
+			// Call the settings section callback.
+			call_user_func( $section['callback'], $section );
+		}
+
+		do_action( 'ocs_page_form_section_before', $section, $page );
+
+		echo '<table class="form-table">';
+		do_action( 'ocs_page_form_section_table_before', $section, $page );
+		do_settings_fields( $page, $section['id'] );
+		do_action( 'ocs_page_form_section_table_after', $section, $page );
+		echo '</table>';
+
+		do_action( 'ocs_page_form_section_after', $section, $page );
 	}
 
 	/**

@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.4
+ * @version 0.5.7
  * @global  ocsOffCanvasSidebarsSettings
  * @preserve
  */
@@ -25,13 +25,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 	var $document = $(document);
 	ocsOffCanvasSidebarsSettings.init = function() {
 
-		var $tab     = $( '#ocs_tab' );
-		var $postbox = $( '.postbox' );
+		var $tab     = $( '#ocs_tab' ),
+			$postbox = $( '.postbox' );
 
-		// Close postboxes that should be closed.
-		$( '.if-js-closed' ).removeClass( 'if-js-closed' ).addClass( 'closed' );
-		// Postboxes setup.
-		postboxes.add_postbox_toggles( ocsOffCanvasSidebarsSettings.plugin_key );
+		if ( window.hasOwnProperty( 'postboxes' ) ) {
+			// Postboxes setup.
+			window.postboxes.add_postbox_toggles( ocsOffCanvasSidebarsSettings.plugin_key );
+		}
 
 		if ( 'ocs-sidebars' === $tab.val() ) {
 			$postbox.each( function() {
@@ -40,6 +40,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebarsSettings ) {
 					sidebar_id              = $this.attr( 'id' ).replace( 'section_sidebar_', '' ),
 					sidebar_prefix          = prefix + sidebar_id,
 					global_settings_trigger = '.' + sidebar_prefix + '_overwrite_global_settings';
+
+				// Closed by default.
+				$this.find('.hndle').click();
 
 				ocs_show_hide_options_radio(
 					'.' + sidebar_prefix + '_background_color_type',

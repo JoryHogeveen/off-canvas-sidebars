@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.6
+ * @version 0.5.7
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -239,7 +239,17 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			return;
 		}
 
-		echo '<div ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
+		/**
+		 * Change the sidebar element.
+		 *
+		 * @since 0.5.7
+		 *
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
+		 */
+		$element = esc_attr( apply_filters( 'ocs_sidebar_element', 'div', $sidebar_id, $sidebar_data ) );
+
+		echo '<' . $element . ' ' . $this->get_sidebar_attributes( $sidebar_id, $sidebar_data ) . '>';
 
 		/**
 		 * Action to add content before the default sidebar content
@@ -328,7 +338,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 */
 		do_action( 'ocs_custom_content_sidebar_after', $sidebar_id, $sidebar_data );
 
-		echo '</div>';
+		echo '</' . $element . '>';
 	}
 
 	/**
@@ -415,7 +425,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	public function get_container_attributes() {
 		$atts = array(
 			'id'                            => $this->get_settings( 'css_prefix' ) . '-site',
-			'canvas'                        => 'container',
+			'data-canvas'                   => 'container',
 			'data-ocs-site_close'           => (bool) $this->get_settings( 'site_close' ),
 			'data-ocs-disable_over'         => (int) $this->get_settings( 'disable_over' ),
 			'data-ocs-hide_control_classes' => (bool) $this->get_settings( 'hide_control_classes' ),
@@ -459,14 +469,14 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 *
 		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
 		 *
-		 * @param  array   $classes       Classes
+		 * @param  array   $classes       Sidebar classes.
 		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
 		 * @param  array   $sidebar_data  The sidebar settings.
 		 */
 		$atts['class'] = apply_filters( 'ocs_sidebar_classes', $atts['class'], $sidebar_id, $data );
 
 		// Slidebars 2.0
-		$atts['off-canvas'] = array(
+		$atts['data-off-canvas'] = array(
 			$prefix . '-' . $sidebar_id, // ID.
 			$data['location'], // Location.
 			$data['style'], // Animation style.
@@ -482,6 +492,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			$atts['data-ocs-hide_control_classes']      = (int) $data['hide_control_classes'];
 			$atts['data-ocs-scroll_lock']               = (int) $data['scroll_lock'];
 		}
+
+		/**
+		 * Filter the attributes for a sidebar.
+		 *
+		 * @since  0.5.7
+		 *
+		 * @see \OCS_Off_Canvas_Sidebars_Settings::$default_sidebar_settings for the sidebar settings.
+		 *
+		 * @param  array   $atts          Sidebar attributes.
+		 * @param  string  $sidebar_id    The ID of this sidebar as configured in: Appearance > Off-Canvas Sidebars > Sidebars.
+		 * @param  array   $sidebar_data  The sidebar settings.
+		 */
+		$atts = apply_filters( 'ocs_sidebar_attributes', $atts, $sidebar_id, $data );
 
 		return self::parse_to_html_attr( $atts );
 	}
@@ -522,8 +545,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			wp_enqueue_script( 'ocs-fixed-scrolltop', OCS_PLUGIN_URL . 'js/fixed-scrolltop' . $suffix . '.js', array( 'jquery' ), $version, true );
 		}
 
-		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.css', array(), '2.0.2' );
-		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.js', array( 'jquery' ), '2.0.2', true );
+		wp_enqueue_style( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.css', array(), $version );
+		wp_enqueue_script( 'slidebars', OCS_PLUGIN_URL . 'slidebars/slidebars' . $suffix . '.js', array( 'jquery' ), $version, true );
 
 		wp_enqueue_style( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'css/off-canvas-sidebars' . $suffix . '.css', array(), $version );
 		wp_enqueue_script( 'off-canvas-sidebars', OCS_PLUGIN_URL . 'js/off-canvas-sidebars' . $suffix . '.js', array( 'jquery', 'slidebars' ), $version, true );

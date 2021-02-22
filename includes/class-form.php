@@ -211,6 +211,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 		);
 		if ( ! empty( $args['readonly'] ) ) {
 			$attr['readonly'] = 'readonly';
+			$attr['onclick']  = 'return false;';
 		}
 
 		$checked = checked( $prefix_value[ $args['name'] ], 1, false );
@@ -270,6 +271,7 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 			);
 			if ( ! empty( $args['readonly'] ) || ! empty( $option['readonly'] ) ) {
 				$attr['readonly'] = 'readonly';
+				$attr['onclick']  = 'return false;';
 			}
 
 			$checked = checked( $prefix_value[ $args['name'] ], $option['value'], false );

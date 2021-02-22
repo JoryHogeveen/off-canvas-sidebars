@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.6
+ * @version 0.5.7
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -37,8 +37,20 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	ocsOffCanvasSidebars.useAttributeSettings = false;
 	ocsOffCanvasSidebars.container            = false;
 	ocsOffCanvasSidebars._touchmove           = false;
-	ocsOffCanvasSidebars._toolbar             = $body.hasClass( 'admin-bar' );
+	ocsOffCanvasSidebars._toolbar             = ( $body.hasClass( 'admin-bar' ) ) ? $( '#wpadminbar' ) : null;
 
+	// Prevent swipe events to be seen as a click (bug in some browsers).
+	$document.on( 'touchmove', function() {
+		ocsOffCanvasSidebars._touchmove = true;
+	} );
+	$document.on( 'touchstart', function() {
+		ocsOffCanvasSidebars._touchmove = false;
+	} );
+
+	/**
+	 * Initialize Off-Canvas Sidebars.
+	 * @return {boolean} Success.
+	 */
 	ocsOffCanvasSidebars.init = function() {
 
 		if ( ! $( '#' + ocsOffCanvasSidebars.css_prefix + '-site' ).length || ( 'undefined' === typeof slidebars ) ) {
@@ -158,7 +170,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		};
 
-		ocsOffCanvasSidebars.container = $( '[canvas=container]' );
+		ocsOffCanvasSidebars.container = $( '[data-canvas=container]' );
 
 		$window.trigger( 'ocs_before', [ this ] );
 
@@ -190,102 +202,109 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		/**
 		 * Compatibility with WP Admin Bar.
 		 * @since  0.4
+		 * @since  0.5.7  Changed to event triggers isntead of page load.
  		 */
 		if ( ocsOffCanvasSidebars._toolbar ) {
-			$window.on( 'load', function() {
-				// Offset top = admin bar height.
-				var bodyOffset = $body.offset(),
-					$sidebars = $( '.' + ocsOffCanvasSidebars.css_prefix + '-slidebar' );
 
-				$sidebars.each( function() {
-					var $this = $( this );
-					// Apply top offset on load. Not for bottom sidebars.
-					if ( ! $this.hasClass( 'ocs-location-bottom' ) ) {
-						$this.css( 'margin-top', '+=' + bodyOffset.top );
+			ocsOffCanvasSidebars.events.add_action( 'opening', 'ocs_toolbar', function( e, sidebar_id, sidebar ) {
+				if ( 'fixed' !== ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
+					return;
+				}
+
+				// Apply top offset on load. Not for bottom sidebars.
+				if ( 'bottom' !== sidebar.side ) {
+					var offset        = $html.offset().top,
+						currentOffset = parseInt( sidebar.element.data( 'admin-bar-offset-top' ), 10 ),
+						prop          = 'padding-top';
+
+					if ( ! currentOffset ) {
+						currentOffset = 0;
 					}
-				} );
 
-				// css event is triggers after resize.
-				$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'css', function() {
-					$sidebars.each( function() {
-						var $this = $( this );
-						// Apply top offset on css reset. Only for top sidebars.
-						if ( $this.hasClass( 'ocs-location-top' ) ) {
-							$this.css( 'margin-top', '+=' + bodyOffset.top );
+					if ( offset ) {
+						if ( 'top' === sidebar.side ) {
+							prop = 'margin-top';
 						}
-					} );
-				} );
+						sidebar.element.css( prop, '+=' + ( offset - currentOffset ) ).data( 'admin-bar-offset-top', offset );
+					}
+				}
+			} );
+
+			ocsOffCanvasSidebars.events.add_action( 'closed', 'ocs_toolbar', function( e, sidebar_id, sidebar ) {
+				// Apply top offset on load. Not for bottom sidebars.
+				if ( 'bottom' !== sidebar.side ) {
+					var prop   = 'padding-top',
+						offset = sidebar.element.data( 'admin-bar-offset-top' );
+					if ( offset ) {
+						if ( 'top' === sidebar.side ) {
+							prop = 'margin-top';
+						}
+						sidebar.element.css( prop, '-=' + offset ).data( 'admin-bar-offset-top', 0 );
+					}
+				}
+
 			} );
 		}
 
 		/**
 		 * Fix position issues for fixed elements on slidebar animations.
+		 * @todo Move this to the Slidebars script.
 		 * @since  0.4.0
  		 */
-		$( ocsOffCanvasSidebars.slidebarsController.events ).on( 'opening opened closing closed', function( e, sidebar_id ) {
-			var slidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
-			var duration = parseFloat( slidebar.element.css( 'transitionDuration' )/*, 10*/ ) * 1000;
-			if ( 'top' === slidebar.side || 'bottom' === slidebar.side ) {
+		ocsOffCanvasSidebars.events.add_action( 'opening opened closing closed', 'ocs_fixed_compat', function( e, sidebar_id, sidebar ) {
+			var duration = parseFloat( sidebar.element.css( 'transitionDuration' ) ) * 1000;
+			if ( 'top' === sidebar.side || 'bottom' === sidebar.side ) {
 				var elements = ocsOffCanvasSidebars.getFixedElements();
-				elements.attr( { 'canvas-fixed': 'fixed' } );
 
 				// Legacy mode (only needed for location: top).
 				// @todo, temp apply for reveal aswell
-				if ( ocsOffCanvasSidebars.legacy_css && 'top' === slidebar.side && ( 'overlay' !== slidebar.style && 'reveal' !== slidebar.style  ) ) {
-					var offset;
-					// @todo, temp apply for reveal, should be 0
-					//if ( 'reveal' === slidebar.style ) {
-						//offset = 0; //parseInt( slidebar.element.css( 'height' ).replace('px', '') );
-					//} else {
-						offset = parseInt( slidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
-					//}
+				if ( ocsOffCanvasSidebars.legacy_css ) {
+					if ( 'top' === sidebar.side && ( 'overlay' !== sidebar.style && 'reveal' !== sidebar.style ) ) {
+						var offset = sidebar.element.height();
+						// @todo, temp apply for reveal, should be 0
+						/*if ( 'reveal' === sidebar.style ) {
+							offset = 0; //parseInt( sidebar.element.css( 'height' ).replace('px', '') );
+						} else {
+							offset = parseInt( sidebar.element.css( 'margin-top' ).replace('px', '').replace('-', ''), 10 );
+						}*/
 
-					//Compatibility with WP Admin Bar.
-					// @todo, condition for setting
-					if ( ocsOffCanvasSidebars._toolbar ) {
-						offset += $body.offset().top;
+						//Compatibility with WP Admin Bar.
+						if ( ocsOffCanvasSidebars._toolbar && 'fixed' === ocsOffCanvasSidebars._toolbar.css( 'position' ) ) {
+							offset += $html.offset().top;
+						}
+
+						if ( offset ) {
+							// Set animation.
+							if ( 'opening' === e.type ) {
+								ocsOffCanvasSidebars.cssCompat( elements, 'transition', 'top ' + duration + 'ms' );
+								elements.css( 'top', '+=' + offset ).data( 'ocs-offset-top', offset );
+							}
+							// Remove animation.
+							else if ( 'closing' === e.type ) {
+								elements.css( 'top', '-=' + elements.data( 'ocs-offset-top' ) ).data( 'ocs-offset-top', 0 );
+								setTimeout( function() {
+									ocsOffCanvasSidebars.cssCompat( elements, 'transition', '' );
+								}, duration );
+							}
+						}
 					}
 
-					elements.each( function() {
-						var $this = $( this );
-						// Set animation.
-						if ( 'opening' === e.type ) {
-							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'top ' + duration + 'ms' );
-							$this.css( 'top', parseInt( $this.css( 'top' ).replace( 'px', '' ), 10 ) + offset + 'px' );
-						}
-						// Remove animation.
-						else if ( 'closing' === e.type ) {
-							$this.css( 'top', parseInt( $this.css( 'top' ).replace( 'px', '' ), 10 ) - offset + 'px' );
-							setTimeout( function() {
-								ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
-							}, duration );
-						}
-					} );
 				}
 				// Normal mode (only sets a transition for use in fixed-scrolltop.js).
 				else {
-					elements.each( function() {
-						var $this = $( this );
-						//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
-						//console.log( curVal );
-						if ( 'opening' === e.type || 'closing' === e.type ) {
-							ocsOffCanvasSidebars.cssCompat( $this, 'transition', 'transform ' + duration + 'ms' );
-							//$( this ).css('transform', 'translate( 0px, ' + curVal + slidebar.element.height() + 'px )' );
-						} else if ( 'opened' === e.type || 'closed' === e.type ) {
-							ocsOffCanvasSidebars.cssCompat( $this, 'transition', '' );
-						}
-					} );
+					//var curVal = ocsOffCanvasSidebars._getTranslateAxis( this, 'y' );
+					//console.log( curVal );
+					if ( 'opening' === e.type || 'closing' === e.type ) {
+						ocsOffCanvasSidebars.cssCompat( elements, 'transition', 'transform ' + duration + 'ms' );
+						//$( this ).css('transform', 'translate( 0px, ' + curVal + sidebar.element.height() + 'px )' );
+					} else if ( 'opened' === e.type || 'closed' === e.type ) {
+						ocsOffCanvasSidebars.cssCompat( elements, 'transition', '' );
+					}
 				}
-				$window.trigger( 'slidebar_event', [ e.type, slidebar ] );
-			}
-		} );
 
-		// Prevent swipe events to be seen as a click (bug in some browsers).
-		$document.on( 'touchmove', function() {
-			ocsOffCanvasSidebars._touchmove = true;
-		} );
-		$document.on( 'touchstart', function() {
-			ocsOffCanvasSidebars._touchmove = false;
+				// @todo convert to action based event.
+				$window.trigger( 'slidebar_event', [ e.type, sidebar ] );
+			}
 		} );
 
 		// Validate type, this could be changed with the hooks.
@@ -428,7 +447,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		} );
 
 		// Close Slidebars when clicking on a link within a slidebar.
-		/*$( '[off-canvas] a' ).on( 'touchend click', function( e ) {
+		/*$( '[data-off-canvas] a' ).on( 'touchend click', function( e ) {
 			e.preventDefault();
 			e.stopPropagation();
 
@@ -440,41 +459,73 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			} );
 		} );*/
 
-		// Add close class to canvas container when Slidebar is opened.
+		/**
+		 * Sidebar opening actions.
+		 */
 		$( controller.events ).on( 'opening', function ( e, sidebar_id ) {
+			var sidebar     = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
+				scrollLock  = ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ),
+				scrollFixed = ( $html[0].scrollHeight > $html[0].clientHeight ),
+				scrollTop   = $html.scrollTop();
+
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
 				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
 			}
-			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id );
-			if ( ocsOffCanvasSidebars._getSetting( 'scroll_lock', sidebar_id ) ) {
-				$html.addClass( 'ocs-scroll-lock' );
-				if ( $html[0].scrollHeight > $html[0].clientHeight ) {
-					var scrollTop = $html.scrollTop();
-					// Subtract current scroll top.
-					$body.css( { 'top': '-=' + scrollTop } );
-					$html.data( 'ocs-scroll-fixed', scrollTop );
-					$html.addClass( 'ocs-scroll-fixed' );
+			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+
+			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
+			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
+				if ( 'overlay' !== sidebar.style && ( 'left' === sidebar.side || 'right' === sidebar.side ) ) {
+					scrollLock  = true;
+					scrollFixed = true;
 				}
 			}
+
+			if ( scrollLock ) {
+				$html.addClass( 'ocs-scroll-lock' );
+				if ( scrollFixed ) {
+					// Subtract current scroll top.
+					$body.css( 'top', '-=' + scrollTop );
+					$html.data( 'ocs-scroll-fixed', scrollTop )
+					     .addClass( 'ocs-scroll-fixed' );
+				}
+			}
+
+			ocsOffCanvasSidebars.events.do_action( 'opening', [ e, sidebar_id, sidebar ] );
 		} );
 
-		// Add close class to canvas container when Slidebar is opened.
-		$( controller.events ).on( 'closing', function ( e, sidebar_id ) {
+		/**
+		 * Sidebar opened and closing actions.
+		 */
+		$( controller.events ).on( 'opened closing', function ( e, sidebar_id ) {
+			var sidebar = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id );
+			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
+		} );
+
+		/**
+		 * Sidebar closed actions.
+		 */
+		$( controller.events ).on( 'closed', function ( e, sidebar_id ) {
+			var sidebar   = ocsOffCanvasSidebars.slidebarsController.getSlidebar( sidebar_id ),
+				scrollTop = $html.hasClass( 'ocs-scroll-fixed' );
+
 			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
-			var scrollTop = false;
-			if ( $html.hasClass( 'ocs-scroll-fixed' ) ) {
-				scrollTop = true;
-			}
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id );
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
 			if ( scrollTop ) {
 				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
 				// Append stored scroll top.
-				$body.css( { 'top': '+=' + scrollTop } );
-				$html.removeAttr( 'ocs-scroll-fixed' );
-				$html.scrollTop( scrollTop );
+				$body.css( 'top', '+=' + scrollTop );
+				if ( ! $body.css( 'top' ) ) {
+					$body.css( 'top', '' );
+				}
+				$html.data( 'ocs-scroll-fixed', 0 );
 				// Trigger slidebars css reset since position fixed changes the element heights.
-				$window.trigger( 'resize' );
+				ocsOffCanvasSidebars.slidebarsController.css();
+				// Apply original scroll position.
+				$html.scrollTop( scrollTop );
 			}
+
+			ocsOffCanvasSidebars.events.do_action( 'closed', [ e, sidebar_id, sidebar ] );
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
@@ -533,6 +584,87 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		data[ prop ]              = value;
 
 		$( elem ).css( data );
+	};
+
+	/**
+	 * Event handler.
+	 * @since  0.5.7
+	 */
+	ocsOffCanvasSidebars.events = {
+		/**
+		 * Run event actions.
+		 * @param  {string}  event   The event name.
+		 * @param  {mixed}   params  The parameters.
+		 * @return {void} Nothing.
+		 */
+		do_action: function( event, params ) {
+			if ( ! ocsOffCanvasSidebars.events[ event ] ) {
+				return;
+			}
+			ocsOffCanvasSidebars.events[ event ].forEach( function( actions, priority ) {
+				if ( 'object' !== typeof actions ) {
+					return true;
+				}
+				Object.values( actions ).forEach( function( callback, name ) {
+					callback.apply( null, params );
+				} );
+			} );
+		},
+		/**
+		 * Add new event action.
+		 * @param  {string}    event     The event name.
+		 * @param  {string}    name      The action name.
+		 * @param  {callable}  callback  The action callback.
+		 * @param  {int}       priority  The order/priority value.
+		 * @return {void} Nothing.
+		 */
+		add_action: function ( event, name, callback, priority ) {
+			if ( Array.isArray( event ) ) {
+				event.forEach( function( event ) {
+					ocsOffCanvasSidebars.events.add_action( event, name, callback, priority );
+				} );
+				return;
+			}
+			if ( ! priority ) {
+				priority = 10;
+			}
+			if ( ! ocsOffCanvasSidebars.events.hasOwnProperty( event ) ) {
+				ocsOffCanvasSidebars.events[ event ] = [];
+			}
+			if ( 'object' !== typeof ocsOffCanvasSidebars.events[ event ][ priority ] ) {
+				ocsOffCanvasSidebars.events[ event ][ priority ] = {};
+			}
+			ocsOffCanvasSidebars.events[ event ][ priority ][ name ] = callback;
+		},
+		/**
+		 * Remove event action.
+		 * @param  {string}   event     The event name.
+		 * @param  {string}   name      The action name.
+		 * @param  {int}      priority  The order/priority value.
+		 * @return {void} Nothing.
+		 */
+		remove_action: function ( event, name, priority ) {
+			if ( Array.isArray( event ) ) {
+				event.forEach( function( event ) {
+					ocsOffCanvasSidebars.events.remove_action( event, name, priority );
+				} );
+				return;
+			}
+			if ( ! priority ) {
+				priority = 10;
+			}
+			if ( ! ocsOffCanvasSidebars.events[ event ] || ! ocsOffCanvasSidebars.events[ event ][ priority ] ) {
+				return;
+			}
+			delete ocsOffCanvasSidebars.events[ event ][ priority ][ name ];
+		}
+	};
+
+	/**
+	 * @return {boolean} Is it a touch device?
+	 */
+	ocsOffCanvasSidebars.is_touch = function() {
+		return ( 0 < navigator.maxTouchPoints );
 	};
 
 	/**

@@ -14,11 +14,12 @@
  * @package Off_Canvas_Sidebars
  * @author  Jory Hogeveen <info@keraweb.nl>
  *
- * @version 0.5.6
- * @since   0.4.0  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
- * @since   0.4.2  Parse slidebar widths/heights to rounded pixels (like jQuery does) to prevent 1px differences
- * @since   0.5.6  Added `initialized` and `reinit` methods.
- * @global  slidebars
+ * @version  0.5.7
+ * @since    0.4.0  Add scope for this reference + Add legacy CSS support (no hardware acceleration)
+ * @since    0.4.2  Parse slidebar widths/heights to rounded pixels (like jQuery does) to prevent 1px differences
+ * @since    0.5.6  Added `initialized` and `reinit` methods.
+ * @since    0.5.7  Data attributes.
+ * @global   slidebars
  * @preserve
  */
 /* eslint-enable no-extra-semi */
@@ -34,7 +35,7 @@ slidebars = function () {
 	 */
 
 	// Cache all canvas elements
-	var canvas = $( '[canvas]' ),
+	var canvas = $( '[data-canvas]' ),
 
 	// Object of Slidebars
 	offCanvas = {},
@@ -164,9 +165,9 @@ slidebars = function () {
 
 		// Loop through and register Slidebars
 		if ( ! registered ) {
-			$( '[off-canvas]' ).each( function () {
+			$( '[data-off-canvas]' ).each( function () {
 				// Get Slidebar parameters
-				var parameters = $( this ).attr( 'off-canvas' ).split( ' ', 3 );
+				var parameters = $( this ).data( 'off-canvas' ).split( ' ', 3 );
 
 				// Make sure a valid id, side and style are specified
 				if ( ! parameters || ! parameters[ 0 ] || -1 === sides.indexOf( parameters[ 1 ] ) || -1 === styles.indexOf( parameters[ 2 ] ) ) {
