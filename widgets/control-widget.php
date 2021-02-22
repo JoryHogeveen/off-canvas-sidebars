@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.6
+ * @version 0.5.7
  */
 final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 {
@@ -188,7 +188,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 					$class .= ' active';
 				}
 				?>
-				<div id="<?php echo $field_id . '_' . $sidebar_id; ?>_tab" class="<?php echo $class; ?>">
+				<div id="<?php echo $field_id . '_' . $sidebar_id; ?>-tab" class="<?php echo $class; ?>">
 					<?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?>
 				</div>
 				<?php
@@ -211,7 +211,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				$first    = true;
 			}
 		?>
-		<div id="<?php echo $field_sidebar_id . '_pane'; ?>" class="ocs-pane <?php echo $autohide; ?>">
+		<div id="<?php echo $field_sidebar_id; ?>-pane" class="ocs-pane <?php echo $autohide; ?>">
 			<h4><?php echo ( ! empty( $value['label'] ) ) ? $value['label'] : ucfirst( $sidebar_id ); ?></h4>
 			<p>
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>-show_label" name="<?php echo $field_sidebar_name; ?>[show_label]" value="1" <?php checked( $ocs[ $sidebar_id ]['show_label'], 1 ); ?>>
@@ -254,7 +254,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 				<input type="checkbox" id="<?php echo $field_sidebar_id; ?>-advanced_toggle" value="1" <?php checked( $has_advanced, true ); ?>>
 				<label for="<?php echo $field_sidebar_id; ?>-advanced_toggle"><strong><?php esc_html_e( 'Advanced options', OCS_DOMAIN ); ?></strong></label>
 			</p>
-			<div id="<?php echo $field_sidebar_id . '_advanced'; ?>">
+			<div id="<?php echo $field_sidebar_id . '-advanced'; ?>">
 				<p>
 					<select id="<?php echo $field_sidebar_id; ?>-action" name="<?php echo $field_sidebar_name; ?>[action]">
 						<option value=""><?php echo esc_html__( 'Toggle', OCS_DOMAIN ) . ' (' . esc_html__( 'Default', OCS_DOMAIN ) . ')'; ?></option>
@@ -456,7 +456,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 	/**
 	 * Add elements to the <head> of admin pages.
 	 *
-	 * @since   1.3.1
+	 * @since   0.5.7
 	 * @access  public
 	 * @return  void
 	 */
@@ -531,7 +531,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 			}
 		</style>
 		<script type="text/javascript">
-			<!--
 			function ocs_init_widget_settings( widget ) {
 				var $        = jQuery,
 					$widget  = $( widget ),
@@ -594,7 +593,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Widget extends WP_Widget
 					} ).trigger('change');
 				}
 			}
-			-->
 		</script>
 		<?php
 	}
