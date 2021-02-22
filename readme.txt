@@ -91,6 +91,20 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.5.7 =
+
+*	**Enhancement:** Improved compatibility with the toolbar and fixed elements (legacy CSS mode).
+*	**Enhancement:** Update to data attributes.
+*	**Enhancement:** New filter `ocs_sidebar_attributes`.
+*	**Enhancement:** New filter `ocs_sidebar_element`.
+*	**Enhancement:** Added event action manager.
+*	**Enhancement:** Do not add the same triggers again on reinit.
+*	**Enhancement:** Load widget admin assets in site head instead of each widget separately.
+*	**UI** Use WP meta box functions for setting pages to enhance UI compatibility.
+*	**Fix:** Set slidebars script to plugin version to prevent browser cache issues.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/99)
+
 = 0.5.6 =
 
 *	**Feature:** Overwrite hook priority within the plugin settings.
