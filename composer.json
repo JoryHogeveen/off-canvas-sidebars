@@ -23,7 +23,7 @@
 		{
 			"type": "donation",
 			"url": "https://www.keraweb.nl/donate.php?for=off-canvas-sidebars"
-		},
+		}
 	],
 	"require": {
 		"composer/installers": "1.9.*",
