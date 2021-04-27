@@ -471,7 +471,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
 				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
 			}
-			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + ' ocs-sidebar-location-' + sidebar.side );
 
 			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
 			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
