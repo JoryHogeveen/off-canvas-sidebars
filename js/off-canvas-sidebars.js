@@ -471,7 +471,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
 				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
 			}
-			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + ' ocs-sidebar-location-' + sidebar.side );
 
 			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
 			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
@@ -510,7 +510,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				scrollTop = $html.hasClass( 'ocs-scroll-fixed' );
 
 			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + ' ocs-sidebar-location-' + sidebar.side );
 			if ( scrollTop ) {
 				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
 				// Append stored scroll top.
