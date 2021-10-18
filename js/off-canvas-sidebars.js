@@ -491,7 +491,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 			}
 
-			ocsOffCanvasSidebars.events.do_action( 'opening', [ e, sidebar_id, sidebar ] );
+			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
 		} );
 
 		/**
@@ -525,7 +525,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				$html.scrollTop( scrollTop );
 			}
 
-			ocsOffCanvasSidebars.events.do_action( 'closed', [ e, sidebar_id, sidebar ] );
+			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
