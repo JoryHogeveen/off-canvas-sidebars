@@ -91,6 +91,12 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.5.7.1 =
+
+*	**Fix:** Class concatenation bug. #104 (Props: [Samuele Mancuso](https://github.com/AllWorkNoPlay-95))
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/108)
+
 = 0.5.7 =
 
 *	**Enhancement:** Improved compatibility with the toolbar and fixed elements (legacy CSS mode).
