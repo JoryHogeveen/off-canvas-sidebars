@@ -93,7 +93,7 @@ For more advanced customisations either:
 
 = 0.5.7.1 =
 
-*	**Fix:** Class concatenation bug. #104 (Props: [Samuele Mancuso](https://github.com/AllWorkNoPlay-95))
+*	**Fix:** Class concatenation bug. [#104](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/104) (Props: [Samuele Mancuso](https://github.com/AllWorkNoPlay-95))
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/108)
 
