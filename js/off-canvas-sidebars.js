@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.7
+ * @version 0.5.7.1
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -471,7 +471,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			if ( ocsOffCanvasSidebars._getSetting( 'site_close', sidebar_id ) ) {
 				ocsOffCanvasSidebars.container.addClass( prefix + '-close--all' );
 			}
-			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+			$html.addClass( 'ocs-sidebar-active ocs-sidebar-active-' + sidebar_id + ' ocs-sidebar-location-' + sidebar.side );
 
 			// @todo Find a way to support scrolling for left and right sidebars in legacy mode.
 			if ( ocsOffCanvasSidebars.legacy_css && ocsOffCanvasSidebars.is_touch() ) {
@@ -491,7 +491,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				}
 			}
 
-			ocsOffCanvasSidebars.events.do_action( 'opening', [ e, sidebar_id, sidebar ] );
+			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
 		} );
 
 		/**
@@ -510,7 +510,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				scrollTop = $html.hasClass( 'ocs-scroll-fixed' );
 
 			ocsOffCanvasSidebars.container.removeClass( prefix + '-close--all' );
-			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + 'ocs-sidebar-location-' + sidebar.side );
+			$html.removeClass( 'ocs-sidebar-active ocs-scroll-lock ocs-scroll-fixed ocs-sidebar-active-' + sidebar_id + ' ocs-sidebar-location-' + sidebar.side );
 			if ( scrollTop ) {
 				scrollTop = parseInt( $html.data( 'ocs-scroll-fixed' ), 10 );
 				// Append stored scroll top.
@@ -525,7 +525,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 				$html.scrollTop( scrollTop );
 			}
 
-			ocsOffCanvasSidebars.events.do_action( 'closed', [ e, sidebar_id, sidebar ] );
+			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
 		} );
 
 		// Disable slidebars when the window is wider than the set width.
