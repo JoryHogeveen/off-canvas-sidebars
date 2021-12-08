@@ -634,6 +634,18 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		} // End foreach().
 
+		/**
+		 * Modify the inline styles.
+		 *
+		 * @since 0.5.8
+		 *
+		 * @param  string $css
+		 * @param  string $prefix
+		 *
+		 * @return string
+		 */
+		$css = apply_filters( 'ocs_inline_styles', $css, $prefix );
+
 		return $css;
 	}
 
