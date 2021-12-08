@@ -639,8 +639,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		 *
 		 * @since 0.5.8
 		 *
-		 * @param  string $css
-		 * @param  string $prefix
+		 * @param  string  $css     The rendered inline styles.
+		 * @param  string  $prefix  The CSS prefix.
 		 *
 		 * @return string
 		 */
