@@ -41,7 +41,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
-		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
 
 		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
@@ -567,22 +566,22 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);
+
+		wp_add_inline_style( 'off-canvas-sidebars', $this->get_inline_styles() );
 	}
 
 	/**
-	 * Add inline styles.
+	 * Get inline styles.
 	 *
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.1.0
+	 * @since   0.1.0  Added as output method `add_inline_styles` in `wp_head` action.
+	 * @since   0.5.8  Refactored and renamed to a getter method.
+	 * @return  string
 	 */
-	public function add_inline_styles() {
-		if ( is_admin() ) {
-			return;
-		}
-
+	public function get_inline_styles() {
 		$prefix = $this->get_settings( 'css_prefix' );
 		$css    = '';
 
@@ -635,9 +634,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		} // End foreach().
 
-		if ( $css ) {
-			echo '<style type="text/css">' . $css . '</style>';
-		}
+		return $css;
 	}
 
 	/**
