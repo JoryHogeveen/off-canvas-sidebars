@@ -619,6 +619,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @return {void} Nothing.
 		 */
 		add_action: function ( event, name, callback, priority ) {
+			if ( -1 !== event.indexOf( ' ' ) ) {
+				event = event.split( ' ' );
+			}
 			if ( Array.isArray( event ) ) {
 				event.forEach( function( event ) {
 					ocsOffCanvasSidebars.events.add_action( event, name, callback, priority );
@@ -644,6 +647,9 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 * @return {void} Nothing.
 		 */
 		remove_action: function ( event, name, priority ) {
+			if ( -1 !== event.indexOf( ' ' ) ) {
+				event = event.split( ' ' );
+			}
 			if ( Array.isArray( event ) ) {
 				event.forEach( function( event ) {
 					ocsOffCanvasSidebars.events.remove_action( event, name, priority );
