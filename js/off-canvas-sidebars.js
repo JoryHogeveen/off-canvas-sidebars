@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.7.1
+ * @version 0.5.8
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -574,9 +574,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 						ocsOffCanvasSidebars.cssCompat( elements, 'transition', '' );
 					}
 				}
-
-				// @todo convert to action based event.
-				$window.trigger( 'slidebar_event', [ e.type, sidebar ] );
 			}
 		} );
 

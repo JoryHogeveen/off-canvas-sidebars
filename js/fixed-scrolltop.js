@@ -35,7 +35,7 @@
 					curScrollTopElements = curScrollTopElements.add( newScrollTopElements );
 					ocsOffCanvasSidebars.scrollTopFixed();
 				} );
-				scrollTarget.on( 'slidebar_event', ocsOffCanvasSidebars.slidebarEventFixed );
+				ocsOffCanvasSidebars.events.add_action( 'opening closing', 'ocs_fixed_scrolltop', ocsOffCanvasSidebars.slidebarEventFixed, 99 );
 			}
 		}
 
