@@ -620,7 +620,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 */
 		add_action: function ( event, name, callback, priority ) {
 			if ( -1 !== event.indexOf( ' ' ) ) {
-				event = event.split( ' ' );
+				event = event.split( ' ' ).filter( Boolean );
 			}
 			if ( Array.isArray( event ) ) {
 				event.forEach( function( event ) {
@@ -648,7 +648,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		 */
 		remove_action: function ( event, name, priority ) {
 			if ( -1 !== event.indexOf( ' ' ) ) {
-				event = event.split( ' ' );
+				event = event.split( ' ' ).filter( Boolean );
 			}
 			if ( Array.isArray( event ) ) {
 				event.forEach( function( event ) {
