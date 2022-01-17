@@ -308,11 +308,11 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		} );
 
 		// Validate types, this could be changed with the hooks.
-		if ( 'function' === typeof ocsOffCanvasSidebars.setupTriggers ) {
-			ocsOffCanvasSidebars.setupTriggers();
+		if ( 'function' === typeof ocsOffCanvasSidebars.initTriggers ) {
+			ocsOffCanvasSidebars.initTriggers();
 		}
-		if ( 'function' === typeof ocsOffCanvasSidebars.setupEvents ) {
-			ocsOffCanvasSidebars.setupEvents();
+		if ( 'function' === typeof ocsOffCanvasSidebars.initEvents ) {
+			ocsOffCanvasSidebars.initEvents();
 		}
 
 		$window.trigger( 'ocs_after', [ this ] );
@@ -349,7 +349,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 * @since  0.3.0
 	 * @return {boolean} Success
 	 */
-	ocsOffCanvasSidebars.setupTriggers = function() {
+	ocsOffCanvasSidebars.initTriggers = function() {
 		var controller       = ocsOffCanvasSidebars.slidebarsController,
 			prefix           = ocsOffCanvasSidebars.css_prefix,
 			$sidebarElements = $( '.' + prefix + '-slidebar' );
@@ -496,7 +496,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 * @since  0.5.8
 	 * @return {boolean} Success
 	 */
-	ocsOffCanvasSidebars.setupEvents = function() {
+	ocsOffCanvasSidebars.initEvents = function() {
 
 		/**
 		 * Sidebar opening actions.
