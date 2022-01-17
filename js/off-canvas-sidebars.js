@@ -307,9 +307,12 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			}
 		} );
 
-		// Validate type, this could be changed with the hooks.
+		// Validate types, this could be changed with the hooks.
 		if ( 'function' === typeof ocsOffCanvasSidebars.setupTriggers ) {
 			ocsOffCanvasSidebars.setupTriggers();
+		}
+		if ( 'function' === typeof ocsOffCanvasSidebars.setupEvents ) {
+			ocsOffCanvasSidebars.setupEvents();
 		}
 
 		$window.trigger( 'ocs_after', [ this ] );
@@ -459,6 +462,42 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			} );
 		} );*/
 
+		// Disable slidebars when the window is wider than the set width.
+		var disableOver = function() {
+			var prefix = ocsOffCanvasSidebars.css_prefix;
+			$sidebarElements.each( function() {
+				var id                   = $( this ).data( 'ocs-sidebar-id' ),
+					sidebar_id           = prefix + '-' + id,
+					control_classes      = '.' + prefix + '-toggle-' + id + ', .' + prefix + '-open-' + id, // @todo Close classes?
+					hide_control_classes = ocsOffCanvasSidebars._getSetting( 'hide_control_classes', sidebar_id );
+
+				if ( ! ocsOffCanvasSidebars._checkDisableOver( sidebar_id ) ) {
+					if ( controller.isActiveSlidebar( sidebar_id ) ) {
+						controller.close();
+					}
+					// Hide control classes.
+					if ( hide_control_classes ) {
+						$( control_classes ).hide();
+					}
+				} else if ( hide_control_classes ) {
+					$( control_classes ).show();
+				}
+
+			} );
+		};
+		disableOver();
+		$window.on( 'resize', disableOver );
+
+		return true;
+	};
+
+	/**
+	 * Setup automatic event handling.
+	 * @since  0.5.8
+	 * @return {boolean} Success
+	 */
+	ocsOffCanvasSidebars.setupEvents = function() {
+
 		/**
 		 * Sidebar opening actions.
 		 */
@@ -527,32 +566,6 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 
 			ocsOffCanvasSidebars.events.do_action( e.type, [ e, sidebar_id, sidebar ] );
 		} );
-
-		// Disable slidebars when the window is wider than the set width.
-		var disableOver = function() {
-			var prefix = ocsOffCanvasSidebars.css_prefix;
-			$sidebarElements.each( function() {
-				var id                   = $( this ).data( 'ocs-sidebar-id' ),
-					sidebar_id           = prefix + '-' + id,
-					control_classes      = '.' + prefix + '-toggle-' + id + ', .' + prefix + '-open-' + id, // @todo Close classes?
-					hide_control_classes = ocsOffCanvasSidebars._getSetting( 'hide_control_classes', sidebar_id );
-
-				if ( ! ocsOffCanvasSidebars._checkDisableOver( sidebar_id ) ) {
-					if ( controller.isActiveSlidebar( sidebar_id ) ) {
-						controller.close();
-					}
-					// Hide control classes.
-					if ( hide_control_classes ) {
-						$( control_classes ).hide();
-					}
-				} else if ( hide_control_classes ) {
-					$( control_classes ).show();
-				}
-
-			} );
-		};
-		disableOver();
-		$window.on( 'resize', disableOver );
 
 		return true;
 	};
