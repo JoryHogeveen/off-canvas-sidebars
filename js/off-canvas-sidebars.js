@@ -554,6 +554,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		disableOver();
 		$window.on( 'resize', disableOver );
 
+		return true;
 	};
 
 	/**
