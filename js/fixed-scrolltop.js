@@ -18,16 +18,16 @@
 
 	$window.on( 'ocs_initialized', function () {
 
-		ocsOffCanvasSidebars.debug('start fixed-scrolltop.js');
+		ocsOffCanvasSidebars.debug( 'start fixed-scrolltop.js' );
 
 		var curScrollTopElements,
 			scrollTarget = ocs_site = ocsOffCanvasSidebars.container;
-		if ( 'auto' !== ocs_site.css('overflow-y') ) {
+		if ( 'auto' !== ocs_site.css( 'overflow-y' ) ) {
 			scrollTarget = $window;
 		}
 
 		function run() {
-			if ( 'none' !== ocs_site.css('transform') ) {
+			if ( 'none' !== ocs_site.css( 'transform' ) ) {
 				curScrollTopElements = ocsOffCanvasSidebars.getFixedElements();
 				ocsOffCanvasSidebars.scrollTopFixed();
 				scrollTarget.on( 'scroll resize', function() {
@@ -74,9 +74,9 @@
 				}
 				curScrollTopElements.each( function() {
 					var $this = $(this);
-					if ( 'fixed' === $this.css('position') ) {
-						var top = $this.css('top'),
-						    bottom = $this.css('bottom'),
+					if ( 'fixed' === $this.css( 'position' ) ) {
+						var top = $this.css( 'top' ),
+						    bottom = $this.css( 'bottom' ),
 							px;
 						if ( 'auto' === top && 'auto' !== bottom ) {
 							px = ( scrollTop + winHeight ) - ( conOffset.top + conHeight ) + gblOffset.top;
