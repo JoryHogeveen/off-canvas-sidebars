@@ -612,8 +612,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		},
 		/**
 		 * Add new event action.
-		 * @param  {string}    event     The event name.
-		 * @param  {string}    name      The action name.
+		 * @param  {string}    event     The event name(s).
+		 * @param  {string}    name      The action identifier/name.
 		 * @param  {callable}  callback  The action callback.
 		 * @param  {int}       priority  The order/priority value.
 		 * @return {void} Nothing.
@@ -641,8 +641,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 		},
 		/**
 		 * Remove event action.
-		 * @param  {string}   event     The event name.
-		 * @param  {string}   name      The action name.
+		 * @param  {string}   event     The event name(s).
+		 * @param  {string}   name      The action identifier/name.
 		 * @param  {int}      priority  The order/priority value.
 		 * @return {void} Nothing.
 		 */
