@@ -69,7 +69,13 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 			var check       = true,
 				disableOver = parseInt( ocsOffCanvasSidebars._getSetting( 'disable_over', sidebarId ), 10 );
 			if ( disableOver && ! isNaN( disableOver ) ) {
-				if ( $window.width() > disableOver ) {
+				if ( window.hasOwnProperty( 'matchMedia' ) ) {
+					// Parse media query.
+					if ( window.matchMedia( '(min-width: ' + ( disableOver + 1 ) + 'px)' ).matches ) {
+						check = false;
+					}
+				} else if ( $window.width() > disableOver ) {
+					// Fallback to window width.
 		  			check = false;
 		  		}
 			}
