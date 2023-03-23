@@ -35,7 +35,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @access private
 	 */
 	private function __construct() {
-		add_action( 'init', array( $this, 'init' ) );  
+		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 	}
 
