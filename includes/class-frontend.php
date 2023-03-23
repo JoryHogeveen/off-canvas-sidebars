@@ -538,6 +538,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2.2  Add FastClick library.
 	 */
 	public function add_styles_scripts() {
+		/**
+		 * Enable or disable frontend assets.
+		 *
+		 * @since 0.5.8
+		 *
+		 * @param  bool  $enabled  Whether to enable frontend.
+		 */
+		if ( ! apply_filters( 'ocs_enable_assets', true ) ) {
+			return;
+		}
 
 		// @todo Validate and use minified files
 		$suffix  = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
