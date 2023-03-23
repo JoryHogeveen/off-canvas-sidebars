@@ -35,11 +35,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @access private
 	 */
 	private function __construct() {
-
-		if ( $this->get_settings( 'enable_frontend' ) ) {
-			add_action( 'init', array( $this, 'init' ) );  
-		}
-
+		add_action( 'init', array( $this, 'init' ) );  
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 	}
 
@@ -51,6 +47,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.5.8  Renamed from `default_actions` and made public.
 	 */
 	public function init() {
+		/**
+		 * Enable or disable frontend rendering.
+		 *
+		 * @since 0.5.8
+		 *
+		 * @param  bool  $enabled  Whether to enable frontend.
+		 */
+		if ( ! apply_filters( 'ocs_enable_frontend', (bool) $this->get_settings( 'enable_frontend' ) ) ) {
+			return;
+		}
 
 		$before_hook = $this->get_website_before_hook();
 		$after_hook  = $this->get_website_after_hook();
