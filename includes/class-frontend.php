@@ -44,6 +44,42 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	}
 
 	/**
+	 * Add default actions
+	 *
+	 * @since   0.1.0
+	 */
+	private function default_actions() {
+
+		$before_hook = $this->get_website_before_hook();
+		$after_hook  = $this->get_website_after_hook();
+
+		$before_prio = $this->get_settings( 'website_before_hook_priority' );
+		$after_prio  = $this->get_settings( 'website_after_hook_priority' );
+
+		if ( ! is_numeric( $before_prio ) ) {
+			$before_prio = 5; // Early addition.
+		}
+		if ( ! is_numeric( $after_prio ) ) {
+			$after_prio = 50; // Late addition.
+			if ( 'wp_footer' === $after_hook ) {
+				$after_prio = -50; // Early addition (before scripts).
+			}
+		}
+
+		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
+		$after_prio  = apply_filters( 'ocs_website_after_hook_priority', $after_prio );
+
+		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
+		add_action( $after_hook, array( $this, 'after_site' ), $after_prio );
+
+		/* EXPERIMENTAL */
+		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
+		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almost last addition.
+
+		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
+	}
+
+	/**
 	 * Add classes to the body
 	 *
 	 * @since   1.4.0
@@ -95,42 +131,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		return trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
-	}
-
-	/**
-	 * Add default actions
-	 *
-	 * @since   0.1.0
-	 */
-	private function default_actions() {
-
-		$before_hook = $this->get_website_before_hook();
-		$after_hook  = $this->get_website_after_hook();
-
-		$before_prio = $this->get_settings( 'website_before_hook_priority' );
-		$after_prio  = $this->get_settings( 'website_after_hook_priority' );
-
-		if ( ! is_numeric( $before_prio ) ) {
-			$before_prio = 5; // Early addition.
-		}
-		if ( ! is_numeric( $after_prio ) ) {
-			$after_prio = 50; // Late addition.
-			if ( 'wp_footer' === $after_hook ) {
-				$after_prio = -50; // Early addition (before scripts).
-			}
-		}
-
-		$before_prio = apply_filters( 'ocs_website_before_hook_priority', $before_prio );
-		$after_prio  = apply_filters( 'ocs_website_after_hook_priority', $after_prio );
-
-		add_action( $before_hook, array( $this, 'before_site' ), $before_prio );
-		add_action( $after_hook, array( $this, 'after_site' ), $after_prio );
-
-		/* EXPERIMENTAL */
-		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
-		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almost last addition.
-
-		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
 
 	/**
