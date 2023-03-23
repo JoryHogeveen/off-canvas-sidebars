@@ -37,18 +37,20 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	private function __construct() {
 
 		if ( $this->get_settings( 'enable_frontend' ) ) {
-			$this->default_actions();
+			add_action( 'init', array( $this, 'init' ) );  
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 	}
 
 	/**
-	 * Add default actions
+	 * Initialize frontend.
+	 * Add default actions.
 	 *
 	 * @since   0.1.0
+	 * @since   0.5.8  Renamed from `default_actions` and made public.
 	 */
-	private function default_actions() {
+	public function init() {
 
 		$before_hook = $this->get_website_before_hook();
 		$after_hook  = $this->get_website_after_hook();
