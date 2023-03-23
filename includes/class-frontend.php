@@ -41,8 +41,6 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
-
-		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
 
 	/**
@@ -131,6 +129,8 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
 		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almost last addition.
+
+		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
 
 	/**
