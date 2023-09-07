@@ -91,6 +91,17 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.5.8 =
+
+*	**New:** Filter `ocs_enable_frontend`, modify enable frontend setting.
+*	**New:** Filter `ocs_enable_assets`, can be used to disable frontend assets. #114 
+*	**New:** Filter `ocs_inline_styles`, modify the plugin inline styles.
+*	**Enhancement:** Improve adding inline styles.
+*	**Enhancement:** Add `rel="nofollow"` XFN attribute to link type element triggers. #116
+*	**Fix:** JS multiple events as string param.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/111)
+
 = 0.5.7.1 =
 
 *	**Fix:** Class concatenation bug. [#104](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/104) (Props: [Samuele Mancuso](https://github.com/AllWorkNoPlay-95))
