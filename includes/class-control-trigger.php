@@ -140,7 +140,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			}
 		}
 
-		// Fix link elements without XFN. See https://github.com/JoryHogeveen/off-canvas-sidebars/issues/116
+		// Fix link elements XFN. See https://github.com/JoryHogeveen/off-canvas-sidebars/issues/116
 		if ( in_array( $args['element'], self::$link_elements, true ) ) {
 			if ( empty( $args['attr']['rel'] ) ) {
 				$args['attr']['rel'] = 'nofollow';
