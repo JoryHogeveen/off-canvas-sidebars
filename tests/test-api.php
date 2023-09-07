@@ -117,12 +117,17 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 			),
 
 			/**
-			 * Link elements.
+			 * Link elements XFN.
 			 */
 
 			array(
 				'shortcode' => '[ocs_trigger id="left" text="test" element="a"]',
 				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="rel: me"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="me">test</a>',
 			),
 
 		);
