@@ -248,6 +248,7 @@ final class OCS_Off_Canvas_Sidebars_Menu_Meta_Box extends OCS_Off_Canvas_Sidebar
 
 			if ( off_canvas_sidebars_frontend()->is_sidebar_enabled( $sidebar_id ) ) {
 				$item->url = '';
+				$item->xfn = 'nofollow';
 
 				$link_classes = OCS_Off_Canvas_Sidebars_Control_Trigger::get_trigger_classes( $sidebar_id );
 
