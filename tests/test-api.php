@@ -116,6 +116,15 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 				'compare' => '<div class="ocs-trigger ocs-toggle ocs-toggle-left"><img src="http://your.domain/image.jpg" /></div>',
 			),
 
+			/**
+			 * Link elements.
+			 */
+
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
 		);
 
 		foreach ( $tests as $test ) {
