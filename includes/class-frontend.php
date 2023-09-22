@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.1.0
- * @version 0.5.7
+ * @version 0.5.8
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Base
@@ -32,80 +32,37 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Class constructor.
 	 * @since  0.3.0  Private constructor.
+	 * @since  0.5.8  Check if init hook is running or already done.
 	 * @access private
 	 */
 	private function __construct() {
-
-		if ( $this->get_settings( 'enable_frontend' ) ) {
-			$this->default_actions();
+		if ( did_action( 'init' ) || doing_action( 'init' ) ) {
+			$this->init();
+		} else {
+			add_action( 'init', array( $this, 'init' ) );
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
-		add_action( 'wp_head', array( $this, 'add_inline_styles' ) );
-
-		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
 	}
 
 	/**
-	 * Add classes to the body
-	 *
-	 * @since   1.4.0
-	 * @param   array  $classes
-	 * @return  array
-	 */
-	public function filter_body_class( $classes ) {
-		if ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ) {
-			$classes[] = 'ocs-legacy';
-		}
-		return $classes;
-	}
-
-	/**
-	 * Get the hook to open the website wrapper.
-	 *
-	 * @since  0.5.6
-	 * @return string
-	 */
-	public function get_website_before_hook() {
-		$before_hook = trim( $this->get_settings( 'website_before_hook' ) );
-
-		if ( empty( $before_hook ) ) {
-			if ( 'genesis' === get_template() ) {
-				$before_hook = 'genesis_before';
-			} else {
-				$before_hook = 'website_before';
-			}
-		}
-
-		return trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
-	}
-
-	/**
-	 * Get the hook to close the website wrapper.
-	 *
-	 * @since  0.5.6
-	 * @return string
-	 */
-	public function get_website_after_hook() {
-		$after_hook = trim( $this->get_settings( 'website_after_hook' ) );
-
-		if ( empty( $after_hook ) ) {
-			if ( 'genesis' === get_template() ) {
-				$after_hook = 'genesis_after';
-			} else {
-				$after_hook = 'website_after';
-			}
-		}
-
-		return trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
-	}
-
-	/**
-	 * Add default actions
+	 * Initialize frontend.
+	 * Add default actions.
 	 *
 	 * @since   0.1.0
+	 * @since   0.5.8  Renamed from `default_actions` and made public.
 	 */
-	private function default_actions() {
+	public function init() {
+		/**
+		 * Enable or disable frontend rendering.
+		 *
+		 * @since 0.5.8
+		 *
+		 * @param  bool  $enabled  Whether to enable frontend.
+		 */
+		if ( ! apply_filters( 'ocs_enable_frontend', (bool) $this->get_settings( 'enable_frontend' ) ) ) {
+			return;
+		}
 
 		$before_hook = $this->get_website_before_hook();
 		$after_hook  = $this->get_website_after_hook();
@@ -132,6 +89,64 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 		/* EXPERIMENTAL */
 		//add_action( 'wp_footer', array( $this, 'after_site' ), 0 ); // enforce first addition.
 		//add_action( 'wp_footer', array( $this, 'after_site_script' ), 99999 ); // enforce almost last addition.
+
+		add_filter( 'body_class', array( $this, 'filter_body_class' ) );
+	}
+
+	/**
+	 * Add classes to the body
+	 *
+	 * @since   1.4.0
+	 * @param   array  $classes
+	 * @return  array
+	 */
+	public function filter_body_class( $classes ) {
+		if ( 'legacy-css' === $this->get_settings( 'compatibility_position_fixed' ) ) {
+			$classes[] = 'ocs-legacy';
+		}
+		return $classes;
+	}
+
+	/**
+	 * Get the hook to open the website wrapper.
+	 *
+	 * @since  0.5.6
+	 * @since  0.5.8  Set default to wp_body_open instead of website_before.
+	 * @return string
+	 */
+	public function get_website_before_hook() {
+		$before_hook = trim( $this->get_settings( 'website_before_hook' ) );
+
+		if ( empty( $before_hook ) ) {
+			if ( 'genesis' === get_template() ) {
+				$before_hook = 'genesis_before';
+			} else {
+				$before_hook = 'wp_body_open';
+			}
+		}
+
+		return trim( apply_filters( 'ocs_website_before_hook', $before_hook ) );
+	}
+
+	/**
+	 * Get the hook to close the website wrapper.
+	 *
+	 * @since  0.5.6
+	 * @since  0.5.8  Set default to wp_footer instead of website_after.
+	 * @return string
+	 */
+	public function get_website_after_hook() {
+		$after_hook = trim( $this->get_settings( 'website_after_hook' ) );
+
+		if ( empty( $after_hook ) ) {
+			if ( 'genesis' === get_template() ) {
+				$after_hook = 'genesis_after';
+			} else {
+				$after_hook = 'wp_footer';
+			}
+		}
+
+		return trim( apply_filters( 'ocs_website_after_hook', $after_hook ) );
 	}
 
 	/**
@@ -531,6 +546,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * @since   0.2.2  Add FastClick library.
 	 */
 	public function add_styles_scripts() {
+		/**
+		 * Enable or disable frontend assets.
+		 *
+		 * @since 0.5.8
+		 *
+		 * @param  bool  $enabled  Whether to enable frontend.
+		 */
+		if ( ! apply_filters( 'ocs_enable_assets', true ) ) {
+			return;
+		}
 
 		// @todo Validate and use minified files
 		$suffix  = '';//defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
@@ -567,22 +592,22 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 				'_debug'               => (bool) ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			)
 		);
+
+		wp_add_inline_style( 'off-canvas-sidebars', $this->get_inline_styles() );
 	}
 
 	/**
-	 * Add inline styles.
+	 * Get inline styles.
 	 *
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @todo Refactor to enable above checks?
 	 *
-	 * @since   0.1.0
+	 * @since   0.1.0  Added as output method `add_inline_styles` in `wp_head` action.
+	 * @since   0.5.8  Refactored and renamed to a getter method.
+	 * @return  string
 	 */
-	public function add_inline_styles() {
-		if ( is_admin() ) {
-			return;
-		}
-
+	public function get_inline_styles() {
 		$prefix = $this->get_settings( 'css_prefix' );
 		$css    = '';
 
@@ -635,9 +660,19 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			}
 		} // End foreach().
 
-		if ( $css ) {
-			echo '<style type="text/css">' . $css . '</style>';
-		}
+		/**
+		 * Modify the inline styles.
+		 *
+		 * @since 0.5.8
+		 *
+		 * @param  string  $css     The rendered inline styles.
+		 * @param  string  $prefix  The CSS prefix.
+		 *
+		 * @return string
+		 */
+		$css = apply_filters( 'ocs_inline_styles', $css, $prefix );
+
+		return $css;
 	}
 
 	/**

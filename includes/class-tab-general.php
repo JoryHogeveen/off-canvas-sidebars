@@ -175,8 +175,8 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 		$theme_hooks_wiki = esc_html__( 'Click here for a list of currently known compatible theme hooks', OCS_DOMAIN );
 		$theme_hooks_wiki = '<a href="https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Compatible-theme-hooks" target="_blank" rel="noopener noreferrer">' . $theme_hooks_wiki . '</a>';
 
-		$before_hook = 'website_before';
-		$after_hook  = 'website_after';
+		$before_hook = 'wp_body_open';
+		$after_hook  = 'wp_footer';
 		if ( 'genesis' === get_template() ) {
 			$before_hook = 'genesis_before';
 			$after_hook  = 'genesis_after';

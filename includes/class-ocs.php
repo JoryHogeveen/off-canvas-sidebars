@@ -554,6 +554,19 @@ final class OCS_Off_Canvas_Sidebars
 					$settings['compatibility_position_fixed'] = 'custom-js';
 				}
 			}
+
+			// Upgrade to 0.5.8
+			if ( version_compare( $db_version, '0.5.8', '<' ) ) {
+				// Set default values pre-0.5.8 to prevent breaking backwards compatibility.
+				if ( 'genesis' !== get_template() ) {
+					if ( empty( $settings['website_before_hook'] ) ) {
+						$settings['website_before_hook'] = 'website_before';
+					}
+					if ( empty( $settings['website_after_hook'] ) ) {
+						$settings['website_after_hook'] = 'website_after';
+					}
+				}
+			}
 		}
 
 		$settings['db_version'] = $this->db_version;

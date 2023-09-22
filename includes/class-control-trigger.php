@@ -68,6 +68,19 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	);
 
 	/**
+	 * HTML elements that are rendered considered link elements.
+	 * @link   https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel
+	 * @since  0.5.8
+	 * @var    array
+	 */
+	public static $link_elements = array(
+		'a',
+		'area',
+		'form',
+		'link',
+	);
+
+	/**
 	 * Do not allow this class to be instantiated.
 	 */
 	private function __construct() { }
@@ -124,6 +137,13 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 			}
 			if ( 'input' === $args['element'] && empty( $args['attr']['value'] ) ) {
 				$args['attr']['value'] = $args['text'];
+			}
+		}
+
+		// Fix link elements XFN. See https://github.com/JoryHogeveen/off-canvas-sidebars/issues/116
+		if ( in_array( $args['element'], self::$link_elements, true ) ) {
+			if ( empty( $args['attr']['rel'] ) ) {
+				$args['attr']['rel'] = 'nofollow';
 			}
 		}
 
