@@ -94,10 +94,12 @@ For more advanced customisations either:
 = 0.5.8 =
 
 *	**New:** Filter `ocs_enable_frontend`, modify enable frontend setting.
-*	**New:** Filter `ocs_enable_assets`, can be used to disable frontend assets. #114 
+*	**New:** Filter `ocs_enable_assets`, can be used to disable frontend assets. [#114](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/114)
 *	**New:** Filter `ocs_inline_styles`, modify the plugin inline styles.
+*	**Enhancement:** Improve init handler for frontend.
+*	**Enhancement:** Changed the default hooks for easier onboarding as the WP core hooks are now supported by most themes.
 *	**Enhancement:** Improve adding inline styles.
-*	**Enhancement:** Add `rel="nofollow"` XFN attribute to link type element triggers. #116
+*	**Enhancement:** Add `rel="nofollow"` XFN attribute to link type element triggers. [#116](https://github.com/JoryHogeveen/off-canvas-sidebars/issues/116)
 *	**Fix:** JS multiple events as string param.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/111)
