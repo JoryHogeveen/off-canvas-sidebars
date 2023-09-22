@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.6
- * @version 0.5.7
+ * @version 0.5.8
  * @global  ocsNavControl
  * @preserve
  */
@@ -14,8 +14,8 @@
 if ( 'undefined' === typeof ocsSetupValidate ) {
 	var ocsSetupValidate = {
 		messages: {
-			error_website_before: '<code>website_before</code> hook is not correct.',
-			error_website_after: '<code>website_after</code> hook is not correct.',
+			error_website_before: '<code>wp_body_open</code> hook is not correct.',
+			error_website_after: '<code>wp_footer</code> hook is not correct.',
 			error_canvas_child: 'Website canvas container is not a direct child of the HTML body tag.',
 			error_canvas_empty: 'Website canvas container is empty.',
 			error_sidebars_child: 'Off-Canvas Sidebars are not direct children of the HTML body tag.',
