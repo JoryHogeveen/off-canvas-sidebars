@@ -32,10 +32,16 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	/**
 	 * Class constructor.
 	 * @since  0.3.0  Private constructor.
+	 * @since  0.5.8  Check if init hook is running or already done.
 	 * @access private
 	 */
 	private function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
+		if ( did_action( 'init' ) || doing_action( 'init' ) ) {
+			$this->init();
+		} else {
+			add_action( 'init', array( $this, 'init' ) );
+		}
+
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_scripts' ) );
 	}
 
