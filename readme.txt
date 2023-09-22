@@ -55,7 +55,7 @@ Or search for "Off-Canvas Sidebars" via your plugins menu.
 
 = Theme Setup =
 
-Off-Canvas Sidebars won't work "out of the box" with most themes, please read the documentation!
+Off-Canvas Sidebars might not work "out of the box" with some themes, please read the documentation!
 [Click here for theme setup documentation.](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/Theme-setup)
 
 == Frequently Asked Questions ==
