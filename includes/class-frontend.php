@@ -105,6 +105,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the hook to open the website wrapper.
 	 *
 	 * @since  0.5.6
+	 * @since  0.5.8  Set default to wp_body_open instead of website_before.
 	 * @return string
 	 */
 	public function get_website_before_hook() {
@@ -114,7 +115,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			if ( 'genesis' === get_template() ) {
 				$before_hook = 'genesis_before';
 			} else {
-				$before_hook = 'website_before';
+				$before_hook = 'wp_body_open';
 			}
 		}
 
@@ -125,6 +126,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 	 * Get the hook to close the website wrapper.
 	 *
 	 * @since  0.5.6
+	 * @since  0.5.8  Set default to wp_footer instead of website_after.
 	 * @return string
 	 */
 	public function get_website_after_hook() {
@@ -134,7 +136,7 @@ final class OCS_Off_Canvas_Sidebars_Frontend extends OCS_Off_Canvas_Sidebars_Bas
 			if ( 'genesis' === get_template() ) {
 				$after_hook = 'genesis_after';
 			} else {
-				$after_hook = 'website_after';
+				$after_hook = 'wp_footer';
 			}
 		}
 
