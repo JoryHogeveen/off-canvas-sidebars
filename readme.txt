@@ -94,6 +94,7 @@ For more advanced customisations either:
 = 0.5.8.1 =
 
 *	**Fix:** Incomplete merge of JS code.
+*	**Enhancement:** Link close option is now opt-in.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/117)
 
