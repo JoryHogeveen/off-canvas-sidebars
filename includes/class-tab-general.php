@@ -319,7 +319,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_General extends OCS_Off_Canvas_Sidebars_
 			'type'        => 'checkbox',
 			'section'     => $section,
 			'label'       => esc_html__( 'Enable', OCS_DOMAIN ) . '.',
-			'description' => esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'enabled', OCS_DOMAIN ) . '.',
+			'description' => esc_html__( 'Default', OCS_DOMAIN ) . ': ' . esc_html__( 'disabled', OCS_DOMAIN ) . '.',
 		);
 
 		$fields['disable_over'] = array(

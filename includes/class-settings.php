@@ -49,7 +49,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		'late_init'                     => 0,
 		'frontend_type'                 => 'action',
 		'site_close'                    => 1,
-		'link_close'                    => 1,
+		'link_close'                    => 0,
 		'disable_over'                  => '',
 		'hide_control_classes'          => 0,
 		'scroll_lock'                   => 0,
@@ -88,7 +88,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		// Global overwrites.
 		'overwrite_global_settings' => 0,
 		'site_close'                => 1,
-		'link_close'                => 1,
+		'link_close'                => 0,
 		'disable_over'              => '',
 		'hide_control_classes'      => 0,
 		'scroll_lock'               => 0,

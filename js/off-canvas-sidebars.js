@@ -5,7 +5,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.2.0
- * @version 0.5.8
+ * @version 0.5.8.1
  * @global  ocsOffCanvasSidebars
  * @preserve
  */
@@ -398,6 +398,8 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	 * @return {boolean} Success
 	 */
 	ocsOffCanvasSidebars.initEvents = function() {
+		var controller = ocsOffCanvasSidebars.slidebarsController,
+			prefix     = ocsOffCanvasSidebars.css_prefix;
 
 		/**
 		 * Sidebar opening actions.
