@@ -124,7 +124,10 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		$args['element'] = strtolower( $args['element'] );
 		$args['attr']    = off_canvas_sidebars_parse_attr_string( $args['attr'] );
 
-		if ( in_array( $args['element'], self::$unsupported_elements, true ) ) {
+		if (
+			in_array( $args['element'], self::$unsupported_elements, true )
+			|| ! preg_match( '/^[\w]*$/', $args['element'] )
+		) {
 			return '<span class="error">' . esc_html__( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
 		}
 
