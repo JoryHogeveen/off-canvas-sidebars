@@ -93,8 +93,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	 * @todo Refactor to enable above checks?
 	 *
 	 * @since   0.4.0
-	 * @since   0.5.0  Add icon options.
-	 * @since   0.5.1  Moved to this class and renamed from `do_control_trigger()`.
+	 * @since   0.5.0    Add icon options.
+	 * @since   0.5.1    Moved to this class and renamed from `do_control_trigger()`.
+	 * @since   0.5.8.2  Added escaping for passed attributes.
 	 * @static
 	 *
 	 * @param   string  $sidebar_id  Required.
