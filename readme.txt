@@ -91,6 +91,12 @@ For more advanced customisations either:
 
 == Changelog ==
 
+= 0.5.8.2 =
+
+*	**Hotfix:** Security fix (contributor+ users only).
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/119)
+
 = 0.5.8.1 =
 
 *	**Fix:** Incomplete merge of JS code.
