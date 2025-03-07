@@ -716,7 +716,7 @@ if ( 'undefined' === typeof ocsOffCanvasSidebars ) {
 	};
 
 	if ( ocsOffCanvasSidebars.late_init ) {
-		$window.load( ocsOffCanvasSidebars.init );
+		$window.on( 'load', ocsOffCanvasSidebars.init );
 	} else {
 		ocsOffCanvasSidebars.init();
 	}
