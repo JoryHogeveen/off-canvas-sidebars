@@ -122,6 +122,18 @@ function shortcode_ocs_trigger( $atts, $content = '' ) {
 	}
 	unset( $atts['classes'] );
 
+	// @since 0.5.8.3
+	if ( ! empty( $atts['attr'] ) ) {
+		if ( false !== strpbrk( $atts['attr'], '<>(){}="\'`' ) ) {
+			$atts['attr'] = 'data-warning:invalid-characters';
+		}
+	}
+	if ( ! empty( $atts['class'] ) ) {
+		if ( false !== strpbrk( $atts['class'], '<>(){}="\'`' ) ) {
+			$atts['class'] = 'data-warning:invalid-characters';
+		}
+	}
+
 	return the_ocs_control_trigger( $atts, $content );
 }
 add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
@@ -148,6 +160,7 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 			}
 		}
 	}
+
 	return wp_parse_args( $args, $defaults );
 }
 
