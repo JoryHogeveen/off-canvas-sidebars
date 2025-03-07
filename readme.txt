@@ -5,7 +5,7 @@ Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobi
 Requires at least: 4.1
 Tested up to: 6.7
 Requires PHP: 5.2.4
-Stable tag: 0.5.8.2
+Stable tag: 0.5.8.8
 
 Add off-canvas sidebars (Slidebars) containing widgets, menus or other content using the Slidebars jQuery plugin.
 
@@ -90,6 +90,12 @@ For more advanced customisations either:
 9. Sidebar top (Push effect) -> image from Slidebars website
 
 == Changelog ==
+
+= 0.5.8.3 =
+
+*	**Hotfix:** Security fix (registered users with edit capabilities only).
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/121)
 
 = 0.5.8.2 =
 
