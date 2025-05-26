@@ -249,10 +249,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Off-Canvas Sidebars', OCS_DOMAIN ); ?></h1>
 		<?php $this->plugin_options_tabs(); ?>
-		<div class="<?php echo $this->plugin_key; ?> container">
+		<div class="<?php esc_attr_e( $this->plugin_key ); ?> container">
 
 			<?php $form_action = apply_filters( 'ocs_page_form_action', 'options.php' ); ?>
-			<form id="<?php echo $this->general_key; ?>" method="post" action="<?php echo $form_action; ?>" enctype="multipart/form-data">
+			<form id="<?php esc_attr_e( $this->general_key ); ?>" method="post" action="<?php esc_attr_e( $form_action ); ?>" enctype="multipart/form-data">
 
 				<?php settings_errors(); ?>
 
@@ -260,7 +260,7 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 				<p class="alignright"><?php submit_button( null, 'primary', 'submit', false ); ?></p>
 				<?php } ?>
 
-				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php echo $this->tab; ?>" />
+				<input id="ocs_tab" type="hidden" name="ocs_tab" value="<?php esc_attr_e( $this->tab ); ?>" />
 
 				<?php do_action( 'ocs_page_form_before' ); ?>
 
