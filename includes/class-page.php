@@ -67,10 +67,10 @@ final class OCS_Off_Canvas_Sidebars_Page extends OCS_Off_Canvas_Sidebars_Base
 	private function __construct() {
 		// @codingStandardsIgnoreStart
 		if ( isset( $_POST['ocs_tab'] ) ) {
-			$this->set_request_tab( $_POST['ocs_tab'] );
+			$this->set_request_tab( sanitize_title_with_dashes( $_POST['ocs_tab'] ) );
 		}
 		if ( isset( $_GET['tab'] ) ) {
-			$this->set_current_tab( $_GET['tab'] );
+			$this->set_current_tab( sanitize_title_with_dashes( $_GET['tab'] ) );
 		}
 		// @codingStandardsIgnoreEnd
 		$this->plugin_key  = off_canvas_sidebars()->get_plugin_key();
