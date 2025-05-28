@@ -77,6 +77,10 @@ For more advanced customisations either:
 1. Edit your theme style.css file (usually located in `/wp-content/themes/YOURTHEME/`).
 2. Use a plugin such as [Simple Custom CSS](https://wordpress.org/plugins/simple-custom-css/).
 
+= 4. How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/9e5fbeb1-a7c9-4a57-98f4-56884d46307d)
+
 == Screenshots ==
 
 1. Settings page
