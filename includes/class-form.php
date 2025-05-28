@@ -559,17 +559,18 @@ abstract class OCS_Off_Canvas_Sidebars_Form extends OCS_Off_Canvas_Sidebars_Base
 	 */
 	public static function get_option_prefixes( $args ) {
 		$settings = off_canvas_sidebars()->get_settings();
-		$key      = off_canvas_sidebars()->get_general_key();
+		$key      = esc_attr( off_canvas_sidebars()->get_general_key() );
 		if ( isset( $args['sidebar'] ) ) {
-			$prefix_name    = esc_attr( $key ) . '[sidebars][' . $args['sidebar'] . ']';
-			$prefix_value   = off_canvas_sidebars()->get_sidebars( $args['sidebar'] );
-			$prefix_id      = $key . '_sidebars_' . $args['sidebar'];
+			$sidebar        = esc_attr( $args['sidebar'] );
+			$prefix_name    = $key . '[sidebars][' . $sidebar . ']';
+			$prefix_value   = off_canvas_sidebars()->get_sidebars( $sidebar );
+			$prefix_id      = $key . '_sidebars_' . $sidebar;
 			$prefix_classes = array(
-				$key . '_sidebars_' . $args['sidebar'],
+				$key . '_sidebars_' . $sidebar,
 				$key . '_sidebars',
 			);
 		} else {
-			$prefix_name    = esc_attr( $key );
+			$prefix_name    = $key;
 			$prefix_value   = $settings;
 			$prefix_id      = $key;
 			$prefix_classes = array(
