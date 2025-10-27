@@ -95,9 +95,63 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		<p>
 			<input type="hidden" name="<?php echo $this->nonce_import ?>" value="<?php echo wp_create_nonce( $this->nonce_import ) ?>" />
 			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo $plugin_key; ?>-import" value="true" />
-			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-submit', false ); ?>
+			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-import-submit', false ); ?>
 			<input type="file" name="<?php echo $plugin_key; ?>-import-file" id="<?php echo $plugin_key; ?>-import-file" />
 		</p>
+		<p>
+			<textarea name="<?php echo esc_attr( $plugin_key . '-import-contents' ); ?>" id="<?php echo esc_attr( $plugin_key . '-import-contents' ); ?>" class="widefat" placeholder="[START=OCS SETTINGS]"></textarea>
+		</p>
+		<script id="<?php echo $plugin_key ?>-import-contents">
+			(function(){
+				const fileInput = document.getElementById('<?php echo $plugin_key; ?>-import-file');
+				const textarea = document.getElementById('<?php echo $plugin_key; ?>-import-contents');
+				const submitBtn = document.getElementById('<?php echo $plugin_key; ?>-import-submit');
+
+				const MAX_BYTES = 1024 * 1024; // 200 KB (adjust to your safe limit)
+
+				submitBtn.disabled = true;
+				fileInput.addEventListener('change', function(e) {
+					const file = this.files && this.files[0];
+					if (!file) {
+						textarea.value = '';
+						submitBtn.disabled = true;
+						return;
+					}
+
+					if (file.size > MAX_BYTES) {
+						alert('File is too large. Maximum is ' + (MAX_BYTES/1024) + ' KB.');
+						this.value = ''; // reset file input
+						textarea.value = '';
+						submitBtn.disabled = true;
+						return;
+					}
+
+					const reader = new FileReader();
+					reader.onload = function(evt) {
+						console.log( evt.target.result );
+						if ( evt.target.result.startsWith( '[START=OCS SETTINGS]' ) ) {
+							// evt.target.result is a string (UTF-8)
+							textarea.value = evt.target.result;
+							submitBtn.disabled = false;
+						} else {
+							alert('Invalid import file.');
+							textarea.value = '';
+							submitBtn.disabled = true;
+						}
+						fileInput.value = '';
+					};
+					reader.onerror = function() {
+						alert('Failed to read file.');
+						textarea.value = '';
+						submitBtn.disabled = true;
+					};
+
+					// read as text (UTF-8)
+					reader.readAsText(file, 'UTF-8');
+				});
+			})();
+		</script>
+
 		<?php
 	}
 
@@ -144,11 +198,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 					break;
 				case 2:
 					$result_class = 'error';
-					$ocs_import_result = esc_html__( 'Invalid Settings File', OCS_DOMAIN );
-					break;
-				case 3:
-					$result_class = 'error';
-					$ocs_import_result = esc_html__( 'No Settings File Selected', OCS_DOMAIN );
+					$ocs_import_result = esc_html__( 'Invalid Settings format', OCS_DOMAIN );
 					break;
 			}
 
@@ -173,7 +223,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		}
 
 		// Import settings.
-		if ( ! empty( $post[ $plugin_key . '-import' ] ) && ! empty( $_FILES[ $plugin_key . '-import-file' ] ) ) {
+		if ( ! empty( $post[ $plugin_key . '-import' ] ) && ! empty( $post[ $plugin_key . '-import-contents' ] ) ) {
 
 			// Verify nonce.
 			if ( empty( $post[ $this->nonce_import ] ) || ! wp_verify_nonce( $post[ $this->nonce_import ], $this->nonce_import ) ) {
@@ -181,39 +231,34 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 				return;
 			}
 
-			if ( $_FILES[ $plugin_key . '-import-file' ]['tmp_name'] ) {
+			$import = array_map( 'trim', explode( "\n", $post[ $plugin_key . '-import-contents' ] ) );
 
-				// @codingStandardsIgnoreLine
-				$import = explode( "\n", file_get_contents( $_FILES[ $plugin_key . '-import-file' ]['tmp_name'] ) );
-				if ( "[START=OCS SETTINGS]" === array_shift( $import ) && "[STOP=OCS SETTINGS]" === array_pop( $import ) ) {
+			if ( "[START=OCS SETTINGS]" === array_shift( $import ) && "[STOP=OCS SETTINGS]" === array_pop( $import ) ) {
 
-					$settings = array();
-					foreach ( $import as $import_option ) {
-						list( $key, $value ) = explode( "\t", $import_option );
-						$settings[ $key ] = json_decode( $value, true );
-					}
-
-					$ocs_settings = off_canvas_sidebars_settings();
-
-					// Get the current settings.
-					$org_settings = $ocs_settings->get_settings();
-
-					// Validate and store the new settings.
-					$ocs_settings->set_settings( $settings );
-					$settings = $ocs_settings->get_settings();
-
-					// Combine the new settings with the original settings.
-					$settings = array_merge( $org_settings, $settings );
-
-					// Update database.
-					$ocs_settings->update_settings( $settings );
-
-					$ocs_import_result = 1;
-				} else {
-					$ocs_import_result = 2;
+				$settings = array();
+				foreach ( $import as $import_option ) {
+					list( $key, $value ) = explode( "\t", $import_option );
+					$settings[ $key ] = json_decode( $value, true );
 				}
+
+				$ocs_settings = off_canvas_sidebars_settings();
+
+				// Get the current settings.
+				$org_settings = $ocs_settings->get_settings();
+
+				// Validate and store the new settings.
+				$ocs_settings->set_settings( $settings );
+				$settings = $ocs_settings->get_settings();
+
+				// Combine the new settings with the original settings.
+				$settings = array_merge( $org_settings, $settings );
+
+				// Update database.
+				$ocs_settings->update_settings( $settings );
+
+				$ocs_import_result = 1;
 			} else {
-				$ocs_import_result = 3;
+				$ocs_import_result = 2;
 			}
 
 			wp_redirect( admin_url( '/themes.php?page=' . $plugin_key . '&tab=' . $this->tab . '&ocs_import_result=' . esc_attr( $ocs_import_result ) ) );
