@@ -31,10 +31,9 @@ class OCS_Settings_UnitTest extends WP_UnitTestCase {
 			$defaults,
 			$settings->validate_form(
 				array(
-					// These fields are on by default so will generate differences on save (checkboxes).
+					// These fields are on by default, so will generate no differences on save (checkboxes).
 					'enable_frontend' => 1,
 					'site_close'      => 1,
-					'link_close'      => 1,
 				)
 			)
 		);
