@@ -93,7 +93,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 			</a>
 		</p>
 		<p>
-			<input type="hidden" name="<?php echo $this->nonce_import ?>" value="<?php echo wp_create_nonce( OCS_DOMAIN ) ?>" />
+			<input type="hidden" name="<?php echo $this->nonce_import ?>" value="<?php echo wp_create_nonce( $this->nonce_import ) ?>" />
 			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo $plugin_key; ?>-import" value="true" />
 			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-submit', false ); ?>
 			<input type="file" name="<?php echo $plugin_key; ?>-import-file" id="<?php echo $plugin_key; ?>-import-file" />
@@ -176,7 +176,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		if ( ! empty( $post[ $plugin_key . '-import' ] ) && ! empty( $_FILES[ $plugin_key . '-import-file' ] ) ) {
 
 			// Verify nonce.
-			if ( empty( $post[ $this->nonce_import ] ) || ! wp_verify_nonce( $post[ $this->nonce_import ], OCS_DOMAIN ) ) {
+			if ( empty( $post[ $this->nonce_import ] ) || ! wp_verify_nonce( $post[ $this->nonce_import ], $this->nonce_import ) ) {
 				echo '<div class="error"><p>' . __( 'Invalid request', OCS_DOMAIN ) . '</p></div>';
 				return;
 			}
