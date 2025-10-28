@@ -104,15 +104,15 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		</p>
 		<script id="<?php echo $plugin_key ?>-import-contents">
 			(function(){
-				const fileInput = document.getElementById('<?php echo $plugin_key; ?>-import-file');
-				const textarea = document.getElementById('<?php echo $plugin_key; ?>-import-contents');
-				const submitBtn = document.getElementById('<?php echo $plugin_key; ?>-import-submit');
+				var fileInput = document.getElementById('<?php echo $plugin_key; ?>-import-file');
+				var textarea = document.getElementById('<?php echo $plugin_key; ?>-import-contents');
+				var submitBtn = document.getElementById('<?php echo $plugin_key; ?>-import-submit');
 
-				const MAX_BYTES = 1024 * 1024; // 200 KB (adjust to your safe limit)
+				var MAX_BYTES = 1048576; // 1 MB
 
 				submitBtn.disabled = true;
 				fileInput.addEventListener('change', function(e) {
-					const file = this.files && this.files[0];
+					var file = this.files && this.files[0];
 					if (!file) {
 						textarea.value = '';
 						submitBtn.disabled = true;
@@ -127,7 +127,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 						return;
 					}
 
-					const reader = new FileReader();
+					var reader = new FileReader();
 					reader.onload = function(evt) {
 						console.log( evt.target.result );
 						if ( evt.target.result.startsWith( '[START=OCS SETTINGS]' ) ) {
@@ -147,7 +147,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 						submitBtn.disabled = true;
 					};
 
-					// read as text (UTF-8)
+					// read as text (UTF-8) >> evt.target.result
 					reader.readAsText(file, 'UTF-8');
 				});
 			})();
