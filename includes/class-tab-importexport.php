@@ -85,7 +85,7 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 	 */
 	public function tab_content() {
 		$export_link = add_query_arg( 'action', 'export' );
-		$plugin_key  = esc_attr( off_canvas_sidebars()->get_plugin_key() );
+		$ns          = esc_attr( off_canvas_sidebars()->get_plugin_key() );
 		?>
 		<h3><?php esc_html_e( 'Import/Export Settings', OCS_DOMAIN ); ?></h3>
 		<p>
@@ -95,18 +95,18 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		</p>
 		<p>
 			<input type="hidden" name="<?php echo $this->nonce_import ?>" value="<?php echo wp_create_nonce( $this->nonce_import ) ?>" />
-			<input type="hidden" name="<?php echo $plugin_key; ?>-import" id="<?php echo $plugin_key; ?>-import" value="true" />
-			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $plugin_key . '-import-submit', false ); ?>
-			<input type="file" name="<?php echo $plugin_key; ?>-import-file" id="<?php echo $plugin_key; ?>-import-file" />
+			<input type="hidden" name="<?php echo $ns; ?>-import" id="<?php echo $ns; ?>-import" value="true" />
+			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $ns . '-import-submit', false ); ?>
+			<input type="file" name="<?php echo $ns; ?>-import-file" id="<?php echo $ns; ?>-import-file" />
 		</p>
 		<p>
-			<textarea name="<?php echo esc_attr( $plugin_key . '-import-contents' ); ?>" id="<?php echo esc_attr( $plugin_key . '-import-contents' ); ?>" class="widefat" placeholder="[START=OCS SETTINGS]"></textarea>
+			<textarea name="<?php echo $ns ?>-import-contents" id="<?php echo $ns; ?>-import-contents" class="widefat" placeholder="[START=OCS SETTINGS]"></textarea>
 		</p>
-		<script id="<?php echo $plugin_key ?>-import-contents">
+		<script id="<?php echo $ns ?>-import-contents">
 			(function(){
-				var fileInput = document.getElementById('<?php echo $plugin_key; ?>-import-file');
-				var textarea = document.getElementById('<?php echo $plugin_key; ?>-import-contents');
-				var submitBtn = document.getElementById('<?php echo $plugin_key; ?>-import-submit');
+				var fileInput = document.getElementById('<?php echo $ns; ?>-import-file');
+				var textarea = document.getElementById('<?php echo $ns; ?>-import-contents');
+				var submitBtn = document.getElementById('<?php echo $ns; ?>-import-submit');
 
 				var MAX_BYTES = 1048576; // 1 MB
 
