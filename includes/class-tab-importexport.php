@@ -89,24 +89,24 @@ final class OCS_Off_Canvas_Sidebars_Tab_Importexport extends OCS_Off_Canvas_Side
 		?>
 		<h3><?php esc_html_e( 'Import/Export Settings', OCS_DOMAIN ); ?></h3>
 		<p>
-			<a class="submit button" href="<?php echo esc_attr( $export_link ); ?>">
+			<a class="submit button" href="<?= esc_attr( $export_link ); ?>">
 				<?php esc_attr_e( 'Export Settings', OCS_DOMAIN ); ?>
 			</a>
 		</p>
 		<p>
-			<input type="hidden" name="<?php echo $this->nonce_import ?>" value="<?php echo wp_create_nonce( $this->nonce_import ) ?>" />
-			<input type="hidden" name="<?php echo $ns; ?>-import" id="<?php echo $ns; ?>-import" value="true" />
+			<input type="hidden" name="<?= $this->nonce_import ?>" value="<?= wp_create_nonce( $this->nonce_import ) ?>" />
+			<input type="hidden" name="<?= $ns; ?>-import" id="<?= $ns; ?>-import" value="true" />
 			<?php submit_button( esc_html__( 'Import Settings', OCS_DOMAIN ), 'button', $ns . '-import-submit', false ); ?>
-			<input type="file" name="<?php echo $ns; ?>-import-file" id="<?php echo $ns; ?>-import-file" />
+			<input type="file" name="<?= $ns; ?>-import-file" id="<?= $ns; ?>-import-file" />
 		</p>
 		<p>
-			<textarea name="<?php echo $ns ?>-import-contents" id="<?php echo $ns; ?>-import-contents" class="widefat" placeholder="[START=OCS SETTINGS]"></textarea>
+			<textarea name="<?= $ns ?>-import-contents" id="<?= $ns; ?>-import-contents" class="widefat" placeholder="[START=OCS SETTINGS]"></textarea>
 		</p>
-		<script id="<?php echo $ns ?>-import-contents">
+		<script id="<?= $ns ?>-import-contents">
 			(function(){
-				var fileInput = document.getElementById('<?php echo $ns; ?>-import-file');
-				var textarea = document.getElementById('<?php echo $ns; ?>-import-contents');
-				var submitBtn = document.getElementById('<?php echo $ns; ?>-import-submit');
+				var fileInput = document.getElementById('<?= $ns; ?>-import-file');
+				var textarea = document.getElementById('<?= $ns; ?>-import-contents');
+				var submitBtn = document.getElementById('<?= $ns; ?>-import-submit');
 
 				var MAX_BYTES = 1048576; // 1 MB
 
