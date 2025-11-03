@@ -101,6 +101,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 *	**Fix:** Only trigger import/export tab handlers on init.
 *	**Security:** Proper import nonce validation.
 
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/123)
+
 = 0.5.8.5 =
 
 *	**Hotfix:** Security fix (administrators only).
