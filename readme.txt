@@ -95,6 +95,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 0.5.9 =
+
+*	**Enhancement:** Refactor settings import to use textarea input.
+*	**Fix:** Only trigger import/export tab handlers on init.
+*	**Security:** Proper import nonce validation.
+
 = 0.5.8.5 =
 
 *	**Hotfix:** Security fix (administrators only).
