@@ -62,6 +62,7 @@ final class OCS_Off_Canvas_Sidebars_Settings extends OCS_Off_Canvas_Sidebars_Bas
 		'use_fastclick'                 => 0,
 		'compatibility_position_fixed'  => 'none',
 		'wp_editor_shortcode_rendering' => 0,
+		'gutenberg_control_block'       => 0,
 		'css_prefix'                    => 'ocs',
 		'sidebars'                      => array(),
 	);

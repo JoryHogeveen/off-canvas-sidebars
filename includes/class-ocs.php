@@ -106,6 +106,7 @@ final class OCS_Off_Canvas_Sidebars
 		'Menu_Meta_Box'    => 'includes/class-menu-meta-box.php',
 		'Mce_Shortcode'    => 'tinymce/class-mce-shortcode.php',
 		'Control_Widget'   => 'widgets/control-widget.php',
+		'Control_Block'    => 'block/class-control-block.php',
 	);
 
 	/**
@@ -140,6 +141,11 @@ final class OCS_Off_Canvas_Sidebars
 
 			// Load menu-meta-box option.
 			OCS_Off_Canvas_Sidebars_Menu_Meta_Box::get_instance();
+
+			if ( $this->get_settings( 'gutenberg_control_block' ) ) {
+				// Register Gutenberg block.
+				OCS_Off_Canvas_Sidebars_Control_Block::get_instance();
+			}
 
 		} else {
 
