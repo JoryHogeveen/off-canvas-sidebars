@@ -156,9 +156,41 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 			if ( count( $attr[ $key ] ) > 0 ) {
 				$attribute = trim( $attr[ $key ][0] );
 				unset( $attr[ $key ][0] );
-				$args[ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
+				$value = trim( implode( ':', $attr[ $key ] ) );
+				$args[ $attribute ] = $value;
 			}
 		}
+	}
+
+	// Validate and sanitize attribute names and values.
+	$sanitized = array();
+	if ( is_array( $args ) ) {
+		$allowed_attr_names = apply_filters( 'ocs_trigger_allowed_attr_names', null );
+
+		foreach ( $args as $name => $value ) {
+			$name_lower = strtolower( $name );
+			if ( is_array( $value ) ) {
+				$value = implode( ' ', $value );
+			}
+			if ( is_array( $allowed_attr_names ) ) {
+				if ( ! in_array( $name, $allowed_attr_names, true ) && ! in_array( $name_lower, $allowed_attr_names, true ) ) {
+					continue;
+				}
+			} else {
+				if ( strpos( $name_lower, 'on' ) === 0 ) {
+					continue;
+				}
+				if ( ! preg_match( '/^[a-z][a-z0-9_-]*$/D', $name ) ) {
+					continue;
+				}
+				// @since 0.5.8.3  Block invalid characters in attribute values.
+				if ( false !== strpbrk( $value, '<>(){}="\'`' ) ) {
+					continue;
+				}
+			}
+			$sanitized[ $name ] = $value;
+		}
+		$args = $sanitized;
 	}
 
 	return wp_parse_args( $args, $defaults );
