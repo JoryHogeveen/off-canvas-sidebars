@@ -44,7 +44,7 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	 * @param   bool    $sanitize
 	 * @return  string
 	 */
-	public static function parse_to_html_attr( $array, $sanizite = true ) {
+	public static function parse_to_html_attr( $array, $sanitize = true ) {
 		$str = '';
 		if ( is_array( $array ) && ! empty( $array ) ) {
 
