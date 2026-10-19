@@ -143,6 +143,7 @@ add_shortcode( 'ocs_trigger', 'shortcode_ocs_trigger' );
  * Also uses wp_parse_args.
  *
  * @since  0.5.0
+ * @since  0.5.9.1  Sanitize attribute names/values and validate URL schemes.
  * @param  string|array  $args
  * @param  array         $defaults
  * @return array
@@ -165,13 +166,49 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 	// Validate and sanitize attribute names and values.
 	$sanitized = array();
 	if ( is_array( $args ) ) {
+		/**
+		 * Define a custom list of attributes that are allowed.
+		 *
+		 * @since  0.5.9.1
+		 * @param  ?array  $allowed_attr_names  Attribute names (lowercase).
+		 * @return ?array
+		 */
 		$allowed_attr_names = apply_filters( 'ocs_trigger_allowed_attr_names', null );
 
+		// Attributes whose values are free text and may legitimately start with `word:`
+		// (e.g. `style="color:red"`). Only these skip protocol validation. All other
+		// attributes are validated, so URL attributes are protected automatically and
+		// anything missed fails closed instead of allowing a script scheme through.
+		$safe_attr_names = array(
+			'style',
+			'class',
+			'title',
+			'alt',
+			'placeholder',
+			'label',
+			'value',
+			'content',
+			'pattern',
+		);
+
+		/**
+		 * Filter the attributes that are exempt from URL protocol validation.
+		 * Values of these attributes are never treated as URLs.
+		 *
+		 * The `data-*` and `aria-*` prefixes are always exempt.
+		 *
+		 * @since  0.5.9.1
+		 * @param  array  $safe_attr_names  Attribute names (lowercase).
+		 * @return array
+		 */
+		$safe_attr_names = apply_filters( 'ocs_trigger_safe_attr_names', $safe_attr_names );
+
 		foreach ( $args as $name => $value ) {
-			$name_lower = strtolower( $name );
 			if ( is_array( $value ) ) {
 				$value = implode( ' ', $value );
 			}
+
+			$name_lower = strtolower( $name );
 			if ( is_array( $allowed_attr_names ) ) {
 				if ( ! in_array( $name, $allowed_attr_names, true ) && ! in_array( $name_lower, $allowed_attr_names, true ) ) {
 					continue;
@@ -186,6 +223,37 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 				// @since 0.5.8.3  Block invalid characters in attribute values.
 				if ( false !== strpbrk( $value, '<>(){}="\'`' ) ) {
 					continue;
+				}
+			}
+
+			// Validate URL schemes for every attribute except known non-URL (safe) ones.
+			$is_safe_attr = in_array( $name_lower, $safe_attr_names, true )
+				|| 0 === strpos( $name_lower, 'data-' )
+				|| 0 === strpos( $name_lower, 'aria-' );
+
+			if ( ! $is_safe_attr ) {
+				// Browsers ignore tab/LF/CR anywhere in a URL and leading/trailing
+				// whitespace before parsing the scheme, so strip those for detection
+				// only (the value itself is never modified here).
+				$url_path = trim( preg_replace( '/[\x00-\x1f\x7f]/', '', (string) $value ) );
+				$scheme   = wp_parse_url( $url_path, PHP_URL_SCHEME );
+
+				if ( ! empty( $scheme ) ) {
+					/**
+					 * Filter the protocols allowed in attribute values.
+					 * Defaults to WordPress' allowed protocols (http, https, mailto, etc.).
+					 *
+					 * @since  0.5.9.1
+					 * @param  array   $allowed_protocols  Allowed URL schemes (lowercase).
+					 * @param  string  $name               The attribute name.
+					 * @param  mixed   $value              The attribute value.
+					 * @return array
+					 */
+					$allowed_protocols = apply_filters( 'ocs_trigger_allowed_url_protocols', wp_allowed_protocols(), $name, $value );
+
+					if ( ! in_array( strtolower( $scheme ), $allowed_protocols, true ) ) {
+						continue;
+					}
 				}
 			}
 			$sanitized[ $name ] = $value;
