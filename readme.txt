@@ -2,7 +2,7 @@
 Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=off-canvas-sidebars
 Tags: off-canvas, menus, widgets, sidebars, slidebars, panels, jQuery, app, mobile, tablet, responsive, genesis
-Requires at least: 4.1
+Requires at least: 4.4
 Tested up to: 6.8
 Requires PHP: 5.4
 Stable tag: 0.5.9
