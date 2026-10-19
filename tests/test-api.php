@@ -182,7 +182,7 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 	 * Tests that the allowed URL protocols can be extended per attribute via filter.
 	 * @see off_canvas_sidebars_parse_attr_string()
 	 */
-	function test_shortcode_ocs_trigger_allowed_url_protocols_filter() {
+	function test_shortcode_ocs_allowed_url_protocols_filter() {
 
 		OCS_UnitTest_Factory::load();
 		OCS_UnitTest_Factory::$settings->set_settings(
@@ -199,7 +199,7 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 			}
 			return $protocols;
 		};
-		add_filter( 'ocs_trigger_allowed_url_protocols', $filter, 10, 3 );
+		add_filter( 'ocs_allowed_url_protocols', $filter, 10, 3 );
 
 		// The custom protocol is accepted for src because of the filter.
 		$this->assertEquals(
@@ -213,6 +213,6 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 			do_shortcode( '[ocs_trigger id="left" element="img" attr="src:javascript:alert%28document.domain%29"]' )
 		);
 
-		remove_filter( 'ocs_trigger_allowed_url_protocols', $filter );
+		remove_filter( 'ocs_allowed_url_protocols', $filter );
 	}
 }
