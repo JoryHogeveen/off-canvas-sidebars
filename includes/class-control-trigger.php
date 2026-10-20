@@ -36,6 +36,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		'style',
 		'script',
 		'title', // Meta
+		'link',
 	);
 
 	/**
@@ -77,7 +78,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		'a',
 		'area',
 		'form',
-		'link',
 	);
 
 	/**
