@@ -152,6 +152,24 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
 			),
 
+			// Numeric HTML entity in the scheme is removed (browser decodes it).
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:&#106;avascript:alert%28document.domain%29"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
+			// Named HTML entity for the colon is removed (browser decodes it).
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:javascript&colon;alert%28document.domain%29"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
+			// Entity-encoded whitespace in the scheme is removed.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:java&#9;script:alert%28document.domain%29"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
 			// Non-URL attributes (exempt) may legitimately contain a colon value.
 			array(
 				'shortcode' => '[ocs_trigger id="left" text="test" attr="style:color:red"]',
