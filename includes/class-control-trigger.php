@@ -37,6 +37,8 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		'script',
 		'title', // Meta
 		'link',
+		'form',
+		'input',
 	);
 
 	/**
@@ -48,7 +50,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		'br', // Why?!
 		'hr', // Why?!
 		'img',
-		'input', // Why?!
 	);
 
 	/**
@@ -77,7 +78,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	public static $link_elements = array(
 		'a',
 		'area',
-		'form',
 	);
 
 	/**
