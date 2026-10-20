@@ -144,28 +144,24 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 				|| 0 === strpos( $name_lower, 'aria-' );
 
 			if ( ! $is_safe_attr ) {
-				// Browsers ignore tab/LF/CR anywhere in a URL and leading/trailing
-				// whitespace before parsing the scheme, so strip those for detection
-				// only (the value itself is never modified here).
-				$url_path = trim( preg_replace( '/[\x00-\x1f\x7f]/', '', (string) $value ) );
-				$scheme   = wp_parse_url( $url_path, PHP_URL_SCHEME );
+				/**
+				 * Filter the protocols allowed in attribute values.
+				 * Defaults to WordPress' allowed protocols (http, https, mailto, etc.).
+				 *
+				 * @since  0.5.9.1
+				 * @param  array   $allowed_protocols  Allowed URL schemes (lowercase).
+				 * @param  string  $name               The attribute name.
+				 * @param  mixed   $value              The attribute value.
+				 * @return array
+				 */
+				$allowed_protocols = apply_filters( 'ocs_allowed_url_protocols', wp_allowed_protocols(), $name, $value );
 
-				if ( ! empty( $scheme ) ) {
-					/**
-					 * Filter the protocols allowed in attribute values.
-					 * Defaults to WordPress' allowed protocols (http, https, mailto, etc.).
-					 *
-					 * @since  0.5.9.1
-					 * @param  array   $allowed_protocols  Allowed URL schemes (lowercase).
-					 * @param  string  $name               The attribute name.
-					 * @param  mixed   $value              The attribute value.
-					 * @return array
-					 */
-					$allowed_protocols = apply_filters( 'ocs_allowed_url_protocols', wp_allowed_protocols(), $name, $value );
-
-					if ( ! in_array( strtolower( $scheme ), $allowed_protocols, true ) ) {
-						continue;
-					}
+				// wp_kses_bad_protocol() handles entity-, case- and whitespace-obfuscated
+				// schemes (e.g. `&#106;avascript:`, `java&#9;script:`) that a naive scheme
+				// check would miss. It returns the value with any disallowed scheme
+				// stripped, so a changed result means the value is unsafe: fail closed.
+				if ( wp_kses_bad_protocol( (string) $value, $allowed_protocols ) !== (string) $value ) {
+					continue;
 				}
 			}
 			$sanitized[ $name ] = $value;
