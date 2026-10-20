@@ -152,21 +152,11 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
 			),
 
-			// Numeric HTML entity in the scheme is removed (browser decodes it).
+			// Numeric HTML entity in the scheme, written without a trailing semicolon so
+			// the shortcode parser (which splits on `;`) cannot break the payload apart,
+			// is still removed by protocol validation.
 			array(
-				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:&#106;avascript:alert%28document.domain%29"]',
-				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
-			),
-
-			// Named HTML entity for the colon is removed (browser decodes it).
-			array(
-				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:javascript&colon;alert%28document.domain%29"]',
-				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
-			),
-
-			// Entity-encoded whitespace in the scheme is removed.
-			array(
-				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:java&#9;script:alert%28document.domain%29"]',
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:&#106avascript:alert%28document.domain%29"]',
 				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
 			),
 
@@ -232,5 +222,44 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 		);
 
 		remove_filter( 'ocs_allowed_url_protocols', $filter );
+	}
+
+	/**
+	 * Tests that protocol validation rejects obfuscated URL schemes when the values
+	 * arrive intact via the programmatic attribute array. The shortcode string parser
+	 * splits values on `;`, which would otherwise break up entity-encoded payloads
+	 * before they reach the sanitizer, so those vectors are tested here directly.
+	 * @see OCS_Off_Canvas_Sidebars_Base::sanitize_attr()
+	 */
+	function test_sanitize_attr_strips_obfuscated_schemes() {
+
+		$obfuscated = array(
+			'javascript:alert%28document.domain%29',
+			'JavaScript:alert%28document.domain%29',
+			'&#106;avascript:alert%28document.domain%29',
+			'javascript&colon;alert%28document.domain%29',
+			'java&#9;script:alert%28document.domain%29',
+			'vbscript:msgbox%281%29',
+			'data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==',
+		);
+
+		foreach ( $obfuscated as $value ) {
+			$result = OCS_Off_Canvas_Sidebars_Base::sanitize_attr( array( 'href' => $value ) );
+			$this->assertArrayNotHasKey( 'href', $result, 'Disallowed scheme not stripped for: ' . $value );
+		}
+
+		// Allowed schemes and schemeless values are kept.
+		$allowed = array(
+			'https://your.domain/page',
+			'http://your.domain/page',
+			'mailto:someone@your.domain',
+			'/relative-path',
+			'#anchor',
+		);
+
+		foreach ( $allowed as $value ) {
+			$result = OCS_Off_Canvas_Sidebars_Base::sanitize_attr( array( 'href' => $value ) );
+			$this->assertArrayHasKey( 'href', $result, 'Allowed value dropped: ' . $value );
+		}
 	}
 }
