@@ -95,6 +95,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 0.5.9.1 =
+
+*	**Hotfix:** Security fix (contributor+ users only). Implemented strict trigger element attribute validation.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/off-canvas-sidebars/pull/124)
+
 = 0.5.9 =
 
 *	**Enhancement:** Refactor settings import to use textarea input.
