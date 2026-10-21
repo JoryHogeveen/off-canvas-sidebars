@@ -358,6 +358,9 @@ Please let me know through the support page!
 
 == Upgrade Notice ==
 
+= 0.5.9.1 =
+Security hotfix: This release introduces strict validation that may affect custom triggers. If you added javascript in your trigger attributes you'll have to whitelist this. See documentation for filters.
+
 = 0.4 =
 Version 0.4 introduces some radical code changes to the plugin. Please clear your cache after updating
 
