@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.1
- * @version 0.5.6
+ * @version 0.5.9.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sidebars_Base
@@ -131,6 +131,7 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		/**
 		 * Filter the supported elements for the trigger.
 		 *
+		 * @since   0.5.9.1
 		 * @param   array  $supported_elements  The array of supported elements.
 		 * @return  array  The filtered array of supported elements.
 		 */
