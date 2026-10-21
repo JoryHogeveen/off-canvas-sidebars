@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.0
- * @version 0.5.5
+ * @version 0.5.9.1
  */
 abstract class OCS_Off_Canvas_Sidebars_Base
 {
@@ -37,14 +37,21 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 	 * @todo Maybe create an API class.
 	 *
 	 * @since   0.4.0
-	 * @since   0.5.0  Moved from OCS_Off_Canvas_Sidebars_Form.
+	 * @since   0.5.0    Moved from OCS_Off_Canvas_Sidebars_Form.
+	 * @since   0.5.9.1  Sanitizes HTML attributes and validates URL schemes.
 	 * @static
 	 * @param   array   $array  Array to parse. (attribute => value pairs)
+	 * @param   bool    $sanitize
 	 * @return  string
 	 */
-	public static function parse_to_html_attr( $array ) {
+	public static function parse_to_html_attr( $array, $sanitize = true ) {
 		$str = '';
 		if ( is_array( $array ) && ! empty( $array ) ) {
+
+			if ( $sanitize ) {
+				$array = self::sanitize_attr( $array );
+			}
+
 			foreach ( $array as $attr => $value ) {
 				if ( is_array( $value ) ) {
 					$value = implode( ' ', $value );
@@ -54,6 +61,113 @@ abstract class OCS_Off_Canvas_Sidebars_Base
 			$str = implode( ' ', $array );
 		}
 		return $str;
+	}
+
+	/**
+	 * Sanitizes HTML attributes and validates URL schemes.
+	 *
+	 * @since  0.5.9.1
+	 * @param  array  $attr
+	 * @return array
+	 */
+	public static function sanitize_attr( $attr ) {
+
+		$sanitized = array();
+
+		if ( ! is_array( $attr ) ) {
+			return $sanitized;
+		}
+
+		/**
+		 * Define a custom list of attributes that are allowed.
+		 *
+		 * @since  0.5.9.1
+		 * @param  ?array  $allowed_attr_names  Attribute names (lowercase).
+		 * @return ?array
+		 */
+		$allowed_attr_names = apply_filters( 'ocs_allowed_attr_names', null );
+
+		// Attributes whose values are free text and may legitimately start with `word:`
+		// (e.g. `style="color:red"`). Only these skip protocol validation. All other
+		// attributes are validated, so URL attributes are protected automatically and
+		// anything missed fails closed instead of allowing a script scheme through.
+		$safe_attr_names = array(
+			'style',
+			'class',
+			'title',
+			'alt',
+			'placeholder',
+			'label',
+			'value',
+			'content',
+			'pattern',
+		);
+
+		/**
+		 * Filter the attributes that are exempt from URL protocol validation.
+		 * Values of these attributes are never treated as URLs.
+		 *
+		 * The `data-*` and `aria-*` prefixes are always exempt.
+		 *
+		 * @since  0.5.9.1
+		 * @param  array  $safe_attr_names  Attribute names (lowercase).
+		 * @return array
+		 */
+		$safe_attr_names = apply_filters( 'ocs_safe_attr_names', $safe_attr_names );
+
+		foreach ( $attr as $name => $value ) {
+			if ( is_array( $value ) ) {
+				$value = implode( ' ', $value );
+			}
+
+			$name_lower = strtolower( $name );
+			if ( is_array( $allowed_attr_names ) ) {
+				if ( ! in_array( $name, $allowed_attr_names, true ) && ! in_array( $name_lower, $allowed_attr_names, true ) ) {
+					continue;
+				}
+			} else {
+				if ( strpos( $name_lower, 'on' ) === 0 ) {
+					continue;
+				}
+				if ( ! preg_match( '/^[a-z][a-z0-9_-]*$/D', $name ) ) {
+					continue;
+				}
+				// @since 0.5.8.3  Block invalid characters in attribute values.
+				if ( false !== strpbrk( $value, '<>(){}="\'`' ) ) {
+					continue;
+				}
+			}
+
+			// Validate URL schemes for every attribute except known non-URL (safe) ones.
+			$is_safe_attr = in_array( $name_lower, $safe_attr_names, true )
+				|| 0 === strpos( $name_lower, 'data-' )
+				|| 0 === strpos( $name_lower, 'aria-' );
+
+			if ( ! $is_safe_attr ) {
+				/**
+				 * Filter the protocols allowed in attribute values.
+				 * Defaults to WordPress' allowed protocols (http, https, mailto, etc.).
+				 *
+				 * @since  0.5.9.1
+				 * @param  array   $allowed_protocols  Allowed URL schemes (lowercase).
+				 * @param  string  $name               The attribute name.
+				 * @param  mixed   $value              The attribute value.
+				 * @return array
+				 */
+				$allowed_protocols = apply_filters( 'ocs_allowed_url_protocols', wp_allowed_protocols(), $name, $value );
+
+				// wp_kses_bad_protocol() handles entity-, case- and whitespace-obfuscated
+				// schemes (e.g. `&#106;avascript:`, `java&#9;script:`) that a naive scheme
+				// check would miss. It returns the value with any disallowed scheme
+				// stripped, so a changed result means the value is unsafe: fail closed.
+				if ( wp_kses_bad_protocol( (string) $value, $allowed_protocols ) !== (string) $value ) {
+					continue;
+				}
+			}
+			$sanitized[ $name ] = $value;
+		}
+		
+		return $sanitized;
 	}
 
 	/**

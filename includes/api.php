@@ -4,7 +4,7 @@
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
- * @version 0.5.6
+ * @version 0.5.9.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -156,7 +156,8 @@ function off_canvas_sidebars_parse_attr_string( $args, $defaults = array() ) {
 			if ( count( $attr[ $key ] ) > 0 ) {
 				$attribute = trim( $attr[ $key ][0] );
 				unset( $attr[ $key ][0] );
-				$args[ $attribute ] = trim( implode( ':', $attr[ $key ] ) );
+				$value = trim( implode( ':', $attr[ $key ] ) );
+				$args[ $attribute ] = $value;
 			}
 		}
 	}

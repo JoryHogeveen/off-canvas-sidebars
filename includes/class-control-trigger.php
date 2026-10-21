@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Off_Canvas_Sidebars
  * @since   0.5.1
- * @version 0.5.6
+ * @version 0.5.9.1
  * @uses    \OCS_Off_Canvas_Sidebars_Base Extends class
  */
 final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sidebars_Base
@@ -36,6 +36,9 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		'style',
 		'script',
 		'title', // Meta
+		'link',
+		'form',
+		'input',
 	);
 
 	/**
@@ -47,7 +50,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 		'br', // Why?!
 		'hr', // Why?!
 		'img',
-		'input', // Why?!
 	);
 
 	/**
@@ -76,8 +78,6 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 	public static $link_elements = array(
 		'a',
 		'area',
-		'form',
-		'link',
 	);
 
 	/**
@@ -122,14 +122,22 @@ final class OCS_Off_Canvas_Sidebars_Control_Trigger extends OCS_Off_Canvas_Sideb
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$args['element'] = strtolower( $args['element'] );
+		$args['element'] = strtolower( trim( $args['element'] ) );
 		$args['attr']    = off_canvas_sidebars_parse_attr_string( $args['attr'] );
 		$args['text']    = wp_kses_post( $args['text'] );
 
-		if (
-			in_array( $args['element'], self::$unsupported_elements, true )
-			|| ! preg_match( '/^[\w]*$/', $args['element'] )
-		) {
+		$supported_elements = array_merge( self::$control_elements, self::$singleton_elements, self::$link_elements );
+
+		/**
+		 * Filter the supported elements for the trigger.
+		 *
+		 * @since   0.5.9.1
+		 * @param   array  $supported_elements  The array of supported elements.
+		 * @return  array  The filtered array of supported elements.
+		 */
+		$supported_elements = apply_filters( 'ocs_trigger_supported_elements', $supported_elements );
+
+		if ( ! in_array( $args['element'], $supported_elements, true ) ) {
 			return '<span class="error">' . esc_html__( 'This element is not supported for use as a button', OCS_DOMAIN ) . '</span>';
 		}
 

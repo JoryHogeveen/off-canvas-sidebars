@@ -130,11 +130,136 @@ class OCS_API_UnitTest extends WP_UnitTestCase {
 				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="me">test</a>',
 			),
 
+			/**
+			 * URL attribute sanitization (javascript: scheme should be removed).
+			 */
+
+			// Valid HTTP URL is kept.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:https://your.domain/page"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" href="https://your.domain/page" rel="nofollow">test</a>',
+			),
+
+			// Encoded javascript: URL is removed.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:javascript:alert%28document.domain%29"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
+			// Mixed case javascript: URL is removed.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:JavaScript:alert%28document.domain%29"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
+			// Numeric HTML entity in the scheme, written without a trailing semicolon so
+			// the shortcode parser (which splits on `;`) cannot break the payload apart,
+			// is still removed by protocol validation.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" element="a" attr="href:&#106avascript:alert%28document.domain%29"]',
+				'compare' => '<a class="ocs-trigger ocs-toggle ocs-toggle-left" rel="nofollow">test</a>',
+			),
+
+			// Non-URL attributes (exempt) may legitimately contain a colon value.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" attr="style:color:red"]',
+				'compare' => '<button class="ocs-trigger ocs-toggle ocs-toggle-left" style="color:red">test</button>',
+			),
+
+			// data-* attributes are exempt from protocol validation.
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" attr="data-config:mode:dark"]',
+				'compare' => '<button class="ocs-trigger ocs-toggle ocs-toggle-left" data-config="mode:dark">test</button>',
+			),
+
+			// Unknown attribute with a scheme-like value fails closed (value dropped).
+			array(
+				'shortcode' => '[ocs_trigger id="left" text="test" attr="foo:bar:baz"]',
+				'compare' => '<button class="ocs-trigger ocs-toggle ocs-toggle-left">test</button>',
+			),
+
 		);
 
 		foreach ( $tests as $test ) {
 			$this->assertEquals( $test['compare'], do_shortcode( $test['shortcode'] ) );
 		}
 
+	}
+
+	/**
+	 * Tests that the allowed URL protocols can be extended per attribute via filter.
+	 * @see off_canvas_sidebars_parse_attr_string()
+	 */
+	function test_shortcode_ocs_allowed_url_protocols_filter() {
+
+		OCS_UnitTest_Factory::load();
+		OCS_UnitTest_Factory::$settings->set_settings(
+			array(
+				'sidebars' => array(
+					'left' => array(),
+				)
+			)
+		);
+
+		$filter = function( $protocols, $name, $value ) {
+			if ( 'src' === $name ) {
+				$protocols[] = 'custom';
+			}
+			return $protocols;
+		};
+		add_filter( 'ocs_allowed_url_protocols', $filter, 10, 3 );
+
+		// The custom protocol is accepted for src because of the filter.
+		$this->assertEquals(
+			'<img class="ocs-trigger ocs-toggle ocs-toggle-left" src="custom:image.png" alt="" />',
+			do_shortcode( '[ocs_trigger id="left" element="img" attr="src:custom:image.png"]' )
+		);
+
+		// javascript: is still rejected, even for src.
+		$this->assertEquals(
+			'<img class="ocs-trigger ocs-toggle ocs-toggle-left" alt="" />',
+			do_shortcode( '[ocs_trigger id="left" element="img" attr="src:javascript:alert%28document.domain%29"]' )
+		);
+
+		remove_filter( 'ocs_allowed_url_protocols', $filter );
+	}
+
+	/**
+	 * Tests that protocol validation rejects obfuscated URL schemes when the values
+	 * arrive intact via the programmatic attribute array. The shortcode string parser
+	 * splits values on `;`, which would otherwise break up entity-encoded payloads
+	 * before they reach the sanitizer, so those vectors are tested here directly.
+	 * @see OCS_Off_Canvas_Sidebars_Base::sanitize_attr()
+	 */
+	function test_sanitize_attr_strips_obfuscated_schemes() {
+
+		$obfuscated = array(
+			'javascript:alert%28document.domain%29',
+			'JavaScript:alert%28document.domain%29',
+			'&#106;avascript:alert%28document.domain%29',
+			'javascript&colon;alert%28document.domain%29',
+			'java&#9;script:alert%28document.domain%29',
+			'vbscript:msgbox%281%29',
+			'data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==',
+		);
+
+		foreach ( $obfuscated as $value ) {
+			$result = OCS_Off_Canvas_Sidebars_Base::sanitize_attr( array( 'href' => $value ) );
+			$this->assertArrayNotHasKey( 'href', $result, 'Disallowed scheme not stripped for: ' . $value );
+		}
+
+		// Allowed schemes and schemeless values are kept.
+		$allowed = array(
+			'https://your.domain/page',
+			'http://your.domain/page',
+			'mailto:someone@your.domain',
+			'/relative-path',
+			'#anchor',
+		);
+
+		foreach ( $allowed as $value ) {
+			$result = OCS_Off_Canvas_Sidebars_Base::sanitize_attr( array( 'href' => $value ) );
+			$this->assertArrayHasKey( 'href', $result, 'Allowed value dropped: ' . $value );
+		}
 	}
 }
