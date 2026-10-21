@@ -29,7 +29,7 @@ This plugin should work with most themes and plugins although I can't be sure fo
 If the plugin does not work for your theme, please let me know through the support and add a plugins and themes list and I will take a look!
 
 **Fixed elements (like sticky menu's)**  
-There are known issues with fixed elements and Slidebars. [Click here for more information](https://www.adchsm.com/slidebars/help/advanced-usage/elements-with-fixed-positions/)  
+There are known issues with fixed elements and Slidebars. [Wiki](https://github.com/JoryHogeveen/off-canvas-sidebars/wiki/fixed-elements)  
 I've created two possible solutions for this:
 
 1. Legacy CSS solution. Use basic CSS2 positioning instead of CSS3 transform with hardware acceleration.
